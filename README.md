@@ -11,7 +11,7 @@ The Lean development that consumes it is at [`../csp-lean`](../csp-lean).
 
 | File | Pages | What it is |
 | --- | --- | --- |
-| [`csp.tex`](csp.tex) | 35 | The blueprint. Compiled PDF committed alongside. |
+| [`csp.tex`](csp.tex) | 38 | The blueprint. Compiled PDF committed alongside. |
 
 ```sh
 pdflatex csp.tex   # twice
@@ -45,7 +45,7 @@ the work. So the blueprint separates:
 | **H1** | pp-interpretation ⟹ poly-time reduction ⟹ NP-hard | **yes** |
 
 The blueprint is written for T0, T1 and H0. T2 and H1 are stated precisely, costed, and
-left unbuilt — see §9.
+left unbuilt — see §11.
 
 ## The route
 
@@ -84,7 +84,8 @@ Section 4 of 2404 (XY-symmetric operations) is an independent second result and 
 6. **§7 The main statements** — the single induction and the three theorems the algorithm
    consumes.
 7. **§8–9 The algorithm and the hard half.**
-8. **§10–11 The complexity layer and the formalization plan.**
+8. **§10 Defects in the sources** — the ten blocking items and ten conventions to legislate.
+9. **§11–12 The complexity layer and the formalization plan.**
 
 ## Formalization notes
 
@@ -107,7 +108,19 @@ does not. A sample of what writing the statements down carefully turned up:
 - **Two different things are called "linked"** — a binary relation, and a CSP instance —
   and both appear in one proof, where the passage from one to the other is the crux.
 
-None of these is an error in the source. All of them are work.
+§10 collects the harder cases: ten places where the source cannot be transcribed at all.
+The sharpest is a genuine misstatement — Zhuk's Lemma 19, restating a corollary from his
+2021 paper, drops both the subdirectness hypothesis and the requirement that the absorbing
+term be shared. Without the first it is false: take `R = {(0,0)} ≤ Z_p × Z_p` and
+`C_i = A_i`; then `pr₁(R) = {0}`, which the conclusion asserts to be a binary absorbing
+subuniverse of `Z_p`, contradicting the paper's own Lemma 29. Others include a citation
+cycle in §5 that has to be broken before anything in §5.4 or §5.7 can be formalized, a
+corollary that is stated and used six times but never proved, and a hypothesis
+(`S`-free) that is strictly weaker than what its proof needs — the stronger version is
+sitting in the source as a commented-out gloss two lines below.
+
+None of these is fatal, and ten blocking items in a fifty-page paper is roughly the
+expected rate. All of them cost time, which is the point of finding them first.
 
 ## Relation to the source
 

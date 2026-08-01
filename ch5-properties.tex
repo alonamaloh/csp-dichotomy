@@ -132,20 +132,44 @@ For the two absorption types the conclusion is stronger --- no chain, no dot on
 the type, and no subdirectness hypothesis:
 
 \begin{lemma}[{\cite[Cor.~6.1.2, 6.9.2]{ZhukStrong}}]\label{lem:ba-center-implies}
-Let $R\le\mathbf A_{1}\times\dots\times\mathbf A_{m}$ and
-$C_{i}\subte{T}A_{i}$ for every $i$, where $T\in\{\TBA,\TC\}$. Then
-$\proj_{1}\bigl(R\cap(C_{1}\times\dots\times C_{m})\bigr)\dsubte{T}A_{1}$.
+Let $R\le\mathbf A_{1}\times\dots\times\mathbf A_{m}$ with
+$\proj_{1}(R)=A_{1}$, and let $C_{i}\subte{T}A_{i}$ for every $i$, where
+$T\in\{\TBA,\TC\}$ --- and, when $T=\TBA$, with a \emph{single} binary term $t$
+witnessing all $m$ absorptions. Then
+$\proj_{1}\bigl(R\cap(C_{1}\times\dots\times C_{m})\bigr)\dsubte{T}A_{1}$,
+again with the same $t$ when $T=\TBA$.
 \end{lemma}
 
-\begin{hazard}\label{haz:ba-center-implies}
+\begin{hazard}[The source's restatement is false; this is the repair]
+\label{haz:ba-center-implies}
 Lemma~\ref{lem:ba-center-implies} is the workhorse of case (2) of
-Theorem~\ref{thm:main-inductive} and is imported from \cite{ZhukStrong}. It is
-in the same family as the results already formalized in the predecessor project
-(\S\ref{sec:reuse}) --- both concern the behaviour of binary absorption and
-centrality under intersection with a box and projection --- but it is
-\emph{not} the same statement and is not currently available. It is the single
-highest-value import to formalize first, because it is small, self-contained,
-and used everywhere.
+Theorem~\ref{thm:main-inductive}, and \cite[Lemma~19]{ZhukSimplified} restates
+it from \cite{ZhukStrong} \emph{dropping two hypotheses}: the subdirectness
+$\proj_{1}(R)=A_{1}$, and --- in the $\TBA$ case --- that the $C_{i}$ absorb
+with a common term. Both are present in the cited source
+(\cite[Cor.~6.1.2]{ZhukStrong} reads ``Suppose $R\le A_{1}\times\dots\times
+A_{n}$, $\proj_{1}(R)=A_{1}$, $B_{i}\le_{\TBA(t)}A_{i}$ for every $i$''), and
+without the first the statement is false.
+
+\emph{Counterexample to the printed form.} Take $R=\{(0,0)\}\le\mathbf Z_{p}
+\times\mathbf Z_{p}$ --- a subuniverse, by idempotence --- and $C_{i}=A_{i}$,
+which is allowed because $\subte{T}$ admits equality. Then
+$R\cap(C_{1}\times C_{2})=R$ and $\proj_{1}(R)=\{0\}$, which is neither empty
+nor all of $\mathbf Z_{p}$, so the conclusion asserts $\{0\}\subt{\TBA}
+\mathbf Z_{p}$ --- contradicting Lemma~\ref{lem:no-abs-in-linear}, the paper's
+own Lemma~29. The failure is exactly the missing subdirectness: $\proj_{1}(R)
+=\{0\}\neq\mathbf Z_{p}$.
+
+The repair is to restore both hypotheses, as above. A formalization must also
+check that they hold at each of the call sites --- in particular in the proof of
+Theorem~\ref{thm:main-inductive}(2), where the lemma is applied to the relation
+computing $E_{2}$ from $E_{1}$. The common-term condition is the reason
+\cite{ZhukStrong} writes $\le_{\TBA(t)}$ with the term in the notation, and
+carrying $t$ in the type is the cheapest way to keep it.
+
+This is the single highest-value import to formalize first: small,
+self-contained, used everywhere, and adjacent to what the predecessor project
+already proves.
 \end{hazard}
 
 \subsection{Intersections}
