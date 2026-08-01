@@ -372,6 +372,67 @@ between the lemma and that contradiction:
 
 ---
 
+## D11–D13 — one hypothesis repairs all three
+
+Call a bridge `δ` from `σ` to `σ` **pair-reflexive** if `(x₁,x₂) ∈ proj_{1,2}(δ)` implies
+`(x₁,x₂,x₁,x₂) ∈ δ`. It is not a new notion: `LEMPCCongruencePropertyInductiveStep`
+(`StrongSubalgebras.tex:1379`) already carries it, as hypothesis (2).
+
+**Lemma (free of charge).** For any bridge `δ` from `σ` to `σ`, the relation
+
+  `δ°(x₁,x₂,x₃,x₄) = ∃x₅∃x₆ δ(x₁,x₂,x₅,x₆) ∧ δ(x₃,x₄,x₅,x₆)`
+
+is a pair-reflexive bridge from `σ` to `σ`, symmetric under swapping the two pairs, with
+`proj_{1,2}(δ°) = proj_{3,4}(δ°) = proj_{1,2}(δ)` and `δ°~ = δ̃ ∘ δ̃^{-1} ⊇ δ̃`.
+
+*Proof.* Pair-reflexivity and symmetry are immediate from the shape of the formula. Clause (4)
+holds because `(x₁,x₂) ∈ σ ⟺ (x₅,x₆) ∈ σ ⟺ (x₃,x₄) ∈ σ`; clause (3) because
+`(x₁,x₂) ∈ proj_{1,2}(δ)` gives `(x₁,x₂,x₁,x₂) ∈ δ°`, and conversely `δ°` cannot project
+further than `δ` does. Stability is inherited. The last equality is the composition formula
+`\widetilde{δ_1 ∘ δ_2} = \widetilde{δ_1} ∘ \widetilde{δ_2}` applied to `δ` and `δ^{-1}`. ∎
+
+**D11.** Replace `StrongSubalgebras.tex:1154–1157` by `σ = δ°`. Everything the proof then uses
+is supplied: `ω = proj_{1,2}(σ) = proj_{1,2}(δ)` is linked by hypothesis; `ω ⊆ σ̃` because
+`ω ⊆ δ̃ ⊆ δ̃ ∘ δ̃^{-1}` (the second inclusion because `δ̃` is reflexive, which in turn holds
+because `0_A ⊆ proj_{1,2}(δ) ⊆ δ̃`); `(a,b,a,b) ∈ σ` by pair-reflexivity; `(a,a,b,b) ∈ σ` by
+`ω ⊆ σ̃`; and `σ̃` is symmetric, which is what legitimises the `WLOG` at line 1170.
+
+**D12.** Add pair-reflexivity to `LEMNiceBridgeGivesAbelianGroup`. The proof's one broken step
+then works: `δ ⊆ δ ∘ δ` by taking `(y₁,y₂) = (x₁,x₂)` in the composition, so
+`δ₀ = δ ∘ δ ⊇ δ`, and the counting argument finishes as written. In the structural language of
+`NOTES-verification.md`, pair-reflexivity says `φ = id`, which is exactly the hypothesis the
+`ℤ₃` counterexample violates.
+
+**D13.** Add pair-reflexivity to `LEMNontrivialReflexiveBridgeImplies`. Then at line 1273:
+
+*Claim.* `σ* ⊆ proj_{1,2}(δ)`.
+*Proof.* `proj_{1,2}(δ)` is a subalgebra of `A²`, stable under `σ` by clause (1), and
+`⊋ σ` by clause (3); `σ*` is the minimal such. ∎
+
+So for `(x₁,x₂) ∈ σ* ∩ B²`, pair-reflexivity puts `(x₁,x₂,x₁,x₂)` in
+`δ' = δ ∩ B⁴ ∩ (σ*×σ*)`, whence `proj_{1,2}(δ') = σ* ∩ B²` — subdirect on `B` because `σ*` is
+reflexive, and connected because `B` is a block of `LeftLinked(σ*)`. The same computation
+gives `proj_{1,2}(δ ∩ B⁴) = B²` at line 1290 once `B² ⊆ σ*` is known.
+
+**Why it costs nothing.** `LEMNontrivialReflexiveBridgeImplies` is cited once in the paper, at
+line 1368, on the object `δ°` — pair-reflexive by the lemma above. `LEMNiceBridgeGivesAbelianGroup`
+is cited once, from inside that proof, on `δ° ∩ B⁴`, which inherits it.
+
+*Our rendering:* state pair-reflexivity as part of the definition of the *symmetrised* bridge
+and carry it through §5.4. It is the property that makes "compose the bridge with itself"
+mean what the prose wants it to mean.
+
+## D14 — open
+
+Case 1 of `LEMPCCongruencePropertyInductiveStep` needs
+`RightLinked(proj_{1,2,3}(δ ∩ B⁴)) = B²` for `B <_{BA,C} A`, and cites
+`LEMBACenterLinkedness`, which yields the corresponding statement for
+`proj_{1,2,3}(δ) ∩ B³`. I have not found an argument identifying the two, nor a route to the
+`(1,2)|(3,4)` linkedness of `δ` that would let the restriction lemma be applied to `δ` itself.
+No counterexample either. **Do not write §5.4 past this point until it is settled.**
+
+---
+
 ## Status
 
 | | fixable? | needs new mathematics? |
@@ -383,3 +444,7 @@ between the lemma and that contradiction:
 | D7(i) | yes | no — two lines, via irreducibility |
 | D7(ii) | yes | no — union with `𝓘`, reweaken; plus the two-phase induction made explicit |
 | C10 | yes | no — the elimination is Lemma 3.4 plus "WNU forbids an essentially unary quotient" |
+| D11 | yes, one character | no |
+| D12 | yes | no — the statement was wrong, not the mathematics; add pair-reflexivity |
+| D13 | yes | no — same hypothesis as D12 |
+| D14 | **unknown** | **open** |
