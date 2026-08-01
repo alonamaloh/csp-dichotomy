@@ -1,0 +1,92 @@
+%!TeX root=csp.tex
+\section{The hard half}\label{sec:hardness}
+
+If no weak near-unanimity operation preserves $\Gamma$, then $\CSP(\Gamma)$ is
+\textup{NP}-complete. This half is older, shorter, and better understood than
+the tractable half, and it factors cleanly into algebra and complexity.
+
+\subsection{The chain}
+
+\begin{description}\tightlist
+\item[\textup{(1)}] \emph{Reduction to a core, and to an idempotent algebra.}
+  One may assume $\Gamma$ contains all singleton unary relations, so that
+  $\Pol(\Gamma)$ is idempotent, at the cost of a polynomial-time reduction.
+\item[\textup{(2)}] \emph{Maróti--McKenzie.} A finite idempotent algebra has a
+  Taylor term if and only if it has a weak near-unanimity term
+  \cite{MarotiMcKenzie}.
+\item[\textup{(3)}] \emph{No Taylor term $\Rightarrow$ pp-interpretation.} If a
+  finite idempotent algebra has no Taylor term, then the variety it generates
+  contains a two-element algebra whose only operations are projections;
+  equivalently, $\Gamma$ primitively positively interprets every finite
+  constraint language, in particular a template for \textsc{$3$-Sat} or
+  \textsc{Nae-$3$-Sat}.
+\item[\textup{(4)}] \emph{Bulatov--Jeavons--Krokhin.} A primitive positive
+  interpretation of $\Delta$ in $\Gamma$ yields a polynomial-time many-one
+  reduction $\CSP(\Delta)\le_{p}\CSP(\Gamma)$ \cite{BJK}.
+\item[\textup{(5)}] \emph{Cook--Levin.} $\textsc{Nae-$3$-Sat}$ is
+  \textup{NP}-hard.
+\end{description}
+
+Steps (1)--(3) are algebra; step (4) is a syntactic construction plus a
+complexity-theoretic wrapper; step (5) is pure complexity theory.
+
+\subsection{The layered targets}
+
+\begin{theorem}[Target \textup{(H0)}]\label{thm:h0}
+Let $\mathbf A$ be a finite idempotent algebra with no weak near-unanimity term
+operation. Then $\Inv(\mathbf A)$ primitively positively interprets the
+constraint language $\{\textsc{Nae}\}$ on $\{0,1\}$, where
+$\textsc{Nae}=\{0,1\}^{3}\setminus\{(0,0,0),(1,1,1)\}$.
+\end{theorem}
+
+\begin{theorem}[Target \textup{(H1)}]\label{thm:h1}
+If $\Gamma$ primitively positively interprets $\Delta$ then
+$\CSP(\Delta)\le_{p}\CSP(\Gamma)$. Consequently, under \textup{(H0)},
+$\CSP(\Gamma)$ is \textup{NP}-hard.
+\end{theorem}
+
+Theorem~\ref{thm:h0} mentions no machine. Theorem~\ref{thm:h1} is where the
+complexity layer enters, and it is small --- the reduction is a syntactic
+substitution of formulas --- but it cannot be stated at all without a
+formalized notion of polynomial-time many-one reduction.
+
+\subsection{Definitions}
+
+\begin{definition}[pp-formula, pp-definability]\label{def:pp}
+A \emph{primitive positive formula} over $\Gamma$ is
+$\exists y_{1}\dots\exists y_{s}\;\bigwedge_{j}R_{j}(\bar z_{j})$ with
+$R_{j}\in\Gamma\cup\{=\}$. A relation is \emph{pp-definable} from $\Gamma$ if
+some pp-formula defines it.
+\end{definition}
+
+\begin{definition}[pp-interpretation]\label{def:pp-interp}
+$\Gamma$ on $A$ \emph{pp-interprets} $\Delta$ on $B$ if there are $d\ge 1$, a
+pp-definable $F\subseteq A^{d}$, and a surjection $\pi\colon F\to B$ such that
+the $\pi$-preimage of every relation of $\Delta$, and of the equality relation
+on $B$, is pp-definable from $\Gamma$.
+\end{definition}
+
+\begin{theorem}[Geiger; Bodnarchuk--Kalu\v znin--Kotov--Romov]\label{thm:galois}
+For a finite $A$, a relation is pp-definable from $\Gamma$ if and only if it is
+preserved by every polymorphism of $\Gamma$.
+\end{theorem}
+
+\begin{hazard}[The Galois connection is the expensive import]\label{haz:galois}
+Theorem~\ref{thm:galois} is what converts the algebraic hypothesis (``no WNU
+polymorphism'') into a syntactic conclusion (``pp-defines a hard relation''),
+and it is the only genuinely substantial import of \S\ref{sec:hardness}. The
+easy direction is a one-line calculation. The hard direction --- every relation
+preserved by all polymorphisms is pp-definable --- goes through the free algebra
+on $|A|^{k}$ generators and an indicator-instance construction; it is roughly
+four printed pages and is the single largest item in the \textup{(H0)} budget.
+It is also of independent value and would be a reasonable Mathlib contribution
+on its own.
+\end{hazard}
+
+\begin{remark}[Why the hard half is not the hard half]\label{rem:hardness-easier}
+Despite its name, \textup{(H0)} is far smaller than \textup{(T0)}: perhaps
+twenty printed pages against a hundred. The asymmetry is intrinsic. Showing a
+problem is hard requires exhibiting one construction; showing it is easy
+requires an algorithm that works on every instance, and the correctness proof
+must survive every configuration the instance can present.
+\end{remark}

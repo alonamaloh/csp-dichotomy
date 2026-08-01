@@ -1,0 +1,455 @@
+%!TeX root=csp.tex
+\section{The main statements}\label{sec:main-statements}
+
+This section is Zhuk's \S\S3.3--3.4. Everything converges here.
+Theorem~\ref{thm:main-inductive} is the single induction that carries the whole
+proof; the three theorems the algorithm consumes are corollaries of it.
+
+\subsection{The three claims the algorithm needs}
+
+The algorithm of \S\ref{sec:algorithm} is justified by exactly three facts.
+Informally:
+
+\begin{description}\tightlist
+\item[\textup{(IC1)}]\label{ic:existence} every domain of size $\ge 2$ has a
+  strong subset, or an equivalence $\sigma$ with
+  $D_{x}/\sigma\cong\mathbb Z_{p}$;
+\item[\textup{(IC2)}]\label{ic:safe} reducing a variable's domain to a strong
+  subset of it does not destroy solvability, for a consistent enough instance;
+\item[\textup{(IC3)}]\label{ic:codim} for a linked, consistent enough,
+  strong-subset-free instance, the set of ``linear cosets'' containing a
+  solution is empty, full, or a codimension-one affine subspace.
+\end{description}
+
+(IC1) is Lemma~\ref{lem:ubiquity} together with
+Lemma~\ref{lem:linear-on-top}. (IC2) is
+Theorem~\ref{thm:reductions-safe}. (IC3) is
+Theorem~\ref{thm:codim-one}.
+
+\subsection{The main induction}
+
+\begin{longtheorem}[Main inductive claim]\label{thm:main-inductive}
+Let $\mathcal I$ be an irreducible cycle-consistent instance and let $D^{(1)}$
+be a $1$-consistent reduction for $\mathcal I$ with $D^{(1)}\lll D$.
+\begin{enumerate}\tightlist
+\item[\textup{(1)}] If $\mathcal I$ is crucial in $D^{(1)}$ then
+  \textup{(1a)} holds, and \textup{(1b)} or \textup{(1c)} holds:
+  \begin{enumerate}\tightlist
+  \item[\textup{(1a)}] every constraint of $\mathcal I$ has the parallelogram
+    property;
+  \item[\textup{(1b)}] $\mathcal I$ is a connected linear-type instance whose
+    solution set is subdirect;
+  \item[\textup{(1c)}] there is an expanded covering $\mathcal J$ of
+    $\mathcal I$, crucial in $D^{(1)}$, with a linked connected subinstance
+    $\Upsilon$ whose solution set is not subdirect.
+  \end{enumerate}
+\item[\textup{(2)}] If $D^{(2)}\subte{T}D^{(1)}$ is a $1$-consistent reduction
+  for $\mathcal I$ with $T\in\{\TBA,\TC\}$, and $\mathcal I^{(1)}$ has a
+  solution, then $\mathcal I^{(2)}$ has a solution.
+\end{enumerate}
+\end{longtheorem}
+
+\begin{hazard}[The induction, stated precisely]\label{haz:the-induction}
+The proof reads ``we prove the claim by induction on the size of $D^{(1)}$'',
+and this one line hides the entire well-foundedness argument. Making it precise
+is the first thing a formalization must do, because \emph{the two halves of the
+conclusion are proved by mutual induction and each invokes the other at a
+smaller reduction}.
+
+The measure is
+\[
+  \mu(D^{(1)})=\sum_{x\in\Var(\mathcal I)}\bigl|D^{(1)}_{x}\bigr|\in\mathbb N,
+\]
+and the statement being proved by strong induction on $\mu$ is the
+conjunction of (1) and (2), \emph{universally quantified over $\mathcal I$}:
+\[
+  P(k):\quad
+  \forall\,\mathcal I,\ \forall\,D^{(1)}\ \text{with}\ \mu(D^{(1)})\le k,\
+  \textup{(1)}\ \text{and}\ \textup{(2)}\ \text{hold}.
+\]
+The quantifier over $\mathcal I$ must be \emph{inside}, because every use of the
+inductive hypothesis changes the instance: (2) applies it to a weakening
+$\mathcal I'$ of $\mathcal I^{(2)}$; Case~1 of (1) applies it to $\mathcal I$
+with $D^{(2)}$; Case~2 applies it to weakenings and to expanded coverings. An
+induction that fixed $\mathcal I$ and inducted on $D^{(1)}$ alone does not go
+through.
+
+Two further points that the one-line phrasing conceals.
+\begin{enumerate}\alphlabels\tightlist
+\item \emph{The instance grows.} Expanded coverings have \emph{more} variables
+  than $\mathcal I$. So $\mu$ is not monotone in the instance, and the
+  induction is genuinely on $\mu(D^{(1)})$ alone --- with the reduction of a
+  covering being the extension of $D^{(1)}$ along the parent map
+  (Proposition~\ref{prop:covering-basics}(h)), whose $\mu$ is \emph{larger}.
+  Every appeal to the inductive hypothesis at a covering must therefore be
+  checked to occur at a strictly smaller reduction, not merely at a different
+  instance. In Case~2 of (1) the reductions used are the $D^{(B,\bot)}$, which
+  are contained in $D^{(1)}$ restricted at $z$ to a proper subset $B$; that is
+  where the decrease comes from.
+\item \emph{Which appeals decrease.} (2) invokes the hypothesis at
+  $D^{(2)}\subsetneq D^{(1)}$: strict because $D^{(2)}\subt{T}D^{(1)}$ has
+  $C\lneq B$ at some variable. Case~1 of (1) likewise. Case~2 invokes it at
+  $D^{(B,\bot)}\subseteq D^{(B,\top)}$, which is $D^{(1)}$ with the $z$-domain
+  cut to $B\lneq D^{(1)}_{z}$. In every case the decrease is at a single
+  variable and by at least one element. A formalization should extract this as
+  a lemma: \emph{if $D'\subte{T}D$ with $T$ any type and $D'\neq D$, then
+  $\mu(D')<\mu(D)$}, and use it uniformly.
+\end{enumerate}
+\end{hazard}
+
+\begin{proof}[Proof of \textup{(2)}]
+Suppose $\mathcal I^{(2)}$ has no solution. Weaken $\mathcal I^{(2)}$ to an
+instance $\mathcal I'$ crucial in $D^{(2)}$ (Remark~\ref{rem:get-crucial}). By
+the inductive hypothesis applied to $\mathcal I'$ and $D^{(2)}$, $\mathcal I'$
+satisfies (1a) and (1b) or (1c).
+
+\emph{Case \textup{(1c)}.} There is an expanded covering $\mathcal J$ of
+$\mathcal I'$, crucial in $D^{(2)}$, with a linked connected subinstance
+$\Upsilon$. Let $x$ be a variable of a constraint $C\in\Upsilon$. By
+Lemma~\ref{lem:connected}(p), $\ConOne(C,x)$ is a perfect linear congruence;
+choose $\zeta\subseteq\mathbf D_{x}\times\mathbf D_{x}\times\mathbf Z_{p}$ with
+$(y_{1},y_{2},0)\in\zeta\iff(y_{1},y_{2})\in\ConOne(C,x)$ and
+$\proj_{1,2}(\zeta)=\cover{\ConOne(C,x)}$.
+
+Replace the variable $x$ of $C$ in $\mathcal J$ by a fresh $x'$ and add the
+constraint $\zeta(x,x',z)$ with $z$ fresh of domain $\mathbf Z_{p}$; call the
+result $\Theta$, and extend $D^{(1)},D^{(2)}$ by $D^{(1)}_{x'}=D^{(2)}_{x'}
+=D_{x'}$. Let $E_{i}$ be the set of $b\in\mathbf Z_{p}$ such that $\Theta$ has
+a solution in $D^{(i)}$ with $z=b$. By
+Lemma~\ref{lem:ba-center-implies}, $E_{2}\dsubte{T}E_{1}$.
+
+Since $\mathcal J$ is crucial in $D^{(2)}$, $\Theta^{(2)}$ has a solution but
+none with $z=0$; since $\mathcal I^{(1)}$ has a solution, so does
+$\mathcal J^{(1)}$, hence $\Theta^{(1)}$ has one with $z=0$. Thus
+$0\in E_{1}$, $0\notin E_{2}$, and $E_{1}$ has at least two elements. As
+$\mathbf Z_{p}$ has no proper subalgebra of size $>1$, $E_{1}=\mathbf Z_{p}$;
+then $E_{2}\subt{T}\mathbf Z_{p}$ with $T\in\{\TBA,\TC\}$, contradicting
+Lemma~\ref{lem:no-abs-in-linear}.
+
+\emph{Case \textup{(1b)}.} Corollary~\ref{cor:same-type} gives a
+contradiction directly.
+\end{proof}
+
+\begin{hazard}[Three gaps in the case \textup{(1c)} argument]\label{haz:case1c}
+\begin{enumerate}\alphlabels\tightlist
+\item ``$E_{1}$ contains at least two different elements, $0\in E_{1}$ and
+  $0\notin E_{2}$, hence $E_{1}=\mathbf Z_{p}$'' uses that $E_{1}$ is a
+  subuniverse of $\mathbf Z_{p}$ --- true because $E_{1}=\Theta^{(1)}(z)$ is a
+  relation defined by an instance (Definition~\ref{def:instance-relation}) ---
+  \emph{and} that the subuniverses of $\mathbf Z_{p}$ are the singletons and
+  the whole set. The latter needs $w^{\mathbf Z_{p}}$ to generate: from $a\ne b$
+  one reaches every element. Prove it; it is one line but it is the crux.
+\item $E_{2}\dsubte{T}E_{1}$ is applied with the \emph{dotted} conclusion of
+  Lemma~\ref{lem:ba-center-implies}, and the argument then treats $E_{2}$ as a
+  proper subuniverse. The case $E_{2}=\varnothing$ must be handled: it is
+  excluded because $\Theta^{(2)}$ has a solution. Say so.
+\item The choice of $\zeta$ is by Definition~\ref{def:perfect-linear}, which
+  supplies $\zeta$ with $\proj_{1,2}\zeta=\cover\sigma$ and
+  $(a_{1},a_{2},b)\in\zeta\Rightarrow((a_{1},a_{2})\in\sigma\iff b=0)$. The
+  proof uses the \emph{biconditional} $(y_{1},y_{2},0)\in\zeta\iff(y_{1},y_{2})
+  \in\ConOne(C,x)$, which is stronger: it needs, for each $(y_1,y_2)\in\sigma$,
+  that $(y_{1},y_{2},0)\in\zeta$. This follows from $\proj_{1,2}\zeta
+  =\cover\sigma\supseteq\sigma$ plus the implication, but the step is
+  suppressed.
+\end{enumerate}
+\end{hazard}
+
+\begin{proof}[Proof of \textup{(1)}, sketch of the structure]
+First, $|D^{(1)}_{x}|>1$ for some $x$: otherwise $\mathcal I^{(1)}$ has all
+domains singletons and $1$-consistency makes it solvable, contradicting
+cruciality.
+
+\emph{Case 1: some $D^{(1)}_{x}$ has a nontrivial $\TBA$ or central
+subuniverse.} Lemma~\ref{lem:find-consistent} yields a $1$-consistent reduction
+$D^{(2)}\subte{T}D^{(1)}$, $T\in\{\TBA,\TC\}$. One checks $\mathcal I$ is
+crucial in $D^{(2)}$: for a weakening $\mathcal J$ of a constraint,
+$\mathcal J^{(1)}$ has a solution, so by the inductive hypothesis (part (2) at
+$D^{(2)}$) $\mathcal J^{(2)}$ has one. Applying the inductive hypothesis
+(part (1)) at $D^{(2)}$ gives the conclusion.
+
+\emph{Case 2: otherwise.} Lemma~\ref{lem:ubiquity} gives
+$E\subt[D_{z}]{T(\sigma)}D^{(1)}_{z}$ for some $z$ and $T\in\{\TPC,\TL\}$.
+Property (1a) is obtained by choosing, for each $x$, a minimal
+$D^{(2)}_{x}\subte{\MT T}D^{(1)}_{x}$ containing the value at $x$ of a solution
+produced by weakening a fixed constraint $C$; Lemma~\ref{lem:multitype-chain}
+gives $D^{(2)}\lll^{D}D^{(1)}$ and
+Lemma~\ref{lem:minimal-consistent} splits into two subcases, in one of which the
+inductive hypothesis applies and in the other of which
+Lemma~\ref{lem:parallelogram-crucial} applies directly.
+
+For (1b)/(1c) one forms, for each $B$ in the family
+$\mathcal B=\{B:B\subt[D_{z}]{T(\sigma)}D^{(1)}_{z}\}$, the reduction
+$D^{(B,\top)}$ that equals $D^{(1)}$ off $z$ and $B$ at $z$, and the maximal
+$1$-consistent reduction $D^{(B,\bot)}\subseteq D^{(B,\top)}$ (possibly empty).
+Lemma~\ref{lem:tree-coverings} supplies tree-coverings $\Upsilon_{B,x}$
+computing $D^{(B,\bot)}_{x}$, and their conjunction $\Upsilon_{x}$ works
+uniformly in $B$. Writing $\mathcal B_{0}$ for the $B$ with $D^{(B,\bot)}$
+nonempty, the argument splits:
+\begin{itemize}\tightlist
+\item $\mathcal B_{0}=\varnothing$: the type must be $\TL$, and
+  Lemma~\ref{lem:bridge-from-instance} applied to a suitably weakened
+  tree-covering produces, for any two constraints sharing a variable, a
+  reflexive bridge between their $\ConOne$'s. Hence $\mathcal I$ is connected,
+  and (1b) or (1c) holds according as its solution set is subdirect.
+\item $\mathcal B_{0}\neq\varnothing$: one constructs a family $\Omega$ of
+  weakenings of $\mathcal I$ that is \emph{critically} unable to solve all of
+  $\mathcal B_{0}$ (conditions 1--4 of
+  Construction~\ref{constr:omega}) and argues by whether some member fails
+  (1b).
+\end{itemize}
+\end{proof}
+
+\begin{hazard}[Construction~\ref{constr:omega} is the hardest object]\label{haz:omega}
+The set $\Omega$ is specified by four conditions, one of which (condition 3) is
+a minimality condition ``if we replace any instance in $\Omega$ by all weaker
+instances then 2 is not satisfied''. The paper obtains $\Omega$ by starting
+from $\{\mathcal I\}$ and repeatedly weakening, justified by ``we cannot weaken
+forever''. Condition 4 is then \emph{derived} from condition 3.
+
+For a formalization this is the single most demanding step in
+\S\ref{sec:main-statements}, for three reasons. (i) The iteration weakens a
+\emph{set} of instances, so the termination measure is a measure on finite sets
+of instances, not on instances --- see Hazard~\ref{haz:weakening}. (ii) The
+derivation of condition 4 from condition 3 is a two-line argument that
+instantiates condition 3 at
+$\Omega\cup\{\mathcal J_{C}:C\in\mathcal J\}\setminus\{\mathcal J\}$ and reads
+off an existential; the existential witness $B$ depends on $\mathcal J$, so
+condition 4 is a $\Pi\Sigma$ statement and must be stated as such. (iii) The
+subsequent Subcase~1 builds a \emph{second} descending sequence
+$\mathcal B_{1}\supseteq\mathcal B_{2}\supseteq\dots$ inside the first, again
+terminating by finiteness. Nested well-founded constructions of this shape are
+where informal proofs most often hide a circularity, and this one should be
+isolated and stated as a standalone lemma before Theorem~\ref{thm:main-inductive}
+is attempted.
+\end{hazard}
+
+\begin{remark}[Construction of $\Omega$]\label{constr:omega}
+$\Omega$ is a finite set of weakenings of $\mathcal I$ with:
+\begin{enumerate}\tightlist
+\item every member is a weakening of $\mathcal I$;
+\item $\bigcap_{\mathcal J\in\Omega}\Sol(\mathcal J)=\varnothing$, where
+  $\Sol(\mathcal J)=\{B\in\mathcal B_{0}:\mathcal J^{(B,\bot)}$ has a
+  solution$\}$;
+\item replacing any member by all weaker instances destroys 2;
+\item for every $\mathcal J\in\Omega$ there is $B\in\mathcal B_{0}$ with
+  (a) $\mathcal J$ crucial in $D^{(B,\bot)}$ and (b) $B\in\Sol(\mathcal J')$
+  for every $\mathcal J'\in\Omega\setminus\{\mathcal J\}$.
+\end{enumerate}
+\end{remark}
+
+\subsection{The three consumed theorems}\label{sec:codim-one}
+
+\begin{theorem}[Reductions are safe]\label{thm:reductions-safe}
+Let $\Theta$ be a cycle-consistent irreducible instance and
+$B\subt[D_{x}]{T}D_{x}$ with $T\in\{\TBA,\TC,\TPC\}$. Then $\Theta$ has a
+solution if and only if $\Theta$ has a solution with $x\in B$.
+\end{theorem}
+
+\begin{proof}
+For $T=\TPC$ this is Theorem~\ref{thm:pc-safe}. For $T\in\{\TBA,\TC\}$,
+Lemma~\ref{lem:find-consistent} gives a $1$-consistent reduction
+$D^{(1)}\subte{T}D$ with $D^{(1)}_{x}\subseteq B$; by
+Theorem~\ref{thm:main-inductive}(2), $\Theta^{(1)}$ has a solution, hence
+$\Theta$ has one with $x\in B$.
+\end{proof}
+
+\begin{theorem}[PC reductions do not kill all solutions]\label{thm:pc-safe}
+If $\mathcal I$ is cycle-consistent and irreducible, $B\subt[D_{y}]{\TPC(\sigma)}D_{y}$
+for some $y\in\Var(\mathcal I)$, and $\mathcal I$ has a solution, then
+$\mathcal I$ has a solution with $y\in B$.
+\end{theorem}
+
+\begin{longtheorem}[Codimension one]\label{thm:codim-one}
+Suppose
+\begin{enumerate}\romanlabels\tightlist
+\item $\mathcal I$ is a linked cycle-consistent irreducible instance with
+  $\Var(\mathcal I)=\{x_{1},\dots,x_{m}\}$;
+\item $\mathbf D_{x_{i}}$ is $\TS$-free for every $i$;
+\item weakening all constraints of $\mathcal I$ gives an instance with
+  subdirect solution set;
+\item $\sigma_{x_{i}}$ is the intersection of all linear congruences $\sigma$
+  on $\mathbf D_{x_{i}}$ with $\cover{\sigma}=D_{x_{i}}^{2}$;
+\item $L_{x_{i}}=\mathbf D_{x_{i}}/\sigma_{x_{i}}$;
+\item $\phi\colon\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}\to
+  L_{x_{1}}\times\dots\times L_{x_{m}}$ is a homomorphism, $q_{i}$ prime;
+\item weakening any one constraint of $\mathcal I$ gives an instance with a
+  solution in $\phi(\bar a)$ for every
+  $\bar a\in\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}$.
+\end{enumerate}
+Then
+$\Delta=\{\bar a:\mathcal I\text{ has a solution in }\phi(\bar a)\}$ is empty,
+full, or an affine subspace of codimension $1$ --- the solution set of a single
+linear equation.
+\end{longtheorem}
+
+\begin{proof}[Proof]
+If $\Delta$ is full we are done. Otherwise pick $\bar b\notin\Delta$ and regard
+$\phi(\bar b)$ as a reduction $D^{(1)}$ for $\mathcal I$; condition (vii) says
+$\mathcal I$ is crucial in $D^{(1)}$.
+
+\emph{Step 1: some $\ConOne(C,x)$ is a perfect linear congruence.} By
+Lemma~\ref{lem:minimal-consistent}, either $C_{0}^{(1)}=\varnothing$ for some
+constraint $C_{0}$, or $D^{(1)}$ is $1$-consistent.
+\begin{itemize}\tightlist
+\item If $C_{0}^{(1)}=\varnothing$: cruciality forces $\mathcal I=\{C_{0}\}$,
+  say $C_{0}=R(y_{1},\dots,y_{t})$. By
+  Lemma~\ref{lem:parallelogram-crucial}, $R$ has the parallelogram property and
+  $\ConOne(R,1)$ is linear with $\cover{\ConOne(R,1)}=D_{y_{1}}^{2}$. By
+  Lemma~\ref{lem:linear-on-top}, $\mathbf D_{y_{1}}/\delta\cong\mathbf Z_{p}$;
+  with $\psi$ the quotient map, $\zeta=\{(a_{1},a_{2},b):\psi(a_{1})-\psi(a_{2})=b\}$
+  witnesses perfection.
+\item If $D^{(1)}$ is $1$-consistent: by Theorem~\ref{thm:main-inductive}(1)
+  every constraint has the parallelogram property and (1b) or (1c) holds. In
+  either case Lemma~\ref{lem:connected}(p) applies --- under (1c) to the
+  linked connected subinstance, whose containing a constraint of $\mathcal I$
+  is forced by condition (iii); under (1b) to $\mathcal I$ itself.
+\end{itemize}
+
+\emph{Step 2: add a $\mathbf Z_{p}$ coordinate.} Let $\zeta$ witness
+perfection of $\ConOne(C,x)$. Add a variable $z$ with domain $\mathbf Z_{p}$,
+replace $x$ in $C$ by a fresh $x'$, and add $\zeta(x,x',z)$, giving
+$\mathcal I'$. Put
+\[
+  L=\{(\bar a,b):\mathcal I'\text{ has a solution with }z=b\text{ in }\phi(\bar a)\}
+   \le\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}\times\mathbf Z_{p}.
+\]
+By condition (vii), $\proj_{1..k}(L)$ is full; and $(\bar b,0)\notin L$. So $L$
+has dimension $k$ and is the solution set of one linear equation. If that
+equation is $z=c$ with $c\neq 0$ then $\Delta=\varnothing$; otherwise setting
+$z=0$ gives an equation defining $\Delta$, of dimension $k-1$.
+\end{proof}
+
+\begin{hazard}[The linear algebra of Step 2]\label{haz:step2-linear-algebra}
+Step 2 uses four facts about subgroups of
+$\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}\times\mathbf Z_{p}$ that
+are stated as if obvious:
+\begin{enumerate}\alphlabels\tightlist
+\item $L$ is a subuniverse, hence (the $q_{i},p$ being prime and $w$ being
+  a sum) a subgroup;
+\item ``dimension'' is well defined for a subgroup of a product of
+  $\mathbf Z_{q}$ with \emph{different} primes $q$. It is not a vector space;
+  the correct statement is that such a group splits as a product over primes
+  of $\mathbb F_{q}$-vector spaces, and dimension is the tuple of dimensions.
+  The footnote in \cite{ZhukSimplified} about ``$J$ may contain only variables
+  on the same field'' is the same issue surfacing in the algorithm;
+\item a subgroup of codimension one is the kernel of a single homomorphism to
+  $\mathbb F_{q}$, i.e.\ the solution set of one linear equation;
+\item ``$\proj_{1..k}(L)$ full and $(\bar b,0)\notin L$ imply $\dim L=k$''.
+\end{enumerate}
+Item (b) is the one to be careful about: it is the reason
+Theorem~\ref{thm:codim-one} is stated with mixed primes $q_{1},\dots,q_{k}$ and
+the reason (c) must be proved prime by prime. In Mathlib the substrate exists
+(\texttt{ZMod}, \texttt{Module} over \texttt{ZMod p}) but the mixed-prime
+dimension notion and the codimension-one characterisation are not there; see \S\ref{sec:formalization}.
+\end{hazard}
+
+\subsection{The supporting lemmas}
+
+The lemmas invoked above, in dependency order.
+
+\begin{lemma}[{\cite[Lem.~6.1]{ZhukJACM}}]\label{lem:expanded-consistency}
+An expanded covering of a cycle-consistent irreducible instance is
+cycle-consistent and irreducible.
+\end{lemma}
+
+\begin{lemma}\label{lem:minimal-consistent}
+Suppose $D^{(1)}$ is a $1$-consistent reduction for $\mathcal I$, every
+$D^{(1)}_{x}$ is $\TS$-free, $T\in\{\TPC,\TL,\TD\}$, $D^{(1)}\lll D$, and
+$D^{(2)}_{x}\subte{\MT T}D^{(1)}_{x}$ is a minimal $\MT T$ subuniverse for
+every $x$. Then either $C^{(2)}=\varnothing$ for some constraint $C$, or
+$\mathcal I^{(2)}$ is $1$-consistent.
+\end{lemma}
+
+\begin{lemma}\label{lem:crucial-irreducible}
+A constraint crucial in a reduction of a cycle-consistent irreducible instance
+is rectangular, and its $\ConOne$'s are irreducible congruences.
+\end{lemma}
+
+\begin{lemma}\label{lem:bridge-from-relation}
+A relation whose restriction along strong subsets becomes empty yields a bridge
+between the witnessing congruences.
+\end{lemma}
+
+\begin{lemma}[Connected instances]\label{lem:connected}
+Let $\mathcal I$ be a cycle-consistent connected instance. Then
+\begin{enumerate}\tightlist
+\item[\textup{(a)}] any two constraints with a common variable are adjacent;
+\item[\textup{(b)}] for constraints $C_{1},C_{2}$, variables
+  $x_{i}\in\Var(C_{i})$, and any path from $x_{1}$ to $x_{2}$, there is a
+  bridge $\delta$ from $\ConOne(C_{1},x_{1})$ to $\ConOne(C_{2},x_{2})$ with
+  $\bcol{\delta}$ containing all pairs connected by that path;
+\item[\textup{(p)}] if $\mathcal I$ is linked then $\ConOne(C,x)$ is a perfect
+  linear congruence for every $C\in\mathcal I$, $x\in\Var(C)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{hazard}\label{haz:connected-p}
+Clause (p) is the bridge between the bridge machinery and the linear algebra;
+it is what makes Theorem~\ref{thm:codim-one} possible. Its proof is (b)
+followed by Lemma~\ref{lem:perfect-from-linked}: linkedness of the instance
+makes $\bcol{\delta}$ linked as a relation, which upgrades the bridge. The two
+senses of ``linked'' (Hazard~\ref{haz:linked}) meet exactly here, and the step
+where one becomes the other should be isolated.
+\end{hazard}
+
+\begin{lemma}[{\cite[Lem.~5.6]{ZhukStrong}}]\label{lem:tree-coverings}
+For a $1$-consistent instance and a reduction, there is a tree-covering whose
+projection onto a given variable computes the maximal $1$-consistent
+subreduction at that variable.
+\end{lemma}
+
+\begin{lemma}\label{lem:find-consistent}
+Let $D^{(1)}$ be a $1$-consistent reduction of a cycle-consistent instance
+$\mathcal I$ with $D^{(1)}\lll D$, and $B\subt[D_{x}]{T}D^{(1)}_{x}$ with
+$T\in\{\TBA,\TC,\TPC\}$. Then there is a nonempty $1$-consistent reduction
+$D^{(2)}\lll D^{(1)}$ with $D^{(2)}_{x}\subseteq B$. Moreover, if
+$T\in\{\TBA,\TC\}$ then $D^{(2)}\subte{T}D^{(1)}$; and if $T=\TPC$ and every
+$D^{(1)}_{y}$ is $\TS$-free then $D^{(2)}\subte{\TMPC}D^{(1)}$.
+\end{lemma}
+
+\begin{lemma}\label{lem:parallelogram-crucial}
+A constraint that becomes empty under a minimal multi-type reduction, in an
+instance crucial there, has the parallelogram property; and in the linear case
+its first induced congruence $\sigma$ satisfies $\cover\sigma=D^{2}$.
+\end{lemma}
+
+\begin{longlemma}[Bridges from a subdirect PC/linear instance]\label{lem:bridge-from-instance}
+Suppose
+\begin{enumerate}\romanlabels\tightlist
+\item $\mathcal I$ has subdirect solution set;
+\item $D^{(1)}$ is a reduction with $D^{(1)}_{x}\lll D_{x}$ for every $x$;
+\item $C\in\mathcal I$ is a constraint of type $T\in\{\TPC,\TL\}$;
+\item $B\subt[D_{z}]{\mathcal T(\xi)}D^{(1)}_{z}$ for some variable $z$, with
+  $\mathcal T\in\{\TBA,\TC,\TS,\TPC,\TL\}$;
+\item if $T=\TPC$ then $\mathcal T\in\{\TPC,\TL\}$;
+\item $\mathcal I^{(1)}$ has a solution;
+\item $\mathcal I^{(1)}$ has no solution with $z\in B$;
+\item weakening $C$ in $\mathcal I$ gives an instance with a solution in
+  $D^{(1)}$ having $z\in B$.
+\end{enumerate}
+Then $\mathcal T=T$, and for every variable $x$ of $C$ there is a bridge
+$\delta$ from $\xi$ to $\ConOne(C,x)$ with
+$\bcol{\delta}\supseteq\mathcal I(z,x)$.
+\end{longlemma}
+
+\begin{hazard}[The longest proof in the section]\label{haz:bridge-from-instance}
+Lemma~\ref{lem:bridge-from-instance} carries eight numbered hypotheses and its
+proof runs to roughly ten pages. It is the only source of bridges in
+\S\ref{sec:main-statements}, and every use of connectedness routes through it.
+Its conclusion has two independent parts --- ``$\mathcal T=T$'' and ``there is a
+bridge with $\bcol\delta\supseteq\mathcal I(z,x)$'' --- and different call sites
+use different parts; splitting it into two lemmas is tempting but the proof
+produces them together.
+
+A formalization should attack this lemma \emph{last} among the \S3.2 material
+and \emph{first} among the things budgeted generously. It, together with
+Theorem~\ref{thm:stable-intersection} (which it consumes) and
+Theorem~\ref{thm:main-inductive} (which consumes it), is where the majority of
+the effort will go.
+\end{hazard}
+
+\begin{corollary}\label{cor:same-type}
+In the situation of Theorem~\ref{thm:main-inductive}(2) with $\mathcal I'$
+satisfying (1b), the type $\mathcal T$ of the reduction and the type of the
+constraints must agree, which contradicts $\mathcal T\in\{\TBA,\TC\}$.
+\end{corollary}

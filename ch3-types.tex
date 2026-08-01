@@ -1,0 +1,259 @@
+%!TeX root=csp.tex
+\section{The six types of strong subuniverse}\label{sec:types}
+
+This section is Zhuk's \S2.2. It defines six binary relations
+$C\subt[A]{T}B$ between subsets of a fixed algebra $\mathbf A$, one for each
+type $T$, and the transitive-closure relation $C\lll^{A}B$. Everything in
+\S\S\ref{sec:properties}--\ref{sec:main-statements} is expressed in this
+language, so the definitions repay care.
+
+The informal reading is: $C\subt[A]{T}B$ says that $C$ is a \emph{strong}
+subset of $B$ --- strong enough that the CSP algorithm may reduce a variable's
+domain from $B$ to $C$ without losing all solutions --- and $T$ records
+\emph{why} it is strong. Three of the reasons are absorption-theoretic
+($\TBA$, $\TC$, $\TS$) and three are congruence-theoretic
+($\TD$, $\TL$, $\TPC$).
+
+\subsection{Absorption}
+
+\begin{definition}[Absorbing subuniverse]\label{def:absorbing}
+A subuniverse $B$ of $\mathbf A$ is \emph{absorbing} if there is
+$t\in\Clo_{k}(\mathbf A)$, for some $k$, such that for every $i\in[k]$
+\[
+  t(B,\dots,B,\underbrace{A}_{i},B,\dots,B)\subseteq B .
+\]
+We then say \emph{$B$ absorbs $\mathbf A$ with the term $t$}. If $t$ may be
+chosen binary, $B$ is a \emph{binary absorbing} subuniverse ($\TBA$); if
+ternary, a \emph{ternary absorbing} subuniverse.
+\end{definition}
+
+\begin{hazard}[The tuple form]\label{haz:absorption-tuples}
+Definition~\ref{def:absorbing} must be formalized over \emph{tuples
+constrained coordinatewise}, not as ``for all $b_{1},\dots,b_{k}\in B$ and
+$a\in A$, $t(b_{1},\dots,b_{i-1},a,b_{i+1},\dots,b_{k})\in B$''. The two agree,
+but the second phrasing invites the variant in which $b_{i}$ is quantified and
+then discarded, which is vacuously true when $B=\varnothing$ and at $k=1$
+where the intended content is not vacuous. This was an actual defect in the
+predecessor blueprint. State it as: for every $\bar a\in A^{k}$ such that
+$a_{j}\in B$ for all $j\neq i$, one has $t(\bar a)\in B$.
+\end{hazard}
+
+\begin{definition}[Central subuniverse]\label{def:central}
+A subuniverse $C$ of $\mathbf A$ is \emph{central} ($\TC$) if it is absorbing
+and for every $a\in A\setminus C$,
+\[
+  (a,a)\notin\Sg_{\mathbf A}\bigl((\{a\}\times C)\cup(C\times\{a\})\bigr).
+\]
+\end{definition}
+
+\begin{lemma}[{\cite[Cor.~6.11.1]{ZhukStrong}}]\label{lem:central-ternary}
+A central subuniverse is a ternary absorbing subuniverse.
+\end{lemma}
+
+\begin{remark}[Already formalized]\label{rem:center-done}
+Lemma~\ref{lem:central-ternary} is the one deep import of this theory that is
+already available in Lean: it is the main theorem of the predecessor project
+(\texttt{zhuk\_main} in \texttt{ZhukLean}), proved there from the definitions
+via the Barto--Kazda relational description of absorption and the Zhuk--Kozik
+doubling trick. See \S\ref{sec:reuse}.
+\end{remark}
+
+\begin{definition}[BA and centre free; $\TS$]\label{def:ba-center-free}
+$\mathbf A$ is \emph{BA and centre free} if it has no proper nonempty binary
+absorbing subuniverse and no proper nonempty central subuniverse.
+
+For $\varnothing\neq C\lneq B\le A$ write $C\subt[A]{\TS}B$ if there is a
+subuniverse $D\subseteq C$ of $\mathbf B$ that is simultaneously binary
+absorbing and central in $\mathbf B$. $\mathbf A$ is \emph{$\TS$-free} if there
+is no $C\subt{\TS}\mathbf A$; equivalently, no nonempty proper $D\le A$ is
+both binary absorbing and central.
+\end{definition}
+
+\begin{hazard}[$\TS$ is not the conjunction of $\TBA$ and $\TC$]\label{haz:S-type}
+$C\subt{\TS}B$ does not say that $C$ is binary absorbing and central in
+$\mathbf B$; it says that $C$ \emph{contains} some $D$ that is. The type
+$\TS$ exists precisely so that it is closed under enlarging $C$, which
+$\TBA$ and $\TC$ are not. Note also the asymmetry with $\TS$-freeness, which
+\emph{is} stated as a conjunction. Getting this backwards makes
+Lemma~\ref{lem:propagation}(ft) unprovable.
+\end{hazard}
+
+\subsection{Linear and PC congruences}
+
+\begin{definition}[Linear congruence]\label{def:linear-congruence}
+A congruence $\sigma$ on $\mathbf A$ is \emph{linear} if
+\begin{enumerate}\alphlabels\tightlist
+\item $\sigma$ is irreducible;
+\item $\cover{\sigma}$ is a congruence;
+\item there are a prime $p$ and $S\le(\cover{\sigma})^{[4]}$ such that for
+  every block $B$ of $\cover{\sigma}$ there is $m\ge 0$ with
+  \[
+    \bigl(B/\sigma;\;S\cap(B/\sigma)^{4}\bigr)\;\cong\;
+    \bigl(\mathbb Z_{p}^{m};\;x_{1}-x_{2}=x_{3}-x_{4}\bigr).
+  \]
+\end{enumerate}
+An irreducible congruence that is not linear is a \emph{PC congruence}.
+\end{definition}
+
+The relation $S$ of (c) is a bridge from $\sigma$ to $\sigma$ with
+$\bcol{S}=\proj_{1,2}(S)=\proj_{3,4}(S)=\cover{\sigma}$. This is the useful
+reformulation:
+
+\begin{lemma}[{\cite[Lem.~\ref*{lem:linear-equiv}]{ZhukSimplified}}]\label{lem:linear-equiv}
+For an irreducible congruence $\sigma$ the following are equivalent:
+\begin{enumerate}\alphlabels\tightlist
+\item $\sigma$ is linear;
+\item there is a bridge $\delta$ from $\sigma$ to $\sigma$ with
+  $\bcol{\delta}\supsetneq\sigma$.
+\end{enumerate}
+\end{lemma}
+
+\begin{hazard}[Definition (c) versus criterion (b)]\label{haz:linear-def}
+Definition~\ref{def:linear-congruence}(c) is a per-block isomorphism statement
+with an existential $m$ \emph{depending on the block}, and it quantifies over
+blocks of $\cover{\sigma}$, not of $\sigma$. Lemma~\ref{lem:linear-equiv}
+replaces all of that by one bridge. A formalization should take (b) as the
+\emph{definition} and prove (c) as a structure theorem, reversing the paper's
+order: (b) is a $\Sigma_1$ statement over finite data and is what every
+consumer actually uses, while (c) drags in a quotient, a choice of prime, and a
+family of isomorphisms.
+
+The dichotomy ``linear or PC'' is then \emph{by definition} exhaustive on
+irreducible congruences, which is how the paper uses it. Note that PC-ness is a
+negative condition; every lemma about PC congruences is proved by contradiction
+against Lemma~\ref{lem:linear-equiv}(b).
+\end{hazard}
+
+\begin{lemma}[No bridge crosses the types]\label{lem:no-cross-bridge}
+If $\sigma_{1}$ is linear, $\sigma_{2}$ is irreducible, and there is a bridge
+from $\sigma_{1}$ to $\sigma_{2}$, then $\sigma_{2}$ is linear.
+\end{lemma}
+
+\begin{lemma}[Bridges from PC congruences are trivial]\label{lem:pc-bridges-trivial}
+Let $\sigma$ be a PC congruence on $A$ and $\delta$ a reflexive bridge from
+$\sigma$ to $\sigma$ with $\proj_{1,2}(\delta)=\proj_{3,4}(\delta)=
+\cover{\sigma}$. Then
+\[
+  \delta(x_{1},x_{2},x_{3},x_{4})=\sigma(x_{1},x_{3})\wedge\sigma(x_{2},x_{4})
+  \quad\text{or}\quad
+  \delta(x_{1},x_{2},x_{3},x_{4})=\sigma(x_{1},x_{4})\wedge\sigma(x_{2},x_{3}).
+\]
+\end{lemma}
+
+\begin{lemma}[Bridges into PC congruences]\label{lem:bridge-to-pc}
+Let $\delta$ be a bridge from a PC congruence $\sigma_{1}$ on $\mathbf A_{1}$
+to an irreducible congruence $\sigma_{2}$ on $\mathbf A_{2}$, with
+$\proj_{1,2}(\delta)=\cover{\sigma_{1}}$ and
+$\proj_{3,4}(\delta)=\cover{\sigma_{2}}$. Then
+\begin{enumerate}\alphlabels\tightlist
+\item $\sigma_{2}$ is a PC congruence;
+\item $\mathbf A_{1}/\sigma_{1}\cong\mathbf A_{2}/\sigma_{2}$;
+\item $\{(a/\sigma_{1},b/\sigma_{2}):(a,b)\in\bcol{\delta}\}$ is bijective;
+\item $\delta(x_{1},x_{2},x_{3},x_{4})=
+      \bcol{\delta}(x_{1},x_{3})\wedge\bcol{\delta}(x_{2},x_{4})$ or
+      $\delta(x_{1},x_{2},x_{3},x_{4})=
+      \bcol{\delta}(x_{1},x_{4})\wedge\bcol{\delta}(x_{2},x_{3})$.
+\end{enumerate}
+\end{lemma}
+
+Two results connect the new vocabulary to the linear and PC subuniverses of the
+original proof.
+
+\begin{lemma}\label{lem:linear-on-top}
+If $\sigma$ is a linear congruence on $\mathbf A\in\Vn$ with
+$\cover{\sigma}=A^{2}$, then $\mathbf A/\sigma\cong\mathbf Z_{p}$ for a prime
+$p$.
+\end{lemma}
+
+\begin{lemma}\label{lem:pc-on-top}
+If $\sigma$ is a PC congruence on $\mathbf A$ with $\cover{\sigma}=A^{2}$, then
+$\mathbf A/\sigma$ is polynomially complete.
+\end{lemma}
+
+\begin{hazard}[Polynomial completeness]\label{haz:pc-algebra}
+An algebra is \emph{polynomially complete} if the clone generated by its basic
+operations together with all constants is the clone of \emph{all} operations on
+its universe. Lemma~\ref{lem:pc-on-top} is where the name ``PC'' comes from,
+and it is the only place in the development where polynomial completeness is
+used as more than a label. Formalizing it needs the Istinger--Kaiser
+characterization \cite{IstingerKaiser}; formalizing everything else needs only
+the \emph{name}. A staged development should therefore treat ``PC congruence''
+as ``irreducible and not linear'' throughout, and prove
+Lemma~\ref{lem:pc-on-top} last or not at all --- it is used only to connect
+with \cite{ZhukJACM}, not by any argument here.
+\end{hazard}
+
+\subsection{The types}
+
+\begin{definition}[The six types]\label{def:types}
+Let $\varnothing\neq C\lneq B\le A$. We write:
+\begin{itemize}\tightlist
+\item $C\subt[A]{\TBA}B$ if $C$ is a binary absorbing subuniverse of
+  $\mathbf B$;
+\item $C\subt[A]{\TC}B$ if $C$ is a central subuniverse of $\mathbf B$;
+\item $C\subt[A]{\TD}B$ if there is an irreducible congruence $\sigma$ on
+  $\mathbf A$ with
+  \begin{enumerate}\romanlabels\tightlist
+  \item $B^{2}\subseteq\cover{\sigma}$,
+  \item $C=B\cap E$ for some block $E$ of $\sigma$,
+  \item $\mathbf B/\sigma$ is BA and centre free;
+  \end{enumerate}
+\item $C\subt[A]{\TL}B$ if $C\subt[A]{\TD}B$ with the witnessing $\sigma$
+  linear;
+\item $C\subt[A]{\TPC}B$ if $C\subt[A]{\TD}B$ with the witnessing $\sigma$ a PC
+  congruence;
+\item $C\subt[A]{\TS}B$ as in Definition~\ref{def:ba-center-free}.
+\end{itemize}
+When the witnessing congruence matters we write $C\subt[A]{T(\sigma)}B$; for
+$T\in\{\TBA,\TC,\TS\}$, where no congruence is involved, $\sigma$ is taken to
+be $A^{2}$.
+\end{definition}
+
+\begin{hazard}[The superscript $A$ is not decoration]\label{haz:superscript}
+For $T\in\{\TD,\TL,\TPC\}$ the witnessing congruence lives on $\mathbf A$, not
+on $\mathbf B$, and condition (i) relates the two: $B^{2}\subseteq
+\cover{\sigma}$ says $B$ sits inside a single block of $\cover{\sigma}$. This
+is why the relation carries the ambient algebra as a superscript. For
+$T\in\{\TBA,\TC,\TS\}$ the superscript is genuinely irrelevant and Zhuk drops
+it. A formalization should not overload: define $\subt[A]{T}$ with $A$ always
+present, and prove the independence for the three absorption types as a lemma.
+
+Note also that $\mathbf B/\sigma$ in (iii) means $B/\sigma$ with the induced
+algebra structure, which requires $B$ to be a subuniverse and $\sigma$
+restricted to $B$; since $B^{2}\subseteq\cover{\sigma}$ and not necessarily
+$B^{2}\subseteq\sigma$, the quotient $B/\sigma$ is in general \emph{not} a
+single point, and its being BA and centre free is a real condition.
+\end{hazard}
+
+\begin{definition}[Multi-types]\label{def:multitypes}
+For $T\in\{\TL,\TPC,\TD\}$ write $C\subt[A]{\MT T}B$ if $C\neq\varnothing$ and
+$C=C_{1}\cap\dots\cap C_{t}$ with $C_{i}\subt[A]{T}B$ for every $i\in[t]$.
+\end{definition}
+
+\begin{definition}[The strong-reduction relation]\label{def:lll}
+Write $C\lll^{A}B$ if there are $B_{0},\dots,B_{m}\subseteq B$ and
+$T_{1},\dots,T_{m}\in\{\TBA,\TC,\TS,\TD\}$ with
+\[
+  C=B_{m}\subt[A]{T_{m}}B_{m-1}\subt[A]{T_{m-1}}\dots\subt[A]{T_{1}}B_{0}=B .
+\]
+Here $m=0$ is allowed, so $\lll^{A}$ is reflexive. A congruence \emph{comes
+from} $C\lll^{A}B$ if it is one of the witnessing congruences in such a chain.
+We write $B\lll A$ for $B\lll^{A}A$, and $C\subte[A]{T(\sigma)}B$ for
+``$C=B$ or $C\subt[A]{T(\sigma)}B$''.
+\end{definition}
+
+\begin{hazard}[$\lll$ is existential over chains]\label{haz:lll-chain}
+$C\lll^{A}B$ asserts the \emph{existence} of a chain; the intermediate types
+are forgotten. This is deliberate --- it is the paper's central simplification
+over \cite{ZhukJACM}, where the types in the middle had to be tracked --- and
+it is why $\lll$ is usable as a hypothesis. In Lean it is the reflexive
+transitive closure of $\bigcup_{T\in\{\TBA,\TC,\TS,\TD\}}\subt[A]{T}$, i.e.\
+\texttt{Relation.ReflTransGen}, and the induction principle that comes with
+that is exactly the one the proofs use. Note that $\TL$ and $\TPC$ are
+\emph{absent} from the list because $\TD$ subsumes them.
+\end{hazard}
+
+\begin{convention}[Dotted variants]\label{conv:dotted}
+$C\dsubt[A]{T}B$, $C\dsubte[A]{T}B$ and $C\dlll^{A}B$ mean that the undotted
+relation holds \emph{or} $C=\varnothing$. See Hazard~\ref{haz:dot}.
+\end{convention}

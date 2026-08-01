@@ -1,0 +1,341 @@
+%!TeX root=csp.tex
+\section{Vocabulary}\label{sec:vocabulary}
+
+This section fixes the universal-algebraic vocabulary. It is Zhuk's
+\S2.1, rewritten so that every definition is unambiguous when read by a
+machine. The substantive content begins in \S\ref{sec:types}; a reader who
+knows the subject should skim to
+Definition~\ref{def:irreducible} (irreducible congruences) and
+Definition~\ref{def:bridge} (bridges), which are the two places where the
+conventions genuinely matter.
+
+\subsection{Algebras, subuniverses, terms}
+
+\begin{definition}[Algebra]\label{def:algebra}
+An algebra is a pair $\mathbf A=(A;w^{\mathbf A})$ with $A$ a finite nonempty
+set and $w^{\mathbf A}\colon A^{n}\to A$, subject to
+Convention~\ref{conv:standing}. We write $A$ for the universe of $\mathbf A$
+and drop the superscript on $w$ when no confusion arises.
+\end{definition}
+
+\begin{definition}[The algebras $\mathbf Z_{p}$]\label{def:Zp}
+For a prime $p$ with $p\mid n-1$, $\mathbf Z_{p}$ is the algebra on
+$\{0,1,\dots,p-1\}$ with $w^{\mathbf Z_{p}}(x_{1},\dots,x_{n})
+=x_{1}+\dots+x_{n}\bmod p$.
+\end{definition}
+
+\begin{hazard}[$\mathbf Z_{p}$ is only sometimes in $\Vn$]\label{haz:Zp}
+Zhuk defines $\mathbf Z_{p}$ for every prime $p$ and then asserts that
+``every algebra $\mathbf Z_{p}$ belongs to $\Vn$''. That assertion carries a
+silent side condition. The operation $x_{1}+\dots+x_{n}\bmod p$ is idempotent
+exactly when $n\equiv 1\pmod p$: idempotence says $nx\equiv x$ for all $x$,
+i.e.\ $p\mid n-1$. Given that, it is also a WNU (all the identities read
+$(n-1)x+y=y$) and special (both sides reduce to $y$).
+
+So $\mathbf Z_{p}\in\Vn$ if and only if $p\mid n-1$, and every statement of the
+form ``$\mathbf A/\sigma\cong\mathbf Z_{p}$ for some prime $p$''
+(Lemma~\ref{lem:linear-on-top}, Definition~\ref{def:perfect-linear}) silently
+produces a $p$ dividing $n-1$. A formalization must decide whether
+$\mathbf Z_{p}$ is defined for all $p$ and merely fails to lie in $\Vn$ for bad
+$p$, or is defined only for $p\mid n-1$. The first is cleaner; the second makes
+the membership free. Either way the side condition must be visible, because
+``for some prime $p$'' otherwise reads as an unconstrained existential.
+\end{hazard}
+
+\begin{definition}[Subuniverse, subalgebra]\label{def:subuniverse}
+$B\subseteq A$ is a \emph{subuniverse} of $\mathbf A$ if
+$w(b_{1},\dots,b_{n})\in B$ for all $b_{1},\dots,b_{n}\in B$. If moreover
+$B\neq\varnothing$ then $\mathbf B=(B;w\!\restriction_{B^{n}})$ is a
+\emph{subalgebra}, written $\mathbf B\le\mathbf A$.
+\end{definition}
+
+\begin{definition}[Term operations]\label{def:clone}
+$\Clo(\mathbf A)$ is the least set of finitary operations on $A$ containing all
+projections and closed under composition with $w$. Its $m$-ary part is written
+$\Clo_{m}(\mathbf A)$. Elements of $\Clo(\mathbf A)$ are the \emph{term
+operations} of $\mathbf A$.
+\end{definition}
+
+\begin{hazard}[Terms versus term operations]\label{haz:term-vs-op}
+Zhuk writes $t\in\Clo(\mathbf A)$ and treats $t$ as both a syntactic term and
+the operation it induces. These must be distinguished in a formalization: a
+term is a finite tree, and distinct terms may induce the same operation. Every
+statement below that quantifies over $\Clo(\mathbf A)$ is a statement about
+\emph{operations}, so the syntactic layer may be quotiented away --- but it
+cannot be skipped, because $\Sg$ is characterised through terms
+(Lemma~\ref{lem:sg-terms}) and because the arity bookkeeping in the absorption
+arguments is syntactic.
+\end{hazard}
+
+\begin{definition}[Generation]\label{def:sg}
+For $X\subseteq A^{m}$, $\Sg_{\mathbf A}(X)$ is the least subuniverse of
+$\mathbf A^{m}$ containing $X$.
+\end{definition}
+
+\begin{lemma}[Generation by terms]\label{lem:sg-terms}
+Let $X=\{x_{1},\dots,x_{k}\}\subseteq A^{m}$ be nonempty. Then
+\[
+  \Sg_{\mathbf A}(X)=\bigl\{\,t^{\mathbf A^{m}}(x_{1},\dots,x_{k})
+      \;:\;t\in\Clo_{k}(\mathbf A)\,\bigr\}.
+\]
+The generator list is \emph{fixed}: the same list $x_{1},\dots,x_{k}$ in the
+same order serves every element of the closure, with $t$ varying.
+\end{lemma}
+
+\begin{hazard}\label{haz:sg-fixed-list}
+The ``fixed list'' phrasing is what makes Lemma~\ref{lem:sg-terms} usable. The
+weaker reading --- for each $y$ in the closure there are \emph{some}
+generators and \emph{some} term --- is also true but useless, because every
+later application applies one term simultaneously to several closure elements
+and needs their generator lists to coincide. This was a defect found in review
+of the predecessor blueprint and is called out here for the same reason.
+\end{hazard}
+
+\subsection{Relations}
+
+\begin{definition}[Relational vocabulary]\label{def:rel-vocab}
+Let $R\subseteq A_{1}\times\dots\times A_{m}$.
+\begin{enumerate}\alphlabels\tightlist
+\item $R$ is \emph{subdirect} if $\proj_{i}(R)=A_{i}$ for every $i$;
+  $\mathbf R\sdle\mathbf A_{1}\times\dots\times\mathbf A_{m}$ abbreviates
+  ``$R$ is a subdirect subuniverse''.
+\item For $R\subseteq A^{m}$: $R$ is \emph{reflexive} if
+  $(a,\dots,a)\in R$ for every $a\in A$.
+\item For binary $\delta_{1}\subseteq A_{1}\times A_{2}$,
+  $\delta_{2}\subseteq A_{2}\times A_{3}$:
+  $\delta_{1}\circ\delta_{2}=\{(a,c):\exists b\;(a,b)\in\delta_{1}\wedge
+  (b,c)\in\delta_{2}\}$, and $\delta^{-1}=\{(b,a):(a,b)\in\delta\}$.
+\item For $B\subseteq A_{1}$ and $\delta\subseteq A_{1}\times A_{2}$:
+  $B\circ\delta=\{c:\exists b\in B\;(b,c)\in\delta\}$.
+\item A subdirect $\delta\subseteq A\times B$ is \emph{linked} if the bipartite
+  graph on $A\sqcup B$ with edge set $\delta$ is connected. It is
+  \emph{bijective} if $|\delta|=|A|=|B|$.
+\item For binary $\sigma$ and $m\ge 2$,
+  $\sigma^{[m]}=\{(a_{1},\dots,a_{m}):(a_{i},a_{j})\in\sigma\ \forall i,j\}$.
+\end{enumerate}
+\end{definition}
+
+\begin{hazard}[Composition is diagrammatic]\label{haz:comp-order}
+$\delta_{1}\circ\delta_{2}$ applies $\delta_{1}$ \emph{first}. This is the
+order of \texttt{Rel.comp} and the opposite of \texttt{Function.comp}. Every
+composite of bridges and of congruences below is written left to right, and
+silently reversing it produces statements that are true-looking and wrong ---
+in Corollary~\ref{cor:stable-intersection}(l) the composite
+$\sigma_{k}\circ\proj_{k,\ell}(R)\circ\sigma_{\ell}$ is asymmetric in $k$ and
+$\ell$ and the order is the content.
+\end{hazard}
+
+\begin{hazard}[``Linked'' is used for two different things]\label{haz:linked}
+Zhuk uses \emph{linked} both for a binary relation (Definition~\ref{def:rel-vocab}(e))
+and for a CSP instance (Definition~\ref{def:instance-linked}). They are related
+but not the same predicate, and the coincidence of names causes real confusion
+in \S\ref{sec:main-statements}, where both occur in one proof. Use two names.
+\end{hazard}
+
+\begin{definition}[Quotients of relations]\label{def:quotient-rel}
+For an equivalence $\sigma$ on $A$ and $a\in A$, $a/\sigma$ is the class of
+$a$; for $B\subseteq A$, $B/\sigma=\{b/\sigma:b\in B\}$; for
+$R\subseteq A^{m}$, $R/\sigma=\{(b_{1}/\sigma,\dots,b_{m}/\sigma):\bar b\in R\}$.
+\end{definition}
+
+\begin{hazard}[Images do not commute with intersection]\label{haz:quotient-rel}
+$B/\sigma$ and $R/\sigma$ are \emph{images}. Three consequences that the source
+navigates silently:
+\begin{enumerate}\alphlabels\tightlist
+\item $B/\sigma$ is a subset of $A/\sigma$, not the quotient of $B$ by
+  $\sigma\cap B^{2}$. For $B$ a subuniverse and $\sigma$ a congruence the two
+  are canonically isomorphic as algebras, and the source moves between them
+  freely. Fix $B/\sigma$ to be the image and prove the isomorphism once.
+\item In general $(C_{1}\cap C_{2})/\sigma\subsetneq C_{1}/\sigma\cap
+  C_{2}/\sigma$. Lemma~\ref{lem:propagation}(fm) needs equality for a family
+  $C_{1},\dots,C_{t}$, and gets it from the extra hypothesis
+  $(C_{i}\circ\sigma)\cap B=C_{i}$, i.e.\ that each $C_{i}$ is
+  $\sigma$-saturated inside $B$. That is a content step, not notation.
+\item $R/\sigma$ need not be stable under anything, and need not be a
+  subuniverse of $(\mathbf A/\sigma)^{m}$ unless $\sigma$ is a congruence.
+\end{enumerate}
+\end{hazard}
+
+\subsection{Rectangularity}
+
+\begin{definition}[Parallelogram property, rectangularity]\label{def:parallelogram}
+Let $R\subseteq A_{1}\times\dots\times A_{m}$.
+\begin{enumerate}\alphlabels\tightlist
+\item The $i$-th variable of $R$ is \emph{rectangular} if for all
+  $\bar a,\bar b$,
+  \[
+    \bar a[i\mapsto b_{i}]\in R,\quad
+    \bar b[i\mapsto a_{i}]\in R,\quad
+    \bar b\in R
+    \;\Longrightarrow\;\bar a\in R,
+  \]
+  where $\bar a[i\mapsto c]$ is $\bar a$ with its $i$-th entry replaced by $c$.
+  $R$ is \emph{rectangular} if every variable is.
+\item $R$ \emph{has the parallelogram property} if for every permutation of the
+  coordinates giving $R'$ and every $\ell\in[m-1]$,
+  \[
+    (a_{1},\dots,a_{\ell},b_{\ell+1},\dots,b_{m})\in R',\quad
+    (b_{1},\dots,b_{\ell},a_{\ell+1},\dots,a_{m})\in R',\quad
+    \bar b\in R'
+    \;\Longrightarrow\;\bar a\in R'.
+  \]
+\item The \emph{rectangular closure} of $R$ is the least rectangular relation
+  containing $R$.
+\end{enumerate}
+\end{definition}
+
+\begin{lemma}[Two assertions the source makes in passing]\label{lem:rect-basics}
+\begin{enumerate}\alphlabels\tightlist
+\item A relation with the parallelogram property is rectangular.
+\item The rectangular closure exists.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) Apply the parallelogram property to the permutation carrying coordinate
+$i$ to position $1$, with $\ell=1$. (b) Rectangularity at coordinate $i$ is a
+Horn implication, so the rectangular relations containing $R$ are closed under
+arbitrary intersection and the family is nonempty (it contains
+$A_{1}\times\dots\times A_{m}$); the intersection of all of them is the least
+one.
+\end{proof}
+
+\begin{hazard}\label{haz:rect-closure}
+Both parts are asserted without proof in \cite{ZhukSimplified} --- (a) as ``as
+it follows from the definitions'', (b) by the definite article in ``\emph{the}
+minimal rectangular relation''. Both are easy and both must be present. Note
+that ``$R$ is rectangular'' unqualified --- the form used in ``rectangular
+closure'' --- is never defined in the source; it means every variable is
+rectangular.
+\end{hazard}
+
+\begin{hazard}[Quantifying over permutations]\label{haz:permutations}
+The parallelogram property is stated ``any permutation of its variables gives a
+relation $R'$ satisfying \dots''. Formally this is a quantification over
+$\mathfrak S_{m}$ combined with a quantification over the split point $\ell$;
+equivalently, and more usably, over all ways of splitting $[m]$ into two
+nonempty blocks. The second formulation is the one to formalize: it avoids
+transporting $R$ along a permutation, which in a dependently typed setting
+means an equivalence of index types and a coercion at every use.
+\end{hazard}
+
+\subsection{Congruences}
+
+\begin{definition}[Stability]\label{def:stable}
+Let $R\subseteq A_{1}\times\dots\times A_{m}$ and let $\sigma$ be a binary
+relation on $A_{i}$. The $i$-th variable of $R$ is \emph{stable under $\sigma$}
+if $\bar a\in R$ and $(a_{i},b)\in\sigma$ imply $\bar a[i\mapsto b]\in R$.
+$R$ is \emph{stable under $\sigma$} if every variable is (each with respect to
+$\sigma$ on the corresponding factor, when the factors agree).
+\end{definition}
+
+\begin{definition}[Congruence]\label{def:congruence}
+A \emph{congruence} on $\mathbf A$ is an equivalence relation on $A$ that is a
+subuniverse of $\mathbf A\times\mathbf A$. It is \emph{nontrivial} if it is
+neither the equality relation $0_{\mathbf A}$ nor $A^{2}$. The quotient
+$\mathbf A/\sigma$ is the algebra on $A/\sigma$ with
+$w(\bar a/\sigma)=w(\bar a)/\sigma$.
+\end{definition}
+
+\begin{definition}[Irreducible congruence and its cover]\label{def:irreducible}
+A congruence $\sigma$ on $\mathbf A$ is \emph{irreducible} if it cannot be
+written as an intersection of binary subuniverses of $\mathbf A\times\mathbf A$
+each stable under $\sigma$ and each properly containing $\sigma$. Equivalently:
+there are no $\mathbf S_{1},\dots,\mathbf S_{k}\le\mathbf A/\sigma\times
+\mathbf A/\sigma$ with $0_{\mathbf A/\sigma}=S_{1}\cap\dots\cap S_{k}$ and
+$S_{i}\neq 0_{\mathbf A/\sigma}$ for every $i$.
+
+For irreducible $\sigma$, $\cover{\sigma}$ denotes the least
+$\delta\le\mathbf A\times\mathbf A$ with $\delta\supsetneq\sigma$ and $\delta$
+stable under $\sigma$.
+\end{definition}
+
+\begin{hazard}[Three traps in Definition~\ref{def:irreducible}]\label{haz:irreducible}
+\begin{enumerate}\alphlabels\tightlist
+\item Irreducibility is \emph{not} meet-irreducibility in the congruence
+  lattice. The $\mathbf S_{i}$ range over binary \emph{subuniverses} stable
+  under $\sigma$, which need not be equivalence relations. The two notions
+  differ, and every use below is the stated one.
+\item $\cover{\sigma}$ need not be a congruence. It is a subuniverse of
+  $\mathbf A^{2}$ stable under $\sigma$, nothing more; that $\cover{\sigma}$
+  \emph{is} a congruence is an extra hypothesis in the definition of a linear
+  congruence (Definition~\ref{def:linear-congruence}), which would be
+  redundant otherwise.
+\item Existence of $\cover{\sigma}$ needs an argument: the family of
+  $\delta\supsetneq\sigma$ stable under $\sigma$ is nonempty (it contains
+  $A^{2}$) and, by irreducibility, closed under the intersections that matter,
+  so a least element exists. Uniqueness is exactly what irreducibility buys;
+  without it there is no ``the'' cover. A formalization must produce
+  $\cover{\sigma}$ as data attached to a proof of irreducibility, not as a
+  standalone function.
+\end{enumerate}
+\end{hazard}
+
+\subsection{Bridges}
+
+\begin{definition}[Bridge]\label{def:bridge}
+Let $\sigma_{1},\sigma_{2}$ be congruences on $\mathbf D_{1},\mathbf D_{2}$. A
+relation $\delta\le\mathbf D_{1}^{2}\times\mathbf D_{2}^{2}$ is a \emph{bridge
+from $\sigma_{1}$ to $\sigma_{2}$} if
+\begin{enumerate}\alphlabels\tightlist
+\item the first two variables of $\delta$ are stable under $\sigma_{1}$;
+\item the last two variables of $\delta$ are stable under $\sigma_{2}$;
+\item $\proj_{1,2}(\delta)\supsetneq\sigma_{1}$ and
+      $\proj_{3,4}(\delta)\supsetneq\sigma_{2}$;
+\item $(a_{1},a_{2},a_{3},a_{4})\in\delta$ implies
+      $\bigl((a_{1},a_{2})\in\sigma_{1}\iff(a_{3},a_{4})\in\sigma_{2}\bigr)$.
+\end{enumerate}
+For a bridge $\delta$ put $\bcol{\delta}=\{(x,y):(x,x,y,y)\in\delta\}$.
+A bridge $\delta\subseteq D^{4}$ is \emph{reflexive} if $(a,a,a,a)\in\delta$
+for all $a\in D$.
+\end{definition}
+
+\begin{remark}[The motivating example]\label{rem:bridge-example}
+On $\mathbb Z_{4}$, the relation
+$\delta=\{(a_{1},a_{2},a_{3},a_{4}):a_{1}-a_{2}=2a_{3}-2a_{4}\}$ is a bridge
+from $0_{\mathbb Z_{4}}$ to congruence mod~$2$. Condition (d) is the content:
+$a_{1}=a_{2}$ exactly when $a_{3}\equiv a_{4}\pmod 2$. Bridges are the
+formal shadow of a centralizer relation; see \cite{RossSlides}.
+\end{remark}
+
+\begin{definition}[Composition of bridges]\label{def:bridge-comp}
+For bridges $\delta_{1}$ from $\sigma_{0}$ to $\sigma_{1}$ and $\delta_{2}$
+from $\sigma_{1}$ to $\sigma_{2}$, set
+\[
+  (\delta_{1}\ast\delta_{2})(x_{1},x_{2},z_{1},z_{2})
+  =\exists y_{1}\exists y_{2}\;
+   \delta_{1}(x_{1},x_{2},y_{1},y_{2})\wedge\delta_{2}(y_{1},y_{2},z_{1},z_{2}).
+\]
+\end{definition}
+
+\begin{lemma}[Bridge composition; {\cite[Lem.~6.3]{ZhukJACM}}]\label{lem:bridge-comp}
+If $\sigma_{0},\sigma_{1},\sigma_{2}$ are irreducible then
+$\delta_{1}\ast\delta_{2}$ is a bridge from $\sigma_{0}$ to $\sigma_{2}$, and
+$\bcol{\delta_{1}\ast\delta_{2}}=\bcol{\delta_{1}}\circ\bcol{\delta_{2}}$.
+\end{lemma}
+
+\begin{hazard}\label{haz:bridge-comp}
+Lemma~\ref{lem:bridge-comp} is imported, not proved, in
+\cite{ZhukSimplified}; it is \cite[Lemma 6.3]{ZhukJACM}. Both conclusions are
+used: the first in every chain of bridges, the second --- the identity
+$\bcol{\cdot}$ commutes with composition --- in
+Lemma~\ref{lem:perfect-from-linked}, where a bridge with $\bcol{\delta}$ linked
+is powered up until $\bcol{\delta}=A^{2}$. The irreducibility hypothesis on
+\emph{all three} congruences is needed and is easy to drop by accident.
+\end{hazard}
+
+\begin{definition}[Perfect linear congruence]\label{def:perfect-linear}
+A congruence $\sigma$ on $\mathbf A$ is a \emph{perfect linear congruence} if
+it is irreducible and there are a prime $p$ and
+$\zeta\le\mathbf A\times\mathbf A\times\mathbf Z_{p}$ with
+$\proj_{1,2}(\zeta)=\cover{\sigma}$ and
+\[
+  (a_{1},a_{2},b)\in\zeta\;\Longrightarrow\;
+  \bigl((a_{1},a_{2})\in\sigma\iff b=0\bigr).
+\]
+\end{definition}
+
+Perfect linear congruences are the payoff of the whole bridge machinery: they
+let the passage from $\sigma$ to $\cover{\sigma}$ be tracked by a single
+element of $\mathbf Z_{p}$, which is what turns a CSP instance into a system of
+linear equations in \S\ref{sec:codim-one}.

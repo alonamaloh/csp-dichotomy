@@ -1,0 +1,161 @@
+%!TeX root=csp.tex
+\section{The complexity layer}\label{sec:complexity-layer}
+
+Targets \textup{(T2)} and \textup{(H1)} are stated here and not proved. The
+point of stating them is to be precise about what is \emph{not} being claimed.
+
+\begin{definition}[What a cost model would have to supply]\label{def:cost-model}
+To state \textup{(T2)} one needs: an encoding of instances of $\CSP(\Gamma)$ as
+strings; a machine model with a step count; a predicate ``$f$ is computed in
+time bounded by a polynomial in the input length''; and closure of that
+predicate under composition. To state \textup{(H1)} one needs, in addition, a
+polynomial-time many-one reduction relation $\le_{p}$ and the class
+\textup{NP}.
+\end{definition}
+
+Mathlib supplies the machine (\texttt{Turing.TM2}), an encoding
+(\texttt{Computability.Encoding}), and a time-bounded computation predicate
+(\texttt{Turing.TM2ComputableInPolyTime}). It does not supply a complexity
+\emph{class}, \textup{P}, \textup{NP}, \textup{NP}-completeness, $\le_{p}$, or
+\textsc{Sat}; and the composition lemma
+\texttt{TM2ComputableInPolyTime.comp} is an open \texttt{proof\_wanted} in
+Mathlib itself. Moreover \texttt{TM2ComputableInPolyTime} applies to total
+functions $\alpha\to\beta$, never to languages, so even the existing predicate
+would need reshaping.
+
+\begin{remark}\label{rem:complexity-scope}
+Building this layer is a substantial project --- comparable in size to the
+algebraic core, and with a large formal-verification literature of its own ---
+and it contributes none of the mathematics of the dichotomy. Attempting it as
+part of this project would be a scoping error. It is exactly the kind of
+component that should be built once, in Mathlib, by people interested in
+complexity theory, and then consumed.
+\end{remark}
+
+\section{Formalization}\label{sec:formalization}
+
+\subsection{What is reused}\label{sec:reuse}
+
+The predecessor development \texttt{ZhukLean} is a complete, \texttt{sorry}-free
+Lean~4 formalization of Zhuk's centre theorem, built on
+\texttt{Mathlib.ModelTheory}. It is consumed here as a \texttt{lake} dependency,
+not copied. It supplies:
+
+\begin{itemize}\tightlist
+\item products of structures (\texttt{piStructure}, \texttt{prodStructure},
+  coordinatewise realization, reindexing and evaluation homomorphisms) --- the
+  one part of the universal-algebra vocabulary Mathlib lacks;
+\item absorption in the tuple form (\texttt{Witnesses}, \texttt{Absorbs},
+  \texttt{BinAbsorbs}), Taylor terms (\texttt{IsTaylorOn}), and central
+  absorption (\texttt{CentrallyAbsorbs});
+\item the relational description of absorption by essential relations
+  (Barto--Kazda), which is what converts absorption at some arity into
+  absorption at arity~$3$;
+\item Zhuk's centre theorem itself (\texttt{zhuk\_center}) and the ternary
+  collapse (\texttt{exists\_ternary\_witnesses}) --- which is precisely
+  Lemma~\ref{lem:central-ternary}, cited without proof in
+  \cite{ZhukSimplified}.
+\end{itemize}
+
+Three of \cite{ZhukSimplified}'s sixteen black-box imports are therefore already
+discharged.
+
+\subsection{What is built here}\label{sec:built}
+
+\begin{center}
+\begin{tabular}{@{}llr@{}}
+\hline
+Module & Contents & Status \\
+\hline
+\texttt{CSP/Product} & products of structures & complete \\
+\texttt{CSP/Congruence} & \texttt{Congruence L M}, order, \texttt{sInf}, quotient & complete \\
+\texttt{CSP/Irreducible} & irreducibility, existence and uniqueness of $\cover\sigma$ & complete \\
+\texttt{CSP/Bridge} & bridges, collapse, composition, linear/PC & 2 imports open \\
+\texttt{CSP/Types} & the six types, multi-types, $\lll$ & complete \\
+\texttt{CSP/Instance} & instances, reductions, consistency, cruciality & complete \\
+\texttt{CSP/Main} & the main statements & targets \\
+\hline
+\end{tabular}
+\end{center}
+
+Everything below \texttt{CSP/Main} is \texttt{sorry}-free. The two open items in
+\texttt{CSP/Bridge} are Lemma~\ref{lem:bridge-comp} and its collapse identity,
+both imported from \cite{ZhukJACM}.
+
+\subsection{Design decisions}\label{sec:design}
+
+\begin{description}
+\item[Build on \texttt{Mathlib.ModelTheory}, keep the language generic.]
+  A bespoke ``finite algebra with one WNU operation'' type would bundle the
+  standing hypotheses as fields and avoid threading them, which is a real cost
+  in the predecessor development. But it would discard
+  \texttt{Substructures.lean} --- 985 lines of exactly the $\Sg$ API needed,
+  including \texttt{mem\_closure\_iff\_exists\_term} with the variable type
+  equal to the generating set, an interface no hand-rolled clone matches --- and
+  it would discard the predecessor's 1600 lines wholesale. Congruences and
+  quotients are also \emph{cheaper} in \texttt{ModelTheory}, not dearer.
+  Instantiating to $\Vn$ is a thin layer on top.
+
+\item[$\lll$ is \texttt{Relation.ReflTransGen}.]
+  Its induction principle is the one the proofs use.
+
+\item[Dotted relations are defined as disjunctions.]
+  \texttt{DotLll C B := C = }$\varnothing$\texttt{ }$\vee$\texttt{ Lll C B}, so the case split is forced at every
+  use site rather than resolved by the reader.
+
+\item[The bridge criterion is the definition of linearity.]
+  Zhuk defines a linear congruence by a per-block isomorphism to
+  $\mathbb Z_{p}^{m}$ and derives the bridge criterion. We reverse this: the
+  criterion is first-order over finite data and is what every consumer uses; the
+  block description becomes a structure theorem. See
+  Hazard~\ref{haz:linear-def}.
+
+\item[$\cover\sigma$ is data attached to irreducibility.]
+  \texttt{Irreducible.exists\_isCover} produces it; there is no standalone
+  function, because there is no cover without irreducibility. A pleasant
+  by-product: with the definition taken literally, irreducibility \emph{implies}
+  $\sigma\neq A^{2}$, since the empty family intersects to the universe. The
+  source never says this.
+
+\item[Instances are lists; scopes are tuples; the variable type is a parameter.]
+  See Hazards~\ref{haz:instance-list} and~\ref{haz:renaming}. The last of these
+  is the decision that has not yet been cashed out, and it should be made before
+  anything about coverings is written.
+
+\item[Nothing is stubbed with \texttt{sorry} at the level of a definition.]
+  \texttt{IsConnectedInstance} and \texttt{IsExpandedCovering} are
+  \emph{absent} rather than defined as \texttt{sorry}, because a
+  \texttt{def~:~Prop~:=~sorry} is a junk constant that downstream proofs can
+  silently lean on. Absence forces the design decision; a stub hides it.
+\end{description}
+
+\subsection{Order of attack}\label{sec:order}
+
+\begin{enumerate}\tightlist
+\item Lemma~\ref{lem:ba-center-implies}. Small, self-contained, used everywhere,
+  and adjacent to what is already formalized.
+\item The mixed-prime linear algebra of Hazard~\ref{haz:step2-linear-algebra}.
+  Independent of everything else; can be done in parallel.
+\item Lemma~\ref{lem:bridge-comp}. Twelve source lines of relational algebra;
+  closes the two open items in \texttt{CSP/Bridge}.
+\item The coproduct design for coverings, then
+  Proposition~\ref{prop:covering-basics}.
+\item Theorem~\ref{thm:stable-intersection}. The one hard statement in the
+  interface, and the sole source of bridges.
+\item Lemma~\ref{lem:bridge-from-instance}. Eight hypotheses, ten pages.
+\item Theorem~\ref{thm:main-inductive}. Last.
+\end{enumerate}
+
+\subsection{Scope}\label{sec:scope}
+
+The calibration point is that the predecessor formalized about $3.5$ printed
+pages in about $1670$ lines of Lean --- roughly $480$ lines per page. Excluding
+\S\ref{sec:complexity-layer} and \cite{ZhukSimplified}'s \S4, which is an
+independent second result and not needed for the dichotomy, the transitive
+closure of what must be proved is on the order of $100$--$130$ printed pages,
+so $35\,000$--$60\,000$ lines of Lean.
+
+That is a multi-person-year project, and it should be described as one. What is
+finished here is its design: the route, the statements, the vocabulary at
+formalization granularity, the hazard list, the missing-layer inventory, and a
+building development whose foundations are proved and whose summit is stated.

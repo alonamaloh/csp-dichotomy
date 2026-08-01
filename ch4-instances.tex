@@ -1,0 +1,284 @@
+%!TeX root=csp.tex
+\section{Instances}\label{sec:instances}
+
+This section is Zhuk's \S3.1. It is entirely combinatorial: no algebra is used
+beyond the fact that each domain carries a $w$ and each constraint relation is
+a subuniverse of a product of domains. It is also where a formalization must
+make the most decisions, because the paper's instances are informal syntactic
+objects manipulated by operations --- weakening, covering, renaming --- that are
+described in words.
+
+\subsection{Instances and solutions}
+
+\begin{definition}[Instance]\label{def:instance}
+Fix a finite set $V$ of variables and, for each $x\in V$, an algebra
+$\mathbf D_{x}\in\Vn$. A \emph{constraint} is a pair
+$C=(\bar x,R)$ where $\bar x=(x_{1},\dots,x_{m})$ is a tuple of variables and
+$R\le\mathbf D_{x_{1}}\times\dots\times\mathbf D_{x_{m}}$. An
+\emph{instance} $\mathcal I$ is a finite list of constraints; we write
+$C\in\mathcal I$, and $\Var(C)$, $\Var(\mathcal I)$ for the variables
+occurring. A \emph{subinstance} is a sublist.
+
+A \emph{solution} is a map $s$ with $s(x)\in D_{x}$ for all $x$ such that
+$(s(x_{1}),\dots,s(x_{m}))\in R$ for every constraint. The solution set of
+$\mathcal I$ is \emph{subdirect} if for every $x$ and every $a\in D_{x}$ there
+is a solution with $s(x)=a$.
+\end{definition}
+
+\begin{hazard}[Lists, not sets; tuples, not sets of variables]\label{haz:instance-list}
+Two representation choices are forced by the way the paper argues, and both
+differ from the naive one.
+
+\emph{Constraints form a list, not a set.} Proofs delete ``a constraint
+$C\in\mathcal I$'' and reason about $\mathcal I\setminus\{C\}$, and the same
+relation may occur twice on different variable tuples --- and, in the
+expanded coverings of \S\ref{sec:coverings}, the same relation on the
+\emph{same} tuple can legitimately occur twice. Multiset or list semantics is
+required; \texttt{List} with membership by index is the safe choice.
+
+\emph{A constraint's scope is a tuple, not a set.} Repeated variables in a
+scope are allowed and occur --- $\zeta(x,x',z)$ in
+\S\ref{sec:main-statements} arises by splitting one variable into two, and
+$R(x,x,\dots,x)$ appears explicitly in Definition~\ref{def:expanded}. So
+$\Var(C)$ is the image of the scope, and $|{\Var(C)}|$ may be smaller than the
+arity.
+\end{hazard}
+
+\begin{definition}[Relations defined by an instance]\label{def:instance-relation}
+For $x_{1},\dots,x_{m}\in\Var(\mathcal I)$, $\mathcal I(x_{1},\dots,x_{m})$ is
+the set of $(a_{1},\dots,a_{m})$ such that $\mathcal I$ has a solution with
+$s(x_{i})=a_{i}$ for all $i$. It is a subuniverse of
+$\mathbf D_{x_{1}}\times\dots\times\mathbf D_{x_{m}}$, being defined by a
+primitive positive formula over the constraint relations.
+\end{definition}
+
+\subsection{Reductions}
+
+\begin{definition}[Reduction]\label{def:reduction}
+A \emph{reduction} for $\mathcal I$ is a map $D^{(\top)}$ assigning to each
+$x\in\Var(\mathcal I)$ a subuniverse $D^{(\top)}_{x}\subseteq D_{x}$, possibly
+empty. It is \emph{nonempty} if every $D^{(\top)}_{x}\neq\varnothing$. The
+instance $\mathcal I^{(\top)}$ is $\mathcal I$ with each domain replaced by
+$D^{(\top)}_{x}$ and each constraint relation intersected with the
+corresponding box. For reductions we write $D^{(\bot)}\lll D^{(\top)}$ and
+$D^{(\bot)}\subte{T}D^{(\top)}$ when the corresponding relation holds at every
+variable.
+\end{definition}
+
+\begin{hazard}[Empty reductions]\label{haz:empty-reduction}
+Reductions are allowed to be empty at some or all variables --- the maximal
+$1$-consistent reduction below $D^{(B,\top)}$ in the proof of
+Theorem~\ref{thm:main-inductive} is constructed exactly so that it may come out
+empty, and the case split on whether it does is the branch point of the whole
+argument. But $D^{(\bot)}\lll D^{(\top)}$ requires nonemptiness at every
+variable (Convention~\ref{conv:empty}). Both notions are needed and they must
+be different objects.
+\end{hazard}
+
+\subsection{Consistency}
+
+\begin{definition}[Paths]\label{def:path}
+A \emph{path} in $\mathcal I$ is an alternating sequence
+$z_{1}-C_{1}-z_{2}-\dots-C_{l-1}-z_{l}$ with $z_{i},z_{i+1}\in\Var(C_{i})$.
+It \emph{connects $b$ and $c$} if there are $a_{i}\in D_{z_{i}}$ with
+$a_{1}=b$, $a_{l}=c$, and $(a_{i},a_{i+1})\in\proj_{z_{i},z_{i+1}}(C_{i})$ for
+every $i$.
+$\mathcal I$ is a \emph{tree-instance} if it has no path with $l\ge 3$,
+$z_{1}=z_{l}$ and $C_{1},\dots,C_{l-1}$ pairwise distinct.
+\end{definition}
+
+\begin{definition}[Consistency]\label{def:consistency}
+$\mathcal I$ is \emph{$1$-consistent} if $\proj_{z}(C)=D_{z}$ for every
+constraint $C$ and every $z\in\Var(C)$. A reduction $D^{(\top)}$ is
+$1$-consistent for $\mathcal I$ if $\mathcal I^{(\top)}$ is $1$-consistent.
+$\mathcal I$ is \emph{cycle-consistent} if it is $1$-consistent and every path
+from $z$ to $z$ connects $a$ to $a$, for every variable $z$ and every
+$a\in D_{z}$.
+\end{definition}
+
+\begin{definition}[Linked, fragmented, irreducible]\label{def:instance-linked}
+$\mathcal I$ is \emph{linked} if for every $z\in\Var(\mathcal I)$ and every
+$a,b\in D_{z}$ some path from $z$ to $z$ connects $a$ and $b$.
+$\mathcal I$ is \emph{fragmented} if $\Var(\mathcal I)$ splits into two disjoint
+nonempty sets $X_{1},X_{2}$ with $\Var(C)\subseteq X_{1}$ or
+$\Var(C)\subseteq X_{2}$ for every $C$.
+$\mathcal I$ is \emph{irreducible} if there is no instance $\mathcal I'$ with
+\begin{enumerate}\romanlabels\tightlist
+\item $\Var(\mathcal I')\subseteq\Var(\mathcal I)$;
+\item every constraint of $\mathcal I'$ is a projection of a constraint of
+  $\mathcal I$ onto some of its variables;
+\item $\mathcal I'$ is not fragmented;
+\item $\mathcal I'$ is not linked;
+\item the solution set of $\mathcal I'$ is not subdirect.
+\end{enumerate}
+\end{definition}
+
+\begin{hazard}[Irreducibility is a $\Pi_{1}$ condition over a large family]
+\label{haz:irreducible-instance}
+Conditions (i)--(v) quantify over \emph{all} instances built from projections
+of constraints of $\mathcal I$ --- a finite but exponentially large family
+(any multiset of projections of any constraints onto any subsets of their
+variables). It is finite, so the predicate is decidable, but it is not
+something to unfold. Every use in \S\ref{sec:main-statements} goes through
+Lemma~\ref{lem:crucial-irreducible} and \emph{never} through the definition.
+Formalize it once, prove the two consequences, and never unfold it again.
+
+The typo in the source at this point (``$\Var(C)\subseteq X_{1}$ or
+$\Var(C)\subseteq X_{1}$'') is corrected above to $X_{2}$.
+\end{hazard}
+
+\subsection{Weakening and cruciality}
+
+\begin{definition}[Weakening]\label{def:weakening}
+A constraint $R_{1}(y_{1},\dots,y_{t})$ is \emph{weaker or equivalent to}
+$R_{2}(z_{1},\dots,z_{s})$ if $\{y_{i}\}\subseteq\{z_{j}\}$ and
+$R_{2}(\bar z)$ implies $R_{1}(\bar y)$; it is \emph{weaker} if in addition
+$R_{1}(\bar y)$ does not imply $R_{2}(\bar z)$. \emph{Weakening} a constraint
+$C$ in $\mathcal I$ means replacing $C$ by all constraints weaker than it. An
+instance $\mathcal I'$ is a \emph{weakening} of $\mathcal I$ if
+$\Var(\mathcal I')\subseteq\Var(\mathcal I)$ and every constraint of
+$\mathcal I'$ is weaker or equivalent to a constraint of $\mathcal I$.
+\end{definition}
+
+\begin{hazard}[``Replace by all weaker constraints'']\label{haz:weakening}
+Read literally this is an infinite operation: there are $2^{|D|^{t}}$ relations
+weaker than a given one on a given scope, and one must also range over all
+sub-scopes. It is finite for a fixed instance, but the resulting instance is
+astronomically large, and no algorithm performs this operation --- it appears
+only inside proofs, as a device for reaching a crucial instance
+(Remark~\ref{rem:get-crucial}).
+
+Two consequences for a formalization. First, weakening must be defined as a
+\emph{relation between instances} (``$\mathcal I'$ is a weakening of
+$\mathcal I$''), not as a function producing one. Second, the descending chain
+argument in Remark~\ref{rem:get-crucial} needs a well-founded measure; the
+natural one is the total number of tuples in all constraint relations, which
+strictly decreases when a constraint is properly weakened, together with the
+fact that only finitely many scopes are available. State that measure
+explicitly --- ``we cannot weaken forever'' occurs three times in
+\S\ref{sec:main-statements} and is the kind of step that silently fails to be
+well-founded if the scope is allowed to grow.
+\end{hazard}
+
+\begin{definition}[Crucial]\label{def:crucial}
+Let $D^{(\top)}$ be a reduction for $\mathcal I$. A variable $y_{i}$ of a
+constraint $R(y_{1},\dots,y_{t})$ is \emph{dummy} if $R$ does not depend on its
+$i$-th coordinate. A constraint $C\in\mathcal I$ is \emph{crucial in
+$D^{(\top)}$} if it has no dummy variables, $\mathcal I^{(\top)}$ has no
+solution, and weakening $C$ in $\mathcal I$ yields an instance with a solution
+in $D^{(\top)}$. The instance $\mathcal I$ is \emph{crucial in $D^{(\top)}$} if
+it has at least one constraint and all of its constraints are crucial in
+$D^{(\top)}$.
+\end{definition}
+
+\begin{remark}[Reaching a crucial instance]\label{rem:get-crucial}
+If $\mathcal I^{(\top)}$ has no solution, then iteratively replacing each
+constraint by all weaker constraints without dummy variables terminates in an
+instance crucial in $D^{(\top)}$. Every relation so introduced is still a
+subuniverse of the corresponding product of domains.
+\end{remark}
+
+\subsection{Coverings}\label{sec:coverings}
+
+\begin{definition}[Expanded covering]\label{def:expanded}
+$\mathcal I'$ is an \emph{expanded covering} of $\mathcal I$, written
+$\mathcal I'\in\Expanded(\mathcal I)$, if there is
+$S\colon\Var(\mathcal I')\to\Var(\mathcal I)$ with
+\begin{enumerate}\romanlabels\tightlist
+\item $S(x)=x$ for $x\in\Var(\mathcal I)\cap\Var(\mathcal I')$;
+\item $D_{x}=D_{S(x)}$ for every $x\in\Var(\mathcal I')$;
+\item for every constraint $R(x_{1},\dots,x_{m})$ of $\mathcal I'$, either
+  $S(x_{1}),\dots,S(x_{m})$ are pairwise distinct and
+  $R(S(x_{1}),\dots,S(x_{m}))$ is weaker or equivalent to a constraint of
+  $\mathcal I$, or $S(x_{1})=\dots=S(x_{m})$ and
+  $\{(a,\dots,a):a\in D_{x_{1}}\}\subseteq R$.
+\end{enumerate}
+It is a \emph{covering} if moreover $R(S(x_{1}),\dots,S(x_{m}))\in\mathcal I$
+for every constraint; a \emph{tree-covering} if it is a covering and a
+tree-instance. $S(x)$ is the \emph{parent} of $x$, and $x$ a \emph{child}.
+\end{definition}
+
+\begin{proposition}[Basic properties]\label{prop:covering-basics}
+Let $\mathcal I'$ be an expanded covering of $\mathcal I$.
+\begin{enumerate}\alphlabels\tightlist
+\item Replacing every $x$ by $S(x)$ and deleting the constraints
+  $R(x,\dots,x)$ yields a weakening of $\mathcal I$.
+\item A weakening is an expanded covering with $S=\mathrm{id}$.
+\item Every solution of $\mathcal I$ lifts to a solution of $\mathcal I'$.
+\item If $\mathcal I$ is $1$-consistent and $\mathcal I'$ is a tree-covering,
+  the solution set of $\mathcal I'$ is subdirect.
+\item The union of two expanded coverings is an expanded covering.
+\item An expanded covering of an expanded covering is an expanded covering.
+\item An expanded covering of a cycle-consistent irreducible instance is
+  cycle-consistent and irreducible.
+\item Every reduction of $\mathcal I$ extends to $\mathcal I'$, and a
+  $1$-consistent one extends to a $1$-consistent one.
+\end{enumerate}
+\end{proposition}
+
+\begin{hazard}[Variable renaming is the hidden cost]\label{haz:renaming}
+Expanded coverings are where a formalization pays. The paper writes ``we
+rename the variables so that the only common variable of $\Upsilon_{x}$ and
+$\mathcal J$ is $x$'', and forms conjunctions
+$\bigwedge_{\mathcal J\in\Omega}\bot(\mathcal J)$ of instances whose variable
+sets must first be made disjoint. Doing this with a concrete variable type
+means a fresh-name supply and a renaming operation, with a lemma that renaming
+preserves each of $1$-consistency, cycle-consistency, cruciality, and being a
+covering --- eight lemmas that the paper does not state.
+
+The cheaper design is to make the variable type a parameter and build instances
+by \emph{disjoint union} of variable types: $\Upsilon_{x}$ and $\mathcal J$ are
+placed over $V_{1}\oplus V_{2}$ quotiented by identifying the single shared
+variable. Renaming then disappears into the coproduct, and the eight lemmas
+become transport along an equivalence. This is the single most important
+representation decision in \S\ref{sec:instances}, and it should be made before
+anything downstream is written.
+\end{hazard}
+
+\subsection{Induced congruences and connectedness}
+
+\begin{definition}[$\ConOne$]\label{def:conone}
+For $R$ of arity $m$ and $i\in[m]$, $\ConOne(R,i)$ is the binary relation
+\[
+  \{(y,y')\;:\;\exists\,\bar x\ \ R(\bar x[i\mapsto y])\wedge R(\bar x[i\mapsto y'])\}.
+\]
+For a constraint $C=R(x_{1},\dots,x_{m})$ we write $\ConOne(C,x_{i})$ for
+$\ConOne(R,i)$. For an instance, $\Con(\mathcal I,x)=\{\ConOne(C,x):C\in
+\mathcal I\}$ and $\Con(\mathcal I)=\bigcup_{x}\Con(\mathcal I,x)$.
+\end{definition}
+
+\begin{lemma}\label{lem:conone-basics}
+The $i$-th variable of $R$ is rectangular if and only if $R$ is stable under
+$\ConOne(R,i)$. If $R$ is subdirect and its $i$-th variable is rectangular,
+then $\ConOne(R,i)$ is a congruence.
+\end{lemma}
+
+\begin{hazard}\label{haz:conone-not-congruence}
+$\ConOne(R,i)$ is always reflexive and symmetric but is \emph{not} transitive
+in general, hence not always a congruence; Lemma~\ref{lem:conone-basics} is
+what makes it one, and its hypotheses (subdirect \emph{and} rectangular at $i$)
+are both needed. The notation $\ConOne$ invites the reader to assume
+congruence-hood; a formalization should give the raw relation a neutral name
+and reserve $\ConOne$ for the case where the lemma applies. Note also
+$\ConOne(C,x_{i})$ is ill-defined if $x$ occurs twice in the scope: it depends
+on the \emph{position} $i$, not the variable.
+\end{hazard}
+
+\begin{definition}[Types of relations and instances]\label{def:rel-type}
+$R$ is \emph{of PC type} (resp.\ \emph{linear type}) if $R$ is rectangular and
+every $\ConOne(R,i)$ is a PC (resp.\ linear) congruence. An instance is of PC
+or linear type if all its constraints are.
+\end{definition}
+
+\begin{definition}[Adjacency, connectedness]\label{def:connected}
+Two congruences $\sigma_{1},\sigma_{2}$ on $\mathbf D_{x}$ are \emph{adjacent}
+if there is a reflexive bridge from $\sigma_{1}$ to $\sigma_{2}$. Two
+rectangular constraints $C_{1},C_{2}$ are \emph{adjacent in a common variable
+$x$} if $\ConOne(C_{1},x)$ and $\ConOne(C_{2},x)$ are adjacent. An instance
+$\mathcal I$ is \emph{connected} if all its constraints are rectangular, all
+congruences in $\Con(\mathcal I)$ are irreducible, and the graph on the
+constraints with edges the adjacent pairs is connected.
+\end{definition}
+
+Note that every proper congruence is adjacent to itself, via
+$\delta(x_{1},x_{2},x_{3},x_{4})=\sigma(x_{1},x_{3})\wedge\sigma(x_{2},x_{4})$.

@@ -1,0 +1,99 @@
+% Shared preamble for the CSP dichotomy blueprint.
+% House style follows the earlier `zhuk_centers` blueprint: numbered theorem
+% environments shared across a single counter, a `longtheorem` upright variant
+% for statements with many numbered hypotheses, and explicit `convention`
+% environments for standing hypotheses.
+\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{longtable,array}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\newtheoremstyle{mainplain}{9pt}{9pt}{\itshape}{}{\bfseries}{.}{0.55em}{}
+\newtheoremstyle{mainroman}{9pt}{9pt}{\normalfont}{}{\bfseries}{.}{0.55em}{}
+\theoremstyle{mainplain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{mainroman}
+\newtheorem{longtheorem}[theorem]{Theorem}
+\newtheorem{longlemma}[theorem]{Lemma}
+\newtheorem{longproposition}[theorem]{Proposition}
+\newtheorem{longcorollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{convention}[theorem]{Convention}
+\newtheorem{hazard}[theorem]{Formalization note}
+
+\setlength{\parindent}{1.25em}\setlength{\parskip}{0pt}\setlength{\emergencystretch}{2em}
+\newcommand{\alphlabels}{\renewcommand{\labelenumi}{\textup{(\alph{enumi})}}%
+  \renewcommand{\theenumi}{\alph{enumi}}}
+\newcommand{\romanlabels}{\renewcommand{\labelenumi}{\textup{(\roman{enumi})}}%
+  \renewcommand{\theenumi}{\roman{enumi}}}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\numberwithin{equation}{section}
+\setcounter{tocdepth}{2}\setcounter{secnumdepth}{3}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small CSP dichotomy}\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0.3pt}
+
+% ---------------------------------------------------------------- operators
+\DeclareMathOperator{\Sg}{Sg}
+\DeclareMathOperator{\Clo}{Clo}
+\DeclareMathOperator{\Pol}{Pol}
+\DeclareMathOperator{\Inv}{Inv}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Con}{Con}
+\DeclareMathOperator{\Sol}{Sol}
+\DeclareMathOperator{\Expanded}{Exp}
+\DeclareMathOperator{\CSP}{CSP}
+\DeclareMathOperator{\GenSAT}{SAT}
+\DeclareMathOperator*{\proj}{pr}
+\newcommand{\ConOne}{\operatorname{Con}_1}
+
+% ---------------------------------------------------------------- algebras
+\newcommand{\bA}{\mathbf A}
+\newcommand{\bB}{\mathbf B}
+\newcommand{\bC}{\mathbf C}
+\newcommand{\bD}{\mathbf D}
+\newcommand{\bE}{\mathbf E}
+\newcommand{\bR}{\mathbf R}
+\newcommand{\bS}{\mathbf S}
+\newcommand{\bZ}{\mathbf Z}
+\newcommand{\Vn}{\mathcal V_{n}}
+
+% ---------------------------------------------------------- subuniverse types
+% The six types of Zhuk's theory.  Typed as upright small capitals so that a
+% type never reads as a product of variables.
+\newcommand{\TBA}{\textup{\textsc{ba}}}
+\newcommand{\TC}{\textup{\textsc{c}}}
+\newcommand{\TS}{\textup{\textsc{s}}}
+\newcommand{\TD}{\textup{\textsc{d}}}
+\newcommand{\TL}{\textup{\textsc{l}}}
+\newcommand{\TPC}{\textup{\textsc{pc}}}
+\newcommand{\MT}[1]{\mathcal M#1}
+\newcommand{\TML}{\MT\TL}
+\newcommand{\TMPC}{\MT\TPC}
+\newcommand{\TMD}{\MT\TD}
+
+% `C <_{T}^{A} B' and its relatives.
+\newcommand{\subt}[2][]{<_{#2}^{#1}}
+\newcommand{\subte}[2][]{\le_{#2}^{#1}}
+\newcommand{\dsubt}[2][]{\dot<_{#2}^{#1}}
+\newcommand{\dsubte}[2][]{\dot\le_{#2}^{#1}}
+\renewcommand{\lll}{\mathrel{\lhd\!\lhd\!\lhd}}
+\newcommand{\dlll}{\mathrel{\dot{\lhd}\!\dot{\lhd}\!\dot{\lhd}}}
+\newcommand{\sdle}{\le_{\mathrm{sd}}}
+
+% congruence cover  sigma^*
+\newcommand{\cover}[1]{#1^{*}}
+% bridge collapse
+\newcommand{\bcol}[1]{\widetilde{#1}}
+% absorption
+\newcommand{\ab}{\lhd}
+\newcommand{\abin}{\lhd_{\mathrm{bin}}}
+\newcommand{\abc}{\lhd_{\mathrm{c}}}

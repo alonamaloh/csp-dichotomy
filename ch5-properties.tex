@@ -1,0 +1,299 @@
+%!TeX root=csp.tex
+\section{Properties of strong subuniverses}\label{sec:properties}
+
+This section is Zhuk's \S2.3. It is the \emph{interface} between the algebraic
+theory and the CSP argument: \S\ref{sec:main-statements} uses the results
+below and nothing else from \S\S\ref{sec:types}. Proofs are deferred to \S5 of \cite{ZhukSimplified}, which is not
+reproduced here; \S\ref{sec:formalization} budgets it.
+
+Its shape is worth naming. Four of the five groups say that the relation
+$\lll$ and the types $T$ \emph{propagate}: forward and backward along
+surjective homomorphisms, down to quotients, across products of a congruence,
+and through subdirect relations. The fifth --- Theorem~\ref{thm:stable-intersection}
+--- is the one genuinely hard statement, and it is what converts a failure of
+consistency into a bridge. Everything the CSP proof does with bridges traces
+back to it.
+
+\begin{convention}\label{conv:type-quantifier}
+Where a type is not specified, $T$ ranges over
+$\{\TBA,\TC,\TS,\TPC,\TL,\TD\}$. Where a multi-type $\MT T$ appears,
+$T$ ranges over $\{\TPC,\TL,\TD\}$.
+\end{convention}
+
+\subsection{Ubiquity}
+
+\begin{lemma}[Ubiquity]\label{lem:ubiquity}
+If $B\lll A$ and $|B|>1$, then $C\subt[A]{T}B$ for some $C$ and some
+$T\in\{\TBA,\TC,\TL,\TPC\}$.
+\end{lemma}
+
+Lemma~\ref{lem:ubiquity} is the formal content of Informal
+Claim~\ref{ic:existence}: every domain of size at least $2$ that has been
+reached by a chain of strong reductions admits another strong reduction. It
+is what guarantees the outer loop of the algorithm makes progress, and it is
+the reason the algorithm terminates with singleton domains or a linear
+instance.
+
+\begin{hazard}\label{haz:ubiquity-hyp}
+The hypothesis is $B\lll A$, not $B\le A$. A subalgebra reached by no chain
+of strong reductions need admit nothing. In the algorithm this hypothesis is
+maintained as an invariant of the reduction loop; in a formalization it should
+be carried in the state, not re-derived.
+\end{hazard}
+
+\subsection{Propagation}
+
+\begin{longlemma}[Propagation along a homomorphism]\label{lem:propagation}
+Let $f\colon\mathbf A\to\mathbf A'$ be a surjective homomorphism. Then
+\begin{enumerate}\tightlist
+\item[\textup{(f)}] $C\lll^{A}B\Rightarrow f(C)\lll f(B)$;
+\item[\textup{(b)}] $C'\lll^{A'}B'\Rightarrow f^{-1}(C')\lll f^{-1}(B')$;
+\item[\textup{(ft)}] $C\subt[A]{T(\sigma)}B\lll A\Rightarrow
+  \bigl(f(C)=f(B)$ or $f(C)\subt{\TS}f(B)$ or
+  $f(C)\subt[A']{T}f(B)\bigr)$;
+\item[\textup{(bt)}] $C'\subt[A']{T(\sigma)}B'\Rightarrow
+  f^{-1}(C')\subt[A]{T(f^{-1}(\sigma))}f^{-1}(B')$;
+\item[\textup{(fs)}] $T\in\{\TBA,\TC,\TS\}$ and $C\subt{T}B$
+  $\Rightarrow f(C)\subte{T}f(B)$;
+\item[\textup{(fm)}] $C\subte[A]{\MT T}B\lll A$ and $f(B)$ $\TS$-free
+  $\Rightarrow f(C)\subte[A']{\MT T}f(B)$;
+\item[\textup{(bm)}] $C'\subte[A']{\MT T}B'\lll A'\Rightarrow
+  f^{-1}(C')\subte[A]{\MT T}f^{-1}(B')$.
+\end{enumerate}
+\end{longlemma}
+
+\begin{hazard}[The three-way disjunction in (ft)]\label{haz:ft}
+Clause (ft) is the characteristic shape of this theory and the reason it is
+usable. Pushing a strong subset forward along a homomorphism can
+\begin{itemize}\tightlist
+\item collapse it ($f(C)=f(B)$: the reduction becomes vacuous),
+\item degrade it ($f(C)\subt{\TS}f(B)$: still strong, but the type is lost),
+\item or preserve it ($f(C)\subt[A']{T}f(B)$: same type).
+\end{itemize}
+The type $\TS$ exists to be the value of the middle case. Every downstream
+proof that pushes a reduction through a quotient does a three-way case split
+here, and the middle case is the one that is easy to forget; in \cite{ZhukJACM}
+it is the source of the ``go forward and backward from global to local''
+induction that this paper eliminates.
+
+Note the asymmetry: the backward clauses (b), (bt), (bm) are clean
+implications with no disjunction. Preimages behave; images do not.
+\end{hazard}
+
+\begin{corollary}[Propagation to a quotient]\label{cor:prop-quotient}
+Let $\delta$ be a congruence on $\mathbf A$. Then
+\textup{(f)} $C\lll^{A}B\Rightarrow C/\delta\lll^{A/\delta}B/\delta$;
+\textup{(t)} $C\subt[A]{T(\sigma)}B\lll A\Rightarrow
+ \bigl(C/\delta=B/\delta$ or $C/\delta\subt{\TS}B/\delta$ or
+ $C/\delta\subt[A/\delta]{T}B/\delta\bigr)$;
+\textup{(s)} for $T\in\{\TBA,\TC,\TS\}$, $C\subt{T}B\Rightarrow
+ C/\delta\subte{T}B/\delta$;
+\textup{(m)} $C\subte[A]{\MT T}B\lll A$ and $B/\delta$ $\TS$-free
+ $\Rightarrow C/\delta\subte[A/\delta]{\MT T}B/\delta$.
+\end{corollary}
+
+\begin{corollary}[Reflection from a quotient]\label{cor:prop-from-factor}
+Let $\delta$ be a congruence on $\mathbf A$ and $B,C\le\mathbf A$. Then
+$C/\delta\lll^{A/\delta}B/\delta\iff C\circ\delta\lll^{A}B\circ\delta$, and
+$C/\delta\subt[A/\delta]{T}B/\delta\iff C\circ\delta\subt[A]{T}B\circ\delta$.
+\end{corollary}
+
+\begin{corollary}[Multiplying by a congruence]\label{cor:prop-times-cong}
+Let $\delta$ be a congruence on $\mathbf A$. Then
+\textup{(f)} $C\lll^{A}B\Rightarrow C\circ\delta\lll^{A}B\circ\delta$;
+\textup{(t)} $C\subt[A]{T(\sigma)}B\lll^{A}A\Rightarrow
+ \bigl(C\circ\delta=B\circ\delta$ or $C\circ\delta\subt[A]{\TS}B\circ\delta$
+ or $C\circ\delta\subt[A]{T}B\circ\delta\bigr)$;
+\textup{(e)} if $\delta\subseteq\sigma$ and $C\subt[A]{T(\sigma)}B\lll^{A}A$
+ then $C\circ\delta\subt[A]{T}B\circ\delta$.
+\end{corollary}
+
+\begin{longcorollary}[Propagation to relations]\label{cor:prop-relations}
+Let $R\sdle\mathbf A_{1}\times\dots\times\mathbf A_{m}$ and $B_{i}\lll A_{i}$.
+Then
+\begin{enumerate}\tightlist
+\item[\textup{(r)}] $R\cap(B_{1}\times\dots\times B_{m})\dlll R$;
+\item[\textup{(r1)}] $\proj_{1}\bigl(R\cap(B_{1}\times\dots\times B_{m})\bigr)
+  \dlll A_{1}$;
+\item[\textup{(b)}] if $C_{i}\lll^{A_{i}}B_{i}$ for all $i$ then
+  $R\cap(C_{1}\times\dots\times C_{m})\dlll^{R}R\cap(B_{1}\times\dots\times B_{m})$;
+\item[\textup{(b1)}] under the same hypothesis,
+  $\proj_{1}\bigl(R\cap\prod C_{i}\bigr)\dlll^{A_{1}}
+   \proj_{1}\bigl(R\cap\prod B_{i}\bigr)$;
+\item[\textup{(m)}] if $C_{i}\subte[A_{i}]{\MT T}B_{i}$ for all $i$ then
+  $R\cap\prod C_{i}\dsubte[R]{\MT T}R\cap\prod B_{i}$;
+\item[\textup{(m1)}] if in addition $\proj_{1}(R\cap\prod B_{i})$ is
+  $\TS$-free, then $\proj_{1}(R\cap\prod C_{i})
+   \dsubte[A_{1}]{\MT T}\proj_{1}(R\cap\prod B_{i})$.
+\end{enumerate}
+\end{longcorollary}
+
+For the two absorption types the conclusion is stronger --- no chain, no dot on
+the type, and no subdirectness hypothesis:
+
+\begin{lemma}[{\cite[Cor.~6.1.2, 6.9.2]{ZhukStrong}}]\label{lem:ba-center-implies}
+Let $R\le\mathbf A_{1}\times\dots\times\mathbf A_{m}$ and
+$C_{i}\subte{T}A_{i}$ for every $i$, where $T\in\{\TBA,\TC\}$. Then
+$\proj_{1}\bigl(R\cap(C_{1}\times\dots\times C_{m})\bigr)\dsubte{T}A_{1}$.
+\end{lemma}
+
+\begin{hazard}\label{haz:ba-center-implies}
+Lemma~\ref{lem:ba-center-implies} is the workhorse of case (2) of
+Theorem~\ref{thm:main-inductive} and is imported from \cite{ZhukStrong}. It is
+in the same family as the results already formalized in the predecessor project
+(\S\ref{sec:reuse}) --- both concern the behaviour of binary absorption and
+centrality under intersection with a box and projection --- but it is
+\emph{not} the same statement and is not currently available. It is the single
+highest-value import to formalize first, because it is small, self-contained,
+and used everywhere.
+\end{hazard}
+
+\subsection{Intersections}
+
+\begin{lemma}[Intersecting with a strong subset]\label{lem:intersect-all}
+If $B\lll A$ and $D\lll A$ then \textup{(i)} $B\cap D\dlll A$, and
+\textup{(t)} $C\subt[A]{T(\sigma)}B\Rightarrow C\cap D\dsubte[A]{T(\sigma)}B\cap D$.
+\end{lemma}
+
+The next theorem is the heart of \S\ref{sec:properties}. Read it as follows:
+if a family of strong reductions is \emph{jointly} inconsistent but
+\emph{minimally} so --- dropping any one of them restores consistency --- then
+the types must agree, and in the linear case one gets bridges between the
+witnessing congruences. Bridges are produced nowhere else.
+
+\begin{longtheorem}[Stable intersection]\label{thm:stable-intersection}
+Suppose
+\begin{enumerate}\romanlabels\tightlist
+\item $C_{i}\subt[A]{T_{i}(\sigma_{i})}B_{i}\lll A$ with
+  $T_{i}\in\{\TBA,\TC,\TS,\TL,\TPC\}$, for $i\in[m]$, $m\ge 2$;
+\item $\bigcap_{i\in[m]}C_{i}=\varnothing$;
+\item $B_{j}\cap\bigcap_{i\neq j}C_{i}\neq\varnothing$ for every $j\in[m]$.
+\end{enumerate}
+Then one of:
+\begin{enumerate}\tightlist
+\item[\textup{(ba)}] $T_{1}=\dots=T_{m}=\TBA$;
+\item[\textup{(l)}] $T_{1}=\dots=T_{m}=\TL$, and for all $k,\ell\in[m]$ there
+  is a bridge $\delta$ from $\sigma_{k}$ to $\sigma_{\ell}$ with
+  $\bcol{\delta}=\sigma_{k}\circ\sigma_{\ell}$;
+\item[\textup{(c)}] $m=2$ and $T_{1}=T_{2}=\TC$;
+\item[\textup{(pc)}] $m=2$, $T_{1}=T_{2}=\TPC$ and $\sigma_{1}=\sigma_{2}$.
+\end{enumerate}
+\end{longtheorem}
+
+\begin{longcorollary}[Stable intersection, relational form]\label{cor:stable-intersection}
+Suppose $R\sdle\mathbf A_{1}\times\dots\times\mathbf A_{m}$,
+$C_{i}\subt[A_{i}]{T_{i}(\sigma_{i})}B_{i}\lll A_{i}$ with
+$T_{i}\in\{\TBA,\TC,\TS,\TL,\TPC\}$ and $m\ge 2$,
+$R\cap(C_{1}\times\dots\times C_{m})=\varnothing$, and
+$R\cap(C_{1}\times\dots\times B_{j}\times\dots\times C_{m})\neq\varnothing$ for
+every $j$. Then one of:
+\textup{(ba)} all $T_{i}=\TBA$;
+\textup{(l)} all $T_{i}=\TL$ and for all $k,\ell$ a bridge $\delta$ from
+$\sigma_{k}$ to $\sigma_{\ell}$ with
+$\bcol{\delta}=\sigma_{k}\circ\proj_{k,\ell}(R)\circ\sigma_{\ell}$;
+\textup{(c)} $m=2$ and $T_{1}=T_{2}=\TC$;
+\textup{(pc)} $m=2$, $T_{1}=T_{2}=\TPC$,
+$\mathbf A_{1}/\sigma_{1}\cong\mathbf A_{2}/\sigma_{2}$, and
+$\{(a/\sigma_{1},b/\sigma_{2}):(a,b)\in R\}$ is bijective.
+\end{longcorollary}
+
+\begin{remark}\label{rem:duplicate-coordinate}
+Several applications need more than one restriction on a single coordinate of
+$R$. The statement is kept simple; to apply it, duplicate the coordinate (form
+$R'=\{(\bar a,a_{k}):\bar a\in R\}$) and restrict the copies separately.
+\end{remark}
+
+\begin{hazard}[Minimality is a hypothesis, not a construction]\label{haz:minimality}
+Hypotheses (ii)--(iii) of Theorem~\ref{thm:stable-intersection} say the family
+is \emph{critically} inconsistent. In applications one starts with an
+inconsistent family and shrinks it to a critical subfamily. That shrinking step
+is left implicit in the paper (``let $\mathcal M$ be a minimal set of children
+of $z$ we need to restrict''). It is easy --- a minimal subset of a finite set
+with a monotone property --- but it must be stated as a lemma, because it is
+performed at least four times and each time the property being minimised is
+slightly different. State once: \emph{if $P$ is a monotone predicate on subsets
+of a finite set $X$ and $P(X)$ holds, there is $M\subseteq X$ minimal with
+$P(M)$}, and instantiate.
+\end{hazard}
+
+\subsection{Multi-types}
+
+\begin{lemma}\label{lem:multitype-chain}
+If $C\subte[A]{\MT T}B$ then $C\subt[A]{T}\dots\subt[A]{T}B$ and
+$C\lll^{A}B$.
+\end{lemma}
+
+That is: an intersection of type-$T$ subsets, though not itself obtained by a
+single reduction of type $T$, is reachable by a \emph{chain} of type-$T$
+reductions. This is what makes $\MT T$ compatible with $\lll$, and it is used
+whenever the algorithm reduces several variables at once.
+
+\begin{lemma}[Preserving linkedness]\label{lem:preserve-linked}
+Let $R\sdle\mathbf A_{1}\times\mathbf A_{2}$,
+$C_{i}\subte[A_{i}]{\TMD}B_{i}\lll A_{i}$ for $i=1,2$, let $S$ be the
+rectangular closure of $R$, and suppose $R\cap(B_{1}\times B_{2})\neq
+\varnothing$ and $S\cap(C_{1}\times C_{2})\neq\varnothing$. Then
+$R\cap(C_{1}\times C_{2})\neq\varnothing$.
+\end{lemma}
+
+\begin{lemma}[Maximal multi-type extension]\label{lem:maximal-mult}
+Let $C_{1}\subt[A]{\MT T}B_{1}\lll A$, $B_{2}\lll A$,
+$C_{1}\cap B_{2}=\varnothing$, $B_{1}\cap B_{2}\neq\varnothing$, and let
+$\sigma$ be a maximal congruence on $\mathbf A$ with
+$(C_{1}\circ\sigma)\cap B_{2}=\varnothing$. Then
+$\sigma=\omega_{1}\cap\dots\cap\omega_{s}$ where each $\omega_{i}$ is a
+congruence of type $T$ on $\mathbf A$ with $\cover{\omega_{i}}\supseteq
+B_{1}^{2}$.
+\end{lemma}
+
+\subsection{Auxiliary imports}
+
+The following are used but not proved in \cite{ZhukSimplified}.
+
+\begin{lemma}[{\cite[Lem.~4.7]{MarotiMcKenzie}}]\label{lem:special-wnu}
+If $w$ is an idempotent WNU operation of arity $n$ on a finite set $A$, then
+$\Clo(w)$ contains a special idempotent WNU operation of arity $n^{n!}$.
+\end{lemma}
+
+\begin{lemma}[{\cite[Cor.~8.17.1]{ZhukJACM}}]\label{lem:building-perfect}
+If $\sigma$ is an irreducible congruence on $\mathbf A\in\Vn$ and $\delta$ is a
+bridge from $\sigma$ to $\sigma$ with $\bcol{\delta}=A^{2}$, then $\sigma$ is a
+perfect linear congruence.
+\end{lemma}
+
+\begin{lemma}\label{lem:perfect-from-linked}
+If $\sigma$ is an irreducible congruence on $\mathbf A\in\Vn$ and $\delta$ is a
+bridge from $\sigma$ to $\sigma$ with $\bcol{\delta}$ linked, then $\sigma$ is
+a perfect linear congruence.
+\end{lemma}
+
+\begin{proof}
+Let $\delta^{-1}(y_{1},y_{2},x_{1},x_{2})=\delta(x_{1},x_{2},y_{1},y_{2})$,
+which is again a bridge from $\sigma$ to $\sigma$. Since $\bcol{\delta}$ is
+linked, $(\bcol{\delta}\circ\bcol{\delta^{-1}})^{N}=A^{2}$ for $N$ large.
+Composing $2N$ bridges $\delta,\delta^{-1},\dots$ by
+Lemma~\ref{lem:bridge-comp} gives a bridge $\delta'$ from $\sigma$ to $\sigma$
+with $\bcol{\delta'}=A^{2}$; apply Lemma~\ref{lem:building-perfect}.
+\end{proof}
+
+\begin{hazard}[``for sufficiently large $N$'']\label{haz:linked-power}
+The step $(\bcol{\delta}\circ\bcol{\delta^{-1}})^{N}=A^{2}$ deserves a lemma of
+its own: if a reflexive symmetric relation $\rho$ on a finite set $A$ has
+connected graph, then $\rho^{N}=A^{2}$ for $N\ge|A|$. Reflexivity is what makes
+the powers increase monotonically; $\bcol{\delta}$ is reflexive because
+$(a,a,a,a)\in\delta$ is not assumed --- so the reflexivity must come from
+$\delta$ being a bridge from $\sigma$ to $\sigma$ with $\sigma$ reflexive, via
+$\proj_{1,2}(\delta)\supsetneq\sigma$. Check this: it is the sort of step where
+the informal proof is right for a reason it does not give.
+\end{hazard}
+
+\begin{lemma}\label{lem:no-abs-in-linear}
+If $B\le\mathbf Z_{p}\times\dots\times\mathbf Z_{p}$ then there is no
+$C\subt{T}B$ with $T\in\{\TBA,\TC\}$.
+\end{lemma}
+
+\begin{proof}
+It suffices to check that for every term $\tau$, if the last variable of
+$\tau^{\mathbf Z_{p}}(a,\dots,a,x)$ is not dummy then it takes all values;
+hence no absorbing subuniverse exists.
+\end{proof}

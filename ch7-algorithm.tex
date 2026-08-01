@@ -1,0 +1,121 @@
+%!TeX root=csp.tex
+\section{The algorithm}\label{sec:algorithm}
+
+\cite{ZhukSimplified} proves the correctness statements but does not contain the
+algorithm; that is in \cite{ZhukJACM}. This section states it, because target
+\textup{(T1)} of \S\ref{sec:target} is a proposition \emph{about} it and cannot
+be written down otherwise.
+
+\subsection{\textsc{Solve}}
+
+\begin{verbatim}
+function Solve(I):
+    repeat
+        I := ForceConsistency(I)
+        if I = false: return "No"
+        if some D_x has a strong subset B:
+            I := ReduceDomain(I, x, B)
+    until nothing changed
+    return SolveLinear(I)
+\end{verbatim}
+
+\textsc{ForceConsistency} enforces cycle-consistency and irreducibility,
+returning \texttt{false} if some domain empties. The reduction step is licensed
+by Theorem~\ref{thm:reductions-safe}: restricting to a strong subset cannot
+destroy solvability. When no strong subset remains, Lemma~\ref{lem:ubiquity}
+together with Lemma~\ref{lem:linear-on-top} gives, for each domain of size at
+least $2$, a congruence $\sigma_{x}$ with $D_{x}/\sigma_{x}\cong\mathbb Z_{q_{1}}
+\times\dots\times\mathbb Z_{q_{n_{x}}}$; choose $\sigma_{x}$ minimal. That case
+is \textsc{SolveLinear}.
+
+\subsection{\textsc{SolveLinear}}
+
+Write $\phi\colon\mathbb Z_{p_{1}}\times\dots\times\mathbb Z_{p_{k}}\to
+D_{x_{1}}/\sigma_{x_{1}}\times\dots\times D_{x_{m}}/\sigma_{x_{m}}$ for a linear
+map and
+\[
+  \phi^{-1}(\mathcal I)=\{\bar a:\mathcal I\text{ has a solution in }\phi(\bar a)\}.
+\]
+Computing $\phi^{-1}(\mathcal I)$ would solve $\mathcal I$; the algorithm cannot
+do that, but it can do four things:
+
+\begin{description}\tightlist
+\item[\textup{(p0)}] decide $\bar a\in\phi^{-1}(\mathcal I)$, by reducing each
+  domain to the corresponding block and recursing on a smaller domain;
+\item[\textup{(p1)}] decide $\phi^{-1}(\mathcal I)=\mathbb Z_{p_{1}}\times\dots
+  \times\mathbb Z_{p_{k}}$, by testing $\bar 0$ and the $k$ unit vectors with
+  \textup{(p0)} --- correct because $\phi^{-1}(\mathcal I)$ is a subgroup;
+\item[\textup{(p2)}] compute $\phi^{-1}(\mathcal I)$ when $\mathcal I$ is not
+  linked, by splitting into linked pieces, recursing, and taking the union;
+\item[\textup{(p3)}] compute $\phi^{-1}(\mathcal I)$ when it is empty or of
+  codimension one, by finding $\bar a\notin\phi^{-1}(\mathcal I)$, then for each
+  $i$ a $b_{i}$ with $\bar a[i\mapsto b_{i}]\in\phi^{-1}(\mathcal I)$ if one
+  exists, and reading off the equation
+  $\sum_{i\in J}(y_{i}-a_{i})/(b_{i}-a_{i})=1$ over the $i$ for which $b_{i}$
+  exists.
+\end{description}
+
+\begin{verbatim}
+function SolveLinear(I):
+    m := dim(D_{x_1}/s_1 x ... x D_{x_n}/s_n)
+    phi := a bijective linear map Z_{p_1}x...xZ_{p_m} -> that product
+    while phi^-1(I) != Z_{p_1}x...xZ_{p_m}:              // (p1)
+        I' := I
+        for C in I':                                // drop what can be dropped
+            if phi^-1(I' \ {C}) != Z_{p_1}x...xZ_{p_m}:   // (p1)
+                I' := I' \ {C}
+        F := phi^-1(I')                                // (p2) or (p3)
+        if F = {}: return "No"
+        m := dim F ;  psi := a bijective linear map onto F ;  phi := phi o psi
+    return "Yes"
+\end{verbatim}
+
+The inner loop makes $\mathcal I'$ minimal with $\phi^{-1}(\mathcal I')$ not
+full. At that point Theorem~\ref{thm:codim-one} applies --- its hypothesis (vii)
+is exactly minimality --- so $\phi^{-1}(\mathcal I')$ is empty or of codimension
+one, and \textup{(p3)} computes it; or $\mathcal I'$ is not linked and
+\textup{(p2)} does. Since $\phi^{-1}(\mathcal I)\subseteq\phi^{-1}(\mathcal I')$,
+the image of $\phi$ shrinks while still containing all solutions. The dimension
+strictly decreases, so the loop terminates.
+
+\subsection{What is honestly formalizable}
+
+\begin{hazard}[Three obstacles between the pseudocode and a Lean function]
+\label{haz:algorithm-formalization}
+\begin{enumerate}\alphlabels\tightlist
+\item \emph{Termination is not structural.} \textsc{Solve} recurses through
+  \textup{(p0)} on strictly smaller domains, and \textsc{SolveLinear} loops on a
+  strictly decreasing dimension. Neither is a structural recursion; both need an
+  explicit well-founded measure, and the two interleave --- \textsc{SolveLinear}
+  calls \textsc{Solve} on a smaller domain, which calls \textsc{SolveLinear}
+  again. The measure is lexicographic:
+  $\bigl(\sum_{x}|D_{x}|,\ \dim\phi\bigr)$.
+\item \emph{Several steps quantify over objects that are only finitely many by
+  accident.} ``If some $D_{x}$ has a strong subset $B$'' quantifies over subsets
+  of $D_{x}$, over congruences on $D_{x}$, and --- through absorption --- over
+  \emph{term operations}, of which there are infinitely many. Decidability comes
+  from the fact that on a finite set there are finitely many operations of each
+  arity and finitely many subsets, so "$B$ absorbs $A$ with some term'' is
+  decidable by exhaustive search over $\Clo_{k}$ for $k\le|A|^{|A|}$; but that
+  bound is a theorem, not a definition, and it is the only reason the algorithm
+  is an algorithm.
+\item \emph{Polynomial time is a different subject.} The bound in
+  \cite{ZhukJACM} counts calls and bounds the recursion depth by $|A|$; making
+  that formal needs a cost model. See \S\ref{sec:complexity-layer}.
+\end{enumerate}
+\end{hazard}
+
+\begin{theorem}[Target \textup{(T1)}]\label{thm:t1}
+There is a function $\textsc{Solve}$ from instances of $\CSP(\Gamma)$ to
+Booleans such that for every instance $\mathcal I$,
+\[
+  \textsc{Solve}(\mathcal I)=\texttt{true}
+  \iff \mathcal I\ \text{has a solution}.
+\]
+\end{theorem}
+
+Theorem~\ref{thm:t1} mentions no machine, is provable from
+\S\ref{sec:main-statements}, and is the honest formal content of ``the algorithm
+works''. It is strictly stronger than decidability of $\CSP(\Gamma)$, which is
+trivial for a finite template: it says that \emph{this} algorithm --- the one
+whose existence is the dichotomy --- is correct.

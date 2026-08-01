@@ -1,0 +1,95 @@
+%!TeX root=csp.tex
+\section{What is being proved}\label{sec:target}
+
+\subsection{The theorem}
+
+Fix a finite set $A$ and a finite set $\Gamma$ of relations on $A$, the
+\emph{constraint language}. An instance of $\CSP(\Gamma)$ is a conjunction
+$R_{1}(\bar x_{1})\wedge\dots\wedge R_{s}(\bar x_{s})$ with each
+$R_{i}\in\Gamma$; the question is whether it is satisfiable.
+
+\begin{theorem}[Dichotomy; Bulatov, Zhuk]\label{thm:dichotomy}
+If some weak near-unanimity operation preserves $\Gamma$, then $\CSP(\Gamma)$ is
+solvable in polynomial time. Otherwise $\CSP(\Gamma)$ is \textup{NP}-complete.
+\end{theorem}
+
+Both halves are conditional on a model of computation, and this is not a
+formality that a formalization may wave through. ``Solvable in polynomial time''
+quantifies over an encoding of instances as strings, a machine, and a
+polynomial bound on its step count; ``\textup{NP}-complete'' additionally
+quantifies over all problems in \textup{NP} and over polynomial-time many-one
+reductions. Mathlib supplies Turing machines
+(\texttt{Mathlib/Computability/TuringMachine/}) and a notion of computability,
+but it has \emph{no} complexity class, no polynomial-time predicate, and no
+notion of polynomial-time reduction. A formalization that claimed
+Theorem~\ref{thm:dichotomy} verbatim would therefore have to build a complexity
+layer from scratch, and the mathematics of the dichotomy --- which is
+universal algebra, not complexity theory --- would be a minority of the work.
+
+This document separates the two concerns. The mathematical content is stated as
+propositions that mention no machine; the complexity-theoretic wrapper is
+isolated in a single, small, clearly marked layer, so that a reader can see
+exactly which part of Theorem~\ref{thm:dichotomy} rests on the algebra and
+which on a cost model.
+
+\subsection{The layered targets}
+
+Write $\mathbf A=(A;w)$ for a finite idempotent algebra whose basic operation
+$w$ is a special weak near-unanimity operation, and $\Vn$ for the class of such
+algebras with $w$ of arity $n$ (Convention~\ref{conv:standing}).
+
+\paragraph{Tractable half.} Three layers.
+
+\begin{description}\tightlist
+\item[\textup{(T0)} \emph{The algebraic core.}] The three theorems of
+  \S\ref{sec:main-statements} --- the existence of a strong subuniverse or a
+  linear congruence, the safety of a reduction to a strong subuniverse, and the
+  codimension-one theorem --- together with everything they rest on. These are
+  statements about finite algebras, congruences, and CSP instances regarded as
+  finite combinatorial objects. No computation appears in them.
+\item[\textup{(T1)} \emph{Correctness of the algorithm.}] Zhuk's algorithm
+  written as a total function $\textsc{Solve}$ from instances to Booleans, and
+  the proposition
+  \[
+    \textsc{Solve}(\mathcal I)=\texttt{true}\iff
+    \mathcal I\ \text{has a solution}.
+  \]
+  This is a statement about a recursive function, and it is provable from
+  \textup{(T0)} with no cost model. It is the honest formal content of ``the
+  algorithm works''.
+\item[\textup{(T2)} \emph{The complexity wrapper.}] That $\textsc{Solve}$ runs
+  in polynomial time in the size of the instance, for fixed $\Gamma$. This
+  requires a cost model and is the only place where one is needed.
+\end{description}
+
+\paragraph{Hard half.} Two layers.
+
+\begin{description}\tightlist
+\item[\textup{(H0)} \emph{The algebraic core.}] If no weak near-unanimity
+  operation preserves $\Gamma$ then $\Gamma$ primitively positively interprets
+  every finite constraint language --- in particular one whose CSP is
+  \textup{NP}-hard. This is again pure algebra: the Galois connection between
+  polymorphisms and primitive positive definability, the Maróti--McKenzie
+  theorem that a Taylor term yields a weak near-unanimity term, and the
+  Bulatov--Jeavons--Krokhin reduction.
+\item[\textup{(H1)} \emph{The complexity wrapper.}] That a primitive positive
+  interpretation yields a polynomial-time many-one reduction, and hence
+  \textup{NP}-hardness. Again a cost model, and again small.
+\end{description}
+
+The claim this document makes is that \textup{(T0)}, \textup{(T1)} and
+\textup{(H0)} are the mathematics, that they are what the literature actually
+proves, and that \textup{(T2)} and \textup{(H1)} are a separable engineering
+layer whose difficulty is unrelated to the dichotomy. The blueprint is written
+for \textup{(T0)}, \textup{(T1)} and \textup{(H0)}; \S\ref{sec:complexity-layer}
+states \textup{(T2)} and \textup{(H1)} precisely and says what building them
+would cost, without proving them.
+
+\begin{remark}
+The separation is not a dodge. Layer \textup{(T1)} is strictly stronger than
+``\,$\CSP(\Gamma)$ is decidable'', which is trivial for a finite template: it
+says that one particular, highly non-obvious algorithm --- the one whose
+existence is the content of the dichotomy --- is correct. Everything that makes
+the dichotomy hard lives in \textup{(T0)}. Conversely, no part of
+\textup{(T0)}--\textup{(T1)} becomes easier if a cost model is available.
+\end{remark}
