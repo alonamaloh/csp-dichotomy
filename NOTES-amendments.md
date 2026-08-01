@@ -112,25 +112,76 @@ performs silently. Grouped by where they sit.
 26. Zhuk 2021 Lemma 6.11, needed for D4, has a printed proof that cites *itself* three times
     where it means the preceding lemma. Our rendering must supply both.
 
-## 5. What is still not read
+## 5. What is open
 
-§5.6 `Factorization of strong subalgebras` (1928–2296, 5 proofs) and §5.7 `Proof of the
-remaining statements` (2297–3144, 16 proofs). **21 of §5's 44 proofs, 1 217 of its 3 144
-lines.** They have been sampled at eight call sites, but the sampling followed the trail of
-already-interesting statements, so it is the worst kind of coverage to mistake for
-completeness. Reading them is the next task.
+Three different kinds of thing, and only the second is a live mathematical question.
 
-§§2–4 and §6 of the source are outside what this pass covered; the D2, D6, D7, D8 findings
-came from targeted investigations there, not from a systematic reading.
+### (a) Not read
+
+| | proofs | read |
+|---|---|---|
+| §5.2 Subuniverses of types BA, C, S (71–346) | 6 | all |
+| §5.3 Intersection property (347–1021) | 6 | 2 in full, `LEMSelfIntersectionPC` in part; **`LEMTotallySymmetricWithoutBACenter`, `LEMTotallySymmetricRelationForIrreducible`, `CORParallelogramPropertyForD` not read** |
+| §5.4 PC or linear congruences (1022–1735) | 9 | all |
+| §5.5 Types interaction (1736–1927) | 2 | all |
+| §5.6 Factorization of strong subalgebras (1928–2296) | 5 | **none** |
+| §5.7 Remaining statements (2297–3144) | 16 | **none** |
+
+**24 of §5's 44 proofs are unread**, about 1 500 of its 3 144 lines. Outside §5: `main.tex`'s
+CSP half — instances, coverings, cruciality, the main induction, the algorithm — has been read
+only where D6, D7 and D8 touch it, and §4 (`XYSymmetric.tex`, 1 640 lines) is out of scope by
+decision, with D10 declared moot.
+
+Two things *are* known about the unread parts, both mechanically: the proof-dependency graph
+over all three files is acyclic, and no statement anywhere in the source except
+`CORPropagationModuloCongruence` is cited while being neither proved nor attributed. So
+whatever is wrong in §5.6 and §5.7, it is not a missing statement and it is not a circularity.
+It would have to be a wrong or incomplete argument — which is exactly what §5.4 turned out to
+contain, and §5.4 is the only subsection read at full intensity that did.
+
+### (b) Read, and unresolved
+
+One item, and it is small: **does `LEMIntersectionPCLinearIsGood` use the minimality of its
+chains `k, ℓ`?** The proof fixes minimal chains for `B ⋘ A` and `C ⋘ A` and I could not find a
+step that consumes minimality; a shorter chain would only make the induction measure smaller.
+Either identify the use or drop the hypothesis. Nothing depends on the answer for
+correctness — a redundant hypothesis costs only bookkeeping — but a formalization has to
+decide.
+
+The hedge *"the inclusion `⊆` is obvious"* (line 2428) sits inside §5.7 and belongs to (a).
+
+### (c) External imports a self-contained rendering must absorb
+
+Not defects; scope. In descending order of weight:
+
+- **Brady, *Notes on CSPs and Polymorphisms* (arXiv, 2022), Theorem 3.11.1** — *a proper
+  linked subdirect relation forces a BA or central subuniverse on one side.* Imported as
+  `LEMLinkedImpliesBACenter` and used at `StrongSubalgebras.tex:1282` and inside
+  `LEMBAConLeftOrCenterOnRight`, hence throughout §5.4. This is essentially the Absorption
+  Theorem and is the single heaviest thing §5 takes on faith. Sections 3.11.2, 3.11.3 and
+  3.15 of the same notes are also cited.
+- **Zhuk 2021 (arXiv:2005.00593)** — the strong-subalgebra calculus: Lemmas 3.1, 3.2, 3.4,
+  6.1, 6.8, 6.9, 6.11, 6.24, 6.25, Corollary 6.11.1, Theorem 6.15. Two of these are load
+  bearing for our own repairs (6.11 for D4, 3.4 + 6.15 for C10) and have been read verbatim.
+- **Zhuk 2017 (arXiv:1704.01914)** Theorem 8.15 (strongly rich relations come from abelian
+  groups) and Lemma 8.16, themselves cited onward to a further paper.
+- **Barto–Kazda**, *Deciding Absorption*, Lemma 2.9 and Proposition 2.14; **Barto–Kozik**,
+  Proposition 2.15(i); **Hobby–McKenzie** for Abelian ⟺ affine under a WNU;
+  **Maróti–McKenzie** for the WNU arity.
+
+So the honest distance to self-containedness is roughly fifteen imported statements, of which
+Brady 3.11.1 and Zhuk 2021 Theorem 6.15 are the two that are real work.
 
 ## 6. Risk register
 
-- **The one thing that could still move.** §5.6 and §5.7 are unread and contain the
-  stable-intersection theorem's proof, on which D4 hangs. D4's repair is independent of that
-  proof, so a defect there would not undo it, but it could add others.
-- **Where the repairs are least tested.** D7(ii)'s reweakening argument and D6's cruciality
-  corollary are the two that touch the CSP-instance machinery of §6 rather than the algebra;
-  neither has been checked against a call site other than the one that motivated it.
-- **Where the repairs are best tested.** D6's witness, D12's counterexample and D14's
-  Lemma B were all searched by machine; D3 and the original D10 were refuted the same way.
-  Every claim in this ledger that could be reduced to a finite check has been.
+- **Least-tested repairs.** D7(ii)'s reweakening and D6's cruciality corollary each touch the
+  CSP-instance machinery rather than the algebra, and each has been checked against only the
+  call site that motivated it.
+- **Least-tested positive verdicts.** `LEMSelfIntersectionPC` was read only where the
+  `LEMCentralRelationImplies` call sites forced it open, and §5.3's three small lemmas were
+  never opened at all — yet `LEMTotallySymmetricRelationForIrreducible` is what splits the
+  main case of `LEMIntersectionPCLinearIsGood`, the largest proof in §5.
+- **Best-tested claims.** Everything reducible to a finite check has had one: D6's witness in
+  `ℤ₄ × ℤ₂ × ℤ₄`, D12's counterexample in `ℤ₃`, D14's Lemma B over ~100 000 pairs, C1 over
+  `p ∈ {2,3,5,7}`, the acyclicity of 152 proof-dependency edges, and the statement audit over
+  all 81 labelled statements. Two of the original claims died to exactly such checks.
