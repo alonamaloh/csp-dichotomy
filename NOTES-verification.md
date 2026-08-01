@@ -213,3 +213,63 @@ in one sitting, with its citations' hypotheses discharged one at a time.
 
 Also outstanding: §5.4 (`SUBSECTIONIrreduciblePCOrLinear`, lines 1022–1736) and §5.5 (types
 interaction, 1736–1928), neither of which has been opened.
+
+## `LEMIntersectionPCLinearIsGood` — read in full
+
+The largest proof in §5 (line 623, 292 lines, 20 citations). **Structurally sound.** No
+defect. Four items for the rendering, one of them a genuine missing case.
+
+**Shape.** Fix minimal chains `B = B_k < ⋯ < B_0 = A` and `C = C_ℓ < ⋯ < C_0 = A`, put
+`σ = ⋂σᵢ`, `ω = ⋂ωᵢ`, and induct on `k + ℓ`, proving (s) then (d). Part (d) introduces
+`S ≤ (A/δ)^{|A|}`, the tuples pairwise related by `σ ∩ ω`; a total-symmetry lemma splits into
+`S` = diagonal (giving `|(B∩C)/δ| = 1` and the "moreover" clause) or `(B/δ)^{|A|} ⊆ S`. In the
+latter, `S_{m,n}` refines `S` by `aᵢ ∈ B_m ∩ C_n`, and one takes the least `m` (2A) or `n` (2B)
+where containment fails, contradicting the dividing hypothesis in each of three type cases;
+2C is the surviving case and gives `(B∩C)/δ = B/δ`.
+
+I checked every appeal to the inductive hypothesis lands at strictly smaller `k + ℓ`: (s) uses
+(s) and (d) at `k + (ℓ−1)`; 2B2 uses (s) at `(n−1) + k`; 2B3 uses (d) at `(n−1) + k`; and
+`n ≤ ℓ` throughout. So the induction is sound — worth confirming, since a commented-out block
+shows an earlier draft inducted lexicographically on `(|A/(σ∩ω)|, k+ℓ)` and the live proof
+dropped the first component.
+
+### The one real gap: part (s), the `𝒯_ℓ = D` branch
+
+The text reads: *"In the second case `(G ∩ C_{ℓ−1})/ω_ℓ <_{BA,C} C_{ℓ−1}/ω_ℓ`, which
+contradicts the definition of a divisible congruence."* The `<` is **proper**, but what the
+cited lemmas supply is `≤` — `LEMBACenterImplyIntersection` gives `≤_T`, and factoring
+preserves that. If the containment is an equality there is no contradiction, and the case is
+not treated.
+
+It is not a defect in the lemma, because the equality case gives the conclusion outright:
+if `(G ∩ C_{ℓ−1})/ω_ℓ = C_{ℓ−1}/ω_ℓ` then every `ω_ℓ`-block meeting `C_{ℓ−1}` meets
+`G ∩ C_{ℓ−1}`, in particular the block `E` with `C_ℓ = C_{ℓ−1} ∩ E`, so `G ∩ C_ℓ ≠ ∅` — which
+is exactly what was to be proved. *Our rendering:* split the case rather than assert `<`.
+
+### Three steps that are available but unstated
+
+- **Properness from minimality.** 2A1 and 2B1 assert `S_{m,0} ∩ (B/δ)^{|A|} <_{T_m}
+  (B/δ)^{|A|}` where the cited lemmas give `≤`. Properness is immediate from the minimal
+  choice of `m` (resp. `n`); nonemptiness needs the observation that the constant tuples
+  `(b/δ,…,b/δ)` for `b ∈ B` lie in `S_{m,0}`, since `B ⊆ B_m` and `(b,b) ∈ σ ∩ ω`.
+- **2B3, the first alternative.** Part (d) offers "size 1 or all of `C_{ℓ−1}/ω_n`", but the
+  text writes the first as "`= C_n/ω_n`", which is stronger: it fixes *which* block. Correct,
+  but because `B ∩ C ≠ ∅` and `C ⊆ C_n` force `B_k ∩ C_n ≠ ∅`, so the single block is the one
+  defining `C_n`. Then `B_k ∩ C_{n−1} ⊆ C_n` and `S_{k,n−1}` and `S_{k,n}` cut `(B/δ)^{|A|}`
+  identically, contradicting minimality of `n`. Write the two steps out.
+- **Is minimality of `k, ℓ` used?** The proof fixes minimal chains but I did not find a use.
+  If a shorter chain existed for `C_{ℓ−1}` the measure would only be smaller and the induction
+  still applies. Either identify the use or drop the hypothesis.
+
+### One inherited dependency
+
+2A3 and 2B3 both finish through `LEMCentralRelationImplies`, converting `R'` viewed as a
+binary relation with a centre into a BA subuniverse on `B/δ` or a centre on the other factor.
+This is the statement flagged as convention item C10, which appears to drop a third
+alternative — a nontrivial *projective* subuniverse — present in Zhuk 2021 Thm 6.15. It is
+used twice in the largest proof of §5, so C10 is not cosmetic and should be resolved before
+this lemma is rendered.
+
+Minor: the following `CORIntersectionPCLinearIsGood` writes `δ = f^{-1}(σ)` with `f`
+undefined; read `f₁`. Its conclusion admits "empty" while the lemma requires `B ∩ C ≠ ∅`, so
+the empty case needs its own line.
