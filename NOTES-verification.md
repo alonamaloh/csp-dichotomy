@@ -125,12 +125,8 @@ for §4 of the source, which is out of scope.
 
 ## Not yet checked
 
-- **D6** — `LEMConnectedProperties(a)` applying `LEMBridgeFromRelation` without its third
-  hypothesis, with the claimed witness in `ℤ₄ × ℤ₂ × ℤ₄`.
-- **D7** — two claimed gaps in `THMMainInductiveCSPClaim`: Case 1 proving (1c) relative to the
-  wrong reduction, and "linked" not established where (1c) demands it.
-- **C1–C10** — the convention list. Cheaper: these are readings to legislate, not claims to
-  falsify, so the failure mode is different.
+- **C1–C9** — the convention list. Cheaper: these are readings to legislate, not claims to
+  falsify, so the failure mode is different. (C10 is settled below.)
 
 ---
 
@@ -273,3 +269,127 @@ this lemma is rendered.
 Minor: the following `CORIntersectionPCLinearIsGood` writes `δ = f^{-1}(σ)` with `f`
 undefined; read `f₁`. Its conclusion admits "empty" while the lemma requires `B ∩ C ≠ ∅`, so
 the empty case needs its own line.
+
+---
+
+# C10 — `LEMCentralRelationImplies` and the dropped third case. **SETTLED**
+
+The question was blocking: the source states `\cite{zhuk2021strong}, Theorem 6.15` with two
+alternatives where the original has three, and the statement is used inside §5's largest
+proof. Answer: **the third case is eliminable, the two-case statement is true, and the
+elimination is an argument Zhuk himself runs elsewhere in the predecessor without ever
+connecting it to Theorem 6.15.** Two further items surfaced from reading the call sites.
+
+## The two statements, side by side
+
+`StrongSubalgebras.tex:208`:
+
+> Suppose `R ≤_sd A × B`, `C = {c ∈ A | ∀b ∈ B: (c,b) ∈ R}`. Then one of the following holds:
+> (1) `C` is a central subuniverse of `A`; (2) `B` has a nontrivial binary absorbing
+> subuniverse.
+
+arXiv:2005.00593, Theorem 6.15 (p. 38), verbatim except for a third item:
+
+> 3. `B` has a nontrivial projective subuniverse.
+
+The word *projective* does not occur anywhere in the 2404 source — `grep -i projective` over
+`main.tex`, `StrongSubalgebras.tex`, `necessaryClaims.tex`, `XYSymmetric.tex` returns nothing.
+So the notion was removed from the paper, not merely from this one citation.
+
+## Why case 3 collapses
+
+The standing hypothesis is at `main.tex:1123`, *"In this paper we assume that every algebra is
+a finite idempotent algebra having a WNU term operation"*, restated at the head of §2.3
+(`main.tex:1641`) precisely for the statements §5 proves: *"Recall that all the algebras in
+the following statements are assumed finite idempotent algebras having a WNU term operation
+(Taylor)."* So the `B` of the lemma is Taylor.
+
+The predecessor supplies exactly the needed step, as Lemma 3.4 (2005.00593, p. 8, proved
+p. 44):
+
+> Suppose `B` is a nontrivial projective subuniverse of a finite idempotent algebra `A`, and
+> `B` is not a binary absorbing subuniverse. Then there exists an essentially unary algebra
+> `U ∈ HS(A)` of size at least 2.
+
+and an essentially unary `U ∈ HS(·)` of size ≥ 2 is exactly what a WNU forbids — this is
+Theorem 4.14 (1) ⇔ (3) of the same paper, and it also has a two-line direct proof. So case 3
+implies case 2 or a contradiction. **The two-case statement is a true statement about Taylor
+algebras.** Proof written out in `NOTES-repairs.md`.
+
+That Zhuk knows this is visible in the proof of his own Theorem 4.15, step (4) ⇒ (5):
+
+> *"In case (5) Lemma 3.4 gives us a nontrivial binary absorbing subuniverse, which is a
+> strong subuniverse, or an essentially unary algebra `U ∈ HS(A)`, which contradicts condition
+> (4)."*
+
+Same move, on the same case of the same trichotomy. It is simply never applied to
+Theorem 6.15, so the two-case form in 2404 arrives with no derivation.
+
+*Our rendering:* legitimate, and it should be stated as a lemma with a proof rather than
+smuggled into a citation. C10 is **not** blocking any more.
+
+## But the two-case form is true only because `∅` counts as central
+
+Read against `main.tex`'s own definition (`main.tex:1345–1352`), a subuniverse `C` is central
+if it is absorbing and `(a,a) ∉ Sg((\{a\}×C) ∪ (C×\{a\}))` for every `a ∈ A∖C`. Both clauses
+are vacuous for `C = ∅`, so `∅` is central. It has to be, or the theorem is false: take
+`A = B = ℤ_p` and `R` the graph of `x ↦ x+1`. `R ≤_sd ℤ_p × ℤ_p`, `C = ∅`, and `ℤ_p` has no
+nontrivial BA subuniverse at all (`main.tex:3484`). Alternative (2) fails, so alternative (1)
+must be holding vacuously.
+
+This is convention item **C3** biting a specific statement. Our rendering forbids empty
+subuniverses (`conv:empty`), so it cannot state the lemma as Zhuk does. It must read:
+
+> `C = ∅`, or `C` is a central subuniverse of `A`, or `B` has a nontrivial binary absorbing
+> subuniverse.
+
+Harmless at every call site, because each site exhibits an element of `C` before applying the
+lemma — see below — but a formalization that copies the two-case form and forbids `∅` proves
+a false statement.
+
+## The call sites: nine, not two, and each needs two unstated steps
+
+`StrongSubalgebras.tex:268, 551, 606, 843, 928, 1008, 2024, 2079` (the ninth is the statement
+itself). Eight of them run the lemma contrapositively against a *BA and center free* algebra —
+defined at `main.tex:1363` as *"no proper nonempty binary absorbing subuniverse or proper
+nonempty central subuniverse"*. Two obligations are therefore live at each site and are
+discharged at none of them explicitly.
+
+**(a) Properness of the center.** *Nonempty* central is not enough; the definition of BA and
+center free only forbids *proper* nonempty ones, so `C` must be shown `≠ A`. Available at
+every site, and in three of them the witness is even printed two lines earlier —
+`(B_{k-1}/σ_k)^{|A|} × B_n/σ_n ⊄ R'` at line 533, `(B/δ)^{|A|} × B_m/σ_m ⊄ R'` at 824,
+`(B/δ)^{|A|} × C_n/ω_n ⊄ R'` at 903 — but it is never connected to the appeal. Sites 606,
+1008 and 2079 instead *use* the improper case, concluding that `R` is full; there the split
+is explicit.
+
+**(b) The power-to-base step.** Alternative (2) yields a BA subuniverse of a *power*, e.g. of
+`(B/δ)^{|A|}`; the sites assert "a BA subuniverse on `B/δ`". That is
+`LEMBACenterSOnPowerImplies`, cited at 2024 (*"Combining Lemmas … and
+\ref{LEMBACenterSOnPowerImplies}"*) and omitted at 551, 843 and 928.
+
+## A separate gap found in the same three proofs: the full fibre
+
+Subsubcases 1B3 (line 545), 2A3 (line 837) and 2B3 (line 921) each contain, verbatim modulo
+names:
+
+> *"Since `proj_{1,2,…,|A|}(R') = (B/δ)^{|A|}`, there exists `d ∈ B_{m-1}/σ_m` such that
+> `(B/δ)^{|A|} × {d} ⊆ R'`."*
+
+**Surjectivity of a projection does not produce a full fibre**, and as stated this is a non
+sequitur. It is nevertheless true, and the reason is the one that explains why the arity is
+`|A|` and not something smaller: `R'` is totally symmetric in its first `|A|` coordinates and
+closed under identifying them, because its definition is a conjunction of unary and binary
+conditions on the entries; and `|B/δ| ≤ |A|`, so the tuple enumerating `B/δ` with repetition
+already lies in `(B/δ)^{|A|}`, and every other tuple is a coordinate-substitution instance of
+it with the same `d`. Written out in `NOTES-repairs.md`.
+
+That the constant `|A|` is load-bearing is worth flagging on its own: a reader who normalises
+the arity away breaks these three proofs.
+
+## Tally
+
+C10 resolves in the affirmative but is not a one-line legislation. It costs one imported
+lemma with a proof (the elimination), one restatement (the `∅` alternative), two discharge
+obligations per call site, and one genuinely missing three-line argument repeated at three
+sites.

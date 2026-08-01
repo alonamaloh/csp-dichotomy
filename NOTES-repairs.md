@@ -268,6 +268,110 @@ the source writes "we derive the required conditions".
 
 ---
 
+## C10 — eliminating the projective alternative, and two steps under the call sites
+
+Three separate things are needed here; only the first is what C10 asked about.
+
+### (i) The elimination
+
+**Lemma (no essentially unary quotient).** Let `U` be a finite algebra with a WNU term
+operation `w` and `|U| ≥ 2`. Then some term operation of `U` depends on more than one
+variable.
+
+*Proof.* Suppose not, so every term operation of `U` has at most one non-dummy variable. A
+WNU is idempotent by definition here, so `w(x,…,x) = x`. If `w` has a non-dummy coordinate
+`i` then `w(x_1,…,x_n) = g(x_i)` for a unary `g`, and `g(x) = w(x,…,x) = x`, so `w = pr_i`;
+if `w` has no non-dummy coordinate it is constant, and idempotence forces `|U| = 1`. So
+`w = pr_i`. The WNU identities equate the `n` terms in which a single `y` sits at each position
+in turn against a background of `x`s. Two of them are `w` with `y` at position `i`, which
+evaluates to `y`, and `w` with `y` at some position `≠ i` (one exists, as `n ≥ 2`), which
+evaluates to `x`. Hence `x = y` for all `x, y ∈ U`, i.e. `|U| = 1`. ∎
+
+The same statement is Theorem 4.14, (1) ⇒ (3) of arXiv:2005.00593, where it is routed through
+WNU-blockers; the direct proof above is shorter and is what a formalization should carry.
+
+**Corollary.** If `A` has a WNU term operation then no `U ∈ HS(A)` with `|U| ≥ 2` is
+essentially unary. *Proof.* The WNU identities and idempotence are identities, hence hold of
+`w^U` for every `U ∈ HS(A)`; apply the lemma. ∎
+
+**Proposition (Theorem 6.15 with two cases).** Let `A`, `B` be finite idempotent algebras
+with WNU term operations, `R ≤_sd A × B`, and `C = {c ∈ A | ∀b ∈ B: (c,b) ∈ R}`. Then
+`C = ∅`, or `C` is a central subuniverse of `A`, or `B` has a nontrivial binary absorbing
+subuniverse.
+
+*Proof.* Apply Theorem 6.15 of arXiv:2005.00593 in its three-case form. Cases 1 and 2 are the
+second and third alternatives (case 1 being read with the convention that `∅` is central,
+which the first alternative here absorbs). In case 3, `B` has a nontrivial projective
+subuniverse `P`. By Lemma 3.4 of the same paper, either `P` is a binary absorbing subuniverse
+of `B` — and `P` is nontrivial, so this is the third alternative — or there is an essentially
+unary `U ∈ HS(B)` with `|U| ≥ 2`, which the corollary forbids. ∎
+
+Zhuk runs this same elimination on this same trichotomy in the proof of his Theorem 4.15,
+step (4) ⇒ (5). He never applies it to Theorem 6.15, which is why 2404's two-case form arrives
+underived.
+
+**What still has to be proved from scratch**, if the rendering is to be self-contained: 2005's
+Theorem 6.15 itself, and its Lemma 3.4 (projective ⇒ BA or essentially unary quotient). Lemma
+3.4 is short and I have checked it: with `R_n = A^n ∖ (A∖B)^n ∈ Inv(A)` (Lemma 3.1) and a
+binary `B`-essential `R` (Barto–Kazda, our `LemAbsorptionImpliesEssential` at `n = 2`), put
+`R' = R ∩ R_2` and `D = pr_1(R')`. Every pair of `R'` has exactly one coordinate in `B`, since
+`R ∩ B² = ∅` and `R_2` forbids both outside; so
+`S(x,y) = ∃x'∃y'\, R'(x,x') ∧ R'(y,y') ∧ R_2(x',y') ∧ R_2(x,y)` is exactly
+`((D∩B) × (D∖B)) ∪ ((D∖B) × (D∩B))`, both parts nonempty by the two essentiality witnesses.
+Then `σ(x,y) = ∃z\, S(x,z) ∧ S(y,z)` is the congruence on `D` with blocks `D∩B` and `D∖B`, and
+`D/σ` has two elements. Projectivity gives each term operation `f` a coordinate `i` with
+`f(b̄) ∈ B` whenever `b_i ∈ B`; preservation of `S` upgrades this to `f(b̄) ∈ D∖B` whenever
+`b_i ∈ D∖B` (feed `f` a tuple opposite to `b̄` coordinatewise, possible as both blocks are
+nonempty). So `f|_D` is `pr_i` modulo `σ`. Sound as written.
+
+### (ii) The empty alternative is not removable
+
+Our `conv:empty` forbids empty subuniverses, so the two-case form cannot be stated. It is
+false without the `C = ∅` alternative: `A = B = ℤ_p` with `R = {(x, x+1) : x ∈ ℤ_p}` is
+subdirect, has `C = ∅`, and `ℤ_p` has no nontrivial BA subuniverse.
+
+Every call site discharges it by exhibiting an element of `C`, so nothing downstream changes.
+
+### (iii) The full-fibre step, at `StrongSubalgebras.tex:545, 837, 921`
+
+Each of subsubcases 1B3, 2A3, 2B3 asserts, of a relation `R'` on
+`(B/δ)^{|A|} × (B_{m-1}/σ_m)`, that surjectivity of the projection onto the first `|A|`
+coordinates yields a `d` with `(B/δ)^{|A|} × {d} ⊆ R'`. That inference is invalid in general.
+What makes it true:
+
+**Lemma (full fibre).** Let `F` be a finite set with `|F| ≤ N`, and let `W ⊆ F^N × E` satisfy
+`pr_{1..N}(W) = F^N` and be closed under coordinate substitution: if `(x_1,…,x_N,e) ∈ W` and
+`g : [N] → [N]` then `(x_{g(1)},…,x_{g(N)},e) ∈ W`. Then there is `d ∈ E` with
+`F^N × {d} ⊆ W`.
+
+*Proof.* Write `F = {F_1,…,F_t}`, `t ≤ N`, and let `x̄ = (F_1,…,F_t,F_t,…,F_t) ∈ F^N`. By
+surjectivity pick `d` with `(x̄, d) ∈ W`. Any `ȳ ∈ F^N` is `x̄ ∘ g` for some `g : [N] → [N]`,
+since every entry of `ȳ` occurs among the entries of `x̄`; closure gives `(ȳ, d) ∈ W`. ∎
+
+The hypotheses hold at all three sites. In each, `R'` is cut out by a conjunction of unary and
+binary conditions on the first `|A|` entries together with a condition relating each entry to
+the last coordinate — at line 837, `∀i,j: (a_i,a_j) ∈ σ ∩ ω`, `∀i: a_i ∈ B_{m-1}`, and
+`(a_i,b) ∈ σ_m` — and any such condition survives substituting entries for one another. And
+`|B/δ| ≤ |A|` because `B ⊆ A`.
+
+This is why the arity is `|A|`: the exponent must be at least the number of blocks so that one
+tuple can enumerate them. A rendering that normalises it away breaks all three proofs.
+
+### (iv) Two obligations per call site
+
+At `StrongSubalgebras.tex:551, 843, 928` the appeal concludes "a BA subuniverse on `X` or a
+center on `Y`, which contradicts the definition of a dividing congruence". Two steps sit
+between the lemma and that contradiction:
+
+- *Properness.* "BA and center free" (`main.tex:1363`) forbids only **proper** nonempty
+  central subuniverses. The witness is printed two lines above each appeal — at 533, 824, 903,
+  the statement that `(…)^{|A|} × B_n/σ_n ⊄ R'` — but never linked to it. Supply the link.
+- *Power to base.* Alternative (2) produces a BA subuniverse of `(B/δ)^{|A|}`, not of `B/δ`.
+  The bridge is `LEMBACenterSOnPowerImplies`, cited at line 2024 and omitted at the other
+  three.
+
+---
+
 ## Status
 
 | | fixable? | needs new mathematics? |
@@ -278,3 +382,4 @@ the source writes "we derive the required conditions".
 | D6 | yes | no — cruciality supplies the missing hypothesis |
 | D7(i) | yes | no — two lines, via irreducibility |
 | D7(ii) | yes | no — union with `𝓘`, reweaken; plus the two-phase induction made explicit |
+| C10 | yes | no — the elimination is Lemma 3.4 plus "WNU forbids an essentially unary quotient" |
