@@ -21,8 +21,22 @@ pdflatex csp.tex   # twice
 
 It does **not** claim that the dichotomy has been formalized. The transitive closure of
 what must be proved is on the order of 100–130 printed pages, which extrapolates to
-35 000–60 000 lines of Lean — a multi-person-year project that no proof assistant has
-attempted.
+35 000–60 000 lines of Lean, none of it attempted in any proof assistant.
+
+Line count, however, is not the binding constraint. This pipeline has demonstrated
+~33 000 verified `sorry`-free Lean lines in ~10 active hours on the Jordan–Schönflies
+formalization, by fanning independent modules out into git worktrees and landing them in
+waves — 52 merges, dozens of `wt/*` branches — with the rate holding on the hard blueprint
+content, not just the foundation. At that throughput the CSP algebra is days of wall clock,
+not years.
+
+What binds instead is the **critical path**: the depth of the serial chain, and the number
+of places where the source is wrong and new mathematics is required. Here that is §3's chain
+— `lem:bridge-from-instance` → `thm:stable-intersection` → `thm:main-inductive`, each a
+single large proof that cannot be split across agents — plus the four blocking defects
+(the §5 citation cycle, the `n = 2` gap, the missing hypothesis in connectedness, and the
+two gaps in the main induction) that need arguments not present in the literature. Those are
+not throughput-limited, and they are what to schedule around.
 
 What it offers is the design: the route, the statements, a vocabulary pinned down where
 the sources leave it loose, a list of the places the informal proof has latitude a formal
