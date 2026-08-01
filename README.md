@@ -136,15 +136,31 @@ sitting in the source as a commented-out gloss two lines below.
 None of these is fatal, and nine blocking items in a fifty-page paper is roughly the
 expected rate. All of them cost time, which is the point of finding them first.
 
-**One item was published and then retracted**, and it is the more instructive entry. §10
+**One item was published, retracted, and then replaced by an actual proof** — the most
+instructive entry in the document. §10
 originally claimed that Zhuk's recursion-depth bound was not established for one path, and
 that without a repair the algorithm was not polynomial. It is established. The precondition
 (`not linked and not fragmented`) is stated in the prose introducing the function rather than
 in the `Input:` line of its pseudocode; it is discharged at the call site by a one-line
 remark; and the step from it to "every domain shrinks" sits inside the proof of a *different*
 lemma. All three are in the paper. The reader who flagged it worked from the pseudocode and
-missed the sentence before it — which is exactly the failure mode a defect list is prone to,
-and why each entry is only as good as the reading behind it.
+missed the sentence before it — exactly the failure mode a defect list is prone to.
+
+Chasing it down did leave one genuine hole, and closing it needed a new argument.
+`CheckTuple` calls `SolveNonlinked` not on `Θ₀` but on `Θ₀` with domains restricted, and
+restricting can only *destroy* the "not linked" precondition. Lemma 10.1 settles it by a
+dichotomy that needs no relation between the minimal linear congruence and the
+linked-component congruence — the relation one instinctively starts hunting for, and which
+the source never states because it is not needed:
+
+> Either the restricted instance is still not linked, and the component split shrinks every
+> domain; or it *is* linked, in which case every domain already lies inside a single
+> component — hence inside a proper block — and so was already shrunk before
+> `SolveNonlinked` was called.
+
+Either way every domain of size > 1 strictly shrinks, which is what the depth bound needs.
+A corollary: `SolveNonlinked`'s precondition is not an obligation on the caller at all. Two
+lines, absent from the source, and the `|A|` bound at that site is unjustified without them.
 
 ## Relation to the source
 

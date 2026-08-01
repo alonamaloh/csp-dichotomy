@@ -185,16 +185,59 @@ holds for the $\Gamma$-order argument, whose case~(3) needs the projections to
 be unchanged under weakening, which holds because the instance is
 $1$-consistent when \textsc{CheckWeakerInstance} runs --- true, and unstated.
 
-\emph{What does remain open}, and is now a sharp question rather than a flag:
-\textsc{CheckTuple} calls \textsc{SolveNonlinked} not on $\Theta_{0}$ but on
-$\Theta_{0}\wedge(x_{1}\in D_{1}')\wedge\dots\wedge(x_{n}\in D_{n}')$, and
-restricting domains can only \emph{destroy} non-linkedness. Each $D_{i}'$ is a
-union of $\sigma_{i}$-blocks, where $\sigma_{i}$ is the minimal linear
-congruence; write $\tau$ for the linked-component congruence. If
-$\tau\subseteq\sigma$ then the restriction deletes whole $\tau$-blocks and
-non-linkedness survives. Whether $\tau\subseteq\sigma$ at this point is not
-stated in the source, and I have not checked it. That is the next thing to
-verify, and it is the kind of question a blueprint exists to surface.
+\emph{The one step that really is missing} is supplied by
+Lemma~\ref{lem:solvenonlinked-callsite} below. It is two lines, it is not in
+the source, and without it the $|A|$ bound at this site is unjustified.
+\end{remark}
+
+\begin{lemma}[The \textsc{SolveNonlinked} call site]\label{lem:solvenonlinked-callsite}
+Let $\Theta_{0}$ be cycle-consistent, non-fragmented and not linked, and let
+$\Theta_{0}'$ be $\Theta_{0}$ with each domain restricted to a subset
+$D_{x}'\subseteq D_{x}$. Then every domain of $\Theta_{0}$ of size greater than
+one is strictly shrunk by the time \textsc{SolveNonlinked}$(\Theta_{0}')$
+recurses into \textsc{Solve}.
+\end{lemma}
+
+\begin{proof}
+Write $\tau_{x}=\mathrm{LinkedCon}(\Theta_{0},x)$, a congruence by
+\cite[Lem.~6.2]{ZhukJACM}. First, $\tau_{x}$ is proper at \emph{every} variable.
+Since $\Theta_{0}$ is not linked there are at least two connected components of
+the graph on $\bigsqcup_{z}\{z\}\times D_{z}$; and every component meets every
+variable, because from any $(x,a)$ non-fragmentedness supplies a path to $y$ and
+$1$-consistency extends $a$ along it. So each $D_{y}$ is partitioned into at
+least two nonempty $\tau_{y}$-blocks, each therefore proper.
+
+Now split on whether $\Theta_{0}'$ is linked.
+
+\emph{Not linked.} Then \textsc{SolveNonlinked} recurses on a component, whose
+trace on each $D_{y}$ is a $\tau_{y}$-block intersected with $D_{y}'$ --- a
+proper subset of $D_{y}$ by the previous paragraph.
+
+\emph{Linked.} Then for every $z$ and all $a,b\in D_{z}'$ some path of
+$\Theta_{0}'$ connects them; every such path is a path of $\Theta_{0}$, so
+$D_{z}'\times D_{z}'\subseteq\tau_{z}$, i.e.\ $D_{z}'$ lies inside a single
+$\tau_{z}$-block. That block is proper, so $D_{z}'\subsetneq D_{z}$ --- every
+domain has \emph{already} been shrunk, at the \textsc{CheckTuple} step, before
+\textsc{SolveNonlinked} was called at all.
+\end{proof}
+
+\begin{remark}[Why this is the right argument]\label{rem:callsite-moral}
+Two things are worth extracting.
+
+First, the question this replaces was the wrong one. The natural worry is
+whether the restriction preserves \textsc{SolveNonlinked}'s stated precondition
+``not linked'', and one then starts asking how the minimal linear congruence
+$\mathrm{ConLin}$ relates to $\mathrm{LinkedCon}$ --- a relation the source
+never states, and which is not needed. The dichotomy above uses no relation
+between them: \emph{either} the precondition survives and the component split
+does the shrinking, \emph{or} it fails and the restriction has already done it.
+
+Second, it follows that \textsc{SolveNonlinked}'s precondition is not required
+for the depth bound at all. The function is correct on a linked instance too ---
+there is then one component and it recurses on the whole of it --- and
+Lemma~\ref{lem:solvenonlinked-callsite} covers that case. The precondition
+should be read as documentation of the intended use, not as an obligation the
+caller must discharge.
 \end{remark}
 
 \begin{remark}[What this list is evidence of]\label{rem:defects-meaning}
