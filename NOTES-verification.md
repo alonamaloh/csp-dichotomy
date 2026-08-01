@@ -810,3 +810,101 @@ type `R` has at once. If `R` is simultaneously BA and central — which is what 
 *Our rendering:* state 6.24 once, for an arbitrary set of types closed under nothing in
 particular, and read off `BA`, `C` and `S` together. The hedge disappears rather than being
 discharged three times.
+
+---
+
+# Adversarial reading of §5.3's remainder and §5.6
+
+## §5.3, the three lemmas that had never been opened — **all sound**
+
+`LEMTotallySymmetricWithoutBACenter` (357), `LEMTotallySymmetricRelationForIrreducible` (389),
+`CORParallelogramPropertyForD` (964). The middle one is what splits the main case of
+`LEMIntersectionPCLinearIsGood`, so it was the most exposed statement in the unread set.
+
+**`LEMTotallySymmetricWithoutBACenter`.** `R ≤ A^n` totally symmetric with `proj_{1,2}(R) = A²`
+and closed under `(a₁,…,aₙ) ↦ (a₁,a₁,a₂,…,a_{n−1})`, over a BA-and-center-free `A`, is `A^n`.
+Correct. The one compressed step is *"By the conditions of the lemma we have `(a,…,a,c)`,
+`(a,…,a,a) ∈ R`"*: the shift operation deletes the **last** entry, so a single application of
+it to `(a,b₂,…,b_{n−1},c)` destroys `c`. What is really happening is that symmetry plus the
+shift lets one pass from a tuple with entry multiset `M` to any `M + {u} − {v}` with
+`u,v ∈ M`; `n − 2` such steps delete the `bᵢ` and duplicate `a`. Worth writing as its own
+one-line lemma, because the same manoeuvre is needed again in the next proof.
+
+**`LEMTotallySymmetricRelationForIrreducible`.** Correct. Case 2's *"It remains to apply
+[the previous lemma] to `R ∩ (B/σ)^n`"* needs `proj_{1,2}(R ∩ (B/σ)^n) = (B/σ)²`, not merely
+`proj_{1,2}(R) ⊇ (B/σ)²` — the multiset manoeuvre again supplies it, pulling
+`(x₁,x₂,y₃,…,yₙ)` back to `(x₁,x₂,x₁,…,x₁)`. Also unstated: `proj_{1,2}(R) ⊇ σ*/σ` is
+minimality of `σ*` applied on `A/σ`, which needs convention item C9's *"`σ` is irreducible iff
+`0_{A/σ}` is"*.
+
+**`CORParallelogramPropertyForD`.** Correct, and all three hypotheses are used. Two things:
+`C` at line 1000 is undefined — read `C₁`, and note that (d) is being applied to each
+`σ₁`-class separately, legitimately because subdirectness of `S` makes every fibre nonempty.
+And both size-1 branches silently identify *which* block the singleton is, from
+`C₁ ∩ C₂' ≠ ∅` and `C₁' ∩ C₂ ≠ ∅` respectively — the same upgrade already logged three times
+elsewhere. It should become a named lemma.
+
+## §5.6 `Factorization of strong subalgebras` — one defect
+
+### D15 — `LEMMainExistenceOfIrreducibleCongruence` factors by the wrong congruence. **CONFIRMED**
+
+Lines 2208–2224. `δ ⊇ σ` is chosen maximal with `|B/δ| > 1`, and `B/δ` is shown BA and center
+free. To show `δ` irreducible the proof supposes `δ = S₁ ∩ … ∩ S_k` with `Sᵢ ⊋ δ`, finds an
+`i` with `B² ⊄ Sᵢ`, and then:
+
+> *"By Lemma \ref{LEMLeftLinkedStayFull} `LeftLinked(Sᵢ ∩ (B×B))/σ = (B/σ)²`. Hence,
+> `(Sᵢ ∩ (B×B))/σ` is a linked relation, which by Lemma \ref{LEMLinkedImpliesBACenter} implies
+> the existence of a BA or central subuniverse on `B/δ`."*
+
+Two things are wrong as written, and they are the same thing twice.
+
+- **The relation is factored by `σ` and the conclusion is about `B/δ`.** Those do not match:
+  `(Sᵢ ∩ B²)/σ` lives on `B/σ`, so `LEMLinkedImpliesBACenter` would produce a subuniverse of
+  `B/σ`, not of `B/δ`.
+- **Properness is not established.** `LEMLinkedImpliesBACenter` needs a *proper* subdirect
+  relation. `B² ⊄ Sᵢ` gives `Sᵢ ∩ B² ⊊ B²`, and factoring can close that gap — `(Sᵢ ∩ B²)/σ`
+  may well be all of `(B/σ)²`.
+
+Both are repaired by reading `δ` for `σ` throughout the last four lines, which is plainly what
+was meant — `B/δ` BA and center free was proved two lines earlier for exactly this use, and
+the stated conclusion already says `B/δ`. Then properness follows, but only from a hypothesis
+the proof drops when it introduces the `Sᵢ`: the definition of irreducible (`main.tex:1237`)
+requires the `Sᵢ` to be **stable under `δ`**. Stability makes `Sᵢ` a union of products of
+`δ`-blocks, so `(Sᵢ ∩ B²)/δ = (B/δ)²` would force `B² ⊆ Sᵢ`. That is the missing step.
+
+*Our rendering:* `LeftLinked(Sᵢ ∩ B²)/δ = (B/δ)²` by `LEMLeftLinkedStayFull` applied with the
+congruence `δ`; `(Sᵢ ∩ B²)/δ` is proper by stability; `LEMLinkedImpliesBACenter` then
+contradicts `B/δ` being BA and center free. Also state "stable under `δ`" when unfolding
+irreducibility — it is the only thing in that definition doing work here.
+
+### The other four proofs are sound
+
+**`LEMCenterCanBePushedIn`** (1958). Sound. The one real omission: at line 2018,
+`CORIntersectionPCLinearIsGood` returns *empty, or of size 1, or full*, and the proof takes
+"full" without a word. Empty is excluded by `R ∩ (B₁×B₂) ≠ ∅`. **Size 1 needs two lines**: the
+class would have to be `[c]_δ`, since `c` has an `R`-partner in `B₁`; and then `B₂'' = B₂' ∩ E`
+either has `E = [c]_δ`, putting `c` in `B₂''` against the minimal choice of `B₂'`, or misses
+`[c]_δ` entirely, so `R ∩ (B₁ × B₂'') = ∅` against `B₂ ⊆ B₂''`. Smaller items: the "otherwise
+we are done" opening; `S' = (B₁/σ)^{|A₁|}` holds because a *single* good `c` witnesses every
+tuple; `S'' ≠ ∅` is where `R ∩ (B₁×B₂) ≠ ∅` is spent; and line 2014's `≠` should be `⊄`.
+
+**`LEMLeftLinkedStayFull`** (2032). Sound. Case 2's restriction to `n = 2^k` is not cosmetic:
+`Rₙ = (R∘R^{-1})^n` is symmetric, so `R_{2n} = Rₙ ∘ Rₙ^{-1}`, which is what makes
+`LeftLinked` of the auxiliary `S` computable in one step. Unstated: `S` is subdirect over
+`(B₁/σ) × proj₂(S)`, not over `(B₁/σ) × A₂`; and `Rₙ ⊇ 0_{A₁}` by subdirectness, which is what
+makes `Rₙ ∩ B₁² ≠ ∅`.
+
+**`LEMCongruenceEitherCutOrDoNothing`** (2086). Sound; a nicely organised proof, (2) → (1),
+(4) → (3). It leans throughout on **`B² ⊆ ω`** — every `Bᵢ` in the chain lies inside a single
+block of its own dividing congruence — which is never stated and is used at least four times.
+Also unstated: `|B/σ| > 1`, and that a path witnessing linkedness must contain a single step
+crossing `σ`-classes.
+
+**`LEMFactorByDelta`** (2229). Sound. Case 2 is a chain of six steps of which the source
+states three. The three it omits: `(δ ∩ B²)/σ ≠ B²/σ` holds because `R ∘ R^{-1}` *is*
+`(δ ∩ B²)/σ`, so Case 2's hypothesis says exactly that; `(δ'' ∩ B²)/σ ≠ B²/σ`, needed before
+`LEMCongruenceEitherCutOrDoNothing`(2) can be applied to `δ''`, follows from `σ ∩ B² ⊆ δ''`
+and `|B/δ''| > 1`; and `ω ∖ δ'' ≠ ∅`, needed by `LEMBridgeBetweenCongruences`, follows from
+`B² ⊆ ω` with `|B/σ| > 1`. Finally the **"Moreover" clause is never argued** — it holds because
+Case 2 gives `δ ∩ B² ⊆ δ' ∩ B² = σ ∩ B²` by part (3) of the previous lemma, and Case 1 never
+produces the type-`T` alternative.
