@@ -143,3 +143,73 @@ without the surrounding text or, in D3's case, without checking that the cycle c
 
 Neither refuted claim would have survived ten minutes of mechanical checking. That is the
 argument for doing this pass before writing a line of the rendering.
+
+---
+
+# Adversarial reading of §5 — first pass
+
+§5 is 3 144 lines, 44 statements with proofs, 152 proof-dependency edges. This records a
+first pass: mechanical triage over the whole section, then close reading of the highest-risk
+proofs. It is **not** a complete adversarial reading — see "what remains" below.
+
+## Mechanical results over the whole section
+
+**The dependency graph is acyclic** (already established in refuting D3). So §5 can be
+written in dependency order, and there is no hidden simultaneous induction to untangle.
+
+**Four hedges, total**, in thirteen printed pages:
+
+| line | text | in | obligation |
+|---|---|---|---|
+| 146 | "For `T = BA` it is straightforward" | `LEMBACenterSImplyFactor` | supply the BA case |
+| 177 | "For `T = S` just repeat the same proof **word to word** replacing BA by S" | `LEMBACenterSOnPowerImplies` | check that Zhuk 2021 Lem 6.24's proof really does transfer from BA to S |
+| 1560 | "This case can be considered in the same way as Case 2" | the lemma preceding `LEMNoBridgeBetweenDifferentTypes` | write the case out |
+| 2428 | "The inclusion `⊆` is obvious" | `LEMFactorByDelta` region | one line, but write it |
+
+That is an unusually low density — for comparison the same regex over Brady's notes fires
+many times per page. It is consistent with the impression that 2404 is careful prose, and it
+means the rendering's job in §5 is mostly *expansion*, not repair.
+
+## Closely read, and clean
+
+**`LEMPreserveLinkdness` and its chain.** Flagged in the original survey on the grounds that
+the workhorse `LEMPreserveLinkdnessOneStepAUX` assumes both `R ∩ (B₁×C₂) ≠ ∅` and
+`R ∩ (C₁×B₂) ≠ ∅`, while the target lemma assumes only `R ∩ (B₁×B₂) ≠ ∅`. **Not a defect** —
+the flag conflates AUX with `LEMPreserveLinkdnessOneStep`, which is what the four-line proof
+actually invokes, and which needs only `R ∩ (B₁×B₂) ≠ ∅` and `S ∩ (C₁×B₂) ≠ ∅`.
+
+The four-line proof is correct, and unpacks to a two-phase argument our rendering should
+write out. Decompose both multi-type reductions into chains by `LEMMultiTypeStillStable`.
+*Phase 1*: shrink coordinate 1 along its chain with `B₂` fixed; at each step the needed
+`R ∩ (B₁⁽ʲ⁾ × B₂) ≠ ∅` is the previous step's conclusion, and the needed
+`S ∩ (B₁⁽ʲ⁺¹⁾ × B₂) ≠ ∅` follows from `S ∩ (C₁×C₂) ≠ ∅` by monotonicity, since
+`C₁ ⊆ B₁⁽ʲ⁺¹⁾` and `C₂ ⊆ B₂`. This yields `R ∩ (C₁ × B₂) ≠ ∅`. *Phase 2*: the same on the
+transpose `R⁻¹`, whose rectangular closure is `S⁻¹`, shrinking coordinate 2 with `C₁` fixed —
+legitimate because `C₁ ⋘ A₁`, by `LEMMultiTypeStillStable` plus transitivity of `⋘`.
+
+I also checked that `OneStep`'s own proof discharges AUX's two mixed hypotheses. It does, both
+by monotonicity: `R ∩ (B₁ × C₂') ⊇ R ∩ (B₁ × B₂) ≠ ∅` since `B₂ ⊆ C₂'`, and
+`R ∩ (C₁ × B₂') ≠ ∅` by construction. The `C₂', B₂'` themselves exist by walking the ⋘-chain
+from `A₂` down to `B₂` and taking the first place `R ∩ (C₁ × ·)` becomes empty, the top being
+nonempty by subdirectness.
+
+**`CORReverseHomomorphism`.** Clean. The projection `f₁ : R → A₁` is surjective by
+subdirectness — used silently — and `f₁⁻¹(C₁) = R ∩ (C₁ × A₂ × ⋯ × Aₙ)`. Note its type list is
+`{BA, C, S, L, D}` where the stable-intersection theorem uses `{BA, C, S, L, PC}`; harmless,
+since `D` subsumes `L` and `PC`, but the rendering should fix one convention.
+
+**`LemAbsorptionImpliesEssential`.** Not a proof at all — it is the Barto–Kazda criterion,
+cited to *Deciding Absorption* Prop 2.14 and Zhuk 2021 Lem 3.2. My triage flagged it only
+because the parser attached the *following* lemma's proof to it.
+
+## What remains
+
+The pass above touched roughly a dozen of the 44 proofs and read perhaps six adversarially.
+The outstanding item is **`LEMIntersectionPCLinearIsGood`** (line 623): a 292-line proof with
+20 distinct citations, by a wide margin the largest and most connected in §5, and the one that
+`LEMTwoStableIntersection` leans on in its S-type and mixed-type cases. Nothing in the
+mechanical triage suggests it is wrong, but nothing has checked it either. It should be read
+in one sitting, with its citations' hypotheses discharged one at a time.
+
+Also outstanding: §5.4 (`SUBSECTIONIrreduciblePCOrLinear`, lines 1022–1736) and §5.5 (types
+interaction, 1736–1928), neither of which has been opened.
