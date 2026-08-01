@@ -143,6 +143,95 @@ of an equivalence relation either coincide or are disjoint.
 
 ---
 
+## D6 — `LEMBridgeFromRelation` applied without its third hypothesis
+
+**The gap.** `LEMBridgeFromRelation` requires, besides subdirectness and rectangularity of the
+first and last variables, that there exist `(b₁,ā,aₙ)` and `(a₁,ā,bₙ)` in `R` with
+`(a₁,ā,aₙ) ∉ R`. The proof of `LEMConnectedProperties`(a) invokes it for every constraint
+along a path and never discharges that hypothesis.
+
+**It can fail.** Machine-checked witness, `R = {(x,z,y) ∈ ℤ₄ × ℤ₂ × ℤ₄ : x ≡ z ≡ y (mod 2)}`:
+subdirect; `Con₁(R,1)` is congruence mod 2 and coordinate 1 is rectangular; and the third
+hypothesis is unsatisfiable. The construction then yields
+`δ(x₁,x₂,y₁,y₂) = ∃z. R(x₁,z,y₁) ∧ R(x₂,z,y₂)`, whose projection onto the first two
+coordinates is *equal to* `Con₁(R,1)` rather than properly containing it — so `δ` is not a
+bridge, condition (3) of the bridge definition failing. The lemma is genuinely inapplicable
+and genuinely necessary.
+
+**The repair: cruciality supplies the hypothesis.**
+
+*Lemma.* Let `R` be an `n`-ary relation for which the third hypothesis fails at coordinates
+`1` and `n`. Then `R` is the conjunction of its two projections:
+`R = {(x,ā,y) : (x,ā) ∈ pr_{[n-1]}(R) and (ā,y) ∈ pr_{[n]∖{1}}(R)}`.
+
+*Proof.* `⊆` is immediate. For `⊇`: from `(a₁,ā) ∈ pr_{[n-1]}(R)` get `bₙ` with
+`(a₁,ā,bₙ) ∈ R`; from `(ā,aₙ) ∈ pr_{[n]∖{1}}(R)` get `b₁` with `(b₁,ā,aₙ) ∈ R`. Failure of
+the hypothesis is exactly the assertion that `(a₁,ā,aₙ) ∈ R`. ∎
+
+*Corollary.* A constraint that is crucial in a reduction satisfies the third hypothesis at
+every pair of its coordinates.
+
+*Proof.* Otherwise the constraint is equivalent to the conjunction of its two projections,
+each of which is strictly weaker than it. Weakening it therefore replaces it by constraints
+whose conjunction defines the same relation, so the weakened instance has the same solution
+set — and in particular still has no solution in the reduction, contradicting cruciality. ∎
+
+On the witness: `pr₁,₂(R) = {(x,z) : x ≡ z}` and `pr₂,₃(R) = {(z,y) : y ≡ z}`, whose
+conjunction is `R`. Exactly the degenerate shape the corollary rules out.
+
+*Our rendering:* carry criticality explicitly. Either add "every constraint relation is
+critical" to the definition of a connected instance, or state `LEMConnectedProperties` for
+crucial instances and cite the corollary. The second is cheaper and matches every call site.
+This is the notion 2404 inherited from `LEMCrucialMeansIrreducible` and then stopped using.
+
+---
+
+## D7 — two gaps in the main induction
+
+### (i) The endgame proves *connected*, but (1c) demands *linked*. **CONFIRMED, repaired.**
+
+Both endgames of Case 2 finish with "…which means that `𝓘` is connected and satisfies (1b) if
+its solution set is subdirect or (1c) otherwise". But (1c) requires a **linked** connected
+subinstance, and only connectedness was established.
+
+*Repair, via irreducibility.* Suppose `𝓘` is connected with non-subdirect solution set. Take
+`𝓙 = Υ = 𝓘`, legitimate since an instance is a weakening, hence an expanded covering, of
+itself. It remains to see `𝓘` is linked. If it were not, then `𝓘` itself would witness the
+failure of irreducibility: its variables are among its own, each constraint is the projection
+of itself onto all its variables, it is not fragmented (connectedness of the
+constraint-adjacency graph forces constraints to share variables), it is not linked, and its
+solution set is not subdirect — precisely conditions (i)–(v). Since `𝓘` is irreducible by
+standing hypothesis, it is linked. ∎
+
+Two lines, and it explains why irreducibility is a hypothesis of the theorem at all.
+
+### (ii) Case 1 derives (1c) for the wrong reduction. **CONFIRMED, open.**
+
+Case 1 obtains a 1-consistent `D⁽²⁾ ≤_T D⁽¹⁾`, shows `𝓘` is crucial in `D⁽²⁾`, and closes with
+"applying the inductive assumption to `D⁽²⁾` we derive the required conditions".
+
+Conditions (1a) and (1b) mention no reduction and transfer verbatim. Condition (1c) does:
+it asserts an expanded covering `𝓙` that is **crucial in the ambient reduction**. The
+inductive hypothesis delivers `𝓙` crucial in `D⁽²⁾`; the goal needs it crucial in `D⁽¹⁾`.
+These differ, and the containment goes the wrong way — an instance with no solution in the
+smaller `D⁽²⁾` may well have one in `D⁽¹⁾`.
+
+Nor is the discrepancy harmless: part (2) of the theorem consumes (1c) precisely through the
+cruciality clause, in the `ζ` construction that produces `E₁, E₂`.
+
+I have not found a repair. Two directions worth trying, in order:
+
+1. **Weaken `𝓙` to cruciality in `D⁽¹⁾`.** Needs `𝓙⁽¹⁾` to have no solution. `𝓘⁽¹⁾` has none,
+   but `𝓙` is only an expanded covering, and by (p1) collapsing it gives a *weakening* of `𝓘`,
+   which may be solvable where `𝓘` is not. So this does not go through as stated.
+2. **Restructure the induction** so that (1c) does not mention a reduction, or mentions the
+   trivial one. This changes what part (2) may assume, and the `ζ` construction has to be
+   rechecked against the weaker form.
+
+**This is the one item so far that may need real work rather than assembly.**
+
+---
+
 ## Status
 
 | | fixable? | needs new mathematics? |
@@ -150,3 +239,6 @@ of an equivalence relation either coincide or are disjoint.
 | D2 | yes, one line | no |
 | D4 | yes | no — a citation Zhuk dropped, plus a reduction |
 | D8 | yes | no — short, but the proof is genuinely absent from the source |
+| D6 | yes | no — cruciality supplies the missing hypothesis |
+| D7(i) | yes | no — two lines, via irreducibility |
+| D7(ii) | **not yet** | **possibly** — the one open item |
