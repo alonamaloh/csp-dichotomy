@@ -494,6 +494,72 @@ at line 1394.
 
 ---
 
+## D15 — `LEMMainExistenceOfIrreducibleCongruence`: read `δ` for `σ`, and restore stability
+
+**The step.** `δ ⊇ σ` maximal with `|B/δ| > 1`; `B/δ` BA and center free; suppose
+`δ = S₁ ∩ ⋯ ∩ S_k` with each `Sᵢ ⊋ δ` **stable under `δ`** (this is the definition of
+irreducible at `main.tex:1237`, and the source drops the stability clause). Pick `i` with
+`B² ⊄ Sᵢ`, which exists because otherwise `B² ⊆ δ`.
+
+*Properness.* `(Sᵢ ∩ B²)/δ ⊊ (B/δ)²`. Indeed, stability under `δ` makes `Sᵢ` a union of
+products of `δ`-blocks, so if every pair of `δ`-blocks meeting `B` contained a point of
+`Sᵢ ∩ B²`, then `Sᵢ` would contain every such product and hence `B² ⊆ Sᵢ`. ∎
+
+*Linkedness.* `LeftLinked(Sᵢ)` is a congruence containing `Sᵢ ⊋ δ ⊇ σ`, so by maximality of
+`δ` it collapses `B`, i.e. `B² ⊆ LeftLinked(Sᵢ)`, i.e.
+`(LeftLinked(Sᵢ) ∩ B²)/δ = (B/δ)²`. `LEMLeftLinkedStayFull` **with the congruence `δ`** — its
+hypothesis "`B₁/σ` is BA and center free" is met by `B/δ`, which is exactly what was proved two
+lines earlier — gives `LeftLinked(Sᵢ ∩ B²)/δ = (B/δ)²`.
+
+*Conclusion.* `(Sᵢ ∩ B²)/δ` is a proper linked subdirect relation on `B/δ`, so
+`LEMLinkedImpliesBACenter` yields a proper nonempty BA or central subuniverse of `B/δ`,
+contradicting the second line. Hence `δ` is irreducible. ∎
+
+The source writes `σ` for `δ` at both lines 2220 and 2222 while stating the conclusion for
+`B/δ`; with `σ` the properness step has no support and the conclusion does not match the
+relation's domain.
+
+## D16 — `LEMLInearOnTheTopIsEasy`: the bijection
+
+**Setting.** `σ` linear on `A ∈ 𝒱ₙ`, `σ* = A²`; `ζ ≤ A × A × ℤ_p` with `proj_{1,2}(ζ) = A²`
+and `(a₁,a₂,b) ∈ ζ ⟹ ((a₁,a₂) ∈ σ ⟺ b = 0)`. Fix `a ∈ A` and put `ξ(x,z) = ζ(x,a,z)`.
+
+**Step 1.** `ξ^{-1}(0) = [a]_σ`, immediately from the displayed implication in both directions.
+
+**Step 2.** `ξ ≤_sd A × ℤ_p`. `proj_1(ξ) = A` because `proj_{1,2}(ζ) = A²`. `proj_2(ξ)` is a
+subuniverse of `ℤ_p` containing `0`; the subuniverses of `(ℤ_p; x₁+⋯+xₙ)` are the affine
+subspaces, i.e. points and the whole group, so `proj_2(ξ)` is `{0}` or `ℤ_p`. If `{0}` then
+`ξ^{-1}(0) = A`, so `σ = A²` by Step 1 — impossible, since an irreducible congruence is proper
+(convention C4).
+
+**Step 3.** `ξ` is not linked. `ℤ_p` has no nontrivial BA or central subuniverse
+(`main.tex:3484`), and neither does `A`… — rather than assume that, argue: if `ξ` were linked
+then `LeftLinked(ξ)` would be `A²`, so `RightLinked(ξ) = ℤ_p²`; being a congruence of the
+simple algebra `ℤ_p` that is all of `ℤ_p²` it merges everything, and since `ξ` is subdirect and
+linked, `LEMLinkedImpliesBACenter` forces `ξ = A × ℤ_p` unless `A` or `ℤ_p` has a proper
+nonempty BA or central subuniverse. `ξ = A × ℤ_p` gives `ξ^{-1}(0) = A` and again `σ = A²`.
+`ℤ_p` has none. So a proper nonempty BA or central subuniverse of `A` would remain as the only
+escape — and that is excluded by `σ* = A²`: a proper nonempty `D <_{BA,C} A` would make
+`0_A ∪ D²` … **this last exclusion is the one step I have not written; see the risk register.**
+
+**Step 4.** With `ξ` not linked, its right linkedness congruence on `ℤ_p` is proper, hence
+trivial by simplicity, so distinct `z` have disjoint `ξ`-fibres; with `proj_1(ξ) = A` and
+`proj_2(ξ) = ℤ_p` the fibres partition `A` into `p` blocks, one of which is `[a]_σ`. So `ξ` is
+the graph of a surjection `A ↠ ℤ_p` with `[a]_σ` over `0`.
+
+**Step 5.** The bijection is an isomorphism **of algebras** only once the basic operation of
+`A/σ` is known to act as `x₁ + ⋯ + xₙ`. That is the proposition of convention item C1
+(`NOTES-conventions.md`), which the source never states.
+
+## D17 — open
+
+Case 1 of `LEMMaximalMultExtention` concludes `C₁/σ ∩ B₂/σ ≠ ∅` from the fact that a
+BA-and-central `E <_S B₁/σ` meets each of them. Two sets meeting a third need not meet. I have
+no repair and no counterexample. **Do not write `LEMMaximalMultExtention` until it is
+settled.**
+
+---
+
 ## Status
 
 | | fixable? | needs new mathematics? |
@@ -509,3 +575,6 @@ at line 1394.
 | D12 | yes | no — the statement was wrong, not the mathematics; add pair-reflexivity |
 | D13 | yes | no — same hypothesis as D12 |
 | D14 | yes | no — the citation needed the subrelation form of absorption-preserves-linkedness |
+| D15 | yes | no — read `δ` for `σ`, and restore the stability clause |
+| D16 | yes | no — but four steps must be written, and one of them (Step 3) is not finished |
+| D17 | **unknown** | **open** |
