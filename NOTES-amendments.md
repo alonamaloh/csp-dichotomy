@@ -22,11 +22,14 @@ rendering does not silently differ from the source.
 | D12 | `LEMNiceBridgeGivesAbelianGroup` is **false**; `ℤ₃`, `δ = {x₁−x₂+x₃−x₄ = 0}` satisfies every hypothesis and no conclusion | add pair-reflexivity, which is exactly `φ = id` in the structure `δ = {φ(x₁−x₂) = x₃−x₄}`, and the broken step `δ ⊆ δ∘δ` becomes one line | no — the statement was wrong, not the mathematics | V, R |
 | D13 | `LEMNontrivialReflexiveBridgeImplies` asserts linkedness of `proj_{1,2}(δ ∩ B⁴ ∩ σ*×σ*)` from an inclusion that bears on a different hypothesis | same pair-reflexivity, plus `σ* ⊆ proj_{1,2}(δ)` by minimality of `σ*` | no | R |
 | D14 | Case 1 of `LEMPCCongruencePropertyInductiveStep` cites the **box** form of absorption-preserves-linkedness for a **subrelation** restriction | use the subrelation form: `W ≤_sd P×A` linked, `∅ ≠ W' ≤_T W` ⟹ `W'` linked. Proved from `LEMBACenterSImplyPPDefinition`, `LEMBACenterImplyIntersection`, `LEMBACenterSImplyFactor` and the elementary fact that `0_C` never absorbs `C²` | no | R |
+| D15 | `LEMMainExistenceOfIrreducibleCongruence` factors the relation by `σ` where the argument needs `δ`, and the properness that step requires is unsupported | read `δ` for `σ` in the last four lines, and restore the "stable under `δ`" clause the source drops when unfolding irreducibility — that clause is exactly what makes the factored relation proper | no | V, R |
+| D16 | `LEMLInearOnTheTopIsEasy` asserts "`ξ` is a bijective relation", which is the entire content of the lemma | five steps, four of them written; and the isomorphism is of *algebras*, so it also needs convention item C1 | no, but **Step 3 is unfinished** | V, R |
+| D17 | Case 1 of `LEMMaximalMultExtention` concludes that two sets meet from the fact that each meets a third | **none found** | **open** | V, R |
 | D3 | claimed citation cycle in §5 | **refuted** — 58 statements, 152 edges, acyclic | — | V |
 | D10 (orig) | recursion-depth bound not established | **refuted** — the precondition is in the prose, discharged at the call site | — | V |
 | D10 (now) | the arity `n^{n!}` in the special-WNU lemma | **moot** — state it as "there exist `N` and a special idempotent WNU of arity `N` in `Clo(w)`" | — | V |
 
-**None of the eleven confirmed defects needs new mathematics.** Three needed a citation the
+**None of the fourteen confirmed defects needs new mathematics, and thirteen are repaired.** Three needed a citation the
 later paper dropped (D4, D14, C10), one was a typo (D11), one a false statement with a live
 counterexample (D12), and the rest were omitted steps.
 
@@ -118,30 +121,18 @@ Three different kinds of thing, and only the second is a live mathematical quest
 
 ### (a) Not read
 
-| | proofs | read |
-|---|---|---|
-| §5.2 Subuniverses of types BA, C, S (71–346) | 6 | all |
-| §5.3 Intersection property (347–1021) | 6 | 2 in full, `LEMSelfIntersectionPC` in part; **`LEMTotallySymmetricWithoutBACenter`, `LEMTotallySymmetricRelationForIrreducible`, `CORParallelogramPropertyForD` not read** |
-| §5.4 PC or linear congruences (1022–1735) | 9 | all |
-| §5.5 Types interaction (1736–1927) | 2 | all |
-| §5.6 Factorization of strong subalgebras (1928–2296) | 5 | **none** |
-| §5.7 Remaining statements (2297–3144) | 16 | **none** |
-
-**24 of §5's 44 proofs are unread**, about 1 500 of its 3 144 lines. Outside §5: `main.tex`'s
-CSP half — instances, coverings, cruciality, the main induction, the algorithm — has been read
-only where D6, D7 and D8 touch it, and §4 (`XYSymmetric.tex`, 1 640 lines) is out of scope by
-decision, with D10 declared moot.
-
-Two things *are* known about the unread parts, both mechanically: the proof-dependency graph
-over all three files is acyclic, and no statement anywhere in the source except
-`CORPropagationModuloCongruence` is cited while being neither proved nor attributed. So
-whatever is wrong in §5.6 and §5.7, it is not a missing statement and it is not a circularity.
-It would have to be a wrong or incomplete argument — which is exactly what §5.4 turned out to
-contain, and §5.4 is the only subsection read at full intensity that did.
+**§5 is now read in full** — all 44 proofs across all seven subsections. What remains unread is
+outside §5: `main.tex`'s CSP half (instances, coverings, cruciality, the main induction, the
+algorithm) has been read only where D6, D7 and D8 touch it, and §4 (`XYSymmetric.tex`, 1 640
+lines) is out of scope by decision, with D10 declared moot.
 
 ### (b) Read, and unresolved
 
-One item, and it is small: **does `LEMIntersectionPCLinearIsGood` use the minimality of its
+**D17** is the one open mathematical question: Case 1 of `LEMMaximalMultExtention`. And **D16
+Step 3** is unfinished — excluding a proper nonempty BA or central subuniverse of `A` under
+`σ* = A²`.
+
+One further item, small: **does `LEMIntersectionPCLinearIsGood` use the minimality of its
 chains `k, ℓ`?** The proof fixes minimal chains for `B ⋘ A` and `C ⋘ A` and I could not find a
 step that consumes minimality; a shorter chain would only make the induction measure smaller.
 Either identify the use or drop the hypothesis. Nothing depends on the answer for
