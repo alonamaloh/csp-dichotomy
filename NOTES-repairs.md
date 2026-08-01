@@ -467,9 +467,10 @@ by hypothesis (3). Write
 
   `W(x₁,x₂,x₃) = ∃x₄\, δ(x₁,x₂,x₃,x₄) ∧ A(x₁) ∧ A(x₂) ∧ A(x₃) ∧ A(x₄)`
 
-with `A` the full unary relation, and replace `A` by `B` one occurrence at a time. Each
-replacement is `LEMBACenterSImplyPPDefinition`, and `≤_{BA}` and `≤_C` are transitive
-(a central subuniverse of a central subuniverse is central), so
+with `A` the full unary relation, and replace `A` by `B`. `LEMBACenterSImplyPPDefinition`
+replaces *each appearance* of a relation, so this is a **single** application — no transitivity
+of `≤_{BA}` or `≤_C` is needed, which is worth arranging, since transitivity of `≤_C` is one of
+the things Zhuk 2021 asserts in passing. Hence
 
   `W' := proj_{1,2,3}(δ ∩ B⁴) ≤_T W`.
 

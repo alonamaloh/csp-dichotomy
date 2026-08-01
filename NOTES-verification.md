@@ -759,3 +759,54 @@ first pass found no defects at all, and it is worth saying why: §5.4 is the onl
 that manipulates bridges as objects in their own right rather than consuming them, and every
 one of the four defects is about which auxiliary properties survive a construction —
 symmetrisation, restriction to a block, restriction to a strong subuniverse.
+
+---
+
+# Two closing checks
+
+## Is `CORPropagationModuloCongruence` the only one? **Yes.**
+
+D2 was found by checking §2.3's statements against the paper's own duplication convention. The
+same check now run over the whole source, mechanically: parse every labelled
+`lem`/`cor`/`thm`/`prop`, record whether it carries a `\cite` attribution in its head or is
+followed by a proof — counting the `\newtheorem*` duplicates in `StrongSubalgebras.tex` and
+`XYSymmetric.tex` as proofs — and intersect with the set of labels actually `\ref`ed.
+
+**81 labelled statements; 9 flagged; 8 cleared by hand:**
+
+- `CORPropagateFromFactor`, `CORPropagateMultiplyByCongruence`, `CORPropagateToRelations`,
+  `THMMainStableIntersection`, `CORMainStableIntersection` — all restated and proved in §5
+  (`StrongSubalgebras.tex:2467, 2493, 2525, 2594, 2660`).
+- `THMMainTheoremOnXYSymmetric` — restated in `XYSymmetric.tex:396`.
+- `corTaylorEquivalentConditions` — every clause carries its own inline `\cite`; it is an
+  assembly of attributions, not a claim.
+- `LEMBACenterImplyIntersection` — preceded by *"The above lemma implies an easier claim"*; a
+  one-line consequence of `LEMBACenterSImplyPPDefinition` (define `C` by `A(x) ∧ C(x)` and
+  replace `A` by `B`), so it has a stated derivation rather than a proof block.
+
+**`CORPropagationModuloCongruence` is the sole survivor.** That matters beyond D2: the check
+covers §5.6 and §5.7, which nobody has read, so whatever is wrong in those 1 217 lines, it is
+not another statement asserted from nowhere.
+
+## The `T = S` hedge at line 177. **Discharged, and the source undersells its own citation.**
+
+`LEMBACenterSOnPowerImplies` (`B <_T A^n` with `T ∈ {BA,C,S}` implies some `C <_T A`) is
+proved by: *"For `T ∈ {BA,C}` see Lemma 6.24 in \cite{zhuk2021strong}. For `T = S` just repeat
+the same proof word to word replacing BA by S."* I had this on the obligations list as "check
+that the proof really does transfer". It does, and no repetition is needed. Zhuk 2021
+Lemma 6.24 reads:
+
+> Suppose `R` is a nontrivial strong subuniverse of `A₁ × ⋯ × Aₙ` of type `T ≠ PC`. Then there
+> exists `i ∈ [n]` such that `Aᵢ` has a nontrivial subuniverse of type `T`.
+
+Already general in `T`, already for a product of distinct algebras — the power is a special
+case. And its proof is **type-uniform**: it takes `pr₁(R)` if that is proper, otherwise a fibre
+`R' = {(a₂,…,aₙ) : (a₁,…,aₙ) ∈ R}`, and neither construction mentions the type; the type only
+enters through Lemmas 6.1 and 6.9, which say projections and fibres preserve BA and central
+respectively. So a single run of the proof produces one witness that carries *every* strong
+type `R` has at once. If `R` is simultaneously BA and central — which is what `S` means
+(`main.tex:1522`) — the witness is too.
+
+*Our rendering:* state 6.24 once, for an arbitrary set of types closed under nothing in
+particular, and read off `BA`, `C` and `S` together. The hedge disappears rather than being
+discharged three times.
