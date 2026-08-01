@@ -393,3 +393,151 @@ C10 resolves in the affirmative but is not a one-line legislation. It costs one 
 lemma with a proof (the elimination), one restatement (the `∅` alternative), two discharge
 obligations per call site, and one genuinely missing three-line argument repeated at three
 sites.
+
+---
+
+# Adversarial reading of §5.4 — `SUBSECTIONIrreduciblePCOrLinear`
+
+`StrongSubalgebras.tex:1022–1735`. Five statements with proofs, of which two are imported from
+Hobby–McKenzie. Read line by line against the definitions in `main.tex:1185–1400`. This first
+instalment covers `LemBridgeEquivalentToAbelianness` (1082), `LEMNiceBridgeGivesAbelianGroup`
+(1103), `LEMBlockOfGoodBridgeDoesNotHaveBAC` (1144), `LEMNontrivialReflexiveBridgeImplies`
+(1247) and `LEMLinearEquivalentConditions` (1346). `LEMPCCongruencePropertyInductiveStep`
+(1372–1735) is separate.
+
+**Three defects, and they are one defect.** All three are cured by a single missing property
+of the bridge, which the one place that actually calls this chain supplies for free.
+
+## D11 — the symmetrisation formula at line 1154 is degenerate as written. **CONFIRMED**
+
+`LEMBlockOfGoodBridgeDoesNotHaveBAC` opens by symmetrising `δ`:
+
+```
+1154  \sigma(x_1,x_2,x_3,x_4) = \exists x_5 \exists x_6\;
+1155  \delta(x_1,x_2,x_5,x_5)
+1157  \wedge \delta(x_3,x_4,x_5,x_6).
+```
+
+Clause (4) of the definition of a bridge (`main.tex:1258`) is *"`(a₁,a₂,a₃,a₄) ∈ δ` implies
+`(a₁,a₂) ∈ σ₁ ⟺ (a₃,a₄) ∈ σ₂`"*. The first conjunct has `x₅` in both of the last two places,
+so `(x₅,x₅) ∈ 0_A` forces `(x₁,x₂) ∈ 0_A`, i.e. `x₁ = x₂`. Hence `proj_{1,2}(σ) ⊆ 0_A`, and
+clause (3) demands `proj_{1,2}(σ) ⊋ σ₁ = 0_A`. **The relation defined is never a bridge**, for
+any `σ₁`, and every later line of the proof — `(a,b,a,b) ∈ σ`, `ω = proj_{1,2}(σ)` linked —
+is false of it.
+
+It is a one-character typo. The intended relation is `δ ∘ δ^{-1}`,
+
+  `σ(x₁,x₂,x₃,x₄) = ∃x₅∃x₆ δ(x₁,x₂,x₅,x₆) ∧ δ(x₃,x₄,x₅,x₆)`,
+
+and the source writes exactly that, correctly, 210 lines later at `1365–1367`, in the proof of
+`LEMLinearEquivalentConditions`, for the same purpose.
+
+## D12 — `LEMNiceBridgeGivesAbelianGroup` is false as stated. **CONFIRMED, machine-checked**
+
+Statement (line 1103): `σ` a congruence on `A`, `δ` a bridge from `σ` to `σ` with
+`proj_{1,2}(δ) = δ̃ = A²` and `δ(x₁,x₂,x₃,x₄) = δ(x₃,x₄,x₁,x₂)`. Conclusion: there is an
+abelian group `G` with `(A/σ; δ/σ) ≅ (G; x₁−x₂ = x₃−x₄)`.
+
+**Counterexample.** `A = ℤ₃` with `w(x₁,…,x₄) = x₁+x₂+x₃+x₄ (mod 3)` — idempotent since
+`4 ≡ 1`, and a special WNU, so `A ∈ 𝒱₄`. Take `σ = 0_A` and
+
+  `δ = {(x₁,x₂,x₃,x₄) ∈ ℤ₃⁴ : x₁ − x₂ + x₃ − x₄ = 0}`.
+
+Verified by exhaustion: `δ` is a subuniverse of `A⁴`; clause (4) holds; `proj_{1,2}(δ) = A²`;
+`δ̃ = A²`; `δ` is symmetric; and **none of the six bijections `ℤ₃ → ℤ₃` carries `δ` to
+`{x₁−x₂ = x₃−x₄}`**. Since every abelian group of order 3 is `ℤ₃`, no `G` works.
+
+**What is true.** Factor out the diagonal: `δ` contains all `(a,a,b,b)`, so it is the preimage
+of some `K ≤ G × G` under `(x₁,x₂,x₃,x₄) ↦ (x₁−x₂, x₃−x₄)`. Clause (4) makes `K` meet
+`G × 0` and `0 × G` only at the origin, and subdirectness makes it a graph, so
+`K = {(u, φ(u))}` for an automorphism `φ`, i.e.
+
+  `δ = {(x₁,x₂,x₃,x₄) : φ(x₁−x₂) = x₃−x₄}`,
+
+and the symmetry hypothesis says exactly `φ² = id`. Zhuk's conclusion is the case `φ = id`;
+the counterexample is `φ = −id`, which is why it needs `p` odd.
+
+Where the proof breaks: *"Composing the bridge `δ` with itself we get a bridge `δ₀ ⊇ δ`."*
+`δ ∘ δ = {φ²(x₁−x₂) = x₃−x₄} = {x₁−x₂ = x₃−x₄}`, which for `φ = −id` does **not** contain `δ`.
+The closing line *"It remains to show that `δ = δ₀`"* counts `|δ| = |δ₀| = |A|³` and needs the
+containment it does not have.
+
+## D13 — `LEMNontrivialReflexiveBridgeImplies`: linkedness is asserted, not shown. **CONFIRMED**
+
+Line 1273 puts `δ' = δ ∩ B⁴ ∩ (σ* × σ*)` for `B` a block of `LeftLinked(σ*)` and says
+*"Since `δ̃ ⊇ σ*`, `δ'` satisfies all the conditions of Lemma
+\ref{LEMBlockOfGoodBridgeDoesNotHaveBAC}"*. Two of those conditions are that
+`proj_{1,2}(δ')` properly contains `0_B` and is **linked**. What `δ̃ ⊇ σ*` gives is the third
+condition, `proj_{1,2}(δ') ⊆ δ̃'`. Nothing offered bears on linkedness.
+
+It does not follow. `proj_{1,2}(δ') = {(x₁,x₂) ∈ σ*∩B² : ∃(x₃,x₄) ∈ σ*∩B², δ(x₁,x₂,x₃,x₄)}`,
+and the witness `(x₃,x₄)` supplied by minimality of `σ*` lies in `σ*` but in no particular
+block. If it lands outside `B` for every choice, `proj_{1,2}(δ')` collapses to `0_B` and `δ'`
+is not even a bridge.
+
+The same gap recurs at line 1290, where `LEMNiceBridgeGivesAbelianGroup` is applied to
+`δ ∩ B⁴` and needs `proj_{1,2}(δ ∩ B⁴) = B²`.
+
+## The single cure
+
+Call a bridge `δ` **pair-reflexive** if `(x₁,x₂) ∈ proj_{1,2}(δ)` implies `δ(x₁,x₂,x₁,x₂)`.
+
+- D13 dies: `σ* ⊆ proj_{1,2}(δ)` by minimality of `σ*` (proof in `NOTES-repairs.md`), so
+  pair-reflexivity puts `(x₁,x₂,x₁,x₂)` in `δ'` for every `(x₁,x₂) ∈ σ*∩B²`, giving
+  `proj_{1,2}(δ') = σ*∩B²` exactly — which is linked precisely because `B` is a block of
+  `LeftLinked(σ*)`. Same for `proj_{1,2}(δ ∩ B⁴) = B²`.
+- D12 dies: pair-reflexivity is `φ = id`, and it also repairs the proof directly —
+  `δ ⊆ δ∘δ` by taking `(y₁,y₂) = (x₁,x₂)`.
+- D11 dies: `δ ∘ δ^{-1}` is pair-reflexive, so the corrected formula delivers what
+  `LEMBlockOfGoodBridgeDoesNotHaveBAC` needs.
+
+And it costs nothing. `LEMNontrivialReflexiveBridgeImplies` is invoked exactly once in the
+whole paper, at line 1368, and the object it is invoked on is
+`δ'(x₁,x₂,x₃,x₄) = ∃x₅∃x₆ δ(x₁,x₂,x₅,x₆) ∧ δ(x₃,x₄,x₅,x₆)` — pair-reflexive by construction.
+`LEMNiceBridgeGivesAbelianGroup` is likewise invoked exactly once, from inside that call.
+
+*Our rendering:* add pair-reflexivity to the hypotheses of
+`LEMNiceBridgeGivesAbelianGroup` and `LEMNontrivialReflexiveBridgeImplies`, and fix the
+formula in `LEMBlockOfGoodBridgeDoesNotHaveBAC`. Nothing downstream moves.
+
+## Clean, with steps to write out
+
+`LEMBlockOfGoodBridgeDoesNotHaveBAC` is otherwise **sound** — I checked it in full, both
+cases, including the `T = BA` and `T = C` splits. Five steps are used without being stated:
+
+1. `δ̃` is reflexive, because `0_A ⊆ proj_{1,2}(δ) ⊆ δ̃` — the first inclusion is clause (3) of
+   the bridge definition. Everything reflexive downstream comes from this.
+2. `proj_{1,2}(σ ∩ E⁴) = ω ∩ E²` for any subuniverse `E`, which is what makes the choice of
+   `E` in Case 1 the right one. It needs `σ(x₁,x₂,x₁,x₂)` for `(x₁,x₂) ∈ ω` — pair-reflexivity
+   again, from the corrected symmetrisation.
+3. The `E` of Case 1 exists. Take the block containing `a` and `b` of the transitive closure
+   of `(ω ∪ ω^{-1}) ∩ D²`, which is a congruence on `D` because the transitive closure of a
+   subalgebra of `D²` is a subalgebra. Maximality of `E` is never used.
+4. The `WLOG` at line 1170 needs `σ̃` symmetric, which holds for `δ̃ ∘ δ̃^{-1}`.
+5. `{a} ∘ ω` is a subuniverse — because `{a}` is one, by idempotence — which is what makes it
+   equal to `A` in Case 2.
+
+The appeal to `CORMainStableIntersection` at line 1214 is **correct but not in the
+corollary's shape**. The three displayed boxes `{a}×B×C×B`, `{a}×C×C×C`, `{a}×C×B×B` are the
+tight boxes of three witnesses; the corollary wants `A` in the freed coordinate. Widening each
+to `{a}×A×C×B`, `{a}×C×C×A`, `{a}×C×A×B` gives its hypothesis (4) with `n = 3`,
+`B_i = A_i = A` (legitimate since `⋘` is reflexive, `main.tex:1598`), and since all three
+types are `C` and `n = 3`, alternatives (ba), (l), (c), (pc) all fail — so hypothesis (3) must
+fail, which is the conclusion. The three witnesses are `(a,b,a,b)`, `(a,a,a,a)` and
+`(a,a,b,b)`.
+
+Two more small things in the same proof: `C' ≤_C C` at line 1226 comes out of
+`LEMBACenterSImplyPPDefinition` as `C' ≤_C A` and needs `LEMBACenterImplyIntersection` to
+land in `C`; and the appeal there to `proj_1(ξ) = A` should be to `{a} ∘ ω = A`, since `C'`
+constrains the fourth coordinate to `B` rather than to `b`.
+
+`LEMNontrivialReflexiveBridgeImplies` is otherwise sound: the uniqueness of `σ*`, the upgrade
+from "every block of `LeftLinked(σ*)` of size > 1 satisfies `B² ⊆ σ*`" to
+`σ* = LeftLinked(σ*)`, and the prime argument (`p·x₁ = p·x₂` is pp-definable from
+`x₁−x₂ = x₃−x₄`, and the resulting `S` contradicts minimality of `σ*`) all check out. Note
+the contradiction is with *minimality of `σ*`*, not with irreducibility directly.
+
+One statement needs a word: `LEMLinkedImpliesBACenter` (line 222) concludes *"there exists a
+BA or central subuniverse on `A` or `B`"*, with no properness. Every algebra is a BA
+subuniverse of itself, so read literally it is vacuous; it is used at line 1282 as though it
+said *proper nonempty*. Same family as convention item C3.
