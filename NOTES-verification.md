@@ -639,3 +639,84 @@ conclusion. But the lemma cannot be *cited* on a non-bridge; the case has to be 
 
 Case 3 is the hedge at line 1560 already on the list, *"This case can be considered in the
 same way as Case 2."*
+
+# Adversarial reading of §5.5 — "Types interaction"
+
+`StrongSubalgebras.tex:1736–1928`. Two statements: `LEMBridgeBetweenCongruences` (1740,
+imported from Zhuk 2020 Lemma 8.19 but proved here) and `LEMTwoStableIntersection` (1780).
+**No defects.** Both are correct. Seven steps are left to the reader, and one case is missing.
+
+## `LEMBridgeBetweenCongruences`
+
+The bridge is `δ(x₁,x₂,y₁,y₂) = ∃z₁∃z₂ σ₁(x₁,z₁) ∧ σ₁(x₂,z₂) ∧ ω(z₁,z₂) ∧ σ₂(z₁,y₁) ∧
+σ₂(z₂,y₂)`. All four clauses check out, and `δ̃ = σ₁ ∘ σ₂` is immediate in both directions
+(`⊇` by taking `z₁ = z₂`, using reflexivity of `ω`).
+
+One omission: clause (4) is an *equivalence*, and the proof establishes only
+`(x₁,x₂) ∈ σ₁ ⟹ (y₁,y₂) ∈ σ₂`. The converse is the mirror argument — `(y₁,y₂) ∈ σ₂` gives
+`(z₁,z₂) ∈ ω ∩ σ₂ = ω ∩ σ₁`, hence `(x₁,x₂) ∈ σ₁` — and it is where the *other* half of the
+hypothesis `ω ∩ σ₁ = ω ∩ σ₂` is spent. Also unstated: clause (3) needs `σ₁ ⊆ proj_{1,2}(δ)`
+as well as the strictness witness, and `(a,b) ∉ σ₂` follows because
+`ω ∖ σ₁ = ω ∖ σ₂`.
+
+## `LEMTwoStableIntersection`
+
+The type-elimination cascade is correct. `T = S` dies by the definition
+(`main.tex:1522`: `C <_S B` iff some `D ≤ C` is simultaneously BA and central in `B`) plus
+`LEMIntersectionPCLinearIsGood`(s); `{BA,C} × {BA,C}` reduces to
+`LEMBACenterSPossibleIntersections` on `B₁ ∩ B₂`; the mixed case dies against the definition
+of a dividing congruence; `D × D` produces the bridge.
+
+**A missing case.** After `S` is eliminated the proof treats `T₁,T₂ ∈ {BA,C}`,
+`T₁ ∈ {BA,C}` with `T₂ = D`, and `T₁ = T₂ = D`. The mirror case `T₁ = D`, `T₂ ∈ {BA,C}` is
+never mentioned. It is the same argument with the indices swapped — the hypotheses are
+symmetric — but line 1805 says "similarly" for the mirror of the `S` case and nothing says it
+here.
+
+**Six unstated steps**, all short and all discharged by the hypothesis `C₁ ∩ C₂ = ∅`:
+
+1. `C₁ ∩ B₂ <_{T₁} B₁ ∩ B₂` needs **properness**: if `C₁ ∩ B₂ = B₁ ∩ B₂` then
+   `B₁ ∩ C₂ ⊆ C₁ ∩ C₂ = ∅`.
+2. Line 1830, `(C₁∩B₂)/σ₂ <_{T₁} (B₂/σ₂)`: `LEMBACenterSImplyFactor` returns `≤`, and
+   factoring can collapse a proper containment. Properness holds because
+   `(C₁∩B₂)/σ₂ = B₂/σ₂` would make the `σ₂`-block defining `C₂` meet `C₁`, i.e.
+   `C₁ ∩ C₂ ≠ ∅`. Same shape as the `<` -vs- `≤` gap already recorded inside
+   `LEMIntersectionPCLinearIsGood`(s).
+3. Line 1817 writes the first alternative of (d) as `(B₁∩B₂)/σ₂ = C₂/σ₂`, where (d) supplies
+   only `|(B₁∩B₂)/σ₂| = 1`. Which block it is follows from `B₁ ∩ C₂ ≠ ∅`. Again the same
+   upgrade already noted at subsubcase 2B3 of `LEMIntersectionPCLinearIsGood`.
+4. **The `D × D` case applies (d) to the wrong-looking pair, and the right one matters.** Line
+   1840 asserts `σ₁ ⊇ σ₂ ∩ ω` from (d). Applied to `B := B₁`, `C := B₂` this does not follow —
+   both alternatives of (d) are consistent with the hypotheses and the "moreover" clause then
+   says nothing. It does follow with `C := C₂`: `C₂ ⋘ A` because `⋘` admits type-`D` steps
+   (`main.tex:1590`), `B₁ ∩ C₂ ≠ ∅` is a hypothesis, and the alternative
+   `(B₁∩C₂)/σ₁ = B₁/σ₁` would put a point of `C₂` in the `σ₁`-block defining `C₁`, giving
+   `C₁ ∩ C₂ ≠ ∅`. So `|(B₁∩C₂)/σ₁| = 1`, and the "moreover" clause returns `σ₁ ⊇ ω ∩ σ₂`
+   exactly, because the dividing congruences of `C₂ ⋘ A` are those of `B₂ ⋘ A` together with
+   `σ₂`.
+5. That last sentence is only true if the chain witnessing `C₂ ⋘ A` is *chosen* to extend the
+   chain witnessing `B₂ ⋘ A`. Convention item **C5** — "`⋘` is data, not merely a
+   proposition" — is load-bearing here, and this is the cleanest example of it in §5.
+6. `(c₁,c₂) ∈ ω ∖ σ₁`: membership in `ω` because each `Bᵢ` is contained in a single block of
+   every dividing congruence of its own chain, and `c₁,c₂ ∈ B₁ ∩ B₂`; non-membership in `σ₁`
+   because `c₂ ∈ B₁` and `c₂ σ₁ c₁ ∈ C₁` would give `c₂ ∈ C₁ ∩ C₂`.
+
+---
+
+# Where the reading stands
+
+`main.tex`'s §5 is now fully opened. §5.1–§5.3 were read earlier;
+§5.4 (`1022–1735`) and §5.5 (`1736–1928`) are read here.
+
+| | defects | verdict |
+|---|---|---|
+| §5.4, bridges and Abelian groups (1022–1371) | D11, D12, D13 | one typo, one false lemma, one unjustified step — all cured by one hypothesis |
+| §5.4, bridge triviality (1372–1735) | D14 | one gap, **open**; the other three proofs sound |
+| §5.5, types interaction (1736–1928) | none | sound; one missing mirror case, seven steps to write |
+
+Four new defects, one of them a lemma that is **false as stated** with a three-element
+counterexample, and one still open. That is a different picture from §5.1–§5.3, where the
+first pass found no defects at all, and it is worth saying why: §5.4 is the only part of §5
+that manipulates bridges as objects in their own right rather than consuming them, and every
+one of the four defects is about which auxiliary properties survive a construction —
+symmetrisation, restriction to a block, restriction to a strong subuniverse.
