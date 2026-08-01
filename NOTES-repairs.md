@@ -422,14 +422,74 @@ is cited once, from inside that proof, on `δ° ∩ B⁴`, which inherits it.
 and carry it through §5.4. It is the property that makes "compose the bridge with itself"
 mean what the prose wants it to mean.
 
-## D14 — open
+## D14 — solved: the citation needs the subrelation form, not the box form
 
-Case 1 of `LEMPCCongruencePropertyInductiveStep` needs
-`RightLinked(proj_{1,2,3}(δ ∩ B⁴)) = B²` for `B <_{BA,C} A`, and cites
-`LEMBACenterLinkedness`, which yields the corresponding statement for
-`proj_{1,2,3}(δ) ∩ B³`. I have not found an argument identifying the two, nor a route to the
-`(1,2)|(3,4)` linkedness of `δ` that would let the restriction lemma be applied to `δ` itself.
-No counterexample either. **Do not write §5.4 past this point until it is settled.**
+The step at `StrongSubalgebras.tex:1394` is **true**. What is wrong is the citation.
+`LEMBACenterLinkedness` (Barto–Kozik Prop. 2.15(i)) restricts a relation by a **box**
+`B₁ × B₂`, and `proj_{1,2,3}(δ ∩ B⁴)` is not a box restriction of `proj_{1,2,3}(δ)` — a tuple
+of `δ` whose first three coordinates lie in `B` need not have its fourth there. Applied to
+`W = proj_{1,2,3}(δ)` with `B₁ = P ∩ B²`, `B₂ = B`, the box form yields linkedness of
+`proj_{1,2,3}(δ) ∩ B³`, which is genuinely larger in general: for the min-semilattice on
+`{0,1,2}` with `B = {0,1}`, the subalgebra `K = {(0,0),(1,2)} ≤ A²` meets `B²` and has
+`1 ∈ proj_1(K) ∩ B`, while `proj_1(K ∩ B²) = {0}`.
+
+What is needed instead is the **subrelation** form of the same principle, and it follows from
+tools already present in §5.
+
+**Lemma A (no absorbing diagonal).** Let `C` be a finite idempotent algebra with `|C| ≥ 2`.
+Then `0_C` is not an absorbing subuniverse of `C²`, of any arity; in particular
+`0_C ≰_{BA} C²` and `0_C ≰_C C²`.
+
+*Proof.* Suppose `t` is `n`-ary and absorbs at every position. Fix `i`, take `a_j ∈ C` for
+`j ≠ i` and `b,c ∈ C`, and apply `t` coordinatewise to the tuples `(a_j,a_j)` for `j ≠ i` and
+`(b,c)` at position `i`. The result `(t(ā;b), t(ā;c))` lies in `0_C`, so `t(ā;b) = t(ā;c)`.
+As `b,c` were arbitrary, `t` does not depend on its `i`-th argument — and this holds for every
+`i`, so `t` is constant. Idempotence then forces `|C| = 1`. A central subuniverse is
+absorbing by definition (`main.tex:1345`), so the central case is included. ∎
+
+**Lemma B (absorption preserves linkedness — subrelation form).** Let `W ≤_sd P × A` be
+linked and let `∅ ≠ W' ≤_T W` with `T ∈ {BA, C}`. Put `P' = proj_1(W')`, `A' = proj_2(W')`.
+Then `W' ≤_sd P' × A'` is linked.
+
+*Proof.* Let `Φ_k(x,y)` be the pp-formula in one binary relation symbol obtained by iterating
+`x ∼ y ⟺ ∃z\, W(x,z) ∧ W(y,z)` `k` times. `W ∘ W^{-1}` is reflexive and symmetric on `P`
+because `W` is subdirect, so for `k ≥ |P|` the formula `Φ_k` interpreted in `W` defines
+`LeftLinked(W) = P²`; interpreted in `W'` and for `k ≥ |P'|` it defines
+`λ := LeftLinked(W')`. Take `k ≥ max(|P|,|P'|)`. By `LEMBACenterSImplyPPDefinition`, replacing
+every occurrence of `W` by `W' <_T W` gives `λ ≤_T P²`. Since `λ ⊆ P'²` and `P'² ≤ P²`,
+`LEMBACenterImplyIntersection` gives `λ ≤_T P'²`. Now `λ` is a congruence on `P'`, so
+`λ × λ` is a congruence on the algebra `P'²`, and the image of `λ` under
+`P'² ↠ (P'/λ)²` is `0_{P'/λ}`; by `LEMBACenterSImplyFactor`,
+`0_{P'/λ} ≤_T (P'/λ)²`. Lemma A forces `|P'/λ| = 1`, i.e. `λ = P'²`. ∎
+
+**The step.** `W = proj_{1,2,3}(δ)` is subdirect over `P × A` (`P = proj_{1,2}(δ)`) and linked
+by hypothesis (3). Write
+
+  `W(x₁,x₂,x₃) = ∃x₄\, δ(x₁,x₂,x₃,x₄) ∧ A(x₁) ∧ A(x₂) ∧ A(x₃) ∧ A(x₄)`
+
+with `A` the full unary relation, and replace `A` by `B` one occurrence at a time. Each
+replacement is `LEMBACenterSImplyPPDefinition`, and `≤_{BA}` and `≤_C` are transitive
+(a central subuniverse of a central subuniverse is central), so
+
+  `W' := proj_{1,2,3}(δ ∩ B⁴) ≤_T W`.
+
+`W'` is nonempty, containing `(b,b,b)` for every `b ∈ B` because `δ` is reflexive. Its
+projections are `proj_{1,2}(W') = P ∩ B²` — hypothesis (2) puts `(x₁,x₂,x₁,x₂)` in `δ ∩ B⁴`
+for every `(x₁,x₂) ∈ P ∩ B²` — and `proj_3(W') = B`. Lemma B now gives that `W'` is linked,
+i.e. `RightLinked(proj_{1,2,3}(δ ∩ B⁴)) = B²`, which is exactly what Case 1 asserts. The rest
+of Case 1 is unchanged. ∎
+
+Lemma B also discharges, for free, the subdirectness hypothesis that the box form needed and
+that the source never checked.
+
+**Machine-checked.** Over five 2- and 3-element and four 4-element Taylor algebras
+(min-semilattices, the dual discriminator, `ℤ₂` minority, `ℤ₃`, `ℤ₂²`, a semilattice square):
+`527 + 99 477` pairs (`W` linked subdirect, `W'` a proper binary-absorbing subuniverse of
+`W`) with **no counterexample to Lemma B**, and `0_C` absorbing `C²` in no algebra tested.
+
+*Our rendering:* state Lemmas A and B in §5.1 alongside `LEMBACenterLinkedness` — B is the
+form the paper actually uses, here and arguably at the other restriction sites — and cite B
+at line 1394.
 
 ---
 
@@ -447,4 +507,4 @@ No counterexample either. **Do not write §5.4 past this point until it is settl
 | D11 | yes, one character | no |
 | D12 | yes | no — the statement was wrong, not the mathematics; add pair-reflexivity |
 | D13 | yes | no — same hypothesis as D12 |
-| D14 | **unknown** | **open** |
+| D14 | yes | no — the citation needed the subrelation form of absorption-preserves-linkedness |

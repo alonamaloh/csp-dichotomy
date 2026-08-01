@@ -48,9 +48,11 @@ they are *pairwise* disjoint, which contradicts hypothesis (3) once `n ≥ 3`. F
 there is no congruence and no analogue, and the proof offers nothing. Hypothesis (2) gives
 only `C₁ ∩ … ∩ Cₙ = ∅`, never `C₁ ∩ C₂ = ∅`.
 
-*Our rendering:* either prove `n = 2` for type `C` (some Helly-type property of central
-subuniverses would do it), or weaken the conclusion and check the call sites. **Open —
-decide before §6 is written.**
+*Our rendering:* prove `n = 2` for type `C`. Done — the argument is Theorem 3.7 of
+arXiv:2005.00593 plus a reduction to a common algebra; see `NOTES-repairs.md`. Both citations
+re-read verbatim (Lemma 6.11 at 2005.00593 p. 37, Theorem 3.7 at p. 46). One caveat for the
+rendering: the printed proof of Lemma 6.11 cites *itself* three times where it means the
+preceding lemma, so we must supply both.
 
 ### D8 — the minimality step in Case 2 of the main induction. **CONFIRMED, description corrected**
 
@@ -74,9 +76,11 @@ condition, and the bridge between them is what was deleted.
 The deleted statement (`main.tex:1864`) was: if `C` is inclusion-minimal with `b ∈ C` and
 `C ≤_{ℳT} B`, then no `C' ⊊ C` has `C' ≤_{ℳT} B`.
 
-*Our rendering:* prove that, or restructure to need only minimal-containing-a-point. Note it
-is not obviously true — a proper ℳT subset avoiding `b` does not contradict minimality among
-sets containing `b` — so check it before relying on it.
+*Our rendering:* prove it. Done — the map `b ↦ M(b) = B ∩ ⋂_{σ ∈ Σ} [b]_σ` is a closure
+whose image consists of pairwise disjoint minimal sets, so minimal-containing-a-point and
+minimal-outright coincide; see `NOTES-repairs.md`. The worry that it might be false was
+unfounded, but the reason is not the obvious one: it turns on membership in `M(b)` being
+decided blockwise.
 
 ---
 
@@ -125,21 +129,25 @@ for §4 of the source, which is out of scope.
 
 ## Not yet checked
 
-Nothing on the original list. C1–C10 are legislated in `NOTES-conventions.md` — C10 is settled
-below, and C1 turned out to be a theorem rather than a choice. The one item open anywhere is
-**D14**, in §5.4.
+Nothing, and nothing open. C1–C10 are legislated in `NOTES-conventions.md` — C10 is settled
+below, and C1 turned out to be a theorem rather than a choice. Every defect D2–D14 has a
+written repair; the ledger is `NOTES-amendments.md`.
 
 ---
 
 ## Running tally
 
-Five claims checked in full. **Three confirmed** (D2, D4, D8 — one with its description
-corrected), **two refuted** (D3, and the original D10). Both refutations came from readers
-who worked from a formal-looking artifact — pseudocode in one case, a citation in the other —
-without the surrounding text or, in D3's case, without checking that the cycle closed.
+Thirteen claims examined in full across the whole pass. **Eleven confirmed** (D2, D4, D6,
+D7(i), D7(ii), D8, D11, D12, D13, D14, and C10 in the sense that the citation really does drop
+a case), **two refuted** (D3, and the original D10), one moot (the current D10). Every
+confirmed item now has a written repair.
 
-Neither refuted claim would have survived ten minutes of mechanical checking. That is the
-argument for doing this pass before writing a line of the rendering.
+Both refutations came from readers who worked from a formal-looking artifact — pseudocode in
+one case, a citation in the other — without the surrounding text or, in D3's case, without
+checking that the cycle closed. Neither would have survived ten minutes of mechanical
+checking. That is the argument for doing this pass before writing a line of the rendering, and
+the same argument cuts the other way: D12 was settled by a three-element brute force, D14's
+repair by a hundred thousand, and D6's witness by a search over `ℤ₄ × ℤ₂ × ℤ₄`.
 
 ---
 
@@ -553,7 +561,7 @@ pair-reflexivity that §5.4's first block needs and does not state: *"`(a,b,a,b)
 for every `(a,b) ∈ proj_{1,2}(δ)`"*. So the property is in the author's vocabulary; it is
 simply missing from the two lemmas that also require it.
 
-### D14 — Case 1 of `LEMPCCongruencePropertyInductiveStep`. **CONFIRMED, no repair found**
+### D14 — Case 1 of `LEMPCCongruencePropertyInductiveStep`. **CONFIRMED, and now repaired**
 
 Line 1392: `B <_T A` with `|B| > 1`, `δ' = δ ∩ B⁴`, and then
 
@@ -576,12 +584,25 @@ linked. Two things go wrong.
   hold, by hypotheses (2) and reflexivity — `(x₁,x₂,x₁) ∈ R` for `(x₁,x₂) ∈ B₁` and
   `(x₃,x₃,x₃) ∈ R` for `x₃ ∈ B` — but that has to be said.
 
-I did not find a repair. Restricting with the absorbing term `t` against
-`(x₃,x₄,x₁,x₂) ∈ δ` (symmetry) does land a tuple in `δ ∩ B⁴`, but at moved coordinates, so it
-does not identify the two projections. **Open.** Note the contrast with the analogous step in
-`LEMPCBridgesAreTrivial` Case 2, which works precisely because a closure property is proved
-first (see below); no such property is available here, where `B` is a strong subuniverse
-rather than a linkedness block.
+**Resolved.** The assertion is true; the citation is to the wrong form of the principle. The
+box form cannot reach `δ ∩ B⁴`, and the two relations really do differ — for the
+min-semilattice on `{0,1,2}` with `B = {0,1}`, the subalgebra `K = {(0,0),(1,2)}` has
+`proj_1(K) ∩ B = {0,1}` but `proj_1(K ∩ B²) = {0}`. What closes it is the **subrelation** form:
+*if `W ≤_sd P × A` is linked and `∅ ≠ W' ≤_T W` with `T ∈ {BA,C}`, then `W'` is linked over its
+own projections.* Then `proj_{1,2,3}(δ ∩ B⁴) ≤_T proj_{1,2,3}(δ)` by four applications of
+`LEMBACenterSImplyPPDefinition`, and the projections come out as `P ∩ B²` and `B`.
+
+The subrelation form follows from `LEMBACenterSImplyPPDefinition`,
+`LEMBACenterImplyIntersection` and `LEMBACenterSImplyFactor` together with one elementary
+fact the paper never states: **`0_C` is not an absorbing subuniverse of `C²` when `|C| ≥ 2`**
+(absorption at position `i` forces the term not to depend on argument `i`, at every `i`, hence
+to be constant). Proof in `NOTES-repairs.md`; the subrelation form was searched for
+counterexamples over nine small Taylor algebras and ~100 000 pairs, and none exists.
+
+Note the contrast with the analogous step in `LEMPCBridgesAreTrivial` Case 2, which the source
+*does* justify — by proving a closure property first. Here `B` is a strong subuniverse rather
+than a linkedness block, no closure property is available, and absorption has to do the work
+instead.
 
 The rest of the lemma is **sound**, and I checked it line by line.
 
@@ -706,17 +727,34 @@ here.
 
 # Where the reading stands
 
-`main.tex`'s §5 is now fully opened. §5.1–§5.3 were read earlier;
-§5.4 (`1022–1735`) and §5.5 (`1736–1928`) are read here.
+**Correction to an earlier claim.** I wrote that §5 was "fully opened". It is not. §5 has
+seven subsections, and the two largest blocks after §5.4 have been sampled at call sites but
+never read through:
+
+| lines | subsection | proofs | status |
+|---|---|---|---|
+| 48–70 | Additional definitions | 0 | — |
+| 71–346 | Subuniverses of types BA, C, S | 6 | read |
+| 347–1021 | Intersection property | 6 | read, `LEMIntersectionPCLinearIsGood` in full |
+| 1022–1735 | Properties of PC or linear congruences | 9 | read here |
+| 1736–1927 | Types interaction | 2 | read here |
+| **1928–2296** | **Factorization of strong subalgebras** | **5** | **sampled only** (lines 2024, 2079) |
+| **2297–3144** | **Proof of the remaining statements** | **16** | **sampled only** (2506, 2514, 2588, 2594+, 3110) |
+
+So 21 of §5's 44 proofs and 1 217 of its 3 144 lines have not been read. The sampling was not
+random — it followed the call sites of `LEMCentralRelationImplies`,
+`CORPropagationModuloCongruence` and the D4 investigation — so it is biased toward exactly the
+places already known to be interesting, which is the worst kind of coverage to mistake for
+completeness. §5.6 and §5.7 are the next reading task.
 
 | | defects | verdict |
 |---|---|---|
 | §5.4, bridges and Abelian groups (1022–1371) | D11, D12, D13 | one typo, one false lemma, one unjustified step — all cured by one hypothesis |
-| §5.4, bridge triviality (1372–1735) | D14 | one gap, **open**; the other three proofs sound |
+| §5.4, bridge triviality (1372–1735) | D14 | one wrong citation, repaired; the other three proofs sound |
 | §5.5, types interaction (1736–1928) | none | sound; one missing mirror case, seven steps to write |
 
 Four new defects, one of them a lemma that is **false as stated** with a three-element
-counterexample, and one still open. That is a different picture from §5.1–§5.3, where the
+counterexample. All four are now repaired. That is a different picture from §5.1–§5.3, where the
 first pass found no defects at all, and it is worth saying why: §5.4 is the only part of §5
 that manipulates bridges as objects in their own right rather than consuming them, and every
 one of the four defects is about which auxiliary properties survive a construction —
