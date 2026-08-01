@@ -88,12 +88,12 @@ where the source is consistent but leaves the reader to supply a reading.
   statement about the algorithm, so it must be repaired from \cite{ZhukJACM}
   before \textup{(T1)} can be stated.
 
-\item[\textbf{D10}] \textbf{The arity in Lemma~\ref{lem:special-wnu} is
-  suspect.} The imported statement gives a special WNU of arity $n^{n!}$; the
-  period of $y\mapsto w(x,\dots,x,y)$ need not divide $n^{n!}$ --- take $n=3$
-  and an element of order $5$. The remedy is to weaken the statement to
-  ``\emph{some} arity $N$'', which is all the dichotomy proof uses. The precise
-  arity matters only for \S4 of the source, which is cut.
+\item[\textbf{D10}] \textbf{The arity in Lemma~\ref{lem:special-wnu} is suspect.} The
+  imported statement gives a special WNU of arity $n^{n!}$; the period of
+  $y\mapsto w(x,\dots,x,y)$ need not divide $n^{n!}$ --- take $n=3$ and an
+  element of order $5$. The remedy is to weaken the statement to ``\emph{some}
+  arity $N$'', which is all the dichotomy proof uses. The precise arity matters
+  only for \S4 of the source, which is cut.
 
 \end{enumerate}
 
@@ -150,12 +150,67 @@ where the source is consistent but leaves the reader to supply a reading.
 
 \end{enumerate}
 
+\begin{remark}[A retracted item, and what replaced it]\label{rem:d10-retracted}
+An earlier draft of this section carried an eleventh blocking item: that the
+recursion-depth bound $|A|+|\Gamma|$ of \cite[Lem.~5.2]{ZhukJACM} was ``not
+established for the \textsc{CheckTuple} $\to$ \textsc{SolveNonlinked} path'',
+and that ``without the repair the algorithm is not polynomial''. That was
+wrong, and it is withdrawn.
+
+Lemma~5.2 bounds the depth by arguing that every recursion site except
+\textsc{CheckWeakerInstance} ``reduce[s] all domains of size greater than 1''.
+At the \textsc{SolveNonlinked} site this needs the instance to be neither
+linked nor fragmented --- otherwise the linked-component congruence can be
+trivial on some domain, that domain does not shrink, and the bound degrades
+from the constant $|A|$ to $O(|A|\cdot n)$, which is fatal, since the total work
+is $\mathrm{poly}(N)^{\text{depth}}$. The source does state the hypothesis and
+does discharge it. It is simply not in one place:
+\begin{itemize}\tightlist
+\item the precondition ``an instance that is not linked and not fragmented''
+  is in the prose introducing the function, and \emph{not} in the
+  \texttt{Input:} line of its pseudocode;
+\item it is discharged at the call site by ``$\Theta_{0}$ is not fragmented
+  because it is crucial'' --- itself a one-line argument the source does not
+  give: a fragmented unsatisfiable instance has an unsatisfiable part, and no
+  constraint of the \emph{other} part is then crucial;
+\item the step from ``not fragmented'' to ``\emph{every} domain splits'' ---
+  propagate the partition along a path, which exists by non-fragmentedness and
+  is value-preserving by $1$-consistency --- appears once, inside the proof of a
+  \emph{different} lemma, and is never cited here.
+\end{itemize}
+So the mathematics is present and the theorem is not in doubt. What is absent is
+any single place where the six recursion sites of Lemma~5.2 are discharged, and
+that is a blueprint's job rather than a defect of the source. The same pattern
+holds for the $\Gamma$-order argument, whose case~(3) needs the projections to
+be unchanged under weakening, which holds because the instance is
+$1$-consistent when \textsc{CheckWeakerInstance} runs --- true, and unstated.
+
+\emph{What does remain open}, and is now a sharp question rather than a flag:
+\textsc{CheckTuple} calls \textsc{SolveNonlinked} not on $\Theta_{0}$ but on
+$\Theta_{0}\wedge(x_{1}\in D_{1}')\wedge\dots\wedge(x_{n}\in D_{n}')$, and
+restricting domains can only \emph{destroy} non-linkedness. Each $D_{i}'$ is a
+union of $\sigma_{i}$-blocks, where $\sigma_{i}$ is the minimal linear
+congruence; write $\tau$ for the linked-component congruence. If
+$\tau\subseteq\sigma$ then the restriction deletes whole $\tau$-blocks and
+non-linkedness survives. Whether $\tau\subseteq\sigma$ at this point is not
+stated in the source, and I have not checked it. That is the next thing to
+verify, and it is the kind of question a blueprint exists to surface.
+\end{remark}
+
 \begin{remark}[What this list is evidence of]\label{rem:defects-meaning}
-Ten blocking items in a fifty-page paper is not a high rate; it is roughly what
+Nine blocking items in a fifty-page paper is not a high rate; it is roughly what
 one should expect, and it is the reason blueprints exist. Note the
 distribution: one is a genuine misstatement (D1), one is an omission (D2), two
 are gaps in the mathematics that need new arguments (D3, D4), three are
-hypotheses that are too weak or missing (D5, D6, D8), and three are artefacts of
-the interface with the older paper (D7, D9, D10). None of them threatens the
+hypotheses that are too weak or missing (D5, D6, D8), and two are artefacts of
+the interface with the older paper (D7, D9). None of them threatens the
 theorem. All of them cost time.
+
+Remark~\ref{rem:d10-retracted} is the counterweight, and the more instructive
+entry. A tenth item was listed, survived a review round, and was published ---
+and was wrong, because it was taken from a reader who worked from the pseudocode
+while the hypothesis it needed was in the surrounding prose. A list like this
+one is exactly as reliable as the reading behind each entry, and the failure
+mode is not carelessness but reading the formal-looking part of a paper and not
+the sentence before it.
 \end{remark}

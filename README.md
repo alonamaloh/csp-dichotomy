@@ -122,7 +122,7 @@ does not. A sample of what writing the statements down carefully turned up:
 - **Two different things are called "linked"** — a binary relation, and a CSP instance —
   and both appear in one proof, where the passage from one to the other is the crux.
 
-§10 collects the harder cases: ten places where the source cannot be transcribed at all.
+§10 collects the harder cases: nine places where the source cannot be transcribed at all.
 The sharpest is a genuine misstatement — Zhuk's Lemma 19, restating a corollary from his
 2021 paper, drops both the subdirectness hypothesis and the requirement that the absorbing
 term be shared. Without the first it is false: take `R = {(0,0)} ≤ Z_p × Z_p` and
@@ -133,8 +133,18 @@ corollary that is stated and used six times but never proved, and a hypothesis
 (`S`-free) that is strictly weaker than what its proof needs — the stronger version is
 sitting in the source as a commented-out gloss two lines below.
 
-None of these is fatal, and ten blocking items in a fifty-page paper is roughly the
+None of these is fatal, and nine blocking items in a fifty-page paper is roughly the
 expected rate. All of them cost time, which is the point of finding them first.
+
+**One item was published and then retracted**, and it is the more instructive entry. §10
+originally claimed that Zhuk's recursion-depth bound was not established for one path, and
+that without a repair the algorithm was not polynomial. It is established. The precondition
+(`not linked and not fragmented`) is stated in the prose introducing the function rather than
+in the `Input:` line of its pseudocode; it is discharged at the call site by a one-line
+remark; and the step from it to "every domain shrinks" sits inside the proof of a *different*
+lemma. All three are in the paper. The reader who flagged it worked from the pseudocode and
+missed the sentence before it — which is exactly the failure mode a defect list is prone to,
+and why each entry is only as good as the reading behind it.
 
 ## Relation to the source
 
