@@ -21,16 +21,46 @@ quantifies over all problems in \textup{NP} and over polynomial-time many-one
 reductions. Mathlib supplies Turing machines
 (\texttt{Mathlib/Computability/TuringMachine/}) and a notion of computability,
 but it has \emph{no} complexity class, no polynomial-time predicate, and no
-notion of polynomial-time reduction. A formalization that claimed
-Theorem~\ref{thm:dichotomy} verbatim would therefore have to build a complexity
-layer from scratch, and the mathematics of the dichotomy --- which is
-universal algebra, not complexity theory --- would be a minority of the work.
+notion of polynomial-time reduction.
 
-This document separates the two concerns. The mathematical content is stated as
-propositions that mention no machine; the complexity-theoretic wrapper is
-isolated in a single, small, clearly marked layer, so that a reader can see
-exactly which part of Theorem~\ref{thm:dichotomy} rests on the algebra and
-which on a cost model.
+\subsection{Where the work actually is}\label{sec:program-axis}
+
+An earlier draft of this section concluded from that gap that the
+complexity-theoretic half should be deferred because building it would dominate
+the project. That inference was wrong, and it is worth recording why, because
+the corrected version is what organises the rest of the document.
+
+The complexity vocabulary itself --- languages, a cost model, $\mathrm P$,
+$\mathrm{NP}$ by verifiers, $\le_{p}$, \textup{NP}-hardness,
+\textup{NP}-completeness, and a generic \textup{NP}-hard problem --- has since
+been built, in about $850$ lines. That is consistent with the two existing
+Cook--Levin formalizations, whose class layers are $702$ lines (Isabelle) and
+$992$ lines (Coq) against totals of $56\,514$ and $\approx 16\,500$. Defining
+the classes is cheap in every development that has done it.
+
+What is expensive is not complexity theory. It is any statement that requires
+one to \emph{exhibit a program}. In a formalization, ``$f$ is computable in
+polynomial time'' is not a property one observes of a mathematical function; it
+is an existential over programs, discharged only by writing one and proving a
+bound on its step count. The dividing line runs along that axis, and it cuts
+across the algebra/complexity split rather than agreeing with it:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\hline
+Target & Exhibit a program? & Cost \\
+\hline
+\textup{(T0)} the algebraic core & no & the mathematics \\
+\textup{(T1)} $\textsc{Solve}$ is correct & no (but see Hazard~\ref{haz:t1-computable}) & moderate \\
+\textup{(T2)} $\textsc{Solve}$ is polynomial & \textbf{yes --- the largest one here} & \textbf{large} \\
+\textup{(H0)} $\Gamma$ pp-interprets \textsc{Nae} & no & the mathematics \\
+\textup{(H1)} pp-interpretation $\Rightarrow\le_{p}$ & yes, a syntactic substitution & small \\
+\hline
+\end{tabular}
+\end{center}
+
+So the document still separates the machine-free statements from the rest, but
+for a sharper reason than before, and with a different verdict on \textup{(T2)}.
 
 \subsection{The layered targets}
 
@@ -56,10 +86,12 @@ algebras with $w$ of arity $n$ (Convention~\ref{conv:standing}).
   \]
   This is a statement about a recursive function, and it is provable from
   \textup{(T0)} with no cost model. It is the honest formal content of ``the
-  algorithm works''.
+  algorithm works'' --- \emph{provided} $\textsc{Solve}$ actually computes;
+  see Hazard~\ref{haz:t1-computable}.
 \item[\textup{(T2)} \emph{The complexity wrapper.}] That $\textsc{Solve}$ runs
-  in polynomial time in the size of the instance, for fixed $\Gamma$. This
-  requires a cost model and is the only place where one is needed.
+  in polynomial time in the size of the instance, for fixed $\Gamma$. This is
+  the one place a cost model is needed on this side, and it is a large
+  undertaking rather than a wrapper: see Hazard~\ref{haz:t2-is-not-small}.
 \end{description}
 
 \paragraph{Hard half.} Two layers.
@@ -74,16 +106,63 @@ algebras with $w$ of arity $n$ (Convention~\ref{conv:standing}).
   Bulatov--Jeavons--Krokhin reduction.
 \item[\textup{(H1)} \emph{The complexity wrapper.}] That a primitive positive
   interpretation yields a polynomial-time many-one reduction, and hence
-  \textup{NP}-hardness. Again a cost model, and again small.
+  \textup{NP}-hardness. This does need a program, but the program performs a
+  syntactic substitution of formulas whose size is linear in the instance, so
+  it is genuinely small.
 \end{description}
 
 The claim this document makes is that \textup{(T0)}, \textup{(T1)} and
-\textup{(H0)} are the mathematics, that they are what the literature actually
-proves, and that \textup{(T2)} and \textup{(H1)} are a separable engineering
-layer whose difficulty is unrelated to the dichotomy. The blueprint is written
-for \textup{(T0)}, \textup{(T1)} and \textup{(H0)}; \S\ref{sec:complexity-layer}
-states \textup{(T2)} and \textup{(H1)} precisely and says what building them
-would cost, without proving them.
+\textup{(H0)} are the mathematics and are what the literature actually proves.
+\textup{(H1)} is a small addition on top. \textup{(T2)} is neither small nor
+mathematics, but it is not \emph{unrelated} to the dichotomy either --- it is
+the assertion that the algorithm one has just proved correct is also fast, and
+it is the second-largest component of the project. The blueprint is written for
+\textup{(T0)}, \textup{(T1)} and \textup{(H0)};
+\S\ref{sec:complexity-layer} states \textup{(T2)} and \textup{(H1)} precisely
+and says what building them costs.
+
+\begin{hazard}[\textup{(T1)} is vacuous unless $\textsc{Solve}$ computes]
+\label{haz:t1-computable}
+``$\textsc{Solve}$ written as a total function'' hides a requirement that no
+cost model would catch. If $\textsc{Solve}$ is defined using classical choice
+--- for instance by deciding ``does $D_{x}$ have a nonempty proper binary
+absorbing subuniverse?'' with \texttt{Classical.dec} --- then
+$\textsc{Solve}(\mathcal I)=\texttt{true}\iff\mathcal I$ has a solution is a
+true theorem that says nothing algorithmic, because $\textsc{Solve}$ does not
+reduce. To mean what it appears to mean, \textup{(T1)} needs every predicate
+the algorithm branches on to carry a genuine decision procedure.
+
+That is a real obligation with a locatable cost. Absorption is defined by an
+existential over \emph{terms} --- an infinite type --- so
+``$C\subt{\TBA}B$'' is not decidable on its face. It becomes decidable through
+the bound that a witness of arity at most $|A|^{|A|}$ suffices, which is a
+theorem and not a definition. Hazard~\ref{haz:algorithm-formalization}(b)
+records that the bound exists; what it does not record, and what matters here,
+is that \textup{(T1)} is empty without it. The same applies to the searches
+over congruences and over subsets.
+\end{hazard}
+
+\begin{hazard}[\textup{(T2)} is not a wrapper]\label{haz:t2-is-not-small}
+Two things make \textup{(T2)} much larger than the phrase ``complexity
+wrapper'' suggests.
+
+\emph{The program is enormous.} \textup{(T2)} requires $\textsc{Solve}$ ---
+\textsc{ForceConsistency}, the search for a strong subuniverse,
+\textsc{SolveLinear}, and the mutual recursion between them --- to be expressed
+in a cost model, with a proved polynomial bound. Every existing measurement
+says this kind of work dominates: it is the $50\,000$ lines of Turing-machine
+engineering in the Isabelle Cook--Levin development, against $702$ for the
+classes themselves.
+
+\emph{The statement is non-uniform.} Because $\Gamma$ is fixed, the polynomial
+may depend on $\Gamma$, and the searches over subsets of $A$, over congruences
+on $A$, and over term operations of bounded arity are all constant-time. But
+``constant'' here means the search is compiled away into a program whose
+\emph{size} depends on $|A|$. So $\textsc{Solve}$ is not one program: it is a
+family $\textsc{Solve}_{\Gamma}$ with a polynomial $p_{\Gamma}$ for each
+$\Gamma$, and \textup{(T2)} must be stated in that form. Attempting a bound
+uniform in $\Gamma$ would be proving something else, and something false.
+\end{hazard}
 
 \begin{remark}
 The separation is not a dodge. Layer \textup{(T1)} is strictly stronger than

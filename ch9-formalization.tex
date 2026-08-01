@@ -23,13 +23,44 @@ Mathlib itself. Moreover \texttt{TM2ComputableInPolyTime} applies to total
 functions $\alpha\to\beta$, never to languages, so even the existing predicate
 would need reshaping.
 
-\begin{remark}\label{rem:complexity-scope}
-Building this layer is a substantial project --- comparable in size to the
-algebraic core, and with a large formal-verification literature of its own ---
-and it contributes none of the mathematics of the dichotomy. Attempting it as
-part of this project would be a scoping error. It is exactly the kind of
-component that should be built once, in Mathlib, by people interested in
-complexity theory, and then consumed.
+\begin{remark}[This layer now exists, and it was cheap]\label{rem:complexity-scope}
+An earlier draft of this remark said that building the complexity layer was
+``a substantial project --- comparable in size to the algebraic core'' and that
+attempting it as part of this project ``would be a scoping error''. That was
+wrong, and it has been tested rather than argued: the vocabulary --- words, a
+cost model, $\mathrm P$, $\mathrm{NP}$ by verifiers, $\le_{p}$,
+\textup{NP}-hardness, \textup{NP}-completeness, and a generic
+\textup{NP}-hard problem --- is about $850$ lines of Lean, \texttt{sorry}-free,
+and took an afternoon.
+
+That figure is what the literature should have led one to expect. The class
+layer is $702$ lines in Balbach's Isabelle Cook--Levin development and $992$ in
+G\"aher--Kunze's Coq one, against totals of $56\,514$ and $\approx 16\,500$
+respectively. Defining the classes has never been the expensive part; the
+expensive part is connecting them to a concrete machine, which is a different
+activity.
+
+So the reason to keep \textup{(T2)} out of scope is \emph{not} that complexity
+theory is unavailable. It is Hazard~\ref{haz:t2-is-not-small}: \textup{(T2)}
+requires exhibiting $\textsc{Solve}$ as a program with a proved step bound, and
+that is the largest program-construction task in the project. \textup{(H1)},
+by contrast, needs only a syntactic substitution and should be built.
+\end{remark}
+
+\begin{remark}[What the exercise cost, and what it caught]
+Two defects surfaced in those $850$ lines, both in \emph{statements} rather
+than proofs, and neither of a kind a type-checker reports. The generic problem
+was first defined with a single budget bounding both the certificate length and
+the running time, which makes the theorem false --- the two directions pull the
+bound opposite ways. And the language was first given only the tests ``register
+is empty'' and ``register's first bit is $1$'', with which no loop that consumes
+its input can be written at all; that was found by trying to write the first
+program.
+
+The ratio is worth noting for the rest of this document. Two statement-level
+errors in $850$ lines, against ten found in Zhuk's fifty pages by readers who
+did not formalize (\S\ref{sec:defects}). The defect list should be expected to
+grow under formalization, not to be complete.
 \end{remark}
 
 \section{Formalization}\label{sec:formalization}
