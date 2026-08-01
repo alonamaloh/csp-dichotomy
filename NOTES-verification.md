@@ -908,3 +908,100 @@ and `|B/δ''| > 1`; and `ω ∖ δ'' ≠ ∅`, needed by `LEMBridgeBetweenCongru
 `B² ⊆ ω` with `|B/σ| > 1`. Finally the **"Moreover" clause is never argued** — it holds because
 Case 2 gives `δ ∩ B² ⊆ δ' ∩ B² = σ ∩ B²` by part (3) of the previous lemma, and Case 1 never
 produces the type-`T` alternative.
+
+---
+
+# Adversarial reading of §5.7 — `Proof of the remaining statements`
+
+`StrongSubalgebras.tex:2297–3144`, 16 proofs. These are the §2.3 headline properties, restated
+and proved. Two new defects, one spurious citation, and one statement that is weaker than its
+own proof.
+
+## D16 — `LEMLInearOnTheTopIsEasy`: the conclusion is asserted. **CONFIRMED**
+
+Line 2743: `σ` linear on `A ∈ 𝒱ₙ` with `σ* = A²` implies `A/σ ≅ ℤ_p`. The proof produces the
+perfect-linear witness `ζ ≤ A × A × ℤ_p` with `proj_{1,2}(ζ) = A²`, sets
+`ξ(x,z) = ζ(x,a,z)`, and then says in full:
+
+> *"Then `ξ` is a bijective relation giving an isomorphism `A/σ ≅ ℤ_p`."*
+
+That is the entire content of the lemma and it is not argued. What `ζ` gives directly is only
+`ξ^{-1}(0) = [a]_σ`. A route that works: `proj_2(ξ)` is a subuniverse of `ℤ_p` containing `0`,
+and it cannot be `{0}` (that would force `σ = A²`, impossible for an irreducible congruence
+under convention C4), so `ξ` is subdirect; `ℤ_p` is simple and has no nontrivial BA or central
+subuniverse (`main.tex:3484`), so by `LEMLinkedImpliesBACenter` either `ξ` is linked, forcing
+`ξ = A × ℤ_p` and again `σ = A²`, or the linkedness congruence on `ℤ_p` is trivial and `ξ` is
+the graph of a surjection whose fibre over `0` is `[a]_σ`. Each step is short; none is written.
+
+And the conclusion is an isomorphism **of algebras**, so it additionally needs the basic
+operation of `A/σ` to act as `x₁ + ⋯ + xₙ` — which is exactly the proposition of convention
+item C1, proved in `NOTES-conventions.md` and absent from the source. Without it the statement
+does not even typecheck against `ℤ_p ∈ 𝒱ₙ`.
+
+## D17 — Case 1 of `LEMMaximalMultExtention` does not follow. **CONFIRMED, no repair found**
+
+Line 3113. `σ` is maximal with `(C₁ ∘ σ) ∩ B₂ = ∅`; Case 1 supposes `E <_S B₁/σ` and argues:
+
+> *"By Theorem \ref{THMMainStableIntersection} `E ∩ B₂/σ ≠ ∅` and `E ∩ C₁/σ ≠ ∅`, hence
+> `C₁/σ ∩ B₂/σ ≠ ∅`, which contradicts our assumptions."*
+
+The two nonemptinesses are fine — they are `LEMIntersectionPCLinearIsGood`(s) applied to the
+BA-and-central `D ≤ E` with `C₁/σ` and `B₂/σ`, not the stable-intersection theorem. **But
+"hence" does not follow.** Two sets each meeting `E` need not meet each other, and I could
+find no route: applying (s) again with ambient `C₁/σ` needs `C₁/σ ∩ B₂/σ ≠ ∅`, which is the
+conclusion. The maximality of `σ`, which would be the natural extra ingredient, is not used
+anywhere in Case 1.
+
+**Open.** The target is right — `(C₁ ∘ σ) ∩ B₂ = ∅` really is equivalent to
+`C₁/σ ∩ B₂/σ = ∅` — so the case does need to end in that contradiction. Case 2 of the same
+proof is sound.
+
+## A statement weaker than its own proof
+
+`LEMIntersectALL`(i) is stated as `B ∩ D ⋘ A`. Its proof (line 2356) establishes the stronger
+`B ∩ D ⋘^A D` and then weakens it. Three later proofs use the **stronger** form and cite (i):
+`CORPropagateToRelations`(b) and (m) (`R'' ⋘^R R'`), and `LEMMultiTypeStillStable`. *Our
+rendering:* state (i) as `B ∩ D ⋘^A D`, and derive `B ∩ D ⋘ A` as a corollary.
+
+## A citation that does no work
+
+`LEMMultiplyByAllLinear` line 3057 invokes `THMMainStableIntersection` to obtain its Case 1 /
+Case 2 dichotomy. The dichotomy is elementary: walk down the chain `A ⋙ ⋯ ⋙ B₁` and ask where
+`⋂ᵢ(C₁ⁱ ∘ σᵢ) ∩ · ∩ B₂` becomes empty; it is empty at `B₁` by hypothesis, so either it is
+already empty at `A` (Case 1) or there is a first step where it becomes so (Case 2). No
+theorem is consumed. The rest of the lemma is sound, including the two containments and the
+downward induction on `|B₁|`, and the direction of the `ω`-families works out: the inductive
+conclusion is over the smaller family `{ω : ω* ⊇ (B₁'')²}`, hence about a *larger*
+intersection, which is the direction needed.
+
+## The other twelve proofs are sound
+
+- **`LEMUbiquity`** — correct; "block `D` of `B/δ`" should read "block `D` of `δ`". Note it
+  rests on `LEMMainExistenceOfIrreducibleCongruence`, so **D15 propagates into one of the
+  headline properties**.
+- **`LEMIntersectALL`**(t) — correct in all four type cases.
+- **`LEMPropagation`** — correct. Two things: (ft) is discharged by citing `LEMFactorByDelta`,
+  which is stated only for `T ∈ {PC,L}`; the `{BA,C,S}` cases need (fs) and a sentence. And
+  (fm)'s `t = 1` base case is where the **S-freeness hypothesis is spent** — it kills
+  `LEMFactorByDelta`'s middle alternative `f(C) <_S f(B)`, which `ℳT` cannot absorb. Nothing
+  says so. The `(C₁∩⋯∩C_t)/δ = ⋂ Cᵢ/δ` identity — convention item **C8** — *is* proved here,
+  correctly, from `δ ∩ B² ⊆ σᵢ ∩ B²`; the hedge *"the inclusion `⊆` is obvious"* (line 2428) is
+  genuinely obvious. **That was the last of §5's four hedges: all four are honest.**
+- **`CORPropagateFromFactor`**, **`CORPropagateMultiplyByCongruence`**,
+  **`CORPropagateToRelations`** — correct. (e) needs two unstated steps: `C ∘ δ = B ∘ δ` is
+  excluded because `δ ⊆ σ` puts `C ∘ δ` inside one `σ`-block while `|B/σ| > 1`, and the `<_S`
+  alternative is excluded because the witness `D ⊆ C ∘ δ` also lies in one `σ`-block, so
+  `D/σ` is a point and therefore proper in `B/σ`.
+- **`THMMainStableIntersection`** — **D4 confirmed at the source, for the third time.** The
+  `PC` argument at line 2650 is correct but needs one unstated step: the two `σ`-blocks are
+  distinct, because `B₁ ∩ C₂' ≠ ∅` would otherwise put a point in `C₁ ∩ C₂'`. That step has no
+  analogue for type `C`, which is precisely D4. Also unstated: `C₂' < B₂'` is proper because
+  `C₁ ∩ B₂' ≠ ∅`.
+- **`CORMainStableIntersection`**, **`LEMMultiTypeStillStable`** — correct.
+- **`LEMPCOnTheTopIsEasy`** — correct, resting on two things it does not state: that an
+  idempotent algebra is PC iff every *reflexive* subalgebra of a power is a conjunction of
+  equalities (true — those are exactly the invariants of the clone generated by the operations
+  together with all constants), and that `A/σ` is BA and center free, without which
+  `{aᵢ} <_{PC}^{A/σ} A/σ` is not licensed by the definition of `<_D`.
+- **`LEMMaximalMultExtention`** Case 2 — correct; `δᵢ* ⊇ B₁²` at line 3128 should read
+  `δᵢ* ⊇ (B₁/σ)²`.
