@@ -125,8 +125,9 @@ for §4 of the source, which is out of scope.
 
 ## Not yet checked
 
-- **C1–C9** — the convention list. Cheaper: these are readings to legislate, not claims to
-  falsify, so the failure mode is different. (C10 is settled below.)
+Nothing on the original list. C1–C10 are legislated in `NOTES-conventions.md` — C10 is settled
+below, and C1 turned out to be a theorem rather than a choice. The one item open anywhere is
+**D14**, in §5.4.
 
 ---
 
