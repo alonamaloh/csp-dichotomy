@@ -205,30 +205,66 @@ standing hypothesis, it is linked. ∎
 
 Two lines, and it explains why irreducibility is a hypothesis of the theorem at all.
 
-### (ii) Case 1 derives (1c) for the wrong reduction. **CONFIRMED, open.**
+### (ii) Case 1 derives (1c) for the wrong reduction. **CONFIRMED, repaired.**
 
 Case 1 obtains a 1-consistent `D⁽²⁾ ≤_T D⁽¹⁾`, shows `𝓘` is crucial in `D⁽²⁾`, and closes with
 "applying the inductive assumption to `D⁽²⁾` we derive the required conditions".
 
-Conditions (1a) and (1b) mention no reduction and transfer verbatim. Condition (1c) does:
-it asserts an expanded covering `𝓙` that is **crucial in the ambient reduction**. The
-inductive hypothesis delivers `𝓙` crucial in `D⁽²⁾`; the goal needs it crucial in `D⁽¹⁾`.
-These differ, and the containment goes the wrong way — an instance with no solution in the
-smaller `D⁽²⁾` may well have one in `D⁽¹⁾`.
+Conditions (1a) and (1b) mention no reduction and transfer verbatim. (1c) does not: it asserts
+an expanded covering **crucial in the ambient reduction**. The inductive hypothesis delivers
+`𝓚` crucial in `D⁽²⁾`; the goal needs a covering crucial in `D⁽¹⁾`, and the containment runs
+the wrong way — an instance with no solution in the smaller `D⁽²⁾` may have one in `D⁽¹⁾`.
 
-Nor is the discrepancy harmless: part (2) of the theorem consumes (1c) precisely through the
-cruciality clause, in the `ζ` construction that produces `E₁, E₂`.
+**First, the induction structure, which is load-bearing and unstated.** The proof opens
+"We prove the claim by induction on the size of `D⁽¹⁾`. *Let us prove (2) first.*" That
+ordering is not stylistic. Part (2) at a given measure uses (1) only at strictly smaller
+measure, whereas part (1) at that measure uses **(2) at the same measure** — Case 1 does
+exactly this at `main.tex:3507`, applying (2) to a weakening `𝓙` of `𝓘` at the pair
+`(D⁽¹⁾, D⁽²⁾)`. So the induction is really
 
-I have not found a repair. Two directions worth trying, in order:
+> strong induction on `k = μ(D⁽¹⁾)`; at each level establish (2) for *all* instances, then (1)
+> for all instances.
 
-1. **Weaken `𝓙` to cruciality in `D⁽¹⁾`.** Needs `𝓙⁽¹⁾` to have no solution. `𝓘⁽¹⁾` has none,
-   but `𝓙` is only an expanded covering, and by (p1) collapsing it gives a *weakening* of `𝓘`,
-   which may be solvable where `𝓘` is not. So this does not go through as stated.
-2. **Restructure the induction** so that (1c) does not mention a reduction, or mentions the
-   trivial one. This changes what part (2) may assume, and the `ζ` construction has to be
-   rechecked against the weaker form.
+which is acyclic: `(2)_k ← (1)_{<k}`, `(1)_k ← (2)_k, (1)_{<k}`.
 
-**This is the one item so far that may need real work rather than assembly.**
+**Why that alone does not close the gap.** One would like to apply (2) to `𝓚` at
+`(D⁽¹⁾, D⁽²⁾)` and conclude, contrapositively, that `𝓚⁽¹⁾` has no solution. But `𝓚` is an
+expanded *covering*, so it has more variables than `𝓘`, and under `μ = Σ_x |D⁽¹⁾_x|` its
+measure is **larger**, not equal. The device that works for a weakening does not work for a
+covering. Nor is the measure easily repaired: `max_x` is preserved by coverings but not
+decreased by `≤_T` reductions, which may be proper at only one variable.
+
+**The repair, which avoids re-entering the induction.** Take the union with `𝓘` and reweaken.
+
+*Proposition.* Under the hypotheses of Case 1, if (1c) holds for `(𝓘, D⁽²⁾)` then it holds for
+`(𝓘, D⁽¹⁾)`.
+
+*Proof.* Let `𝓚` be an expanded covering of `𝓘`, crucial in `D⁽²⁾`, with linked connected
+subinstance `Υ` whose solution set is not subdirect. Put `𝓛 = 𝓚 ∧ 𝓘`.
+
+`𝓛` is an expanded covering of `𝓘`: `𝓚` is one, `𝓘` is a weakening of itself hence one by
+(p2), and the union of two expanded coverings is one by (p5).
+
+`𝓛⁽¹⁾` has no solution: `𝓛` contains every constraint of `𝓘`, so a solution of `𝓛⁽¹⁾`
+restricts on `Var(𝓘)` to a solution of `𝓘⁽¹⁾`, and `𝓘` is crucial in `D⁽¹⁾`.
+
+Hence by Remark `GetCrucialInstance` we may weaken `𝓛` to an instance `𝓛'` crucial in `D⁽¹⁾`.
+
+Every constraint of `𝓚` survives that weakening. Each is crucial in `D⁽²⁾`, so weakening it
+yields a solution in `D⁽²⁾`, which lies in `D⁽¹⁾` as `D⁽²⁾ ⊆ D⁽¹⁾`; and weakening it inside any
+weaker instance yields only more solutions. So each is already crucial in `D⁽¹⁾` at every stage
+of the process, and the process only weakens constraints that are not.
+
+Therefore `Υ ⊆ 𝓚 ⊆ 𝓛'`, its properties being intrinsic to `Υ` and untouched, and `𝓛'` is an
+expanded covering of `𝓘` crucial in `D⁽¹⁾`. That is (1c) at `D⁽¹⁾`. ∎
+
+The ingredients are (p2), (p5), `GetCrucialInstance`, and the observation that cruciality in a
+*smaller* reduction gives the weakening half of cruciality in a larger one. No appeal to the
+induction at a larger measure, so the measure `Σ_x |D⁽¹⁾_x|` survives intact.
+
+*Our rendering:* state the induction as the two-phase scheme above — it must be explicit
+anyway, since (1) legitimately uses (2) at the same level — and insert this proposition where
+the source writes "we derive the required conditions".
 
 ---
 
@@ -241,4 +277,4 @@ I have not found a repair. Two directions worth trying, in order:
 | D8 | yes | no — short, but the proof is genuinely absent from the source |
 | D6 | yes | no — cruciality supplies the missing hypothesis |
 | D7(i) | yes | no — two lines, via irreducibility |
-| D7(ii) | **not yet** | **possibly** — the one open item |
+| D7(ii) | yes | no — union with `𝓘`, reweaken; plus the two-phase induction made explicit |
