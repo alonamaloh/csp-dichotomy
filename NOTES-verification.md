@@ -541,3 +541,101 @@ One statement needs a word: `LEMLinkedImpliesBACenter` (line 222) concludes *"th
 BA or central subuniverse on `A` or `B`"*, with no properness. Every algebra is a BA
 subuniverse of itself, so read literally it is vacuous; it is used at line 1282 as though it
 said *proper nonempty*. Same family as convention item C3.
+
+## §5.4, second instalment: the three bridge-triviality lemmas
+
+`LEMPCCongruencePropertyInductiveStep` (1372), `LEMPCBridgesAreTrivial` (1449),
+`LEMNoBridgeBetweenDifferentTypes` (1565), `LEMBridgeTOPCCongruence` (1680).
+
+Note that `LEMPCCongruencePropertyInductiveStep` carries as hypothesis (2) exactly the
+pair-reflexivity that §5.4's first block needs and does not state: *"`(a,b,a,b),(b,a,b,a) ∈ δ`
+for every `(a,b) ∈ proj_{1,2}(δ)`"*. So the property is in the author's vocabulary; it is
+simply missing from the two lemmas that also require it.
+
+### D14 — Case 1 of `LEMPCCongruencePropertyInductiveStep`. **CONFIRMED, no repair found**
+
+Line 1392: `B <_T A` with `|B| > 1`, `δ' = δ ∩ B⁴`, and then
+
+> *"By Lemma \ref{LEMBACenterLinkedness} `RightLinked(proj_{1,2,3}(δ')) = B²`."*
+
+`LEMBACenterLinkedness` (line 194, Barto–Kozik Prop 2.15(i)) is about a **binary** relation:
+`R ≤_sd A₁×A₂`, `Bᵢ` absorbing, `R ∩ (B₁×B₂) ≤_sd B₁×B₂`, `R` linked ⟹ `R ∩ (B₁×B₂)`
+linked. Two things go wrong.
+
+- *Which relation.* Hypothesis (3) of the lemma is about the split `(1,2)|(3)`, so the
+  natural application has `R = proj_{1,2,3}(δ)`, `B₁ = B² ∩ proj_{1,2}(δ)`, `B₂ = B`, and
+  yields that `proj_{1,2,3}(δ) ∩ B³` is linked. The induction needs
+  `proj_{1,2,3}(δ ∩ B⁴)`, which is contained in it and can be smaller: a tuple of `δ` whose
+  first three coordinates lie in `B` need not have its fourth there. Getting `δ ∩ B⁴` out of
+  the lemma instead requires linkedness of `δ` in the split `(1,2)|(3,4)` or `(1,2,3)|(4)`,
+  and hypothesis (3) does not give either — a path in the coarser bipartite graph does not
+  lift, because consecutive edges through a third coordinate `c` may use different fourth
+  coordinates.
+- *Subdirectness.* The lemma's hypothesis `R ∩ (B₁×B₂) ≤_sd B₁×B₂` is not discharged. It does
+  hold, by hypotheses (2) and reflexivity — `(x₁,x₂,x₁) ∈ R` for `(x₁,x₂) ∈ B₁` and
+  `(x₃,x₃,x₃) ∈ R` for `x₃ ∈ B` — but that has to be said.
+
+I did not find a repair. Restricting with the absorbing term `t` against
+`(x₃,x₄,x₁,x₂) ∈ δ` (symmetry) does land a tuple in `δ ∩ B⁴`, but at moved coordinates, so it
+does not identify the two projections. **Open.** Note the contrast with the analogous step in
+`LEMPCBridgesAreTrivial` Case 2, which works precisely because a closure property is proved
+first (see below); no such property is available here, where `B` is a strong subuniverse
+rather than a linkedness block.
+
+The rest of the lemma is **sound**, and I checked it line by line.
+
+- The `|A| = 1` worry does not arise: clause (3) of the bridge definition forces
+  `proj_{1,2}(δ) ⊋ 0_A`, hence `|A| ≥ 2`.
+- Case 2's two applications of the ternary absorbing operation are correct, and I recomputed
+  both coordinatewise. The first gives `(a,a,g(b,b,a),a) ∈ δ`, whence `g(b,b,a) = a` by clause
+  (4); the second gives `(a,a,b,a) ∈ δ`, whence `b = a`. The step needs *ternary* absorption
+  where `T = C` only supplies centrality, so `LEMCenterImpliesTernaryAbsorption`
+  (`main.tex:1350`) is an unstated citation.
+- Case 3 is correct: `LEMBAConLeftOrCenterOnRight` is applied to the transpose of
+  `proj_{1,2,3}(δ)`, `LEMAbsorbingEquality` to `C <_BA proj_{1,2}(δ)` — and the case
+  `C = proj_{1,2}(δ)` needs a word, since `LEMAbsorbingEquality` hypothesises a proper
+  containment while the conclusion is immediate when it is an equality.
+- The three cases are exhaustive: a proper nonempty BA or central subuniverse either has size
+  > 1 (Case 1) or is a singleton (Case 2); otherwise Case 3.
+
+### `LEMPCBridgesAreTrivial` — **sound**, with two steps to write out
+
+Both are in Case 1, which is where the work is.
+
+**The counting step.** Line 1478: *"Since `proj_{1,2}(δ) = proj_{3,4}(δ)`, for any
+`(a,b,c,d) ∈ δ` the elements `c/σ` and `d/σ` are also uniquely determined by `a/σ` and
+`b/σ`."* What the case hypothesis gives is uniqueness in the *other* direction — it is a
+statement about `ξ = δ ∘ δ^{-1}`, and the claim is about `δ^{-1} ∘ δ`. The bridge between them
+is pigeonhole, and the cited equality of projections is exactly what powers it: on
+`σ*/σ`, which is finite, `δ` induces a bipartite relation whose left neighbourhoods are
+nonempty (`proj_{1,2}(δ) = σ*`), pairwise disjoint (that is what Case 1 says), and cover the
+right side (`proj_{3,4}(δ) = σ*`). Equal finite cardinalities force every neighbourhood to be
+a singleton, so the induced relation is a bijection and uniqueness holds both ways. One line,
+but it is the hinge of the case.
+
+**The four combinations.** Line 1534 derives `proj_{1,4}(δ) = σ` or `proj_{1,3}(δ) = σ`, and
+by the same argument with `x₁, x₂` switched, `proj_{2,4}(δ) = σ` or `proj_{2,3}(δ) = σ`, then
+says *"This completes this case"*. Two of the four combinations are the conclusion; the other
+two — `proj_{1,3} = proj_{2,3} = σ` and `proj_{1,4} = proj_{2,4} = σ` — must be excluded, and
+they are, because either would give `proj_{1,2}(δ) ⊆ σ` against `proj_{1,2}(δ) = σ* ⊋ σ`. And
+the containment `⊇` in the conclusion comes from stability under `σ` plus
+`proj_{1,2}(δ) = σ*`. Also: the "switching `x₁` and `x₂`" appeal needs `σ*` symmetric, which
+holds because `(σ*)^{-1}` is another minimal relation `⊋ σ` stable under `σ`.
+
+Everything else checks: `ζ₁, ζ₂` really are bridges where claimed, `ζ̃₂ = proj_{1,4}(δ)` by
+direct computation, `(a,a,c,c) ∈ ζ₁` for every `(a,b,c,d) ∈ δ`, and the trichotomy at line
+1470 is exhaustive because each `RightLinked` is a congruence containing `σ`, so minimality of
+`σ*` puts it at `σ` or above `σ*`.
+
+**Case 2 is the model for what Case 1 of D14 is missing.** Before applying
+`LEMPCCongruencePropertyInductiveStep` to `ξ ∩ B⁴`, the proof establishes (lines 1548–1554)
+that *"`a,b,d ∈ B` for any `c ∈ B` and `(a,b,c,d) ∈ ξ`"* — i.e. `ξ ∩ (A²×B×A) ⊆ B⁴`.
+**That** is what makes `proj_{1,2,3}(ξ ∩ B⁴) = proj_{1,2,3}(ξ) ∩ (A²×B)` and hence linked,
+`B` being a block. One gap remains at this call: hypothesis (3) of the bridge definition for
+`ξ ∩ B⁴` requires `σ*∩B² ⊋ σ∩B²`, which is not argued. It is not needed — if it fails, then
+by clause (4) every tuple of `ξ ∩ B⁴` has both pairs in `σ`, and linkedness on a `B` that is
+not a `σ`-block produces `(x₁,x₁,x₃,x₃) ∈ ξ` with `(x₁,x₃) ∉ σ` directly, which is the
+conclusion. But the lemma cannot be *cited* on a non-bridge; the case has to be inlined.
+
+Case 3 is the hedge at line 1560 already on the list, *"This case can be considered in the
+same way as Case 2."*
