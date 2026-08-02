@@ -658,6 +658,28 @@ altogether.
 
 ---
 
+### Checked against the JACM proof (2026-08-02) — no ancestor, and a fourth route
+
+Fetched arXiv:1704.01914 (source). `LEMMaximalMultExtention` has **no analogue** there: no
+maximal-congruence-decomposition statement exists in the JACM files. Structural reason: JACM
+*defines* a PC subuniverse as an intersection of blocks of PC congruences, and a linear
+subuniverse as stable under LinCon — the subuniverse↔congruence connection the simplified
+paper must prove is definitional there. D17 is an artifact of the simplified paper's
+chain-of-D-steps definitions; the citation route is closed, permanently.
+
+**Fourth route (live, not yet attempted).** JACM's `ParPropertyMain` proves the parallelogram
+property with no maximal congruence: recursion on `size(D)` (lexicographic over *distinct*
+domains — deliberately insensitive to covering duplication, which is where the reviewer's §3
+instinct came from), restricting to the minimal linear reduction containing a solution of the
+weakened instance, and `FitInLinearSubuniverses` (one-of-four chains through a subdirect
+relation intersect; `auxstatements.tex:2026`) as the intersection engine, via `ParProperty`
+(`auxstatements.tex:2178`). Since `lem:maximal-mult` has exactly one consumer — the typing
+step of `lem:parallelogram-crucial` — re-proving that lemma along JACM lines deletes the call
+site and `hyp:maximal-mult` with it. Cost: transport `FitInLinearSubuniverses` into our
+vocabulary (closest existing: stable intersection / intersect-all), and recover the typing
+conclusion separately (irreducibility from `lem:crucial-irreducible`; type via bridges),
+since JACM's version doesn't type the ConOne congruences at all.
+
 ## Status
 
 | | fixable? | needs new mathematics? |

@@ -652,8 +652,53 @@ factors alone already cut it out. If that is proved, saturation applies to
 them, the intersection of their images is the image of their intersection, and
 the rest of the argument runs with the ambient still $\bar B_{1}$.
 
-Proof paper: \pkey{lem:maximal-mult}, marked \emph{open} in its status table.
-Nothing downstream of that lemma should be written until this is settled.
+\begin{entry}[$\mathrm D17$ against the JACM proof]\label{ent:d17-jacm}
+Checked on 2026-08-02 against the source of \cite{ZhukJACM}
+(arXiv:1704.01914): \textbf{the lemma has no ancestor there}. The construction ---
+a maximal congruence $\sigma$ with $(C_{1}\circ\sigma)\cap B_{2}=\varnothing$,
+decomposed as an intersection of type-$T$ congruences --- appears nowhere in
+the JACM paper, and the search is easy to reproduce: no occurrence of
+``maximal congruence'' in its proof files does this job. The reason is
+structural. There, a PC subuniverse \emph{is by definition} an intersection of
+blocks of PC congruences, and a linear subuniverse \emph{is by definition}
+stable under the minimal linear congruence --- the connection between
+subuniverse-level and congruence-level data that
+\texttt{LEMMaximalMultExtention} has to prove is definitional. The simplified
+paper's chain-of-$\TD$-steps definitions buy the six-type uniformity that
+\S5's calculus runs on, and this lemma is where the bill arrives. So the gap
+cannot be closed by citation; it is an artifact of the new definitions, and it
+is the simplified paper's own obligation.
+
+The comparison also yields the first live repair route (the fourth recorded
+in the proof paper's Caveat on the hypothesis): the JACM proof of the
+parallelogram property proceeds by recursion over a measure on reductions,
+restricting to the minimal linear reduction containing a solution of the
+weakened instance (\texttt{ParPropertyMain}), with
+\texttt{FitInLinearSubuniverses} --- chains of one-of-four subuniverses
+through a subdirect relation intersect --- doing the work that stable
+intersection does here. No maximal congruence appears. Since
+\pkey{lem:maximal-mult} has exactly one consumer, re-proving
+\pkey{lem:parallelogram-crucial} along those lines would delete the call site
+and the hypothesis with it.
+
+Two further facts from the same reading. The JACM induction measure is
+$\operatorname{size}(D)=(|D_{1}|,\dots,|D_{s}|)$ over the \emph{distinct}
+domains in decreasing order, compared lexicographically, with the explicit
+remark that
+duplicating domains does not affect it --- so the JACM theorems \emph{are}
+applied at expanded coverings, and the measure is built to survive that. The
+reviewer's \S3 objection to our $\mu$ describes the JACM architecture; the
+simplified paper restructured the induction to appeal only at weakenings,
+which is why $\mu$ suffices there (Entry~\ref{ent:measure}). And the JACM
+route to the parallelogram property never types the $\ConOne$ congruences ---
+the typing conclusion of \pkey{lem:parallelogram-crucial} is likewise new to
+the simplified paper, so the fourth route must recover it separately:
+irreducibility from \pkey{lem:crucial-irreducible}, the type from bridges.
+\end{entry}
+
+Proof paper: \pkey{lem:maximal-mult}, marked \emph{open} in its status table;
+Caveat \pkey{haz:maximal-mult} now records the fourth route beside the three
+failed ones.
 
 \subsection{$\mathrm C{10}$ --- a citation that drops a case}\label{sec:C10}
 

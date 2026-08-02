@@ -2501,4 +2501,23 @@ that fact closes anything, and the descent shrinks the ambient while the
 conclusion's congruence family is indexed by the ambient.
 
 So the hypothesis stays, and the debt is recorded in \S\ref{sec:status}.
+
+A fourth route is open, and unlike the three above it has not failed --- it
+has not been attempted. Lemma~\ref{lem:maximal-mult} has exactly one consumer,
+the typing step of Lemma~\ref{lem:parallelogram-crucial}, and the older proof
+of the dichotomy establishes the parallelogram property of a crucial
+constraint \emph{without any statement of this shape}: by recursion on a
+measure over reductions, restricting to the minimal linear reduction
+containing a solution of the weakened instance, with a fit-in lemma for
+one-of-four chains through a subdirect relation doing the intersection work.
+No maximal congruence appears. If Lemma~\ref{lem:parallelogram-crucial} is
+proved along those lines, its typing conclusion recovered separately ---
+irreducibility from Lemma~\ref{lem:crucial-irreducible}, the type from the
+bridge machinery --- then the sole call site of
+Lemma~\ref{lem:maximal-mult} disappears, and
+Hypothesis~\ref{hyp:maximal-mult} with it. The transport cost is not small:
+the fit-in lemma has to be restated in this document's vocabulary, and the
+recursion needs the reduction machinery of \S\ref{sec:main-statements}. But it
+converts an open problem into writing, and it is the first route with that
+property.
 \end{hazard}
