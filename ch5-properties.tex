@@ -42,24 +42,52 @@ re-derived.
 
 \subsection{Propagation}
 
-\begin{longlemma}[Propagation along a homomorphism]\label{lem:propagation}
+The backward direction is separated out, and the separation is not cosmetic;
+Caveat~\ref{haz:reverse-hom-split} says why.
+
+\begin{lemma}[Reverse homomorphism]\label{lem:reverse-hom}
 Let $f\colon\mathbf A\to\mathbf A'$ be a surjective homomorphism. Then
 \begin{enumerate}\tightlist
-\item[\textup{(f)}] $C\lll^{A}B\Rightarrow f(C)\lll f(B)$;
 \item[\textup{(b)}] $C'\lll^{A'}B'\Rightarrow f^{-1}(C')\lll f^{-1}(B')$;
-\item[\textup{(ft)}] $C\subt[A]{T(\sigma)}B\lll A\Rightarrow
-  \bigl(f(C)=f(B)$ or $f(C)\subt{\TS}f(B)$ or
-  $f(C)\subt[A']{T}f(B)\bigr)$;
 \item[\textup{(bt)}] $C'\subt[A']{T(\sigma)}B'\Rightarrow
   f^{-1}(C')\subt[A]{T(f^{-1}(\sigma))}f^{-1}(B')$;
-\item[\textup{(fs)}] $T\in\{\TBA,\TC,\TS\}$ and $C\subt{T}B$
-  $\Rightarrow f(C)\subte{T}f(B)$;
-\item[\textup{(fm)}] $C\subte[A]{\MT T}B\lll A$ and $f(B)$ $\TS$-free
-  $\Rightarrow f(C)\subte[A']{\MT T}f(B)$;
 \item[\textup{(bm)}] $C'\subte[A']{\MT T}B'\lll A'\Rightarrow
   f^{-1}(C')\subte[A]{\MT T}f^{-1}(B')$.
 \end{enumerate}
+\end{lemma}
+
+\begin{longlemma}[Propagation along a homomorphism]\label{lem:propagation}
+Let $f\colon\mathbf A\to\mathbf A'$ be a surjective homomorphism. Then
+clauses \textup{(b)}, \textup{(bt)}, \textup{(bm)} of
+Lemma~\ref{lem:reverse-hom} hold, and moreover
+\begin{enumerate}\tightlist
+\item[\textup{(f)}] $C\lll^{A}B\Rightarrow f(C)\lll f(B)$;
+\item[\textup{(ft)}] $C\subt[A]{T(\sigma)}B\lll A\Rightarrow
+  \bigl(f(C)=f(B)$ or $f(C)\subt{\TS}f(B)$ or
+  $f(C)\subt[A']{T}f(B)\bigr)$;
+\item[\textup{(fs)}] $T\in\{\TBA,\TC,\TS\}$ and $C\subt{T}B$
+  $\Rightarrow f(C)\subte{T}f(B)$;
+\item[\textup{(fm)}] $C\subte[A]{\MT T}B\lll A$ and $f(B)$ $\TS$-free
+  $\Rightarrow f(C)\subte[A']{\MT T}f(B)$.
+\end{enumerate}
 \end{longlemma}
+
+\begin{hazard}[Why the backward clauses are a separate lemma]
+\label{haz:reverse-hom-split}
+The backward direction is much the easier half, and several consumers need only
+it. Bundling it with the forward clauses makes those consumers cite the forward
+clauses too --- and the forward clauses rest on \S\ref{sec:factorisation},
+which rests back on them.
+
+Concretely, with the clauses bundled the following is a cycle:
+Corollary~\ref{cor:intersection-good} $\to$ Lemma~\ref{lem:propagation} $\to$
+Lemma~\ref{lem:factor-by-delta} $\to$ Lemma~\ref{lem:cut-or-nothing} $\to$
+Lemma~\ref{lem:leftlinked-stay-full} $\to$ Lemma~\ref{lem:center-pushed-in}
+$\to$ Corollary~\ref{cor:intersection-good}. Every edge is a real citation. The
+cycle is spurious only because the first edge uses (b), which needs none of the
+rest; splitting the lemma is what makes that visible.
+
+\end{hazard}
 
 \begin{hazard}[The three-way disjunction in (ft)]\label{haz:ft}
 Clause (ft) is the characteristic shape of this theory and the reason it is

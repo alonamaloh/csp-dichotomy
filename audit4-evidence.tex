@@ -141,6 +141,34 @@ idempotent WNU of arity $N$ in $\Clo(w)$''. The precise arity matters only for
 \S4 of \cite{ZhukSimplified}, which is an independent second result and out of
 scope. The proof paper states the weaker form.
 
+\subsection{A cycle in our own arrangement}\label{sec:our-cycle}
+
+The parser that refuted the claimed cycle in the source
+(\S\ref{sec:refuted-cycle}) was pointed at the proof paper, and found one
+there:
+\begin{center}\footnotesize
+\pkey{cor:intersection-good} $\to$ \pkey{lem:propagation} $\to$
+\pkey{lem:factor-by-delta} $\to$\\[2pt]
+\pkey{lem:cut-or-nothing} $\to$ \pkey{lem:leftlinked-stay-full} $\to$\\[2pt]
+\pkey{lem:center-pushed-in} $\to$ \pkey{cor:intersection-good}
+\end{center}
+Every edge was a real citation. The cycle was \emph{ours}: the source proves
+the corollary from \texttt{LEMReverseHomomorphism} (\texttt{SS:953}), a
+separate and much easier statement, where our draft had folded the backward
+clauses into Propagation and cited the whole thing. Citing the bundle drags in
+the forward clauses, which rest on \S5.6, which rests back on the corollary.
+
+The fix was to state the backward clauses as their own lemma, which the
+external review had independently asked for on different grounds --- it noted
+that ``the reverse-homomorphism lemma used for (bt) is neither stated nor
+cited''. The proof paper now has \pkey{lem:reverse-hom}, and its graph is
+acyclic: $97$ statements, $52$ with proofs, $125$ edges.
+
+Two things worth drawing out. First, the source was right and we were wrong,
+which is the opposite of the direction this document usually runs. Second, this
+is the third time the same tool has settled a question in minutes that prose
+inspection had not settled at all.
+
 \section{The machine checks}\label{sec:machine-checks}
 
 Everything reducible to a finite check has had one. Each entry gives the scope,
@@ -152,8 +180,11 @@ claims of this document died to exactly such checks.
 \hline
 \textbf{Check} & \textbf{Scope} & \textbf{Result} \\
 \hline
-Proof-dependency graph & 58 statements, 152 edges over the three \TeX{}
-  files & Acyclic; \S\ref{sec:refuted-cycle} \\
+Proof-dependency graph, the source & 58 statements, 152 edges over the three
+  \TeX{} files & Acyclic; \S\ref{sec:refuted-cycle} \\
+Proof-dependency graph, the proof paper & 97 statements, 52 with proofs, 125
+  edges & Acyclic --- after one real cycle was found and fixed,
+  \S\ref{sec:our-cycle}. Run by the build gate \\
 Statement audit & all 81 labelled statements & 9 flagged, 8 cleared by hand;
   $\mathrm D2$ is the sole survivor \\
 $\mathrm C1$: special idempotent affine WNU on $\mathbb Z_{p}$ &

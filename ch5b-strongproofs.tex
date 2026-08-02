@@ -57,11 +57,17 @@ $T\in\{\TBA,\TC\}$. Then $R'\dsubte{T}R$.
 Replacing a relation by a proper strong subrelation can make the pp-defined
 result \emph{empty}, so the undotted $R'\subte{T}R$ --- which under
 Convention~\ref{conv:empty} entails $R'\neq\varnothing$ --- is not what the
-lemma gives. Most uses below already reason in dotted form and establish
-nonemptiness separately where they need it; the two that matter are inside
-Lemmas~\ref{lem:bacon-left} and \ref{lem:absorb-linked-sub}, and
-Lemma~\ref{lem:bacon-left} does not yet discharge it
-(\S\ref{sec:status}). A full audit of the call sites has not been made.
+lemma gives.
+
+Every use below has been checked against this. Lemma~\ref{lem:ba-center-intersect}
+states its conclusion dotted and passes it on. Lemmas~\ref{lem:absorb-linked-sub},
+\ref{lem:block-good-bridge} and \ref{lem:pc-inductive-step} exhibit a point of
+the smaller relation and so upgrade to the undotted form.
+Lemma~\ref{lem:bacon-left} needs both nonemptiness \emph{and} properness, and
+gets each from a different clause of Lemma~\ref{lem:barto-kazda}
+(Caveat~\ref{haz:bacon-left}). The remaining use is inside
+Lemma~\ref{lem:center-pushed-in}, which is an outline
+(\S\ref{sec:status}).
 \end{hazard}
 
 \begin{lemma}[{\cite[Prop.~2.14]{DecidingAbsorption}}, {\cite[Lem.~3.2]{ZhukStrong}}]\label{lem:barto-kazda}
@@ -194,7 +200,9 @@ $k\ge|P|$ the formula $\Phi_{k}$ interpreted in $W$ defines the transitive
 closure of $W\circ W^{-1}$, which is $P^{2}$ since $W$ is linked. Interpreted
 in $W'$ and for the same $k\ge|P|\ge|P'|$ it defines
 $\lambda:=\LeftLinked(W')$. By Lemma~\ref{lem:pp-propagation},
-replacing every occurrence of $W$ by $W'$ gives $\lambda\subte{T}P^{2}$. Since
+replacing every occurrence of $W$ by $W'$ gives $\lambda\dsubte{T}P^{2}$, and
+$\lambda\neq\varnothing$ because $W'\neq\varnothing$ makes $P'$ nonempty and
+$\lambda$ reflexive on it, so $\lambda\subte{T}P^{2}$. Since
 $\lambda\subseteq (P')^{2}\le P^{2}$, Lemma~\ref{lem:ba-center-intersect} gives
 $\lambda\subte{T}(P')^{2}$.
 
@@ -282,30 +290,93 @@ $C\subte{\TBA,\TC}\mathbf B$.
 \end{lemma}
 
 \begin{proof}
-For $k\ge2$ put $W_{k}=\{(a_{1},\dots,a_{k}):\exists b\,\forall i\,
-R(a_{i},b)\}$. If $W_{|A|}=A^{|A|}$ then $C\neq\varnothing$, since a witness
-$b$ for the tuple listing all of $A$ lies in $C$. Otherwise choose $k$ minimal
-with $W_{k}\neq A^{k}$. Since $\LeftLinked(R)=A^{2}$ we get
-$\LeftLinked(W_{k})=A^{2}$, and viewing $W_{k}$ as a binary
-relation in $\mathbf A\times\mathbf A^{k-1}$ --- subdirect by minimality of $k$
---- Corollary~\ref{lem:linked-implies-abs} and Lemma~\ref{lem:power-to-base}
-produce a proper nonempty binary absorbing or central subuniverse of
-$\mathbf A$, contrary to hypothesis. So $C\neq\varnothing$.
+If $|A|=1$ then subdirectness gives $A\times\{b\}\subseteq R$ for every
+$b\in B$, so $C=B$ and the conclusion holds with equality. Assume $|A|\ge2$.
 
-By Lemma~\ref{lem:central-relation} applied to $R^{-1}$ --- alternative (a)
-being excluded --- either $C$ is central in $\mathbf B$ or $\mathbf A$ has a
-proper nonempty binary absorbing subuniverse; the latter is excluded, so $C$ is
-central. For binary absorption, suppose not; by Lemma~\ref{lem:barto-kazda}
-there is $S\le B\times B$ with $S\cap(C\times C)=\varnothing$,
-$S\cap(B\times C)\neq\varnothing$ and $S\cap(C\times B)\neq\varnothing$. Put
+\emph{Step 1: $C\neq\varnothing$.} For $k\ge1$ put
+$W_{k}=\{(a_{1},\dots,a_{k}):\exists b\,\forall i\,R(a_{i},b)\}$, a
+subuniverse of $\mathbf A^{k}$, with $W_{1}=\proj_{1}(R)=A$. If
+$W_{|A|}=A^{|A|}$ then a witness $b$ for the tuple listing all of $A$ has
+$A\times\{b\}\subseteq R$, so $b\in C$ and we are done. Otherwise choose
+$k\ge2$ minimal with $W_{k}\neq A^{k}$, so $W_{k-1}=A^{k-1}$.
+
+View $W_{k}$ as a binary relation in $\mathbf A\times\mathbf A^{k-1}$. It is
+\emph{subdirect}: for $a\in A$, subdirectness of $R$ gives $b$ with $R(a,b)$
+and hence $(a,a,\dots,a)\in W_{k}$, so the left projection is $A$; and for
+$\bar a\in A^{k-1}$, $W_{k-1}=A^{k-1}$ gives $b$ with $R(a_{i},b)$ for all
+$i$, while $\proj_{2}(R)=B$ gives some $a_{0}$ with $R(a_{0},b)$, so
+$(a_{0},\bar a)\in W_{k}$ and the right projection is $A^{k-1}$.
+
+It is \emph{linked}. If $a,c\in A$ share an $R$-neighbour $b$ --- that is,
+$R(a,b)$ and $R(c,b)$ --- then $b$ also witnesses
+$(a,a,\dots,a),(c,a,\dots,a)\in W_{k}$, so $(a,c)\in\LeftLinked(W_{k})$ by
+Definition~\ref{def:linked}. Since $\LeftLinked(R)$ is the least equivalence
+closed under that step and $\LeftLinked(W_{k})$ is an equivalence containing
+each such pair, $\LeftLinked(R)\subseteq\LeftLinked(W_{k})$; and
+$\LeftLinked(R)=A^{2}$ by hypothesis, so $\LeftLinked(W_{k})=A^{2}$.
+
+So $W_{k}$ is a proper linked subdirect relation, and
+Corollary~\ref{lem:linked-implies-abs} gives a proper nonempty binary absorbing
+or central subuniverse of $\mathbf A$ or of $\mathbf A^{k-1}$;
+Lemma~\ref{lem:power-to-base} moves the second case down to $\mathbf A$. Either
+way this contradicts the hypothesis on $\mathbf A$. Hence
+$W_{|A|}=A^{|A|}$ after all, and $C\neq\varnothing$.
+
+\emph{Step 2: $C$ is central in $\mathbf B$.} Apply
+Lemma~\ref{lem:central-relation} to $R^{-1}\sdle\mathbf B\times\mathbf A$,
+whose associated set is exactly $C$. Alternative (a) is excluded by Step 1 and
+alternative (c) --- a proper nonempty binary absorbing subuniverse of
+$\mathbf A$ --- by hypothesis, so (b) holds.
+
+\emph{Step 3: $C$ is binary absorbing in $\mathbf B$.} Suppose not. By
+Lemma~\ref{lem:barto-kazda} at $n=2$ there is $S\le B\times B$ with
 \[
-  W=\{(a_{1},\dots,a_{|A|}):\exists(b,c)\in S\;\bigl(c\in C\wedge
-     \forall i\,R(a_{i},b)\bigr)\}.
+  S\cap(C\times C)=\varnothing,\qquad
+  S\cap(C\times B)\neq\varnothing,\qquad
+  S\cap(B\times C)\neq\varnothing .
 \]
-By Lemma~\ref{lem:pp-propagation} $W\subt{\TC}A^{|A|}$, so by
-Lemma~\ref{lem:power-to-base} $\mathbf A$ has a proper nonempty central
-subuniverse --- again a contradiction.
+Write $U_{X}=\{b\in B:\exists c\,(S(b,c)\wedge X(c))\}$ for a unary $X$ on
+$B$, and consider the pp-formula
+\[
+  \Phi_{X}(a_{1},\dots,a_{|A|})=\exists b\;\Bigl(U_{X}(b)\wedge
+    \bigwedge_{i}R(a_{i},b)\Bigr),
+\]
+in which the unary relation $X$ occurs once. Put $W=\Phi_{C}$ and
+$W^{\circ}=\Phi_{B}$. Since $C\subt{\TC}\mathbf B$ by Step 2 ---
+\emph{proper}, because $C=B$ would put $S\cap(C\times C)=S\neq\varnothing$ ---
+Lemma~\ref{lem:pp-propagation} gives $W\dsubte{\TC}W^{\circ}$. Three
+observations turn that into what is wanted, and each spends one of the three
+displayed conditions.
+
+\emph{$W^{\circ}=A^{|A|}$.} $S\cap(C\times B)\neq\varnothing$ supplies
+$b_{0}\in C$ with $b_{0}\in U_{B}$. Since $b_{0}\in C$ we have
+$A\times\{b_{0}\}\subseteq R$, so $b_{0}$ witnesses $\Phi_{B}(\bar a)$ for
+\emph{every} $\bar a\in A^{|A|}$.
+
+\emph{$W\neq\varnothing$.} $S\cap(B\times C)\neq\varnothing$ supplies
+$(b_{1},c_{1})\in S$ with $c_{1}\in C$, so $b_{1}\in U_{C}$; and
+$\proj_{2}(R)=B$ supplies $a$ with $R(a,b_{1})$, so
+$(a,\dots,a)\in W$.
+
+\emph{$W\neq A^{|A|}$.} If it were, the tuple enumerating $A$ would give
+$b\in U_{C}$ with $A\times\{b\}\subseteq R$, i.e.\ $b\in C$; and $b\in U_{C}$
+means $S(b,c)$ for some $c\in C$, so $(b,c)\in S\cap(C\times C)=\varnothing$.
+
+So $W\subt{\TC}A^{|A|}$ is proper and nonempty, and
+Lemma~\ref{lem:power-to-base} produces a proper nonempty central subuniverse of
+$\mathbf A$ --- again a contradiction.
 \end{proof}
+
+\begin{hazard}[All three Barto--Kazda conditions are spent]\label{haz:bacon-left}
+Step 3 is the only place in this section where the three side conditions of
+Lemma~\ref{lem:barto-kazda} are used separately, one apiece: $S$ meeting
+$C\times B$ is what makes the \emph{ambient} of the pp-propagation step the
+full power $A^{|A|}$ rather than some subrelation of it; $S$ meeting
+$B\times C$ is what makes $W$ nonempty; and $S\cap(C\times C)=\varnothing$ is
+what makes it proper. Dropping any one leaves a conclusion that
+Lemma~\ref{lem:power-to-base} cannot consume, since $\subt{\TC}$ requires a
+proper nonempty subuniverse of a product.
+\end{hazard}
 
 \begin{lemma}\label{lem:strong-nonempty}
 If $C\lll^{A}B\lll A$ and $D\subt{\TBA,\TC}B$ then $C\cap D\neq\varnothing$.
@@ -546,7 +617,7 @@ is empty, of size $1$, or equal to $B_{1}/\sigma$.
 
 \begin{proof}
 Let $f_{i}:\mathbf R\to\mathbf A_{i}$ be the projections. By
-Lemma~\ref{lem:propagation}(b), $f_{i}^{-1}(B_{i})\lll\mathbf R$; apply
+Lemma~\ref{lem:reverse-hom}(b), $f_{i}^{-1}(B_{i})\lll\mathbf R$; apply
 Lemma~\ref{lem:intersection-good}(d) inside $\mathbf R$ to these two, with the
 congruence $f_{1}^{-1}(\sigma)$, and read the conclusion back through $f_{1}$.
 \end{proof}
@@ -706,8 +777,9 @@ nonempty because $b\in B\cap E$. Contradiction.
 subuniverse by idempotence, hence so is $\{a\}\circ\omega$, and it contains
 $a$ and $b$. Put $\xi(x_{1},x_{2})=\sigma(a,x_{1},x_{2},b)$; from
 $(a,b,a,b),(a,a,b,b)\in\sigma$ both projections of $\xi$ contain $a$ and $b$,
-hence equal $A$. Put $C=B\circ\xi$, so $C\subte{T}\mathbf A$ by
-Lemma~\ref{lem:pp-propagation}, with $a\in C$ and $b\notin C$ --- the latter
+hence equal $A$. Put $C=B\circ\xi$, which is nonempty because $B$ is and $\proj_{1}(\xi)=A$, so
+$C\subte{T}\mathbf A$ by Lemma~\ref{lem:pp-propagation}, with $a\in C$ and
+$b\notin C$ --- the latter
 because $b\in C$ would give $(a,c,b,b)\in\sigma$ with $c\in B$, and clause (d)
 would force $a=c\in B$.
 
@@ -730,8 +802,9 @@ widening is what makes the appeal legitimate.} Since
 $n=3$ and all types are $\TC$, every alternative of the corollary fails, so
 hypothesis (3) must fail:
 $\sigma\cap(\{a\}\times C\times C\times B)\neq\varnothing$. Put
-$C'=\proj_{2}$ of that set. Then $C'\subte{\TC}A$ by
-Lemma~\ref{lem:pp-propagation}, using $\{a\}\circ\omega=A$, and hence
+$C'=\proj_{2}$ of that set, nonempty because the set is. Then
+$C'\subte{\TC}A$ by Lemma~\ref{lem:pp-propagation}, using
+$\{a\}\circ\omega=A$, and hence
 $C'\subte{\TC}C$ by Lemma~\ref{lem:ba-center-intersect}; and by clause (d)
 either $a\notin C'$ or $C\cap B\neq\varnothing$.
 
@@ -1287,17 +1360,10 @@ corollary --- as is natural, since it is the symmetric-looking form --- makes
 all three unprovable.
 \end{hazard}
 
-\begin{proof}[Proof of Lemma~\ref{lem:propagation}]
-(bt) is the reverse-homomorphism lemma and (b) follows by iteration. (fs) is
-Lemma~\ref{lem:factor-type}. (ft) splits by type. For $T\in\{\TBA,\TC,\TS\}$ it follows from (fs). For
-$T\in\{\TPC,\TL\}$ it is Lemma~\ref{lem:factor-by-delta}; and for $T=\TD$,
-which that lemma does not cover, split the witnessing congruence into its
-linear and PC cases and apply the lemma to each, the two conclusions being the
-same three alternatives. Then (f) follows by iteration, all three outcomes of
-(ft) staying inside the type list of Definition~\ref{def:lll}.
-
-(bt) is the reverse-homomorphism step, and it is proved directly rather than
-through Corollary~\ref{cor:prop-from-factor}, which is derived from it. For
+\begin{proof}[Proof of Lemma~\ref{lem:reverse-hom}]
+(bt) is proved directly, from the definitions; the reflection corollary of
+\S\ref{sec:properties} is \emph{derived} from this lemma and so may not be used
+here. For
 $T\in\{\TBA,\TC\}$ the witnessing term transfers: $f$ is a homomorphism, so
 $f\bigl(t(\bar a)\bigr)=t\bigl(f(\bar a)\bigr)$, and a tuple with all but one
 entry in $f^{-1}(C')$ and the remaining entry in $f^{-1}(B')$ maps to one with
@@ -1311,6 +1377,21 @@ $f^{-1}(\sigma)$; condition (i) of Definition~\ref{def:types} transfers because
 $f^{-1}\bigl(\cover\sigma\bigr)=\cover{f^{-1}(\sigma)}$ by
 Lemma~\ref{lem:irred-quotient}, and condition (iii) because
 $f^{-1}(B')/f^{-1}(\sigma)\cong B'/\sigma$.
+
+(b) follows by iterating (bt) along a chain, and (bm) from (bt) by
+intersecting.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:propagation}]
+The backward clauses are Lemma~\ref{lem:reverse-hom}.
+
+(fs) is Lemma~\ref{lem:factor-type}. (ft) splits by type: for
+$T\in\{\TBA,\TC,\TS\}$ it follows from (fs); for $T\in\{\TPC,\TL\}$ it is
+Lemma~\ref{lem:factor-by-delta}; and for $T=\TD$, which that lemma does not
+cover, split the witnessing congruence into its linear and PC cases and apply
+the lemma to each, the two conclusions being the same three alternatives. Then
+(f) follows by iteration, all three outcomes of (ft) staying inside the type
+list of Definition~\ref{def:lll}.
 
 (fm). Let $C=C_{1}\cap\dots\cap C_{t}$ with $C_{i}\subt[A]{T(\sigma_{i})}B$ and
 induct on $t$. Write $\delta$ for the kernel of $f$, so that $f(X)$ may be read
@@ -1332,7 +1413,6 @@ the inclusion $\subseteq$ being trivial. This is the one place where the failure
 of images to commute with intersections (\S\ref{sec:legislation}, item
 \ref{leg:quotient}) is repaired, and the saturation hypothesis
 $\delta\cap B^{2}\subseteq\sigma_{i}\cap B^{2}$ is precisely what buys it.
-(bm) follows from (bt) by intersecting.
 \end{proof}
 
 \begin{longtheorem}[Stable intersection, restated from Theorem~\ref{thm:stable-intersection}]
@@ -1403,7 +1483,7 @@ statement about proper nonempty subsets.
 
 \begin{proof}[Proof of Corollary~\ref{cor:stable-intersection}]
 Pull back along the projections $f_{i}:\mathbf R\to\mathbf A_{i}$ using
-Lemma~\ref{lem:propagation}(b),(bt), apply
+Lemma~\ref{lem:reverse-hom}(b),(bt), apply
 Theorem~\ref{thm:stable-intersection} inside $\mathbf R$, and translate
 $\bcol\delta=\sigma_{k}'\circ\sigma_{\ell}'$ back as
 $\sigma_{k}\circ\proj_{k,\ell}(R)\circ\sigma_{\ell}$.

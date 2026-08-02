@@ -83,6 +83,14 @@ check_one() {
   return "$fail"
 }
 
+# The proof paper's own proof-dependency graph must be acyclic.  This is not a
+# LaTeX property, so it lives in its own parser; it is run once, not per-job.
+depcheck() {
+  out=$(python3 depgraph.py 2>&1) || { echo "$out"; return 1; }
+  printf '%s\n' "$out" | sed 's/^/      /'
+  return 0
+}
+
 rc=0
 if [ "$#" -eq 0 ]; then
   set -- csp-proof csp-audit csp-blueprint
@@ -90,4 +98,7 @@ fi
 for j in "$@"; do
   check_one "$j" || rc=1
 done
+case " $* " in
+  *" csp-proof "*) echo "=== dependency graph"; depcheck || rc=1 ;;
+esac
 exit "$rc"
