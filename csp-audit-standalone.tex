@@ -5,7 +5,7 @@
 %%  csp-audit.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision 829f727 on 2026-08-02.
+%%  Generated from revision b5fe101 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-audit.tex
@@ -189,7 +189,7 @@ None of this is a criticism of \cite{ZhukSimplified}, which is unusually careful
 prose --- across nine thousand lines of \TeX{} it says ``obvious'' three times
 and ``clearly'' never, and a mechanical sweep of \S5 turns up four hedges in
 thirteen printed pages, all four of which turn out to be honest
-(\S\ref{sec:hedges}). Sixteen substantive defects in fifty pages is roughly
+(\S\ref{sec:hedges}). Eighteen substantive defects in fifty pages is roughly
 the rate one should expect of any informal exposition of a proof this size, and
 finding them is the point of reading it this way.
 
@@ -236,12 +236,12 @@ in \S\ref{sec:refuted}.
 \hline
 \textbf{} & \textbf{Count} \\
 \hline
-Defects confirmed and repaired, needing no new mathematics & 15 \\
+Defects confirmed and repaired, needing no new mathematics & 16 \\
 \quad of which: a citation the later paper dropped & 3 \\
 \quad a typographical or typing slip & 2 \\
 \quad a statement that is false as printed & 2 \\
-\quad omitted steps and dropped hypotheses & 8 \\
-Defects confirmed and \textbf{open} & 1 \\
+\quad omitted steps and dropped hypotheses & 9 \\
+Defects confirmed and \textbf{open} & 2 \\
 Claims examined and refuted & 2 \\
 Claims examined and declared moot & 1 \\
 Readings legislated (of which two are theorems, not choices) & 10 \\
@@ -250,25 +250,31 @@ Hedges in \S5 of the source, all discharged & 4 \\
 \end{tabular}
 \end{center}
 
-The single open item is $\mathrm{D}17$ (\S\ref{sec:D17}), the maximal
-multi-type extension. It was declared solved in an earlier draft; an external
-review found the repair invalid at its first line, and the finding is correct.
-It is recorded here as open rather than quietly weakened.
+The open items are $\mathrm{D}17$ (\S\ref{sec:D17}), the maximal multi-type
+extension, and $\mathrm{D}19$ (\S\ref{sec:D19}), the undischarged
+leave-one-out hypotheses of the two stable-intersection applications in the
+typing argument. $\mathrm{D}17$ was declared solved in an earlier draft; an
+external review found the repair invalid at its first line, and the finding is
+correct. It is recorded here as open rather than quietly weakened.
 
-Its status has since been sharpened rather than resolved. The proof paper now
-proves the lemma from an \emph{explicitly stated} extra hypothesis --- that
-the type-$T$ factors alone already cut $B_{2}$ out --- and shows that among
-those factors the image-versus-intersection failure does not occur, so the
-whole difficulty is now localised in one displayed sentence rather than spread
-through a proof. The hypothesis itself is unproved and is a debt at the single
-call site.
+Both have since been sharpened, and $\mathrm{D}17$ has been \emph{routed
+around}: the proof paper re-proves the parallelogram lemma without
+\texttt{LEMMaximalMultExtention}, so the extra hypothesis it once carried is
+no longer consumed anywhere, and what remains of both defects is carried by
+one claim and one stated lemma of the proof paper
+(Entry~\ref{ent:route-four}). Neither is resolved; the debt has been moved to
+statements that are plausibly provable, and the reasons the old routes failed
+are now theorems rather than suspicions.
 \clearpage
 %% ---------------------------------------------------------------- audit1-defects.tex
 \section{The register}\label{sec:register}
 
-Sixteen places where \cite{ZhukSimplified} is wrong, incomplete, or states less
-than its own proof gives. Fifteen are repaired and none of those repairs needs
-new mathematics; the sixteenth, $\mathrm{D}17$, is open.
+Eighteen places where \cite{ZhukSimplified} is wrong, incomplete, or states
+less than its own proof gives. Sixteen are repaired and none of those repairs
+needs new mathematics. Two are open: $\mathrm{D}17$ and $\mathrm{D}19$ ---
+though neither now blocks the proof paper in its original form, since the
+route-four rewrite of Entry~\ref{ent:route-four} moved what remains of both
+into one claim and one stated lemma there.
 
 \begin{center}\footnotesize
 \begin{longtable}{@{}llp{0.38\textwidth}p{0.26\textwidth}@{}}
@@ -305,7 +311,8 @@ $\mathrm D{15}$ & \texttt{SS:2208} & Existence of an irreducible congruence
 $\mathrm D{16}$ & \texttt{SS:2743} & Linear congruences on top: the conclusion
   is asserted & \pkey{lem:linear-on-top} \\
 $\mathrm D{17}$ & \texttt{SS:3113} & Maximal multi-type extension concludes
-  that two sets meet because each meets a third. \textbf{Open} &
+  that two sets meet because each meets a third. \textbf{Open}, but the lemma
+  is no longer consumed (Entry~\ref{ent:route-four}) &
   \pkey{lem:maximal-mult} \\
 $\mathrm C{10}$ & \texttt{SS:208} & The central-relation citation drops the
   third alternative of the theorem it cites &
@@ -315,6 +322,15 @@ $\mathrm F$ & \texttt{SS:545, 837, 921} & A full fibre inferred from a
 $\mathrm D{18}$ & \texttt{main:1373} & The definition of a linear congruence
   is ill-typed: it intersects a relation on elements with a set of tuples of
   classes & \pkey{def:linear-congruence} \\
+$\mathrm D{19}$ & \texttt{main:2663, 2693} & Two stable-intersection
+  applications in the typing argument never establish the corollary's
+  leave-one-out hypothesis, and it is not recoverable at coordinates where
+  $D^{(2)}$ equals $D^{(1)}$. \textbf{Open} &
+  \pkey{lem:parallelogram-\brk crucial}, \pkey{cl:typing-anchor} \\
+$\mathrm D{20}$ & \texttt{main:2574} & The parallelogram lemma omits the
+  subdirectness its own proof spends, and the repair needs $\TS$-freeness of
+  the $D^{(1)}$-domains besides &
+  \pkey{lem:parallelogram-\brk crucial} \\
 \hline
 \end{longtable}
 \end{center}
@@ -965,6 +981,72 @@ Proof paper: \pkey{lem:maximal-mult}, marked \emph{open} in its status table;
 Caveat \pkey{haz:maximal-mult} now records the fourth route beside the three
 failed ones.
 
+\begin{entry}[Route four executed: what closed, and what the residue
+  is]\label{ent:route-four}
+Executed on 2026-08-02. The proof paper now proves
+\pkey{lem:parallelogram-crucial} without citing
+\pkey{lem:maximal-mult} at all, so Hypothesis \pkey{hyp:maximal-mult} is
+consumed by nothing and $\mathrm D17$ no longer blocks the chain. The
+residue is one claim and one stated lemma, and three findings from the
+execution are worth recording.
+
+\emph{First, the typing does not need the maximal-congruence apparatus in
+the generic case.} With $E$ the trace of the crucial constraint at the
+coordinate and $\tau_{1},\dots,\tau_{t}$ the witnessing congruences of the
+multi-type reduction, cruciality applied to the weakened constraint $\exists
+z\,R(z,x_{2},\dots,x_{n})\wedge\tau(z,x_{1})$, for $\tau$ a congruence
+containing $\ConOne$, yields a clean dichotomy: either $\tau\subseteq\ConOne$
+--- and then, because an irreducible congruence's cover is the \emph{least}
+stable subuniverse properly above it, $\ConOne$ \emph{equals} a $\tau_{j}$
+whenever a single $\tau_{j}\subseteq\ConOne$, which types it outright --- or
+the weakening's solution produces a witness in $E$ inside the $\tau$-blocks.
+The whole difficulty is confined to the second branch.
+
+\emph{Second, the second branch cannot be closed at the level of subsets of
+one algebra, which is a post-mortem for all three failed routes of
+$\mathrm D17$.} In $\mathbf Z_{p}\times\mathbf Z_{p}$ the three coset
+congruences of $\langle(1,0)\rangle$, $\langle(0,1)\rangle$,
+$\langle(1,1)\rangle$ are linear and irreducible with full covers, and three
+of their blocks meet pairwise with empty triple intersection; every
+set-level datum of the bad branch is realized, no contradiction is
+available, and the typing conclusion happens to be true there for reasons
+the set-level data do not witness. Any proof must use that $E$ is the trace
+of a crucial \emph{relation} --- exactly the hypothesis the failed routes
+never used, and exactly why the JACM engine
+(\texttt{FitInLinearSubuniverses}, \S\ref{sec:D17}'s Entry above) carries
+tuple witnesses through the relation rather than sets alone.
+
+\emph{Third, the source's own \TeX{} contains, commented out, a lemma of
+exactly the shape the residue needs.} At \texttt{main:1851--1862} the v2
+source carries (inside a \TeX{} comment, hence no part of the published
+argument):
+
+\begin{quote}\small
+``Suppose $B\lll A$, $B$ is S-free, $T\in\{PC,L\}$, $\Sigma$ is the set of
+all congruences on $A$ of type $T$ such that $\sigma^{*}\supseteq B^{2}$ and
+$\sigma\not\supseteq B^{2}$, $\delta$ is an irreducible congruence on
+$\mathbf A$ such that $\bigcap_{\sigma\in\Sigma}\sigma\subseteq\delta$ and
+$B^{2}\not\subseteq\delta$. Then $\delta\in\Sigma$.''
+(\texttt{LEMConOneIsPcOrLinear}, commented out)
+\end{quote}
+
+The proof paper states this, for a finite family, as
+\pkey{lem:typed-above}, and its good branch consumes it; the $t=1$ case is
+proved there. Note the commented lemma carries \emph{``$B$ is S-free''} ---
+corroborating that the $\TS$-freeness hypothesis restored by $\mathrm D20$
+is the right price, and consistent with the observation that
+$\TS$-degradation cannot occur in quotients of $\TS$-free algebras (pull the
+absorbing-and-central witness back along the quotient map, as in
+\pkey{lem:reverse-hom}(bt)), which confines the old Hypothesis's failure
+modes to collapsed factors.
+
+Residue: \pkey{cl:typing-anchor} --- the bad branch, the two Case-B corner
+configurations, and $n=2$ for $T=\TPC$ --- and \pkey{lem:typed-above} for
+$t\ge2$. Both are recorded as open debts in the proof paper's status table;
+$\mathrm D19$ is the corresponding defect of the source's own argument at
+the same site.
+\end{entry}
+
 \subsection{$\mathrm C{10}$ --- a citation that drops a case}\label{sec:C10}
 
 \texttt{SS:208} states:
@@ -1095,6 +1177,85 @@ Note that the corresponding clause of \texttt{LEMNontrivialReflexiveBridgeImplie
 is typed \emph{correctly} in the source --- it writes
 $(B/\sigma;(\delta\cap B^{4})/\sigma)$ --- so the slip is local to the
 definition.
+
+\subsection{$\mathrm D{19}$ --- two stable-intersection applications with no
+  leave-one-out. \textbf{Open}}\label{sec:D19}
+
+\texttt{CORMainStableIntersection} (\texttt{main:1803}) carries, as its
+condition (4), the leave-one-out hypothesis: $R\cap(C_{1}\times\dots\times
+B_{j}\times\dots\times C_{n})\neq\varnothing$ \emph{for every} $j$. The
+typing argument of \texttt{LEMParalPropertyFromCrucialInMultiType} applies
+the corollary twice, and neither application establishes condition (4), or
+names the family it is applied to. The first, \texttt{main:2657--2666},
+reads verbatim:
+
+\begin{quote}\small
+``If $E\cap D_{x_1}^{(1)}=\varnothing$, choose $C$, $B$, and $\mathcal
+T\in\{\TBA,\TC,\TS,\TL,\TPC,\TD\}$ such that $D_{x_1}^{(1)}\lll^{D_{x_1}}
+C<_{\mathcal T}^{D_{x_1}}B \lll D_{x_{1}}$, $E\cap C=\varnothing$, and
+$E\cap B\neq \varnothing$. Since $R^{(1)}$ is not empty and $D^{(2)}\le_{
+\mathcal M T}^{D}D^{(1)}$, Corollary [\texttt{CORMainStableIntersection}]
+implies that $\mathcal T = T$.''
+\end{quote}
+
+$E\cap B\neq\varnothing$ is leave-one-out for the coordinate-$1$ member
+only, and ``$R^{(1)}$ is not empty'' is nonemptiness at \emph{all} the
+$B_{j}$ simultaneously, which is neither condition (3) nor condition (4).
+The second application, \texttt{main:2693--2704}, concludes a critical
+\emph{pair} --- ``there exist $i,j\in[n]$ [and PC blocks] such that $R$ has
+no tuples whose $i$-th element is from $B_{i}$ and $j$-th element is from
+$B_{j}$'' --- whose unstated derivation must shrink the family of all block
+restrictions to a critical subfamily.
+
+The standard repair --- shrink to a minimal inconsistent subfamily, so that
+minimality supplies condition (4) --- stalls at a structural point: a
+dropped member reverts its coordinate to the \emph{full} domain, but the
+inconsistency being fed in ($E\cap C=\varnothing$, i.e.\ $R$ empty on a box
+with $D^{(2)}$ at coordinates $2,\dots,n$) restricts those coordinates to
+$D^{(2)}$ --- and at a coordinate where $D^{(2)}_{x}=D^{(1)}_{x}$ the
+restriction $D^{(1)}_{x}$ is a $\lll$-chain, not a block of a typed
+congruence, so it cannot be a member of the family at all. The
+inconsistency the shrinking needs, with full domains at such coordinates,
+is not known. What would repair it is an \emph{anchored} form of the
+corollary --- $R$ subdirect onto the $B_{j}$ rather than onto the full
+domains, which is exactly what $1$-consistency of $D^{(1)}$ supplies ---
+and that anchored form is a sibling of \texttt{FitInLinearSubuniverses} of
+the JACM proof rather than of the corollary as printed.
+
+\emph{Status: open.} The proof paper does not repair the source's argument;
+its new proof of \pkey{lem:parallelogram-crucial} avoids both applications
+on the generic branches (Entry~\ref{ent:route-four}) and quarantines what
+they were needed for in \pkey{cl:typing-anchor}, where the corner cases
+($\TBA$/$\TC$ chain steps, and $n=2$ for $T=\TPC$) still want precisely
+such an anchored statement.
+
+\subsection{$\mathrm D{20}$ --- the parallelogram lemma omits hypotheses its
+  proof spends}\label{sec:D20}
+
+\texttt{LEMParalPropertyFromCrucialInMultiType} (\texttt{main:2574})
+hypothesises only: a $1$-consistent reduction $D^{(1)}$ for a constraint
+$R(x_{1},\dots,x_{n})$, $T\in\{\TL,\TPC,\TD\}$, $D^{(2)}\le_{\mathcal
+MT}^{D}D^{(1)}\lll D$, and $R$ crucial in $D^{(2)}$. Nothing makes $R$
+subdirect over the \emph{unreduced} domains. Its own proof spends
+subdirectness twice: at \texttt{main:2651}, ``Hence $E\neq\varnothing$ and
+by Corollary [\texttt{CORPropagateToRelations}](r1) $E\lll D_{x_1}$'' ---
+(r1) requires a subdirect $R$ with the full domains as ambient --- and in
+the conclusion itself, where $\ConOne(R,i)$ can only be a congruence on the
+full domain $\mathbf D_{x_{i}}$ if it is reflexive there, i.e.\ if
+$\proj_{i}(R)=D_{x_{i}}$.
+
+\emph{Repair.} Restore the hypothesis: the one-constraint instance is
+$1$-consistent. Both consumers supply it, their instances being
+cycle-consistent. The proof paper's restatement also adds $\TS$-freeness of
+the $\mathbf D^{(1)}_{x_{i}}$, which is not spent by the source's own route
+but is what the replacement route's \pkey{lem:typed-above} carries --- and
+which the source's commented-out \texttt{LEMConOneIsPcOrLinear} also
+carries (Entry~\ref{ent:route-four}). At the consumer inside the main
+induction the freeness is automatic (no domain there has a nontrivial
+binary absorbing or central subuniverse); at the codimension-one consumer
+it is a new, recorded obligation on the blocks $\phi(\bar b)_{x}$. Proof
+paper: \pkey{lem:parallelogram-crucial}, hypotheses (i) and (ii), and its
+Caveat \pkey{haz:parallelogram-hyp}.
 
 \section{Statements restated}\label{sec:restated}
 

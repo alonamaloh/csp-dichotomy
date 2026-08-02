@@ -1132,3 +1132,70 @@ reflexivity of `ω`, whereas the reviewer's proposed `z_i = x_i` needs `(x₁,x�
 not available. And `<_{BA,C}` is a **conjunction**, not a disjunction — `main.tex:1567` says
 "we write `C<_{BA,C} B` meaning that `C<_{BA} B` and `C<_{C} B`" — though the reviewer is
 right that this document never defines it.
+
+---
+
+## Route four executed: the typing of `lem:parallelogram-crucial` without maximal-mult
+
+**2026-08-02, the session after the layer architecture landed.** JACM sources re-read:
+`ParPropertyMain` (`Main.tex:741–826`), `ParProperty` (`auxstatements.tex:2178`),
+`FitInLinearSubuniverses` (`auxstatements.tex:2026`), with proof boundaries located.
+
+**What the JACM engine is actually for.** In `ParPropertyMain`'s linear case, the weakened
+instance's solution α survives the minimal linear reduction containing it *by construction*;
+what `ParProperty`/`FitInLinearSubuniverses` prove is that the **unweakened** constraint ρ
+stays nonempty under that reduction (`(e_1,…,e_n) ∈ ρ^(s+1)`, `Main.tex:819`), which is what
+makes the reduction 1-consistent so the recursion can continue at smaller `size`. The
+fit-in hypothesis (5) `R ∩ (A_s × B_t) ≠ ∅` is an *anchor*; its witnesses (4) are tuples of
+the relation. Our stated `lem:preserve-linked` is exactly the transported engine — the
+rectangular-closure hypothesis packages JACM's witness configuration `(a,b'),(a',b),(a',b')`.
+
+**The dichotomy that replaces the maximal-congruence apparatus.** For τ ⊇ ConOne a congruence,
+the weakening `∃z R(z,x₂…xₙ) ∧ τ(z,x₁)` either equals `R` — iff τ ⊆ ConOne, by stability +
+subdirectness — or is properly weaker, and then cruciality plants a witness of E inside the
+τ-blocks. Combined with "cover is the least stable subuniverse properly above" (irreducibility
+in the *stable-subuniverse* sense, stronger than lattice meet-irreducibility), a single
+τ_j ⊆ ConOne forces ConOne = τ_j: typed, cover ⊇ B². Everything else is the bad branch.
+
+**The bad branch is not refutable at set level.** Three coset congruences in `Z_p × Z_p`
+(subgroups ⟨(1,0)⟩, ⟨(0,1)⟩, ⟨(1,1)⟩): linear, irreducible, full covers; three blocks meet
+pairwise, triple intersection empty. Every set-level hypothesis of the bad branch is realized,
+no contradiction available, conclusion true for unwitnessed reasons. So any proof must use
+that E is the trace of the crucial *relation* — post-mortem for all three failed D17 routes,
+and the reason fit-in carries tuples.
+
+**Source finds.**
+- `main:1851–1862` carries, *commented out*, `LEMConOneIsPcOrLinear` — exactly the
+  typed-above-an-intersection lemma the good branch needs, **with "B is S-free"**. Now stated
+  as `lem:typed-above` (t=1 case proved via the cover argument).
+- **D19**: both `CORMainStableIntersection` applications in the typing argument
+  (`main:2657–2666`, `main:2693–2704`) never establish condition (4) (leave-one-out), and the
+  minimal-subfamily repair stalls at coordinates with `D^(2) = D^(1)`: a dropped member
+  reverts to the *full* domain but the known emptiness has `D^(2)` there, and `D^(1)_x` is a
+  ⋘-chain, not a block, so it can't be a family member. Repair shape: an *anchored* corollary
+  (R subdirect onto the B's — supplied by 1-consistency of `D^(1)`), sibling of fit-in.
+- **D20**: `LEMParalPropertyFromCrucialInMultiType` (`main:2574`) omits subdirectness of R
+  over the unreduced domains; its own proof spends it at `main:2651` ((r1) with full-domain
+  ambient) and in the conclusion (ConOne must be reflexive on all of `D_{x_i}`).
+
+**S-degradation is impossible in quotients of S-free algebras**: an S-witness in `B/δ` pulls
+back along `B ↠ B/δ` by `lem:reverse-hom`(bt) to a proper nonempty BA-and-central subuniverse
+of `B`. So with `D^(1)` S-free, `cor:prop-quotient`(t)'s middle alternative is vacuous and the
+old Hypothesis's failure modes confine to *collapsed* factors. Not enough alone — collapsed
+factors can still smear — but it kills the S-branch narrative of the three failed routes.
+
+**Gate find.** `depgraph.py` attributed a proof to the first `\ref` in its bracket title even
+when that names a Claim: `lem:multiply-all-linear`'s proof ("…from Claim~\ref{cl:multiply-step}")
+was owned by the claim label, and since claims are not statements, **its edges were invisible
+to both the cycle and the layer check**. Fixed: owner = first *statement* named, else the
+statement the proof follows. Recovered edges introduced no violation (114 stmts, 77 proofs,
+181 edges, layering clean).
+
+**New proof-paper state.** `lem:parallelogram-crucial`: hypotheses restored (subdirectness,
+S-freeness of `D^(1)`); parallelogram half proved (via `lem:preserve-linked` +
+`cor:prop-relations`, both still stated-only L3); ConOne's irreducible (crucial-irreducible);
+one-class across coordinates proved (missing bridge-from-relation witnesses would split R into
+two weaker projections whose conjunction is R — contradicts cruciality); typing proved on the
+good branch; residue = `cl:typing-anchor` (configs α/β/γ + PC⇒n=2) and `lem:typed-above`.
+`lem:maximal-mult` consumed by nothing; `hyp:maximal-mult` off the critical path. L3 exports
+2 → 7; the layering absorbed all of it with no upward edge.

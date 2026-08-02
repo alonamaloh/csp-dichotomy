@@ -18,7 +18,7 @@ None of this is a criticism of \cite{ZhukSimplified}, which is unusually careful
 prose --- across nine thousand lines of \TeX{} it says ``obvious'' three times
 and ``clearly'' never, and a mechanical sweep of \S5 turns up four hedges in
 thirteen printed pages, all four of which turn out to be honest
-(\S\ref{sec:hedges}). Sixteen substantive defects in fifty pages is roughly
+(\S\ref{sec:hedges}). Eighteen substantive defects in fifty pages is roughly
 the rate one should expect of any informal exposition of a proof this size, and
 finding them is the point of reading it this way.
 
@@ -65,12 +65,12 @@ in \S\ref{sec:refuted}.
 \hline
 \textbf{} & \textbf{Count} \\
 \hline
-Defects confirmed and repaired, needing no new mathematics & 15 \\
+Defects confirmed and repaired, needing no new mathematics & 16 \\
 \quad of which: a citation the later paper dropped & 3 \\
 \quad a typographical or typing slip & 2 \\
 \quad a statement that is false as printed & 2 \\
-\quad omitted steps and dropped hypotheses & 8 \\
-Defects confirmed and \textbf{open} & 1 \\
+\quad omitted steps and dropped hypotheses & 9 \\
+Defects confirmed and \textbf{open} & 2 \\
 Claims examined and refuted & 2 \\
 Claims examined and declared moot & 1 \\
 Readings legislated (of which two are theorems, not choices) & 10 \\
@@ -79,15 +79,18 @@ Hedges in \S5 of the source, all discharged & 4 \\
 \end{tabular}
 \end{center}
 
-The single open item is $\mathrm{D}17$ (\S\ref{sec:D17}), the maximal
-multi-type extension. It was declared solved in an earlier draft; an external
-review found the repair invalid at its first line, and the finding is correct.
-It is recorded here as open rather than quietly weakened.
+The open items are $\mathrm{D}17$ (\S\ref{sec:D17}), the maximal multi-type
+extension, and $\mathrm{D}19$ (\S\ref{sec:D19}), the undischarged
+leave-one-out hypotheses of the two stable-intersection applications in the
+typing argument. $\mathrm{D}17$ was declared solved in an earlier draft; an
+external review found the repair invalid at its first line, and the finding is
+correct. It is recorded here as open rather than quietly weakened.
 
-Its status has since been sharpened rather than resolved. The proof paper now
-proves the lemma from an \emph{explicitly stated} extra hypothesis --- that
-the type-$T$ factors alone already cut $B_{2}$ out --- and shows that among
-those factors the image-versus-intersection failure does not occur, so the
-whole difficulty is now localised in one displayed sentence rather than spread
-through a proof. The hypothesis itself is unproved and is a debt at the single
-call site.
+Both have since been sharpened, and $\mathrm{D}17$ has been \emph{routed
+around}: the proof paper re-proves the parallelogram lemma without
+\texttt{LEMMaximalMultExtention}, so the extra hypothesis it once carried is
+no longer consumed anywhere, and what remains of both defects is carried by
+one claim and one stated lemma of the proof paper
+(Entry~\ref{ent:route-four}). Neither is resolved; the debt has been moved to
+statements that are plausibly provable, and the reasons the old routes failed
+are now theorems rather than suspicions.
