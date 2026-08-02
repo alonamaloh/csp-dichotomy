@@ -70,6 +70,19 @@ stated with single weakening steps; and the induction measure across expanded
 coverings was never in difficulty, since the induction makes no appeal at a
 covering.
 
+## The layer architecture
+
+The proof paper is organised as eight machine-checked layers in Brady's sense —
+L0 foundations up through L7 complexity — each consuming only the interfaces
+below it. `layers.tsv` assigns every statement a layer; `layercheck.py` fails
+the build on any proof citing a higher layer, and runs from `check.sh` next to
+the acyclicity check. The blueprint's §"The layer architecture" has each
+layer's exported interface, its open debts, and the source shelf per layer.
+Two structural facts fall out: **L3 (strong subuniverses) imports nothing** —
+it is the simplified paper's own contribution, and both open problems live
+there — and its visible interface is a lower bound until the L4 proofs that
+consume it are written.
+
 The dependency order among the three large statements is
 
 ```

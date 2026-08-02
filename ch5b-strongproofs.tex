@@ -393,7 +393,8 @@ Definition~\ref{def:types} that $C''/\sigma$ be BA and centre free.
 \end{proof}
 
 \begin{lemma}[No critical central family of size $\ge3$]\label{lem:no-central-critical}
-Let $n\ge3$ and $C_{i}\subt[A]{\TC}B_{i}\lll A$ for $i\in[n]$. Then
+Let $n\ge3$, let $B_{1},\dots,B_{n}\le\mathbf A$, and let
+$C_{i}\subt{\TC}B_{i}$ for $i\in[n]$. Then
 $\bigcap_{i}C_{i}=\varnothing$ and $B_{j}\cap\bigcap_{i\neq j}C_{i}\neq
 \varnothing$ for every $j$ cannot both hold.
 \end{lemma}
@@ -416,18 +417,32 @@ subuniverses.
 \end{proof}
 
 \begin{corollary}[Relational form]\label{cor:no-central-critical}
-Let $R\sdle\mathbf A_{1}\times\dots\times\mathbf A_{n}$ with $n\ge3$ and
-$C_{i}\subt[A_{i}]{\TC}B_{i}\lll A_{i}$. If
+Let $R\sdle\mathbf A_{1}\times\dots\times\mathbf A_{n}$ with $n\ge3$,
+$B_{i}\le\mathbf A_{i}$, and $C_{i}\subt{\TC}B_{i}$ for $i\in[n]$. If
 $R\cap(C_{1}\times\dots\times B_{j}\times\dots\times C_{n})\neq\varnothing$
 for every $j$, then $R\cap(C_{1}\times\dots\times C_{n})\neq\varnothing$.
 \end{corollary}
 
 \begin{proof}
-Pull back along the projections $f_{i}\colon\mathbf R\to\mathbf A_{i}$ using
-Lemma~\ref{lem:reverse-hom}(b),(bt), giving
-$f_{i}^{-1}(C_{i})\subt[R]{\TC}f_{i}^{-1}(B_{i})\lll\mathbf R$, and apply
-Lemma~\ref{lem:no-central-critical} inside $\mathbf R$: the hypotheses there
-are exactly the two displayed conditions, read through the $f_{i}$.
+Write $f_{i}\colon\mathbf R\to\mathbf A_{i}$ for the projections and
+$P_{i}=f_{i}^{-1}(B_{i})$, $Q_{i}=f_{i}^{-1}(C_{i})$, subuniverses of
+$\mathbf R$. The formula $R(x_{1},\dots,x_{n})\wedge X(x_{i})$ is positive
+primitive in $X$ and defines $P_{i}$ at $X=B_{i}$ and $Q_{i}$ at $X=C_{i}$, so
+Lemma~\ref{lem:pp-propagation} gives $Q_{i}\dsubte{\TC}P_{i}$; and $Q_{i}$ is
+nonempty, containing $R\cap(C_{1}\times\dots\times B_{j}\times\dots\times
+C_{n})$ for any $j\neq i$, which exists since $n\ge3$. So
+$Q_{i}\subte{\TC}P_{i}$.
+
+If $Q_{i}=P_{i}$ for some $i$, the conclusion is immediate:
+$R\cap(C_{1}\times\dots\times C_{n})
+=Q_{i}\cap\bigcap_{j\neq i}Q_{j}
+=P_{i}\cap\bigcap_{j\neq i}Q_{j}
+=R\cap(C_{1}\times\dots\times B_{i}\times\dots\times C_{n})\neq\varnothing$.
+Otherwise every $Q_{i}\subt{\TC}P_{i}$ is proper, and
+Lemma~\ref{lem:no-central-critical} applies inside $\mathbf R$ with
+$B_{i}:=P_{i}$ and $C_{i}:=Q_{i}$: its two forbidden conditions are exactly
+$R\cap(C_{1}\times\dots\times C_{n})=\varnothing$ and the displayed
+nonemptiness, read through the $f_{i}$. So the first fails.
 \end{proof}
 
 \begin{hazard}[Why this is a separate statement]\label{haz:central-critical-split}
@@ -449,6 +464,17 @@ types $\TC$, and the argument for that case runs through
 \cite[Lem.~6.11]{ZhukStrong} and nothing else in this section. Splitting the
 statement is what makes the observation checkable rather than a matter of
 trust.
+
+A second observation, found by the layer check rather than by reading: the
+$\lll$ hypotheses these two statements used to carry are consumed by
+\emph{nothing} in either proof --- nonemptiness of $\bigcap_{i}B_{i}$ comes
+from the displayed conditions, and the essential-relations import needs only
+proper nonempty central subuniverses. They are now stated for plain
+subalgebras, and the corollary pulls back through
+Lemma~\ref{lem:pp-propagation} instead of the $\lll$-pullback of
+Lemma~\ref{lem:reverse-hom}, with the equality case of the pullback giving the
+conclusion outright. That is what places the entire bridge classification
+below the strong-subuniverse theory rather than beside it.
 \end{hazard}
 
 \begin{lemma}[{\cite[Lem.~6.25]{ZhukStrong}}]\label{lem:possible-intersections}

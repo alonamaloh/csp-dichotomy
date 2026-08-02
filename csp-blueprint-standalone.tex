@@ -5,7 +5,7 @@
 %%  csp-blueprint.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision a81f04d on 2026-08-02.
+%%  Generated from revision 580962a on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-blueprint.tex
@@ -155,8 +155,9 @@ mathematics: which of the five statements a formalization would be proving and
 what each costs (\S\ref{sec:bp-targets}--\S\ref{sec:complexity-layer}), the
 representation decisions and their reasons (\S\ref{sec:design}), the layers
 Mathlib does not supply (\S\ref{sec:mathlib-gaps}), the order in which the
-theorems should be attacked (\S\ref{sec:order}), and what governs the schedule
-(\S\ref{sec:scope}).
+theorems should be attacked (\S\ref{sec:order}), what governs the schedule
+(\S\ref{sec:scope}), and the machine-checked layer architecture of the proof
+paper (\S\ref{sec:layers}).
 
 References of the form \texttt{lem:\dots} are labels of statements in the proof
 paper, which is compiled separately; the two documents share no cross-reference
@@ -611,6 +612,165 @@ What remains open, and gates the formalization of \S5 of
 
 Those are not throughput-limited. Schedule around them, not around the line
 count.
+\clearpage
+%% ---------------------------------------------------------------- bp3-layers.tex
+\section{The layer architecture}\label{sec:layers}
+
+The proof paper is organised as eight layers, in the sense Brady uses for
+building up a field: each layer consumes the \emph{interface} of the layers
+below it --- their statements, with exactly the hypotheses those statements
+carry --- and exports a small interface upward, and no proof may cite a
+statement of a higher layer. The assignment of every theorem-like statement to
+a layer lives in \texttt{layers.tsv}; \texttt{layercheck.py} recomputes the
+proof-dependency graph and fails the build on any upward citation, so the
+discipline is machine-checked on every run of \texttt{check.sh}, alongside
+acyclicity.
+
+The point of declaring the boundaries is that every serious error this project
+has produced or found is an interface violation in disguise: a proof consuming
+a fact about the layer below that its interface does not state
+(\inproof{haz:rectangularise}, before it was closed); a caller ignoring a
+dotted return (\inproof{haz:pp-dotted}); a definition changed without
+re-checking its consumers (the single-step cruciality episode, corrected the
+same day); a conjunction read as a disjunction (\inproof{haz:S-type}). Declared
+boundaries make this class of error checkable rather than discoverable.
+
+\subsection{The layers}
+
+\begin{center}\small
+\begin{tabular}{@{}clccl@{}}
+\hline
+ & Layer & Stmts & Exported & Open debts \\
+\hline
+L0 & foundations & 12 & 7 & --- \\
+L1 & absorption & 21 & 15 & --- \\
+L2 & congruences and bridges & 24 & 8 & 2 \\
+L3 & strong subuniverses & 27 & 2$^{*}$ & 8, and both hypothesis-debts \\
+L4 & instances & 13 & 9 & 8 \\
+L5 & main statements & 5 & 0$^{*}$ & 4 \\
+L6 & algorithm, hard half, assembly & 6 & 2 & 1 \\
+L7 & complexity & 5 & 0 & 4 \\
+\hline
+\end{tabular}
+\end{center}
+
+``Exported'' counts statements cited from a strictly higher layer;
+``open debts'' counts statements not \textsc{proved} or \textsc{imported} in
+the status table of the proof paper. The starred counts are \emph{lower
+bounds}: an interface is only as visible as the proofs that consume it, and
+the biggest consumers of L3 and L5 --- \inproof{lem:bridge-from-instance} and
+\inproof{thm:t1} --- have no proofs yet, so their edges do not exist. Writing
+L4 out will widen L3's interface substantially; that widening is worth
+watching, since every new export is a new obligation on L3's statements.
+
+\subsection{What each layer provides, owes, and imports}
+
+\begin{description}\tightlist
+
+\item[L0 --- foundations.] Universal algebra and pure relation combinatorics:
+clones and generation, linking equivalences, rectangularity of relations,
+$\Vn$ and the arithmetic of $\mathbf Z_{p}$ therein
+(\inproof{prop:p-divides}, \inproof{lem:subuniverse-coset}), the two purely
+combinatorial workhorses \inproof{lem:multiset-shift} and
+\inproof{lem:full-fibre}, and the classical imports: Bergman for generation by
+terms, Hobby--McKenzie for abelian $=$ affine, Mar\'oti--McKenzie for the
+special WNU, Geiger and Bodnarchuk et al.\ for Inv--Pol. No open debts.
+
+\item[L1 --- absorption.] Binary absorbing, central, and $\TS$; everything
+about them that never mentions an irreducible congruence. Its fifteen-wide
+interface is the largest in the document, and its heaviest members are the two
+substantial imports: the Absorption Theorem (\inproof{thm:brady-absorption})
+and the central-relation source (\inproof{thm:central-relation-source}).
+Sources: Brady's notes \S3.10--3.11 prove both; Barto--Kazda's \emph{Deciding
+Absorption} proves \inproof{lem:pp-propagation} and
+\inproof{lem:barto-kazda}; the remaining imports are Zhuk's strong-subalgebras
+paper (Lem.~3.2, 3.4, 6.8, 6.11, 6.24, 6.25, Cor.~6.1.2, 6.9.2, 6.11.1). No
+open debts.
+
+\item[L2 --- congruences and bridges.] Irreducible, linear and PC congruences,
+covers, bridges and their calculus (composition, symmetrisation,
+reflexivity, rectangularisation), and the bridge classification:
+\inproof{lem:linear-equiv}, \inproof{lem:no-cross-bridge},
+\inproof{lem:pc-bridges-trivial}, \inproof{lem:bridge-to-pc}. Imports are
+three lemmas of the JACM paper (Lem.~6.3, 7.2, Cor.~8.17.1). Debts:
+\inproof{lem:block-good-bridge} is outlined, and \inproof{lem:pc-on-top} is
+stated (consumed by nothing).
+
+\item[L3 --- strong subuniverses.] The six types, $\lll$, propagation,
+the intersection property, stable intersection. Two facts distinguish this
+layer. \emph{It imports nothing}: every one of its 27 statements is the
+simplified paper's own contribution, with no external source to fall back on.
+And \emph{it carries both open hypothesis-debts}:
+Hypothesis \pkey{hyp:maximal-mult} and Claim \pkey{cl:multiply-step}, each
+written into a statement and exported upward as a precondition rather than
+hidden in a proof. Debts: four outlined (\pkey{lem:factor-by-delta},
+\pkey{lem:center-pushed-in}, \pkey{lem:leftlinked-stay-full},
+\pkey{lem:multiply-all-linear}), four stated (the three propagation
+corollaries and \pkey{lem:preserve-linked}), plus the two hypotheses.
+
+\item[L4 --- instances.] Consistency, coverings, cruciality, weakening.
+Imports: JACM Lem.~6.1 (\inproof{lem:expanded-consistency}) and
+strong-subalgebras Lem.~5.6 (\inproof{lem:tree-coverings}). Debts: eight of
+its thirteen statements are stated only, including
+\inproof{lem:bridge-from-instance} --- the sole consumer-to-be of stable
+intersection, and the largest single piece of unwritten mathematics in the
+document.
+
+\item[L5 --- main statements.] The main induction, reductions-safe, PC-safe,
+codimension one, and the $\Omega$ construction. Debts: three outlined, one
+stated. The uniform-witness check of \inproof{haz:witness-moved} lives at
+this layer's boundary with L4: L5 now hypothesises a uniform type-$\TBA$
+reduction, and the producers that must be checked to supply one are L4's.
+
+\item[L6 --- algorithm, hard half, assembly.] $\textsc{Solve}_{\mathrm{alg}}$
+and its termination, target (T1), the NAE interpretation and (H0), the
+core/rigid-core reduction. Import: Brady \S1.4. Debt: \inproof{thm:t1}.
+
+\item[L7 --- complexity.] The two wrappers, NP membership, and the dichotomy
+itself. Everything here needs a cost model, and nothing below it does; the
+layer exists to keep that boundary sharp. Debts: all but
+\inproof{thm:dichotomy}, which is proved from its rigid-core form.
+
+\end{description}
+
+\subsection{The source shelf, by layer}
+
+What has to be on disk to discharge every import, which is also the fetch
+list for the parallel-detailing project:
+
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\hline
+Source & Proves imports of & Status \\
+\hline
+Brady, \emph{Notes on CSPs\dots} & L1 (\S3.10--3.11), L6 (\S1.4) & on disk \\
+Zhuk, \emph{Strong subalgebras} (2005.00593) & L1, L4 & fetch per session \\
+Zhuk, JACM 2020 (1704.01914) & L2, L4 & \textbf{not fetched} \\
+Barto--Kazda, \emph{Deciding Absorption} & L1 & \textbf{not yet fetched} \\
+Mar\'oti--McKenzie 2008 & L0 & \textbf{not yet fetched} \\
+Bergman; Hobby--McKenzie & L0 & books; statements standard \\
+Geiger; Bodnarchuk et al. & L0 & classical; any standard treatment \\
+\hline
+\end{tabular}
+\end{center}
+
+L3, L5 and L7 import nothing. In particular the layer where both open
+problems live is exactly the layer with no literature behind it.
+
+\subsection{The first dividend}
+
+The check paid for itself on its first run. It reported a single upward
+edge: \pkey{cor:no-central-\brk critical}, assigned to L1 by content, cited the
+$\lll$-pullback lemma \pkey{lem:reverse-hom} from L3 --- and through it the
+whole bridge classification of L2 rested on the strong-subuniverse layer,
+which would have forced the two layers to merge. Inspection showed the $\lll$
+hypotheses of \pkey{lem:no-central-critical} and its corollary are consumed by
+nothing in either proof. Narrowing the statements to the hypotheses actually
+used, and rerouting the corollary's pullback through
+\pkey{lem:pp-propagation}, removed the edge; the bridge classification
+genuinely sits below strong subuniverses. That is the methodology working as
+intended: the violation was found mechanically, and the fix was an API
+narrowing, not new mathematics.
 
 \clearpage
 %% ---------------------------------------------------------------- bibliography.tex

@@ -21,8 +21,9 @@ mathematics: which of the five statements a formalization would be proving and
 what each costs (\S\ref{sec:bp-targets}--\S\ref{sec:complexity-layer}), the
 representation decisions and their reasons (\S\ref{sec:design}), the layers
 Mathlib does not supply (\S\ref{sec:mathlib-gaps}), the order in which the
-theorems should be attacked (\S\ref{sec:order}), and what governs the schedule
-(\S\ref{sec:scope}).
+theorems should be attacked (\S\ref{sec:order}), what governs the schedule
+(\S\ref{sec:scope}), and the machine-checked layer architecture of the proof
+paper (\S\ref{sec:layers}).
 
 References of the form \texttt{lem:\dots} are labels of statements in the proof
 paper, which is compiled separately; the two documents share no cross-reference
@@ -36,6 +37,8 @@ should be checked against a commit hash rather than believed.
 \input{bp1-complexity.tex}
 \clearpage
 \input{bp2-lean.tex}
+\clearpage
+\input{bp3-layers.tex}
 
 \clearpage
 \input{bibliography.tex}

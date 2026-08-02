@@ -88,6 +88,8 @@ check_one() {
 depcheck() {
   out=$(python3 depgraph.py 2>&1) || { echo "$out"; return 1; }
   printf '%s\n' "$out" | sed 's/^/      /'
+  out=$(python3 layercheck.py 2>&1) || { printf '%s\n' "$out" | sed 's/^/      /'; return 1; }
+  printf '%s\n' "$out" | tail -n +3 | sed 's/^/      /'
   return 0
 }
 
