@@ -336,22 +336,130 @@ tree-instance. $S(x)$ is the \emph{parent} of $x$, and $x$ a \emph{child}.
 \end{definition}
 
 \begin{proposition}[Basic properties]\label{prop:covering-basics}
-Let $\mathcal I'$ be an expanded covering of $\mathcal I$.
+Let $\mathcal I'$ be an expanded covering of $\mathcal I$, with parent map $S$.
 \begin{enumerate}\alphlabels\tightlist
 \item Replacing every $x$ by $S(x)$ and deleting the constraints
   $R(x,\dots,x)$ yields a weakening of $\mathcal I$.
 \item A weakening is an expanded covering with $S=\mathrm{id}$.
-\item Every solution of $\mathcal I$ lifts to a solution of $\mathcal I'$.
+\item Every solution of $\mathcal I$ lifts to a solution of $\mathcal I'$:
+  $\alpha\circ S$ solves $\mathcal I'$ whenever $\alpha$ solves $\mathcal I$.
 \item If $\mathcal I$ is $1$-consistent and $\mathcal I'$ is a tree-covering,
   the solution set of $\mathcal I'$ is subdirect.
-\item The union of two expanded coverings is an expanded covering.
-\item An expanded covering of an expanded covering is an expanded covering.
+\item The union of two expanded coverings whose only common variables lie in
+  $\Var(\mathcal I)$ is an expanded covering (renaming arranges the proviso,
+  Caveat~\ref{haz:renaming}).
+\item An expanded covering $\mathcal I''$ of an expanded covering
+  $\mathcal I'$ of $\mathcal I$, with
+  $\Var(\mathcal I)\cap\Var(\mathcal I'')\subseteq\Var(\mathcal I')$, is an
+  expanded covering of $\mathcal I$.
 \item An expanded covering of a cycle-consistent irreducible instance is
   cycle-consistent and irreducible.
-\item Every reduction of $\mathcal I$ extends to $\mathcal I'$, and a
-  $1$-consistent one extends to a $1$-consistent one.
+\item Every reduction of $\mathcal I$ extends to $\mathcal I'$ by
+  $D^{(\top)}_{x}:=D^{(\top)}_{S(x)}$, and a $1$-consistent one extends to a
+  $1$-consistent one.
 \end{enumerate}
 \end{proposition}
+
+\begin{proof}
+Two remarks on Definition~\ref{def:weakening} are used repeatedly.
+\emph{Monotonicity}: an assignment satisfying a constraint satisfies every
+constraint weaker than or equivalent to it (the containment argument of
+Lemma~\ref{lem:weakening-terminates}(a)). \emph{Renaming}: weaker-or-equivalent
+is transitive, and is preserved by an injective substitution applied to both
+scopes --- both immediate from the definition.
+
+(a) By Definition~\ref{def:expanded}(iii), each surviving constraint
+$R(x_{1},\dots,x_{m})$ has $S(x_{1}),\dots,S(x_{m})$ pairwise distinct and
+$R(S(x_{1}),\dots,S(x_{m}))$ weaker than or equivalent to a constraint of
+$\mathcal I$; the deleted ones are exactly those with $S$ constant on the
+scope. The resulting variable set lies in $\Var(\mathcal I)$, so
+Definition~\ref{def:weakening} is met.
+
+(b) Take $S=\mathrm{id}$ on $\Var(\mathcal I_{1})\subseteq\Var(\mathcal I)$.
+Conditions (i) and (ii) of Definition~\ref{def:expanded} are trivial. For
+(iii): under the repeated-variable policy
+(Definition~\ref{def:constraint-relation}) a constraint's scope is a set, so
+the identity is pairwise distinct on it, and the constraint itself is the
+required weaker-or-equivalent constraint of $\mathcal I$.
+
+(c) Let $\alpha$ solve $\mathcal I$ and put $\alpha'=\alpha\circ S$, legitimate
+since $D_{x}=D_{S(x)}$. A diagonal constraint $R(x,\dots,x)$ is satisfied
+because $\alpha'$ is constant on its scope and
+$\{(a,\dots,a)\}\subseteq R$. Any other constraint $R(x_{1},\dots,x_{m})$ has
+$R(S(x_{1}),\dots,S(x_{m}))$ weaker than or equivalent to a constraint of
+$\mathcal I$, which $\alpha$ satisfies; by monotonicity $\alpha$ satisfies
+$R(S(x_{1}),\dots,S(x_{m}))$, and that assertion \emph{is}
+$\alpha'$ satisfying $R(x_{1},\dots,x_{m})$.
+
+(d) A diagonal constraint is vacuous under the scope policy: its scope is the
+single variable $x$, and $\{(a,\dots,a):a\in D_{x}\}\subseteq R$ gives
+$R^{C}=D_{x}$. Discard them, and induct on the number of remaining
+constraints; the claim is that for every $x_{0}\in\Var(\mathcal I')$ and
+$a\in D_{x_{0}}$ some solution takes $x_{0}$ to $a$. With no constraints,
+assign $a$ at $x_{0}$ and anything elsewhere. Otherwise first suppose some
+constraint $C_{0}=R(x_{1},\dots,x_{m})$ of $\mathcal I'$ has $x_{0}$ in its
+scope. Since $\mathcal I'$ is a \emph{covering},
+$R(S(x_{1}),\dots,S(x_{m}))$ is a constraint of $\mathcal I$, and
+$1$-consistency of $\mathcal I$ gives a tuple of $R$ whose $S(x_{0})$-entry is
+$a$; reading it along the scope $x_{1},\dots,x_{m}$ --- legitimate since
+$D_{x_{i}}=D_{S(x_{i})}$ --- gives $\bar\beta$ with $\beta_{x_{0}}=a$; assign
+$C_{0}$'s variables by $\bar\beta$. Deleting $C_{0}$
+splits the remaining constraints into groups $G_{1},\dots,G_{r}$: two
+constraints lie in one group when a path avoiding $C_{0}$ joins their scopes.
+Each $G_{j}$ shares \emph{at most one} variable with $C_{0}$: two shared
+variables $z\neq w$ would give a path from $z$ to $w$ through $G_{j}$ avoiding
+$C_{0}$, which closed up through $C_{0}$ is a path forbidden by
+Definition~\ref{def:path}'s tree condition. Each $G_{j}$ is a tree-covering of
+$\mathcal I$ with fewer constraints, so by the inductive hypothesis its
+solution set is subdirect; take a solution of $G_{j}$ agreeing with
+$\bar\beta$ at the shared variable if there is one, and any solution
+otherwise. The assignments agree wherever scopes meet, and every constraint of
+$\mathcal I'$ is satisfied. If no constraint contains $x_{0}$, run the same
+argument from any constraint (its groups likewise), and set $x_{0}=a$
+separately.
+
+(e) The two parent maps agree on the common variables --- both are the
+identity there, by the proviso and Definition~\ref{def:expanded}(i) --- so
+their union $S$ is a function, and each clause of
+Definition~\ref{def:expanded} holds because it holds on each half.
+
+(f) Let $S_{2}\colon\Var(\mathcal I'')\to\Var(\mathcal I')$ and
+$S_{1}\colon\Var(\mathcal I')\to\Var(\mathcal I)$ be the parent maps; take
+$S=S_{1}\circ S_{2}$. (i): for
+$x\in\Var(\mathcal I)\cap\Var(\mathcal I'')$ the proviso puts
+$x\in\Var(\mathcal I')$, so $S_{2}(x)=x$ and $S_{1}(x)=x$. (ii) composes.
+(iii): let $R(x_{1},\dots,x_{m})$ be a constraint of $\mathcal I''$. If
+$S_{2}$ is constant on the scope then so is $S$, and the diagonal clause
+carries over. Otherwise $S_{2}$ is pairwise distinct there and
+$C'=R(S_{2}(x_{1}),\dots,S_{2}(x_{m}))$ is weaker than or equivalent to a
+constraint $C_{1}$ of $\mathcal I'$; note
+$\Var(C')\subseteq\Var(C_{1})$. Apply (iii) for $\mathcal I'$ to $C_{1}$. If
+$S_{1}$ is constant on $\Var(C_{1})$ then $S$ is constant on the scope of
+$R$, and the diagonal of the common domain lies in $R^{C_{1}}$, hence ---
+projecting to $\Var(C')$, by weaker-or-equivalence --- in $R$. If $S_{1}$ is
+pairwise distinct on $\Var(C_{1})$, then by renaming
+$C'(S_{1}\,\cdot)$ is weaker than or equivalent to $C_{1}(S_{1}\,\cdot)$,
+which is weaker than or equivalent to a constraint of $\mathcal I$;
+transitivity finishes, and $S$ is pairwise distinct on the scope because
+$S_{1}$ is injective on $\Var(C_{1})\supseteq\Var(C')$.
+
+(g) This is Lemma~\ref{lem:expanded-consistency}, imported.
+
+(h) $D^{(\top)}_{S(x)}$ is a subuniverse of $\mathbf D_{S(x)}=\mathbf D_{x}$,
+so the extension is a reduction. For $1$-consistency, let $C$ be a constraint
+of $\mathcal I'^{(\top)}$ and $z$ in its scope. If $C$ is diagonal,
+$R\supseteq\{(a,\dots,a)\}$ meets the box $(D^{(\top)}_{x})^{m}$ in all of
+$D^{(\top)}_{x}$ at every coordinate. Otherwise let $C_{0}$ be the constraint
+of $\mathcal I$ that $R(S(x_{1}),\dots,S(x_{m}))$ weakens or equals; for
+$a\in D^{(\top)}_{z}=D^{(\top)}_{S(z)}$, $1$-consistency of
+$\mathcal I^{(\top)}$ at $C_{0}$ gives a tuple of
+$R^{C_{0}}$ in $C_{0}$'s box with $S(z)$-entry $a$. Its projection to
+$\Var(C')$ lies in $R^{C'}$ by weaker-or-equivalence and keeps the
+$S(z)$-entry $a$; reading it back along the scope $x_{1},\dots,x_{m}$ ---
+whose boxes match through $S$, by the definition of the extension --- gives a
+tuple of $C$'s relation in $C$'s box with $z$-entry $a$. So
+$\proj_{z}$ of each reduced constraint is all of $D^{(\top)}_{z}$.
+\end{proof}
 
 \begin{hazard}[Variable renaming carries obligations]\label{haz:renaming}
 The constructions of \S\ref{sec:main-statements} say ``rename the variables so
@@ -378,10 +486,51 @@ $\Con(\mathcal I)=\bigcup_{x}\Con(\mathcal I,x)$.
 \end{definition}
 
 \begin{lemma}\label{lem:conone-basics}
-The $i$-th variable of $R$ is rectangular if and only if $R$ is stable under
-$\ConOne(R,i)$. If $R$ is subdirect and its $i$-th variable is rectangular,
-then $\ConOne(R,i)$ is a congruence.
+Let $R\le\mathbf A_{1}\times\dots\times\mathbf A_{m}$ and $i\in[m]$.
+\begin{enumerate}\alphlabels\tightlist
+\item $\ConOne(R,i)$ is a symmetric subuniverse of $\mathbf A_{i}^{2}$,
+  reflexive on $\proj_{i}(R)$.
+\item The $i$-th variable of $R$ is rectangular if and only if it is stable
+  under $\ConOne(R,i)$.
+\item If the $i$-th variable of $R$ is rectangular then $\ConOne(R,i)$ is
+  transitive; if moreover $\proj_{i}(R)=A_{i}$ then $\ConOne(R,i)$ is a
+  congruence on $\mathbf A_{i}$.
+\end{enumerate}
 \end{lemma}
+
+\begin{proof}
+(a) Symmetry is the symmetry of the defining formula in $y,y'$. For
+$a\in\proj_{i}(R)$, a witnessing tuple $\bar x[i\mapsto a]\in R$ serves as its
+own partner, giving $(a,a)\in\ConOne(R,i)$. Compatibility: if
+$(y_{j},y_{j}')\in\ConOne(R,i)$ for $j\in[n]$, with witnesses
+$\bar x^{j}$, then applying $w$ coordinatewise to the tuples
+$\bar x^{j}[i\mapsto y_{j}]$ gives
+$w(\bar x^{1},\dots,\bar x^{n})[i\mapsto w(\bar y)]\in R$, and likewise with
+$y_{j}'$; the common tuple $w(\bar x^{1},\dots,\bar x^{n})$ witnesses
+$\bigl(w(\bar y),w(\bar y')\bigr)\in\ConOne(R,i)$.
+
+(b) Suppose the variable is stable and let
+$\bar a[i\mapsto b_{i}],\ \bar b[i\mapsto a_{i}],\ \bar b\in R$. The pair
+$\bar b,\ \bar b[i\mapsto a_{i}]$ witnesses
+$(b_{i},a_{i})\in\ConOne(R,i)$, and stability applied to
+$\bar a[i\mapsto b_{i}]\in R$ replaces $b_{i}$ by $a_{i}$, giving
+$\bar a\in R$: the variable is rectangular. Conversely suppose it is
+rectangular, let $\bar a\in R$ and $(a_{i},y)\in\ConOne(R,i)$ with witness
+$\bar x$, so $\bar x[i\mapsto a_{i}],\ \bar x[i\mapsto y]\in R$. Apply
+rectangularity to the target $\bar a[i\mapsto y]$ against
+$\bar b=\bar x[i\mapsto a_{i}]$: the three hypotheses read
+$\bar a[i\mapsto y][i\mapsto a_{i}]=\bar a\in R$,
+$\bar b[i\mapsto y]=\bar x[i\mapsto y]\in R$, and $\bar b\in R$; the
+conclusion is $\bar a[i\mapsto y]\in R$.
+
+(c) Let $(y,y')$ and $(y',y'')$ lie in $\ConOne(R,i)$, with witnesses
+$\bar x$ and $\bar z$. By (b) the variable is stable, so from
+$\bar z[i\mapsto y']\in R$ and $(y',y)\in\ConOne(R,i)$ --- symmetry ---
+we get $\bar z[i\mapsto y]\in R$; together with
+$\bar z[i\mapsto y'']\in R$ this witnesses $(y,y'')\in\ConOne(R,i)$. With
+$\proj_{i}(R)=A_{i}$, (a) makes the relation reflexive on all of $A_{i}$,
+and (a)'s compatibility makes the equivalence a congruence.
+\end{proof}
 
 \begin{hazard}\label{haz:conone-not-congruence}
 $\ConOne(R,i)$ is always reflexive and symmetric but is \emph{not} transitive
