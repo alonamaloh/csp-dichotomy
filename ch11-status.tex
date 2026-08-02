@@ -33,8 +33,8 @@ both are written so that a reader can check them in a few lines by hand.
 
 One structural property \emph{is} checked mechanically: the proof-dependency
 graph of this document --- an edge from each statement to every statement its
-proof cites --- is acyclic, over $101$ statements, $60$ of which carry proofs,
-and $151$ edges. That is a check on the arrangement, not on the mathematics,
+proof cites --- is acyclic, over $108$ statements, $67$ of which carry proofs,
+and $158$ edges. That is a check on the arrangement, not on the mathematics,
 and it has caught three real cycles: Caveats~\ref{haz:reverse-hom-split} and
 \ref{haz:central-critical-split}, and a third that a first draft of
 \pkey{lem:self-intersection-pc} introduced by borrowing four steps from the
@@ -95,6 +95,9 @@ that cites it, and the steps are now written out.
   Caveat~\ref{haz:ba-center-implies} \\
 \pkey{lem:special-wnu} & \textsc{imported} & \cite[Lem.~4.7]{MarotiMcKenzie} \\
 \pkey{lem:building-perfect} & \textsc{imported} & \cite[Cor.~8.17.1]{ZhukJACM} \\
+\pkey{lem:common-binary-witness} & \textsc{proved} & the missing hypothesis of
+  \pkey{lem:ba-center-implies} is exactly productivity of binary absorption;
+  Caveat~\ref{haz:witness-moved} \\
 \pkey{lem:reverse-hom}, \pkey{lem:bacon-left},
   \pkey{lem:no-central-critical}, \pkey{cor:no-central-critical},
   \pkey{lem:bridge-abelian}, \pkey{lem:ba-center-intersect},
@@ -153,12 +156,29 @@ that cites it, and the steps are now written out.
   Caveat~\ref{haz:bridge-from-instance} \\
 \hline
 \multicolumn{3}{@{}l}{\textit{\S\ref{sec:algorithm}--\S\ref{sec:hardness}: the algorithm and the hard half}}\\
-\pkey{thm:t1} & \textsc{stated} & needs $\textsc{Solve}$ defined as a function;
-  Caveat~\ref{haz:t1-names-solve} \\
+\pkey{def:solve-alg}, \pkey{lem:solve-\brk terminates} & \textsc{proved} &
+  $\textsc{Solve}_{\mathrm{alg}}$ is now a function, by well-founded recursion
+  on the measure of \pkey{def:solve-measure}; the three residual obligations
+  are Caveat~\ref{haz:t1-names-solve} \\
+\pkey{thm:t1} & \textsc{stated} & now has a subject; correctness itself is not
+  proved here \\
 \pkey{thm:t2}, \pkey{thm:h1} & \textsc{stated} & need a cost model \\
-\pkey{thm:h0} & \textsc{stated} & \\
+\pkey{thm:np-membership} & \textsc{stated} & needs the encoding and the
+  machine; with \pkey{thm:h1} it supplies the word \emph{complete} \\
+\pkey{lem:nae-interp} & \textsc{proved} & the interpretation written out from
+  the two disjoint subalgebras \\
+\pkey{thm:h0} & \textsc{proved} & from \cite[Cor.~1.5.11]{BradyNotes} and
+  \pkey{lem:nae-interp} \\
 \pkey{thm:galois} & \textsc{imported} & Geiger; Bodnarchuk et al. \\
-\pkey{thm:dichotomy} & \textsc{stated} & and needs the core reduction,
+\hline
+\multicolumn{3}{@{}l}{\textit{\S\ref{sec:target}: the statement}}\\
+\pkey{thm:dichotomy-core} & \textsc{stated} & the theorem this document is
+  about; what it needs is everything above \\
+\pkey{thm:core-reduction} & \textsc{imported} &
+  \cite[Prop.~1.4.3, Thm.~1.4.7, Prop.~1.4.10, 1.4.11]{BradyNotes} \\
+\pkey{lem:wnu-descends} & \textsc{proved} & \\
+\pkey{thm:dichotomy} & \textsc{proved} & from \pkey{thm:dichotomy-core},
+  \pkey{thm:core-\brk reduction} and \pkey{lem:wnu-descends};
   Caveat~\ref{haz:core} \\
 \hline
 \end{longtable}
@@ -168,10 +188,16 @@ that cites it, and the steps are now written out.
 
 The algebraic core of the strong-subuniverse theory
 (\S\ref{sec:properties}--\S\ref{sec:strongproofs}) is the part in the best
-shape: of its sixty statements, thirty-nine are proved here --- one of them,
+shape: of its sixty-one statements, forty are proved here --- one of them,
 \pkey{lem:maximal-mult}, only under Hypothesis~\ref{hyp:maximal-mult} ---
 twelve are imported with exact citations, five are outlined, and four are
-stated only.
+stated only. The two ends of the document, \S\ref{sec:target} and
+\S\S\ref{sec:algorithm}--\ref{sec:hardness}, are now stated rather than
+gestured at: the theorem is stated for a rigid core and derived for an
+arbitrary $\Gamma$, $\textsc{Solve}_{\mathrm{alg}}$ is a function,
+\pkey{thm:h0} is proved, and \emph{complete} has a membership statement behind
+it. What is left there is the two complexity wrappers and the correctness of
+the algorithm itself.
 \S\ref{sec:main-statements} is in much worse shape: its spine ---
 \pkey{lem:bridge-from-instance}, and with it most of
 Lemma~\ref{lem:connected} --- is stated without proof, and part (1) of the main
@@ -192,9 +218,11 @@ Five items block the rest, and they are the honest reading of the table.
   \pkey{lem:self-\brk intersection-pc} both written out, this is what is left
   of the intersection-and-factorisation layer.
 \item The linear algebra of \pkey{thm:codim-one}
-  (Caveat~\ref{haz:step2-linear-algebra}), and the common binary absorption
-  witness at the call site of \pkey{lem:ba-center-implies}
-  (Caveat~\ref{haz:ba-center-implies}).
+  (Caveat~\ref{haz:step2-linear-algebra}); and, for the common binary
+  absorption witness, the check that every producer of a type-$\TBA$ reduction
+  produces a \emph{uniform} one, now that \pkey{thm:main-inductive}(2)
+  hypothesises it (Caveats~\ref{haz:uniform-witness} and
+  \ref{haz:witness-moved}).
 \item The induction measure across expanded coverings
   (Caveat~\ref{haz:the-induction}(c)) and the termination of weakening
   (Caveat~\ref{haz:weakening}).

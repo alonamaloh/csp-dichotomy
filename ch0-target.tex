@@ -8,36 +8,130 @@ Fix a finite set $A$ and a finite set $\Gamma$ of relations on $A$, the
 $R_{1}(\bar x_{1})\wedge\dots\wedge R_{s}(\bar x_{s})$ with each
 $R_{i}\in\Gamma$; the question is whether it is satisfiable.
 
-\begin{theorem}[Dichotomy; Bulatov, Zhuk]\label{thm:dichotomy}
-If some weak near-unanimity operation preserves $\Gamma$, then $\CSP(\Gamma)$ is
-solvable in polynomial time. Otherwise $\CSP(\Gamma)$ is \textup{NP}-complete.
+\begin{definition}[Core, rigid core]\label{def:core}
+$\Gamma$ is a \emph{core} if every endomorphism of $\Gamma$ --- every unary
+polymorphism --- is an automorphism, and a \emph{rigid core} if the identity is
+its only endomorphism. Write $\Gamma^{\mathrm{rig}}$ for $\Gamma$ together with
+the unary relation $\{a\}$ for every $a\in A$.
+\end{definition}
+
+The theorem this document is about is the rigid-core one.
+
+\begin{theorem}[Dichotomy for a rigid core; Bulatov, Zhuk]\label{thm:dichotomy-core}
+Let $\Gamma$ be a finite constraint language on a finite set $A$ containing the
+singleton relation $\{a\}$ for every $a\in A$. If some weak near-unanimity
+operation preserves $\Gamma$ then $\CSP(\Gamma)$ is solvable in polynomial
+time; otherwise $\CSP(\Gamma)$ is \textup{NP}-complete.
 \end{theorem}
 
-\begin{hazard}[The theorem needs a core, and a $\Gamma$ closed under constants]
-\label{haz:core}
-Theorem~\ref{thm:dichotomy} is stated for an arbitrary $\Gamma$, and in that
-form the weak near-unanimity criterion is not the right invariant: it is
-applied after passing to a core of $\Gamma$ and adjoining every singleton unary
-relation, which is what makes the polymorphism algebra idempotent. The
-reduction --- finite templates have cores; adjoining all singleton unary
-relations to a core gives a logspace-equivalent rigid core; algebraically this
-is passage to the idempotent reduct --- is \cite{BradyNotes}, ``Cores and
-Idempotent Reducts''. \S\ref{sec:hardness} uses it and this document does not
-prove it.
+The hypothesis is exactly what makes $\Pol(\Gamma)$ idempotent, since a
+polymorphism preserving $\{a\}$ satisfies $f(a,\dots,a)=a$; so
+Convention~\ref{conv:standing} applies to it, and \S\ref{sec:hardness} may use
+the singletons as relations. It also makes $\Gamma$ a rigid core, and
+conversely: by \cite[Thm.~1.4.6]{BradyNotes}, $\Gamma$ is a rigid core if and
+only if every $\{a\}$ is pp-definable from $\Gamma$, so requiring the
+singletons outright costs nothing beyond pp-definability.
 
-Everything after \S\ref{sec:conventions} therefore assumes that $\Gamma$ is a
-rigid core containing all singleton unary relations, so that
-Convention~\ref{conv:standing} applies to $\Pol(\Gamma)$. Restating
-Theorem~\ref{thm:dichotomy} under that hypothesis --- and connecting the
-special weak near-unanimity operation of Lemma~\ref{lem:special-wnu}, which is
-a \emph{term} operation of the polymorphism algebra and therefore still
-preserves every relation of $\Gamma$ --- is work this document has not yet
-done; see the status table, \S\ref{sec:status}.
+Two imported statements carry Theorem~\ref{thm:dichotomy-core} to an arbitrary
+$\Gamma$.
+
+\begin{theorem}[Cores and idempotent reducts; imported]\label{thm:core-reduction}
+\begin{enumerate}\alphlabels\tightlist
+\item Every finite $\Gamma$ is homomorphically equivalent to a core
+  $\Gamma^{\circ}$ on a subset of $A$, unique up to isomorphism, and
+  $\CSP(\Gamma)$ and $\CSP(\Gamma^{\circ})$ have the same satisfiable instances
+  up to a syntactic translation \cite[Prop.~1.4.3]{BradyNotes}.
+\item If $\Gamma$ is a core then $\CSP(\Gamma)$ and
+  $\CSP(\Gamma^{\mathrm{rig}})$ are equivalent under logspace reductions
+  \cite[Thm.~1.4.7]{BradyNotes}.
+\item If $\Gamma$ is a core then $\Pol(\Gamma^{\mathrm{rig}})$ is exactly the
+  set of idempotent members of $\Pol(\Gamma)$, and every $f\in\Pol(\Gamma)$
+  factors as $f=f_{\mathrm{un}}\circ f_{\mathrm{id}}$ with
+  $f_{\mathrm{un}}(x)=f(x,\dots,x)$ an automorphism and
+  $f_{\mathrm{id}}=f_{\mathrm{un}}^{-1}\circ f$ idempotent
+  \cite[Prop.~1.4.10, 1.4.11]{BradyNotes}.
+\end{enumerate}
+\end{theorem}
+
+\begin{lemma}[The criterion descends to the rigid core]\label{lem:wnu-descends}
+Let $\Gamma$ be finite and $\Gamma^{\circ}$ a core of it. Then some weak
+near-unanimity operation preserves $\Gamma$ if and only if some weak
+near-unanimity operation preserves $(\Gamma^{\circ})^{\mathrm{rig}}$.
+\end{lemma}
+
+\begin{proof}
+Let $e\colon\Gamma^{\circ}\to\Gamma$ and $r\colon\Gamma\to\Gamma^{\circ}$ be
+the homomorphisms of Theorem~\ref{thm:core-reduction}(a). If $w$ is a weak
+near-unanimity polymorphism of $\Gamma$ then $\bar w=r\circ w|_{(A^{\circ})^{k}}$
+is one of $\Gamma^{\circ}$: it preserves the relations, being a composite of
+homomorphisms, and post-composition with $r$ preserves each identity
+$w(y,x,\dots,x)=\dots=w(x,\dots,x,y)$. Conversely if $w$ is one of
+$\Gamma^{\circ}$ then $e\circ w\circ(r,\dots,r)$ is one of $\Gamma$, by the
+same two observations.
+
+So we may assume $\Gamma=\Gamma^{\circ}$ is a core, and must pass between
+$\Gamma$ and $\Gamma^{\mathrm{rig}}$. Since $\Gamma\subseteq
+\Gamma^{\mathrm{rig}}$, every polymorphism of $\Gamma^{\mathrm{rig}}$ is one of
+$\Gamma$. In the other direction let $w\in\Pol(\Gamma)$ be a weak
+near-unanimity operation and factor it as in
+Theorem~\ref{thm:core-reduction}(c). Applying the automorphism
+$w_{\mathrm{un}}^{-1}$ to each of the identities
+$w(y,x,\dots,x)=\dots=w(x,\dots,x,y)$ leaves them equalities, so
+$w_{\mathrm{id}}$ is again a weak near-unanimity operation; it is idempotent,
+hence a polymorphism of $\Gamma^{\mathrm{rig}}$ by
+Theorem~\ref{thm:core-reduction}(c).
+\end{proof}
+
+\begin{corollary}[Dichotomy; Bulatov, Zhuk]\label{thm:dichotomy}
+Let $\Gamma$ be a finite constraint language. If some weak near-unanimity
+operation preserves $\Gamma$ then $\CSP(\Gamma)$ is solvable in polynomial
+time; otherwise $\CSP(\Gamma)$ is \textup{NP}-complete.
+\end{corollary}
+
+\begin{proof}
+Let $\Gamma^{\circ}$ be a core of $\Gamma$ and
+$\Delta=(\Gamma^{\circ})^{\mathrm{rig}}$. By
+Theorem~\ref{thm:core-reduction}(a),(b), $\CSP(\Gamma)$ and $\CSP(\Delta)$ are
+equivalent under logspace reductions, so each is in polynomial time exactly
+when the other is, and each is \textup{NP}-complete exactly when the other is.
+By Lemma~\ref{lem:wnu-descends} the hypothesis holds for $\Gamma$ exactly when
+it holds for $\Delta$, and $\Delta$ satisfies the hypothesis of
+Theorem~\ref{thm:dichotomy-core}.
+\end{proof}
+
+\begin{hazard}[What the reduction is not]\label{haz:core}
+Corollary~\ref{thm:dichotomy} is the form the criterion is usually quoted in,
+and it is correct, but the route to it is not a formality and two points are
+worth isolating.
+
+\emph{Idempotence is the whole of it.} What
+Lemma~\ref{lem:wnu-descends} has to supply, once one is at a core, is an
+\emph{idempotent} weak near-unanimity operation, and it gets one only from the
+factorisation of Theorem~\ref{thm:core-reduction}(c) --- available because a
+core's unary polymorphisms form a group. The corresponding statement for
+arbitrary nontrivial systems of identities is \textbf{false}: Willard's example
+\cite[Ex.~1.4.5]{BradyNotes} is a core whose polymorphisms satisfy identities
+unsatisfiable by projections while its rigidification has no such
+polymorphisms at all, and is \textup{NP}-complete. Weak near-unanimity survives
+the passage; ``satisfies some nontrivial identities'' does not.
+
+\emph{The special operation.} Everything after \S\ref{sec:conventions} works
+not with an arbitrary weak near-unanimity operation but with a \emph{special}
+one of some arity $n$, supplied by Lemma~\ref{lem:special-wnu}. That is a
+change of hypothesis and needs one sentence: the special operation is a
+\emph{term} operation of $\Pol(\Gamma)$, so it is itself a polymorphism and
+preserves every relation of $\Gamma$; and it is idempotent because
+$\Pol(\Gamma)$ is. So $\mathbf A=(A;w)$ satisfies
+Convention~\ref{conv:standing} and every relation of $\Gamma$ is a subuniverse
+of a power of $\mathbf A$, which is what \S\S\ref{sec:instances} onwards
+assume.
+
+Theorem~\ref{thm:core-reduction} is imported and not proved here.
 \end{hazard}
 
 \subsection{The five layers}
 
-Both halves of Theorem~\ref{thm:dichotomy} are conditional on a model of
+Both halves of Theorem~\ref{thm:dichotomy-core} are conditional on a model of
 computation, and that is not a formality to wave through. ``Solvable in
 polynomial time'' quantifies over an encoding of instances as strings, a
 machine, and a polynomial bound on its step count; ``\textup{NP}-complete''
@@ -95,9 +189,9 @@ algebras with $w$ of arity $n$ (Convention~\ref{conv:standing}).
 what the literature actually proves. This document is written for them.
 \textup{(T2)} and \textup{(H1)} are stated precisely in
 \S\S\ref{sec:algorithm}--\ref{sec:hardness} and are not proved here; recovering
-the word \emph{complete} in Theorem~\ref{thm:dichotomy} also needs the standard
-fact that a fixed finite-template CSP lies in \textup{NP}, which belongs with
-them.
+the word \emph{complete} in Theorem~\ref{thm:dichotomy-core} also needs the
+standard fact that a fixed finite-template CSP lies in \textup{NP}, which
+belongs with them and is Theorem~\ref{thm:np-membership}.
 
 \begin{remark}\label{rem:layers-not-a-dodge}
 The separation is not a dodge. Layer \textup{(T1)} is strictly stronger than

@@ -184,12 +184,55 @@ Lemma~\ref{lem:no-abs-in-linear}.
 witnessed by a \emph{single} binary $t$; that is why $\subte{\TBA(t)}$ carries
 the term in the notation, and the conclusion returns the same $t$.
 
-At the call site inside Theorem~\ref{thm:main-inductive}(2) neither hypothesis
-is currently discharged: the theorem records that every coordinate reduction
-has type $\TBA$, and that does not by itself produce a term common to all of
-them. Closing this needs either a lemma synthesising one common binary term
-from a finite family of coordinate absorptions, or reduction data that carries
-a common witness from the start. See \S\ref{sec:status}.
+At the call site inside Theorem~\ref{thm:main-inductive}(2) the second
+hypothesis was, until now, not discharged: the theorem recorded that every
+coordinate reduction has type $\TBA$, which by
+Lemma~\ref{lem:common-binary-witness} does not by itself produce a term common
+to all of them. The statement of Theorem~\ref{thm:main-inductive}(2) now
+carries the witness instead (Definition~\ref{def:reduction},
+Caveat~\ref{haz:uniform-witness}); what that buys and what it costs is
+Caveat~\ref{haz:witness-moved}.
+\end{hazard}
+
+\begin{lemma}[When a common witness exists]\label{lem:common-binary-witness}
+Let $C_{i}\subte{\TBA}\mathbf A_{i}$ for $i\in[m]$, with each $C_{i}$ nonempty.
+The following are equivalent:
+\begin{enumerate}\alphlabels\tightlist
+\item some one binary term $t$ witnesses all $m$ absorptions;
+\item $C_{1}\times\dots\times C_{m}\subte{\TBA}\mathbf A_{1}\times\dots\times
+  \mathbf A_{m}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+If $t$ witnesses all $m$, then for $\bar c$ in the product of the $C_{i}$ and
+$\bar a$ in the product of the $A_{i}$, the tuple $t(\bar c,\bar a)$ has
+$i$-th entry $t(c_{i},a_{i})\in C_{i}$, and symmetrically; so $t$ witnesses (b).
+Conversely let $t$ witness (b), fix $i$, and let $c\in C_{i}$, $a\in A_{i}$.
+Choose $\bar c$ in the product of the $C_{j}$ with $\bar c_{i}=c$, possible
+since every $C_{j}$ is nonempty, and $\bar a$ in the product of the $A_{j}$
+with $\bar a_{i}=a$. Then $t(\bar c,\bar a)$ lies in the product of the
+$C_{j}$, so its $i$-th entry $t(c,a)$ lies in $C_{i}$; symmetrically on the
+other side. So $t$ witnesses the $i$-th absorption.
+\end{proof}
+
+\begin{hazard}[What the equivalence does and does not settle]\label{haz:witness-moved}
+Lemma~\ref{lem:common-binary-witness} is a translation, not a construction: it
+says the missing hypothesis of Lemma~\ref{lem:ba-center-implies} is exactly
+\emph{productivity} of binary absorption over the family in question, and
+nothing here supplies that. The two ways out are to prove such a productivity
+statement, or to carry the witness in the data; this document takes the second,
+so Theorem~\ref{thm:main-inductive}(2) hypothesises
+$D^{(2)}\subte{\TBA(t)}D^{(1)}$ and Lemma~\ref{lem:ba-center-implies} applies
+at its call site with that $t$.
+
+The cost is that the debt moves rather than vanishing: every producer of a
+type-$\TBA$ reduction must now be checked to produce a uniform one. The
+producers are the type-$\TBA$ alternatives of
+Theorem~\ref{thm:main-inductive}(1) and of the reductions found by the
+algorithm, and \textbf{that check has not been made} --- it lives in the part
+of \cite{ZhukSimplified} this document has not read adversarially. See
+\S\ref{sec:status}.
 \end{hazard}
 
 \subsection{Intersections}

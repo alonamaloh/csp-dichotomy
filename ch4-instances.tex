@@ -104,8 +104,21 @@ instance $\mathcal I^{(\top)}$ is $\mathcal I$ with each domain replaced by
 $D^{(\top)}_{x}$ and each constraint relation intersected with the
 corresponding box. For reductions we write $D^{(\bot)}\lll D^{(\top)}$ and
 $D^{(\bot)}\subte{T}D^{(\top)}$ when the corresponding relation holds at every
-variable.
+variable. For $T=\TBA$ we write $D^{(\bot)}\subte{\TBA(t)}D^{(\top)}$ for the
+stronger relation in which \emph{one} binary term $t$ witnesses the absorption
+at every variable; see Caveat~\ref{haz:uniform-witness}.
 \end{definition}
+
+\begin{hazard}[A reduction of type $\TBA$ carries a term, or it is
+  useless]\label{haz:uniform-witness}
+$D^{(\bot)}\subte{\TBA}D^{(\top)}$, read variablewise, gives a binary term
+$t_{x}$ for each $x$ and nothing that relates them. Its consumer,
+Lemma~\ref{lem:ba-center-implies}, needs a term common to all the coordinates
+it is applied to, and by Lemma~\ref{lem:common-binary-witness} that is strictly
+more than the separate absorptions supply. So the uniform relation
+$\subte{\TBA(t)}$ is the one that propagates, and the variablewise one is
+recorded here only to say that it is not enough.
+\end{hazard}
 
 \begin{hazard}[Empty reductions]\label{haz:empty-reduction}
 Reductions are allowed to be empty at some or all variables --- the maximal

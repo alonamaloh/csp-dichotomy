@@ -16,15 +16,23 @@ the tractable half, and it factors cleanly into algebra and complexity.
 \item[\textup{(2)}] \emph{Maróti--McKenzie.} A finite idempotent algebra has a
   Taylor term if and only if it has a weak near-unanimity term
   \cite{MarotiMcKenzie}.
-\item[\textup{(3)}] \emph{No Taylor term $\Rightarrow$ pp-interpretation.} If a
-  finite idempotent algebra has no Taylor term, then the variety it generates
-  contains a two-element algebra whose only operations are projections; and
-  from there $\Gamma$ primitively positively interprets every finite constraint
-  language, in particular a template for \textsc{Nae-$3$-Sat}. The word
-  ``and'' hides three steps --- an \textup{HSP} representation in a finite
-  power, its translation into a pp-interpretation, and the finite Inv--Pol
-  theorem (Theorem~\ref{thm:galois}) --- which are imported rather than proved
-  here.
+\item[\textup{(3)}] \emph{No Taylor term $\Rightarrow$ two disjoint
+  subalgebras.} If a finite idempotent $\mathbf A$ has no Taylor term then
+  there are nonempty $B,C\le\mathbf A$ with $B\cap C=\varnothing$ and
+  \[
+    N=(B\cup C)^{3}\setminus(B^{3}\cup C^{3})\;\le\;\mathbf A^{3}
+  \]
+  \cite[Cor.~1.5.11]{BradyNotes}. This replaces the usual formulation --- ``the
+  variety generated contains a two-element algebra whose only operations are
+  projections, and from there $\Gamma$ pp-interprets every finite language'' ---
+  whose ``and'' hides an \textup{HSP} representation in a finite power and its
+  translation into an interpretation. The cited corollary does that work and
+  lands on a concrete relation, from which Lemma~\ref{lem:nae-interp} builds
+  the interpretation in four lines.
+\item[\textup{(3$'$)}] \emph{Inv--Pol.} $N$ is a subuniverse of $\mathbf A^{3}$
+  and so is preserved by every polymorphism of $\Gamma$; Theorem~\ref{thm:galois}
+  turns that into pp-definability from $\Gamma$. This is the one substantial
+  import of the step, and only the hard direction of it is used.
 \item[\textup{(4)}] \emph{Bulatov--Jeavons--Krokhin.} A primitive positive
   interpretation of $\Delta$ in $\Gamma$ yields a polynomial-time many-one
   reduction $\CSP(\Delta)\le_{p}\CSP(\Gamma)$ \cite{BJK}.
@@ -37,12 +45,49 @@ complexity-theoretic wrapper; step (5) is pure complexity theory.
 
 \subsection{The layered targets}
 
+\begin{lemma}[The interpretation, explicitly]\label{lem:nae-interp}
+Let $\mathbf A$ be an algebra, $B,C\le\mathbf A$ nonempty and disjoint, and
+suppose $N=(B\cup C)^{3}\setminus(B^{3}\cup C^{3})$ is a subuniverse of
+$\mathbf A^{3}$. Then $\{N\}$ pp-interprets $\{\textsc{Nae}\}$ on $\{0,1\}$,
+with $d=1$.
+\end{lemma}
+
+\begin{proof}
+A triple lies in $N$ exactly when its entries lie in $B\cup C$ and are not all
+on the same side of the partition; in particular, for a repeated entry,
+\begin{equation}\label{eq:nae-opposite}
+  (x,z,z)\in N\iff x,z\in B\cup C\ \text{and $x,z$ lie on opposite sides.}
+\end{equation}
+Take $F=\proj_{1}(N)$, which is pp-definable from $N$ and equals $B\cup C$:
+each $b\in B$ is the first entry of $(b,c,c)\in N$ for any $c\in C$, and
+symmetrically. Let $\pi\colon F\to\{0,1\}$ send $B$ to $0$ and $C$ to $1$; it is
+surjective because $B$ and $C$ are nonempty. The $\pi$-preimage of
+$\textsc{Nae}$ is $N$ itself, by the description above. The $\pi$-preimage of
+equality on $\{0,1\}$ is $B^{2}\cup C^{2}$, and by \eqref{eq:nae-opposite}
+\[
+  B^{2}\cup C^{2}=\{(x,y):\exists z\;N(x,z,z)\wedge N(y,z,z)\} :
+\]
+a $z$ opposite to both $x$ and $y$ exists exactly when $x$ and $y$ are on the
+same side, since there are only two sides and both are nonempty.
+\end{proof}
+
 \begin{theorem}[Target \textup{(H0)}]\label{thm:h0}
 Let $\mathbf A$ be a finite idempotent algebra with no weak near-unanimity term
 operation. Then $\Inv(\mathbf A)$ primitively positively interprets the
 constraint language $\{\textsc{Nae}\}$ on $\{0,1\}$, where
 $\textsc{Nae}=\{0,1\}^{3}\setminus\{(0,0,0),(1,1,1)\}$.
 \end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:special-wnu}'s source \cite{MarotiMcKenzie}, a finite
+idempotent algebra has a Taylor term if and only if it has a weak
+near-unanimity term; so $\mathbf A$ has no Taylor term. Step \textup{(3)}
+supplies nonempty disjoint $B,C\le\mathbf A$ with
+$N=(B\cup C)^{3}\setminus(B^{3}\cup C^{3})\le\mathbf A^{3}$, so
+$N\in\Inv(\mathbf A)$, and Lemma~\ref{lem:nae-interp} builds the
+interpretation. Every relation it uses is pp-definable from $N$ and hence lies
+in $\Inv(\mathbf A)$.
+\end{proof}
 
 \begin{theorem}[Target \textup{(H1)}; stated, not proved]\label{thm:h1}
 If $\Gamma$ primitively positively interprets $\Delta$ then
@@ -52,12 +97,27 @@ $\CSP(\Gamma)$ is \textup{NP}-hard.
 
 \begin{hazard}[Hardness is not completeness]\label{haz:np-membership}
 Theorem~\ref{thm:h1} concludes \textup{NP}-\emph{hardness}. The word
-\emph{complete} in Theorem~\ref{thm:dichotomy} additionally needs that every
-fixed finite-template CSP lies in \textup{NP}: a solution is a certificate of
-size linear in the number of variables, and checking it means evaluating each
-constraint, which for fixed $\Gamma$ is a table lookup. Small, but it needs the
-cost model, so it belongs with \textup{(H1)}.
+\emph{complete} in Theorem~\ref{thm:dichotomy-core} additionally needs
+membership, which is Theorem~\ref{thm:np-membership}. Small, but it needs the
+cost model, so it belongs with \textup{(H1)} and not with \textup{(H0)}.
 \end{hazard}
+
+\begin{theorem}[\textup{NP} membership; stated, not proved]\label{thm:np-membership}
+For each finite $\Gamma$, $\CSP(\Gamma)\in\textup{NP}$.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+A solution is a certificate: an assignment of a value of $A$ to each variable,
+of size $O(v\log|A|)$ for an instance with $v$ variables, hence linear in the
+instance. Verifying it evaluates each constraint once, and for fixed $\Gamma$
+that is a table lookup of constant cost. Writing this out needs the encoding
+and the machine, which is why it is stated with \textup{(H1)} rather than
+proved here.
+\end{proof}
+
+With Theorems~\ref{thm:h1} and \ref{thm:np-membership} together, the hard half
+of Theorem~\ref{thm:dichotomy-core} reads \textup{NP}-\emph{complete} as
+claimed.
 
 Theorem~\ref{thm:h0} mentions no machine. Theorem~\ref{thm:h1} is where the
 complexity layer enters, and it is small --- the reduction is a syntactic

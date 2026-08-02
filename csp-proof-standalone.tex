@@ -5,7 +5,7 @@
 %%  csp-proof.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision ccbfba7 on 2026-08-02.
+%%  Generated from revision 5d1bae9 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-proof.tex
@@ -246,36 +246,130 @@ Fix a finite set $A$ and a finite set $\Gamma$ of relations on $A$, the
 $R_{1}(\bar x_{1})\wedge\dots\wedge R_{s}(\bar x_{s})$ with each
 $R_{i}\in\Gamma$; the question is whether it is satisfiable.
 
-\begin{theorem}[Dichotomy; Bulatov, Zhuk]\label{thm:dichotomy}
-If some weak near-unanimity operation preserves $\Gamma$, then $\CSP(\Gamma)$ is
-solvable in polynomial time. Otherwise $\CSP(\Gamma)$ is \textup{NP}-complete.
+\begin{definition}[Core, rigid core]\label{def:core}
+$\Gamma$ is a \emph{core} if every endomorphism of $\Gamma$ --- every unary
+polymorphism --- is an automorphism, and a \emph{rigid core} if the identity is
+its only endomorphism. Write $\Gamma^{\mathrm{rig}}$ for $\Gamma$ together with
+the unary relation $\{a\}$ for every $a\in A$.
+\end{definition}
+
+The theorem this document is about is the rigid-core one.
+
+\begin{theorem}[Dichotomy for a rigid core; Bulatov, Zhuk]\label{thm:dichotomy-core}
+Let $\Gamma$ be a finite constraint language on a finite set $A$ containing the
+singleton relation $\{a\}$ for every $a\in A$. If some weak near-unanimity
+operation preserves $\Gamma$ then $\CSP(\Gamma)$ is solvable in polynomial
+time; otherwise $\CSP(\Gamma)$ is \textup{NP}-complete.
 \end{theorem}
 
-\begin{hazard}[The theorem needs a core, and a $\Gamma$ closed under constants]
-\label{haz:core}
-Theorem~\ref{thm:dichotomy} is stated for an arbitrary $\Gamma$, and in that
-form the weak near-unanimity criterion is not the right invariant: it is
-applied after passing to a core of $\Gamma$ and adjoining every singleton unary
-relation, which is what makes the polymorphism algebra idempotent. The
-reduction --- finite templates have cores; adjoining all singleton unary
-relations to a core gives a logspace-equivalent rigid core; algebraically this
-is passage to the idempotent reduct --- is \cite{BradyNotes}, ``Cores and
-Idempotent Reducts''. \S\ref{sec:hardness} uses it and this document does not
-prove it.
+The hypothesis is exactly what makes $\Pol(\Gamma)$ idempotent, since a
+polymorphism preserving $\{a\}$ satisfies $f(a,\dots,a)=a$; so
+Convention~\ref{conv:standing} applies to it, and \S\ref{sec:hardness} may use
+the singletons as relations. It also makes $\Gamma$ a rigid core, and
+conversely: by \cite[Thm.~1.4.6]{BradyNotes}, $\Gamma$ is a rigid core if and
+only if every $\{a\}$ is pp-definable from $\Gamma$, so requiring the
+singletons outright costs nothing beyond pp-definability.
 
-Everything after \S\ref{sec:conventions} therefore assumes that $\Gamma$ is a
-rigid core containing all singleton unary relations, so that
-Convention~\ref{conv:standing} applies to $\Pol(\Gamma)$. Restating
-Theorem~\ref{thm:dichotomy} under that hypothesis --- and connecting the
-special weak near-unanimity operation of Lemma~\ref{lem:special-wnu}, which is
-a \emph{term} operation of the polymorphism algebra and therefore still
-preserves every relation of $\Gamma$ --- is work this document has not yet
-done; see the status table, \S\ref{sec:status}.
+Two imported statements carry Theorem~\ref{thm:dichotomy-core} to an arbitrary
+$\Gamma$.
+
+\begin{theorem}[Cores and idempotent reducts; imported]\label{thm:core-reduction}
+\begin{enumerate}\alphlabels\tightlist
+\item Every finite $\Gamma$ is homomorphically equivalent to a core
+  $\Gamma^{\circ}$ on a subset of $A$, unique up to isomorphism, and
+  $\CSP(\Gamma)$ and $\CSP(\Gamma^{\circ})$ have the same satisfiable instances
+  up to a syntactic translation \cite[Prop.~1.4.3]{BradyNotes}.
+\item If $\Gamma$ is a core then $\CSP(\Gamma)$ and
+  $\CSP(\Gamma^{\mathrm{rig}})$ are equivalent under logspace reductions
+  \cite[Thm.~1.4.7]{BradyNotes}.
+\item If $\Gamma$ is a core then $\Pol(\Gamma^{\mathrm{rig}})$ is exactly the
+  set of idempotent members of $\Pol(\Gamma)$, and every $f\in\Pol(\Gamma)$
+  factors as $f=f_{\mathrm{un}}\circ f_{\mathrm{id}}$ with
+  $f_{\mathrm{un}}(x)=f(x,\dots,x)$ an automorphism and
+  $f_{\mathrm{id}}=f_{\mathrm{un}}^{-1}\circ f$ idempotent
+  \cite[Prop.~1.4.10, 1.4.11]{BradyNotes}.
+\end{enumerate}
+\end{theorem}
+
+\begin{lemma}[The criterion descends to the rigid core]\label{lem:wnu-descends}
+Let $\Gamma$ be finite and $\Gamma^{\circ}$ a core of it. Then some weak
+near-unanimity operation preserves $\Gamma$ if and only if some weak
+near-unanimity operation preserves $(\Gamma^{\circ})^{\mathrm{rig}}$.
+\end{lemma}
+
+\begin{proof}
+Let $e\colon\Gamma^{\circ}\to\Gamma$ and $r\colon\Gamma\to\Gamma^{\circ}$ be
+the homomorphisms of Theorem~\ref{thm:core-reduction}(a). If $w$ is a weak
+near-unanimity polymorphism of $\Gamma$ then $\bar w=r\circ w|_{(A^{\circ})^{k}}$
+is one of $\Gamma^{\circ}$: it preserves the relations, being a composite of
+homomorphisms, and post-composition with $r$ preserves each identity
+$w(y,x,\dots,x)=\dots=w(x,\dots,x,y)$. Conversely if $w$ is one of
+$\Gamma^{\circ}$ then $e\circ w\circ(r,\dots,r)$ is one of $\Gamma$, by the
+same two observations.
+
+So we may assume $\Gamma=\Gamma^{\circ}$ is a core, and must pass between
+$\Gamma$ and $\Gamma^{\mathrm{rig}}$. Since $\Gamma\subseteq
+\Gamma^{\mathrm{rig}}$, every polymorphism of $\Gamma^{\mathrm{rig}}$ is one of
+$\Gamma$. In the other direction let $w\in\Pol(\Gamma)$ be a weak
+near-unanimity operation and factor it as in
+Theorem~\ref{thm:core-reduction}(c). Applying the automorphism
+$w_{\mathrm{un}}^{-1}$ to each of the identities
+$w(y,x,\dots,x)=\dots=w(x,\dots,x,y)$ leaves them equalities, so
+$w_{\mathrm{id}}$ is again a weak near-unanimity operation; it is idempotent,
+hence a polymorphism of $\Gamma^{\mathrm{rig}}$ by
+Theorem~\ref{thm:core-reduction}(c).
+\end{proof}
+
+\begin{corollary}[Dichotomy; Bulatov, Zhuk]\label{thm:dichotomy}
+Let $\Gamma$ be a finite constraint language. If some weak near-unanimity
+operation preserves $\Gamma$ then $\CSP(\Gamma)$ is solvable in polynomial
+time; otherwise $\CSP(\Gamma)$ is \textup{NP}-complete.
+\end{corollary}
+
+\begin{proof}
+Let $\Gamma^{\circ}$ be a core of $\Gamma$ and
+$\Delta=(\Gamma^{\circ})^{\mathrm{rig}}$. By
+Theorem~\ref{thm:core-reduction}(a),(b), $\CSP(\Gamma)$ and $\CSP(\Delta)$ are
+equivalent under logspace reductions, so each is in polynomial time exactly
+when the other is, and each is \textup{NP}-complete exactly when the other is.
+By Lemma~\ref{lem:wnu-descends} the hypothesis holds for $\Gamma$ exactly when
+it holds for $\Delta$, and $\Delta$ satisfies the hypothesis of
+Theorem~\ref{thm:dichotomy-core}.
+\end{proof}
+
+\begin{hazard}[What the reduction is not]\label{haz:core}
+Corollary~\ref{thm:dichotomy} is the form the criterion is usually quoted in,
+and it is correct, but the route to it is not a formality and two points are
+worth isolating.
+
+\emph{Idempotence is the whole of it.} What
+Lemma~\ref{lem:wnu-descends} has to supply, once one is at a core, is an
+\emph{idempotent} weak near-unanimity operation, and it gets one only from the
+factorisation of Theorem~\ref{thm:core-reduction}(c) --- available because a
+core's unary polymorphisms form a group. The corresponding statement for
+arbitrary nontrivial systems of identities is \textbf{false}: Willard's example
+\cite[Ex.~1.4.5]{BradyNotes} is a core whose polymorphisms satisfy identities
+unsatisfiable by projections while its rigidification has no such
+polymorphisms at all, and is \textup{NP}-complete. Weak near-unanimity survives
+the passage; ``satisfies some nontrivial identities'' does not.
+
+\emph{The special operation.} Everything after \S\ref{sec:conventions} works
+not with an arbitrary weak near-unanimity operation but with a \emph{special}
+one of some arity $n$, supplied by Lemma~\ref{lem:special-wnu}. That is a
+change of hypothesis and needs one sentence: the special operation is a
+\emph{term} operation of $\Pol(\Gamma)$, so it is itself a polymorphism and
+preserves every relation of $\Gamma$; and it is idempotent because
+$\Pol(\Gamma)$ is. So $\mathbf A=(A;w)$ satisfies
+Convention~\ref{conv:standing} and every relation of $\Gamma$ is a subuniverse
+of a power of $\mathbf A$, which is what \S\S\ref{sec:instances} onwards
+assume.
+
+Theorem~\ref{thm:core-reduction} is imported and not proved here.
 \end{hazard}
 
 \subsection{The five layers}
 
-Both halves of Theorem~\ref{thm:dichotomy} are conditional on a model of
+Both halves of Theorem~\ref{thm:dichotomy-core} are conditional on a model of
 computation, and that is not a formality to wave through. ``Solvable in
 polynomial time'' quantifies over an encoding of instances as strings, a
 machine, and a polynomial bound on its step count; ``\textup{NP}-complete''
@@ -333,9 +427,9 @@ algebras with $w$ of arity $n$ (Convention~\ref{conv:standing}).
 what the literature actually proves. This document is written for them.
 \textup{(T2)} and \textup{(H1)} are stated precisely in
 \S\S\ref{sec:algorithm}--\ref{sec:hardness} and are not proved here; recovering
-the word \emph{complete} in Theorem~\ref{thm:dichotomy} also needs the standard
-fact that a fixed finite-template CSP lies in \textup{NP}, which belongs with
-them.
+the word \emph{complete} in Theorem~\ref{thm:dichotomy-core} also needs the
+standard fact that a fixed finite-template CSP lies in \textup{NP}, which
+belongs with them and is Theorem~\ref{thm:np-membership}.
 
 \begin{remark}\label{rem:layers-not-a-dodge}
 The separation is not a dodge. Layer \textup{(T1)} is strictly stronger than
@@ -1635,8 +1729,21 @@ instance $\mathcal I^{(\top)}$ is $\mathcal I$ with each domain replaced by
 $D^{(\top)}_{x}$ and each constraint relation intersected with the
 corresponding box. For reductions we write $D^{(\bot)}\lll D^{(\top)}$ and
 $D^{(\bot)}\subte{T}D^{(\top)}$ when the corresponding relation holds at every
-variable.
+variable. For $T=\TBA$ we write $D^{(\bot)}\subte{\TBA(t)}D^{(\top)}$ for the
+stronger relation in which \emph{one} binary term $t$ witnesses the absorption
+at every variable; see Caveat~\ref{haz:uniform-witness}.
 \end{definition}
+
+\begin{hazard}[A reduction of type $\TBA$ carries a term, or it is
+  useless]\label{haz:uniform-witness}
+$D^{(\bot)}\subte{\TBA}D^{(\top)}$, read variablewise, gives a binary term
+$t_{x}$ for each $x$ and nothing that relates them. Its consumer,
+Lemma~\ref{lem:ba-center-implies}, needs a term common to all the coordinates
+it is applied to, and by Lemma~\ref{lem:common-binary-witness} that is strictly
+more than the separate absorptions supply. So the uniform relation
+$\subte{\TBA(t)}$ is the one that propagates, and the variablewise one is
+recorded here only to say that it is not enough.
+\end{hazard}
 
 \begin{hazard}[Empty reductions]\label{haz:empty-reduction}
 Reductions are allowed to be empty at some or all variables --- the maximal
@@ -2041,12 +2148,55 @@ Lemma~\ref{lem:no-abs-in-linear}.
 witnessed by a \emph{single} binary $t$; that is why $\subte{\TBA(t)}$ carries
 the term in the notation, and the conclusion returns the same $t$.
 
-At the call site inside Theorem~\ref{thm:main-inductive}(2) neither hypothesis
-is currently discharged: the theorem records that every coordinate reduction
-has type $\TBA$, and that does not by itself produce a term common to all of
-them. Closing this needs either a lemma synthesising one common binary term
-from a finite family of coordinate absorptions, or reduction data that carries
-a common witness from the start. See \S\ref{sec:status}.
+At the call site inside Theorem~\ref{thm:main-inductive}(2) the second
+hypothesis was, until now, not discharged: the theorem recorded that every
+coordinate reduction has type $\TBA$, which by
+Lemma~\ref{lem:common-binary-witness} does not by itself produce a term common
+to all of them. The statement of Theorem~\ref{thm:main-inductive}(2) now
+carries the witness instead (Definition~\ref{def:reduction},
+Caveat~\ref{haz:uniform-witness}); what that buys and what it costs is
+Caveat~\ref{haz:witness-moved}.
+\end{hazard}
+
+\begin{lemma}[When a common witness exists]\label{lem:common-binary-witness}
+Let $C_{i}\subte{\TBA}\mathbf A_{i}$ for $i\in[m]$, with each $C_{i}$ nonempty.
+The following are equivalent:
+\begin{enumerate}\alphlabels\tightlist
+\item some one binary term $t$ witnesses all $m$ absorptions;
+\item $C_{1}\times\dots\times C_{m}\subte{\TBA}\mathbf A_{1}\times\dots\times
+  \mathbf A_{m}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+If $t$ witnesses all $m$, then for $\bar c$ in the product of the $C_{i}$ and
+$\bar a$ in the product of the $A_{i}$, the tuple $t(\bar c,\bar a)$ has
+$i$-th entry $t(c_{i},a_{i})\in C_{i}$, and symmetrically; so $t$ witnesses (b).
+Conversely let $t$ witness (b), fix $i$, and let $c\in C_{i}$, $a\in A_{i}$.
+Choose $\bar c$ in the product of the $C_{j}$ with $\bar c_{i}=c$, possible
+since every $C_{j}$ is nonempty, and $\bar a$ in the product of the $A_{j}$
+with $\bar a_{i}=a$. Then $t(\bar c,\bar a)$ lies in the product of the
+$C_{j}$, so its $i$-th entry $t(c,a)$ lies in $C_{i}$; symmetrically on the
+other side. So $t$ witnesses the $i$-th absorption.
+\end{proof}
+
+\begin{hazard}[What the equivalence does and does not settle]\label{haz:witness-moved}
+Lemma~\ref{lem:common-binary-witness} is a translation, not a construction: it
+says the missing hypothesis of Lemma~\ref{lem:ba-center-implies} is exactly
+\emph{productivity} of binary absorption over the family in question, and
+nothing here supplies that. The two ways out are to prove such a productivity
+statement, or to carry the witness in the data; this document takes the second,
+so Theorem~\ref{thm:main-inductive}(2) hypothesises
+$D^{(2)}\subte{\TBA(t)}D^{(1)}$ and Lemma~\ref{lem:ba-center-implies} applies
+at its call site with that $t$.
+
+The cost is that the debt moves rather than vanishing: every producer of a
+type-$\TBA$ reduction must now be checked to produce a uniform one. The
+producers are the type-$\TBA$ alternatives of
+Theorem~\ref{thm:main-inductive}(1) and of the reductions found by the
+algorithm, and \textbf{that check has not been made} --- it lives in the part
+of \cite{ZhukSimplified} this document has not read adversarially. See
+\S\ref{sec:status}.
 \end{hazard}
 
 \subsection{Intersections}
@@ -4759,8 +4909,10 @@ be a $1$-consistent reduction for $\mathcal I$ with $D^{(1)}\lll D$.
     $\Upsilon$ whose solution set is not subdirect.
   \end{enumerate}
 \item[\textup{(2)}] If $D^{(2)}\subte{T}D^{(1)}$ is a $1$-consistent reduction
-  for $\mathcal I$ with $T\in\{\TBA,\TC\}$, and $\mathcal I^{(1)}$ has a
-  solution, then $\mathcal I^{(2)}$ has a solution.
+  for $\mathcal I$ with $T\in\{\TBA,\TC\}$ --- and, when $T=\TBA$, uniform:
+  $D^{(2)}\subte{\TBA(t)}D^{(1)}$ for a single binary term $t$
+  (Caveat~\ref{haz:uniform-witness}) --- and $\mathcal I^{(1)}$ has a solution,
+  then $\mathcal I^{(2)}$ has a solution.
 \end{enumerate}
 \end{longtheorem}
 
@@ -5285,24 +5437,109 @@ strictly decreases, so the loop terminates.
 \end{enumerate}
 \end{hazard}
 
-\begin{theorem}[Target \textup{(T1)}]\label{thm:t1}
-Let $\textsc{Solve}$ be the function defined by the two displays above,
-recursing on the lexicographic measure of
-Caveat~\ref{haz:algorithm-obstacles}(a). Then for every instance
-$\mathcal I$ of $\CSP(\Gamma)$,
+\subsection{\textsc{Solve} as a function}
+
+The pseudocode is not a function: it makes unconstrained choices, and its
+recursion is not structural. Both are fixed here, so that
+Theorem~\ref{thm:t1} has a subject.
+
+\begin{definition}[The call set and its measure]\label{def:solve-measure}
+A \emph{call} is either $\mathsf S(\mathcal I)$, for $\mathcal I$ an instance
+of $\CSP(\Gamma)$ with domains $D_{x}$, or $\mathsf L(\mathcal I,\phi)$, where
+in addition $\phi$ is an injective linear map
+$\mathbb Z_{p_{1}}\times\dots\times\mathbb Z_{p_{k}}\to\prod_{x}
+D_{x}/\sigma_{x}$ with the $\sigma_{x}$ the minimal congruences of
+\S\ref{sec:algorithm}. Put $N(\mathcal I)=\sum_{x}|D_{x}|$ and
 \[
-  \textsc{Solve}(\mathcal I)=\texttt{true}
+  \mu\bigl(\mathsf S(\mathcal I)\bigr)=
+    \bigl(N(\mathcal I),\,N(\mathcal I)+1\bigr),
+  \qquad
+  \mu\bigl(\mathsf L(\mathcal I,\phi)\bigr)=
+    \bigl(N(\mathcal I),\,\dim\phi\bigr),
+\]
+ordered lexicographically on $\mathbb N^{2}$. Since $\dim\phi\le N(\mathcal I)$
+always, a call $\mathsf S(\mathcal I)$ is strictly above every
+$\mathsf L(\mathcal I,\phi)$ with the same instance.
+\end{definition}
+
+\begin{definition}[$\textsc{Solve}_{\mathrm{alg}}$]\label{def:solve-alg}
+Fix once and for all a linear order on the finite set of pairs $(x,B)$ with
+$B\subseteq D_{x}$, and one on the finite set of candidate maps $\phi$; ``the
+least'' below means least in these orders, which is what turns each choice in
+the pseudocode into a value. Define $\textsc{Solve}_{\mathrm{alg}}$ on calls by
+well-founded recursion on $\mu$:
+
+\begin{description}\tightlist
+\item[$\mathsf S(\mathcal I)$.] Put $\mathcal I'=
+  \textsc{ForceConsistency}(\mathcal I)$. If some domain of $\mathcal I'$ is
+  empty, return \texttt{false}. If some $D'_{x}$ has a proper nonempty subset
+  $B$ with $B\subt{T}D'_{x}$ for some $T\in\{\TBA,\TC,\TD\}$, take the least
+  such $(x,B)$ and return
+  $\textsc{Solve}_{\mathrm{alg}}\bigl(\mathsf S(\textsc{ReduceDomain}(\mathcal
+  I',x,B))\bigr)$. Otherwise return $\textsc{Solve}_{\mathrm{alg}}
+  \bigl(\mathsf L(\mathcal I',\phi_{0})\bigr)$ for the least admissible
+  $\phi_{0}$.
+\item[$\mathsf L(\mathcal I,\phi)$.] Run the body of \textsc{SolveLinear},
+  reading each test $\bar a\in\phi^{-1}(\mathcal I)$ of \textup{(p0)} as the
+  value of $\textsc{Solve}_{\mathrm{alg}}$ at $\mathsf S$ of the instance
+  $\mathcal I$ with each domain cut to the block $\phi(\bar a)_{x}$, and each
+  iteration of the loop as the value at $\mathsf L(\mathcal I,\phi\circ\psi)$.
+\end{description}
+\end{definition}
+
+\begin{lemma}[The recursion is well founded]\label{lem:solve-terminates}
+Every recursive call made by Definition~\ref{def:solve-alg} is at a strictly
+smaller $\mu$, so $\textsc{Solve}_{\mathrm{alg}}$ is a total function into
+$\{\texttt{true},\texttt{false}\}$.
+\end{lemma}
+
+\begin{proof}
+Four kinds of call. \textsc{ForceConsistency} only shrinks domains, so it does
+not increase $N$; the reduction step replaces some $D'_{x}$ by a proper subset,
+strictly decreasing $N$. The call from $\mathsf S(\mathcal I')$ to
+$\mathsf L(\mathcal I',\phi_{0})$ leaves $N$ fixed and drops the second
+component, by the inequality in Definition~\ref{def:solve-measure}. The
+\textup{(p0)} calls cut every domain to a block of $\sigma_{x}$; each
+$\sigma_{x}$ is proper at some variable, since $\mathsf L$ is reached only when
+some domain has size at least $2$, so $N$ strictly decreases. The loop calls
+leave $N$ fixed and strictly decrease $\dim\phi$, as
+\S\ref{sec:algorithm} records.
+\end{proof}
+
+\begin{theorem}[Target \textup{(T1)}]\label{thm:t1}
+For every instance $\mathcal I$ of $\CSP(\Gamma)$,
+\[
+  \textsc{Solve}_{\mathrm{alg}}\bigl(\mathsf S(\mathcal I)\bigr)=\texttt{true}
   \iff \mathcal I\ \text{has a solution}.
 \]
 \end{theorem}
 
-\begin{hazard}[The statement must name the function]\label{haz:t1-names-solve}
-Theorem~\ref{thm:t1} is about \emph{this} $\textsc{Solve}$, and that is the
-whole of its content. The weaker reading --- ``there exists a Boolean-valued
-function deciding satisfiability'' --- follows for a fixed finite template by
-exhaustive search and says nothing. Turning the two pseudocode displays into a
-function with a proved well-founded recursion, so that the theorem above has a
-subject, is work this document has not yet done; see \S\ref{sec:status}.
+\begin{hazard}[What Definition~\ref{def:solve-alg} still owes]\label{haz:t1-names-solve}
+Theorem~\ref{thm:t1} is about \emph{this} function, and that is the whole of
+its content: the weaker reading --- ``there exists a Boolean-valued function
+deciding satisfiability'' --- follows for a fixed finite template by exhaustive
+search and says nothing. Three things are needed before the definition is
+airtight, and none is deep.
+
+\begin{enumerate}\alphlabels\tightlist
+\item \textsc{ForceConsistency} and \textsc{ReduceDomain} are used as given
+  total functions. The first must be exhibited as a fixpoint iteration that
+  terminates because it only shrinks domains; the second is immediate.
+\item The search in $\mathsf S$ ranges over subsets $B$ and over the witnesses
+  making $B\subt{T}D'_{x}$. It is finite for the reason in
+  Caveat~\ref{haz:algorithm-obstacles}(b) --- $\TBA$ has a binary witness by
+  definition and $\TC$ a ternary one by Lemma~\ref{lem:central-ternary}, and
+  $\TD$ quantifies over congruences --- but the bound has to be stated for the
+  ``least such $(x,B)$'' to be well defined.
+\item Only $\TBA$, $\TC$ and $\TD$ are searched for, not $\TS$; that is
+  legitimate because $\subt{\TS}$ is witnessed by a subset carrying the other
+  two types, but the correctness proof must use
+  Theorem~\ref{thm:reductions-safe} in the form that covers exactly the types
+  searched.
+\end{enumerate}
+
+Theorem~\ref{thm:t1} itself is stated and not proved here; see
+\S\ref{sec:status}.
 \end{hazard}
 
 Given that, Theorem~\ref{thm:t1} mentions no machine, is provable from
@@ -5311,7 +5548,8 @@ works'': that one particular, highly non-obvious algorithm --- the one whose
 existence is the dichotomy --- is correct.
 
 \begin{theorem}[Target \textup{(T2)}; stated, not proved]\label{thm:t2}
-For each finite $\Gamma$ there are a program computing $\textsc{Solve}$ and a
+For each finite $\Gamma$ there are a program computing
+$\textsc{Solve}_{\mathrm{alg}}$ and a
 polynomial $p_{\Gamma}$ bounding its running time on instances of
 $\CSP(\Gamma)$ in the size of the instance.
 \end{theorem}
@@ -5319,12 +5557,13 @@ $\CSP(\Gamma)$ in the size of the instance.
 \begin{hazard}[\textup{(T2)} is not a wrapper]\label{haz:t2-scope}
 Theorem~\ref{thm:t2} is the only statement of the tractable half that needs a
 cost model, and it is not a corollary of Theorem~\ref{thm:t1}: it requires
-$\textsc{Solve}$ to be exhibited as a program with a proved step bound. Note
+$\textsc{Solve}_{\mathrm{alg}}$ to be exhibited as a program with a proved step
+bound. Note
 also that the statement is non-uniform. Because $\Gamma$ is fixed, the searches
 over subsets of $A$, over congruences on $A$, and over term operations of
 bounded arity are constant-time --- but ``constant'' means compiled away into a
-program whose \emph{size} depends on $|A|$. So $\textsc{Solve}$ is a family
-$\textsc{Solve}_{\Gamma}$ with a polynomial for each $\Gamma$, and a bound
+program whose \emph{size} depends on $|A|$. So $\textsc{Solve}_{\mathrm{alg}}$
+is a family with a polynomial for each $\Gamma$, and a bound
 uniform in $\Gamma$ would be a different statement, and a false one.
 \end{hazard}
 \clearpage
@@ -5346,15 +5585,23 @@ the tractable half, and it factors cleanly into algebra and complexity.
 \item[\textup{(2)}] \emph{Maróti--McKenzie.} A finite idempotent algebra has a
   Taylor term if and only if it has a weak near-unanimity term
   \cite{MarotiMcKenzie}.
-\item[\textup{(3)}] \emph{No Taylor term $\Rightarrow$ pp-interpretation.} If a
-  finite idempotent algebra has no Taylor term, then the variety it generates
-  contains a two-element algebra whose only operations are projections; and
-  from there $\Gamma$ primitively positively interprets every finite constraint
-  language, in particular a template for \textsc{Nae-$3$-Sat}. The word
-  ``and'' hides three steps --- an \textup{HSP} representation in a finite
-  power, its translation into a pp-interpretation, and the finite Inv--Pol
-  theorem (Theorem~\ref{thm:galois}) --- which are imported rather than proved
-  here.
+\item[\textup{(3)}] \emph{No Taylor term $\Rightarrow$ two disjoint
+  subalgebras.} If a finite idempotent $\mathbf A$ has no Taylor term then
+  there are nonempty $B,C\le\mathbf A$ with $B\cap C=\varnothing$ and
+  \[
+    N=(B\cup C)^{3}\setminus(B^{3}\cup C^{3})\;\le\;\mathbf A^{3}
+  \]
+  \cite[Cor.~1.5.11]{BradyNotes}. This replaces the usual formulation --- ``the
+  variety generated contains a two-element algebra whose only operations are
+  projections, and from there $\Gamma$ pp-interprets every finite language'' ---
+  whose ``and'' hides an \textup{HSP} representation in a finite power and its
+  translation into an interpretation. The cited corollary does that work and
+  lands on a concrete relation, from which Lemma~\ref{lem:nae-interp} builds
+  the interpretation in four lines.
+\item[\textup{(3$'$)}] \emph{Inv--Pol.} $N$ is a subuniverse of $\mathbf A^{3}$
+  and so is preserved by every polymorphism of $\Gamma$; Theorem~\ref{thm:galois}
+  turns that into pp-definability from $\Gamma$. This is the one substantial
+  import of the step, and only the hard direction of it is used.
 \item[\textup{(4)}] \emph{Bulatov--Jeavons--Krokhin.} A primitive positive
   interpretation of $\Delta$ in $\Gamma$ yields a polynomial-time many-one
   reduction $\CSP(\Delta)\le_{p}\CSP(\Gamma)$ \cite{BJK}.
@@ -5367,12 +5614,49 @@ complexity-theoretic wrapper; step (5) is pure complexity theory.
 
 \subsection{The layered targets}
 
+\begin{lemma}[The interpretation, explicitly]\label{lem:nae-interp}
+Let $\mathbf A$ be an algebra, $B,C\le\mathbf A$ nonempty and disjoint, and
+suppose $N=(B\cup C)^{3}\setminus(B^{3}\cup C^{3})$ is a subuniverse of
+$\mathbf A^{3}$. Then $\{N\}$ pp-interprets $\{\textsc{Nae}\}$ on $\{0,1\}$,
+with $d=1$.
+\end{lemma}
+
+\begin{proof}
+A triple lies in $N$ exactly when its entries lie in $B\cup C$ and are not all
+on the same side of the partition; in particular, for a repeated entry,
+\begin{equation}\label{eq:nae-opposite}
+  (x,z,z)\in N\iff x,z\in B\cup C\ \text{and $x,z$ lie on opposite sides.}
+\end{equation}
+Take $F=\proj_{1}(N)$, which is pp-definable from $N$ and equals $B\cup C$:
+each $b\in B$ is the first entry of $(b,c,c)\in N$ for any $c\in C$, and
+symmetrically. Let $\pi\colon F\to\{0,1\}$ send $B$ to $0$ and $C$ to $1$; it is
+surjective because $B$ and $C$ are nonempty. The $\pi$-preimage of
+$\textsc{Nae}$ is $N$ itself, by the description above. The $\pi$-preimage of
+equality on $\{0,1\}$ is $B^{2}\cup C^{2}$, and by \eqref{eq:nae-opposite}
+\[
+  B^{2}\cup C^{2}=\{(x,y):\exists z\;N(x,z,z)\wedge N(y,z,z)\} :
+\]
+a $z$ opposite to both $x$ and $y$ exists exactly when $x$ and $y$ are on the
+same side, since there are only two sides and both are nonempty.
+\end{proof}
+
 \begin{theorem}[Target \textup{(H0)}]\label{thm:h0}
 Let $\mathbf A$ be a finite idempotent algebra with no weak near-unanimity term
 operation. Then $\Inv(\mathbf A)$ primitively positively interprets the
 constraint language $\{\textsc{Nae}\}$ on $\{0,1\}$, where
 $\textsc{Nae}=\{0,1\}^{3}\setminus\{(0,0,0),(1,1,1)\}$.
 \end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:special-wnu}'s source \cite{MarotiMcKenzie}, a finite
+idempotent algebra has a Taylor term if and only if it has a weak
+near-unanimity term; so $\mathbf A$ has no Taylor term. Step \textup{(3)}
+supplies nonempty disjoint $B,C\le\mathbf A$ with
+$N=(B\cup C)^{3}\setminus(B^{3}\cup C^{3})\le\mathbf A^{3}$, so
+$N\in\Inv(\mathbf A)$, and Lemma~\ref{lem:nae-interp} builds the
+interpretation. Every relation it uses is pp-definable from $N$ and hence lies
+in $\Inv(\mathbf A)$.
+\end{proof}
 
 \begin{theorem}[Target \textup{(H1)}; stated, not proved]\label{thm:h1}
 If $\Gamma$ primitively positively interprets $\Delta$ then
@@ -5382,12 +5666,27 @@ $\CSP(\Gamma)$ is \textup{NP}-hard.
 
 \begin{hazard}[Hardness is not completeness]\label{haz:np-membership}
 Theorem~\ref{thm:h1} concludes \textup{NP}-\emph{hardness}. The word
-\emph{complete} in Theorem~\ref{thm:dichotomy} additionally needs that every
-fixed finite-template CSP lies in \textup{NP}: a solution is a certificate of
-size linear in the number of variables, and checking it means evaluating each
-constraint, which for fixed $\Gamma$ is a table lookup. Small, but it needs the
-cost model, so it belongs with \textup{(H1)}.
+\emph{complete} in Theorem~\ref{thm:dichotomy-core} additionally needs
+membership, which is Theorem~\ref{thm:np-membership}. Small, but it needs the
+cost model, so it belongs with \textup{(H1)} and not with \textup{(H0)}.
 \end{hazard}
+
+\begin{theorem}[\textup{NP} membership; stated, not proved]\label{thm:np-membership}
+For each finite $\Gamma$, $\CSP(\Gamma)\in\textup{NP}$.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+A solution is a certificate: an assignment of a value of $A$ to each variable,
+of size $O(v\log|A|)$ for an instance with $v$ variables, hence linear in the
+instance. Verifying it evaluates each constraint once, and for fixed $\Gamma$
+that is a table lookup of constant cost. Writing this out needs the encoding
+and the machine, which is why it is stated with \textup{(H1)} rather than
+proved here.
+\end{proof}
+
+With Theorems~\ref{thm:h1} and \ref{thm:np-membership} together, the hard half
+of Theorem~\ref{thm:dichotomy-core} reads \textup{NP}-\emph{complete} as
+claimed.
 
 Theorem~\ref{thm:h0} mentions no machine. Theorem~\ref{thm:h1} is where the
 complexity layer enters, and it is small --- the reduction is a syntactic
@@ -5468,8 +5767,8 @@ both are written so that a reader can check them in a few lines by hand.
 
 One structural property \emph{is} checked mechanically: the proof-dependency
 graph of this document --- an edge from each statement to every statement its
-proof cites --- is acyclic, over $101$ statements, $60$ of which carry proofs,
-and $151$ edges. That is a check on the arrangement, not on the mathematics,
+proof cites --- is acyclic, over $108$ statements, $67$ of which carry proofs,
+and $158$ edges. That is a check on the arrangement, not on the mathematics,
 and it has caught three real cycles: Caveats~\ref{haz:reverse-hom-split} and
 \ref{haz:central-critical-split}, and a third that a first draft of
 \pkey{lem:self-intersection-pc} introduced by borrowing four steps from the
@@ -5530,6 +5829,9 @@ that cites it, and the steps are now written out.
   Caveat~\ref{haz:ba-center-implies} \\
 \pkey{lem:special-wnu} & \textsc{imported} & \cite[Lem.~4.7]{MarotiMcKenzie} \\
 \pkey{lem:building-perfect} & \textsc{imported} & \cite[Cor.~8.17.1]{ZhukJACM} \\
+\pkey{lem:common-binary-witness} & \textsc{proved} & the missing hypothesis of
+  \pkey{lem:ba-center-implies} is exactly productivity of binary absorption;
+  Caveat~\ref{haz:witness-moved} \\
 \pkey{lem:reverse-hom}, \pkey{lem:bacon-left},
   \pkey{lem:no-central-critical}, \pkey{cor:no-central-critical},
   \pkey{lem:bridge-abelian}, \pkey{lem:ba-center-intersect},
@@ -5588,12 +5890,29 @@ that cites it, and the steps are now written out.
   Caveat~\ref{haz:bridge-from-instance} \\
 \hline
 \multicolumn{3}{@{}l}{\textit{\S\ref{sec:algorithm}--\S\ref{sec:hardness}: the algorithm and the hard half}}\\
-\pkey{thm:t1} & \textsc{stated} & needs $\textsc{Solve}$ defined as a function;
-  Caveat~\ref{haz:t1-names-solve} \\
+\pkey{def:solve-alg}, \pkey{lem:solve-\brk terminates} & \textsc{proved} &
+  $\textsc{Solve}_{\mathrm{alg}}$ is now a function, by well-founded recursion
+  on the measure of \pkey{def:solve-measure}; the three residual obligations
+  are Caveat~\ref{haz:t1-names-solve} \\
+\pkey{thm:t1} & \textsc{stated} & now has a subject; correctness itself is not
+  proved here \\
 \pkey{thm:t2}, \pkey{thm:h1} & \textsc{stated} & need a cost model \\
-\pkey{thm:h0} & \textsc{stated} & \\
+\pkey{thm:np-membership} & \textsc{stated} & needs the encoding and the
+  machine; with \pkey{thm:h1} it supplies the word \emph{complete} \\
+\pkey{lem:nae-interp} & \textsc{proved} & the interpretation written out from
+  the two disjoint subalgebras \\
+\pkey{thm:h0} & \textsc{proved} & from \cite[Cor.~1.5.11]{BradyNotes} and
+  \pkey{lem:nae-interp} \\
 \pkey{thm:galois} & \textsc{imported} & Geiger; Bodnarchuk et al. \\
-\pkey{thm:dichotomy} & \textsc{stated} & and needs the core reduction,
+\hline
+\multicolumn{3}{@{}l}{\textit{\S\ref{sec:target}: the statement}}\\
+\pkey{thm:dichotomy-core} & \textsc{stated} & the theorem this document is
+  about; what it needs is everything above \\
+\pkey{thm:core-reduction} & \textsc{imported} &
+  \cite[Prop.~1.4.3, Thm.~1.4.7, Prop.~1.4.10, 1.4.11]{BradyNotes} \\
+\pkey{lem:wnu-descends} & \textsc{proved} & \\
+\pkey{thm:dichotomy} & \textsc{proved} & from \pkey{thm:dichotomy-core},
+  \pkey{thm:core-\brk reduction} and \pkey{lem:wnu-descends};
   Caveat~\ref{haz:core} \\
 \hline
 \end{longtable}
@@ -5603,10 +5922,16 @@ that cites it, and the steps are now written out.
 
 The algebraic core of the strong-subuniverse theory
 (\S\ref{sec:properties}--\S\ref{sec:strongproofs}) is the part in the best
-shape: of its sixty statements, thirty-nine are proved here --- one of them,
+shape: of its sixty-one statements, forty are proved here --- one of them,
 \pkey{lem:maximal-mult}, only under Hypothesis~\ref{hyp:maximal-mult} ---
 twelve are imported with exact citations, five are outlined, and four are
-stated only.
+stated only. The two ends of the document, \S\ref{sec:target} and
+\S\S\ref{sec:algorithm}--\ref{sec:hardness}, are now stated rather than
+gestured at: the theorem is stated for a rigid core and derived for an
+arbitrary $\Gamma$, $\textsc{Solve}_{\mathrm{alg}}$ is a function,
+\pkey{thm:h0} is proved, and \emph{complete} has a membership statement behind
+it. What is left there is the two complexity wrappers and the correctness of
+the algorithm itself.
 \S\ref{sec:main-statements} is in much worse shape: its spine ---
 \pkey{lem:bridge-from-instance}, and with it most of
 Lemma~\ref{lem:connected} --- is stated without proof, and part (1) of the main
@@ -5627,9 +5952,11 @@ Five items block the rest, and they are the honest reading of the table.
   \pkey{lem:self-\brk intersection-pc} both written out, this is what is left
   of the intersection-and-factorisation layer.
 \item The linear algebra of \pkey{thm:codim-one}
-  (Caveat~\ref{haz:step2-linear-algebra}), and the common binary absorption
-  witness at the call site of \pkey{lem:ba-center-implies}
-  (Caveat~\ref{haz:ba-center-implies}).
+  (Caveat~\ref{haz:step2-linear-algebra}); and, for the common binary
+  absorption witness, the check that every producer of a type-$\TBA$ reduction
+  produces a \emph{uniform} one, now that \pkey{thm:main-inductive}(2)
+  hypothesises it (Caveats~\ref{haz:uniform-witness} and
+  \ref{haz:witness-moved}).
 \item The induction measure across expanded coverings
   (Caveat~\ref{haz:the-induction}(c)) and the termination of weakening
   (Caveat~\ref{haz:weakening}).

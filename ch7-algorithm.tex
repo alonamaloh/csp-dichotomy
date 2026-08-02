@@ -104,24 +104,109 @@ strictly decreases, so the loop terminates.
 \end{enumerate}
 \end{hazard}
 
-\begin{theorem}[Target \textup{(T1)}]\label{thm:t1}
-Let $\textsc{Solve}$ be the function defined by the two displays above,
-recursing on the lexicographic measure of
-Caveat~\ref{haz:algorithm-obstacles}(a). Then for every instance
-$\mathcal I$ of $\CSP(\Gamma)$,
+\subsection{\textsc{Solve} as a function}
+
+The pseudocode is not a function: it makes unconstrained choices, and its
+recursion is not structural. Both are fixed here, so that
+Theorem~\ref{thm:t1} has a subject.
+
+\begin{definition}[The call set and its measure]\label{def:solve-measure}
+A \emph{call} is either $\mathsf S(\mathcal I)$, for $\mathcal I$ an instance
+of $\CSP(\Gamma)$ with domains $D_{x}$, or $\mathsf L(\mathcal I,\phi)$, where
+in addition $\phi$ is an injective linear map
+$\mathbb Z_{p_{1}}\times\dots\times\mathbb Z_{p_{k}}\to\prod_{x}
+D_{x}/\sigma_{x}$ with the $\sigma_{x}$ the minimal congruences of
+\S\ref{sec:algorithm}. Put $N(\mathcal I)=\sum_{x}|D_{x}|$ and
 \[
-  \textsc{Solve}(\mathcal I)=\texttt{true}
+  \mu\bigl(\mathsf S(\mathcal I)\bigr)=
+    \bigl(N(\mathcal I),\,N(\mathcal I)+1\bigr),
+  \qquad
+  \mu\bigl(\mathsf L(\mathcal I,\phi)\bigr)=
+    \bigl(N(\mathcal I),\,\dim\phi\bigr),
+\]
+ordered lexicographically on $\mathbb N^{2}$. Since $\dim\phi\le N(\mathcal I)$
+always, a call $\mathsf S(\mathcal I)$ is strictly above every
+$\mathsf L(\mathcal I,\phi)$ with the same instance.
+\end{definition}
+
+\begin{definition}[$\textsc{Solve}_{\mathrm{alg}}$]\label{def:solve-alg}
+Fix once and for all a linear order on the finite set of pairs $(x,B)$ with
+$B\subseteq D_{x}$, and one on the finite set of candidate maps $\phi$; ``the
+least'' below means least in these orders, which is what turns each choice in
+the pseudocode into a value. Define $\textsc{Solve}_{\mathrm{alg}}$ on calls by
+well-founded recursion on $\mu$:
+
+\begin{description}\tightlist
+\item[$\mathsf S(\mathcal I)$.] Put $\mathcal I'=
+  \textsc{ForceConsistency}(\mathcal I)$. If some domain of $\mathcal I'$ is
+  empty, return \texttt{false}. If some $D'_{x}$ has a proper nonempty subset
+  $B$ with $B\subt{T}D'_{x}$ for some $T\in\{\TBA,\TC,\TD\}$, take the least
+  such $(x,B)$ and return
+  $\textsc{Solve}_{\mathrm{alg}}\bigl(\mathsf S(\textsc{ReduceDomain}(\mathcal
+  I',x,B))\bigr)$. Otherwise return $\textsc{Solve}_{\mathrm{alg}}
+  \bigl(\mathsf L(\mathcal I',\phi_{0})\bigr)$ for the least admissible
+  $\phi_{0}$.
+\item[$\mathsf L(\mathcal I,\phi)$.] Run the body of \textsc{SolveLinear},
+  reading each test $\bar a\in\phi^{-1}(\mathcal I)$ of \textup{(p0)} as the
+  value of $\textsc{Solve}_{\mathrm{alg}}$ at $\mathsf S$ of the instance
+  $\mathcal I$ with each domain cut to the block $\phi(\bar a)_{x}$, and each
+  iteration of the loop as the value at $\mathsf L(\mathcal I,\phi\circ\psi)$.
+\end{description}
+\end{definition}
+
+\begin{lemma}[The recursion is well founded]\label{lem:solve-terminates}
+Every recursive call made by Definition~\ref{def:solve-alg} is at a strictly
+smaller $\mu$, so $\textsc{Solve}_{\mathrm{alg}}$ is a total function into
+$\{\texttt{true},\texttt{false}\}$.
+\end{lemma}
+
+\begin{proof}
+Four kinds of call. \textsc{ForceConsistency} only shrinks domains, so it does
+not increase $N$; the reduction step replaces some $D'_{x}$ by a proper subset,
+strictly decreasing $N$. The call from $\mathsf S(\mathcal I')$ to
+$\mathsf L(\mathcal I',\phi_{0})$ leaves $N$ fixed and drops the second
+component, by the inequality in Definition~\ref{def:solve-measure}. The
+\textup{(p0)} calls cut every domain to a block of $\sigma_{x}$; each
+$\sigma_{x}$ is proper at some variable, since $\mathsf L$ is reached only when
+some domain has size at least $2$, so $N$ strictly decreases. The loop calls
+leave $N$ fixed and strictly decrease $\dim\phi$, as
+\S\ref{sec:algorithm} records.
+\end{proof}
+
+\begin{theorem}[Target \textup{(T1)}]\label{thm:t1}
+For every instance $\mathcal I$ of $\CSP(\Gamma)$,
+\[
+  \textsc{Solve}_{\mathrm{alg}}\bigl(\mathsf S(\mathcal I)\bigr)=\texttt{true}
   \iff \mathcal I\ \text{has a solution}.
 \]
 \end{theorem}
 
-\begin{hazard}[The statement must name the function]\label{haz:t1-names-solve}
-Theorem~\ref{thm:t1} is about \emph{this} $\textsc{Solve}$, and that is the
-whole of its content. The weaker reading --- ``there exists a Boolean-valued
-function deciding satisfiability'' --- follows for a fixed finite template by
-exhaustive search and says nothing. Turning the two pseudocode displays into a
-function with a proved well-founded recursion, so that the theorem above has a
-subject, is work this document has not yet done; see \S\ref{sec:status}.
+\begin{hazard}[What Definition~\ref{def:solve-alg} still owes]\label{haz:t1-names-solve}
+Theorem~\ref{thm:t1} is about \emph{this} function, and that is the whole of
+its content: the weaker reading --- ``there exists a Boolean-valued function
+deciding satisfiability'' --- follows for a fixed finite template by exhaustive
+search and says nothing. Three things are needed before the definition is
+airtight, and none is deep.
+
+\begin{enumerate}\alphlabels\tightlist
+\item \textsc{ForceConsistency} and \textsc{ReduceDomain} are used as given
+  total functions. The first must be exhibited as a fixpoint iteration that
+  terminates because it only shrinks domains; the second is immediate.
+\item The search in $\mathsf S$ ranges over subsets $B$ and over the witnesses
+  making $B\subt{T}D'_{x}$. It is finite for the reason in
+  Caveat~\ref{haz:algorithm-obstacles}(b) --- $\TBA$ has a binary witness by
+  definition and $\TC$ a ternary one by Lemma~\ref{lem:central-ternary}, and
+  $\TD$ quantifies over congruences --- but the bound has to be stated for the
+  ``least such $(x,B)$'' to be well defined.
+\item Only $\TBA$, $\TC$ and $\TD$ are searched for, not $\TS$; that is
+  legitimate because $\subt{\TS}$ is witnessed by a subset carrying the other
+  two types, but the correctness proof must use
+  Theorem~\ref{thm:reductions-safe} in the form that covers exactly the types
+  searched.
+\end{enumerate}
+
+Theorem~\ref{thm:t1} itself is stated and not proved here; see
+\S\ref{sec:status}.
 \end{hazard}
 
 Given that, Theorem~\ref{thm:t1} mentions no machine, is provable from
@@ -130,7 +215,8 @@ works'': that one particular, highly non-obvious algorithm --- the one whose
 existence is the dichotomy --- is correct.
 
 \begin{theorem}[Target \textup{(T2)}; stated, not proved]\label{thm:t2}
-For each finite $\Gamma$ there are a program computing $\textsc{Solve}$ and a
+For each finite $\Gamma$ there are a program computing
+$\textsc{Solve}_{\mathrm{alg}}$ and a
 polynomial $p_{\Gamma}$ bounding its running time on instances of
 $\CSP(\Gamma)$ in the size of the instance.
 \end{theorem}
@@ -138,11 +224,12 @@ $\CSP(\Gamma)$ in the size of the instance.
 \begin{hazard}[\textup{(T2)} is not a wrapper]\label{haz:t2-scope}
 Theorem~\ref{thm:t2} is the only statement of the tractable half that needs a
 cost model, and it is not a corollary of Theorem~\ref{thm:t1}: it requires
-$\textsc{Solve}$ to be exhibited as a program with a proved step bound. Note
+$\textsc{Solve}_{\mathrm{alg}}$ to be exhibited as a program with a proved step
+bound. Note
 also that the statement is non-uniform. Because $\Gamma$ is fixed, the searches
 over subsets of $A$, over congruences on $A$, and over term operations of
 bounded arity are constant-time --- but ``constant'' means compiled away into a
-program whose \emph{size} depends on $|A|$. So $\textsc{Solve}$ is a family
-$\textsc{Solve}_{\Gamma}$ with a polynomial for each $\Gamma$, and a bound
+program whose \emph{size} depends on $|A|$. So $\textsc{Solve}_{\mathrm{alg}}$
+is a family with a polynomial for each $\Gamma$, and a bound
 uniform in $\Gamma$ would be a different statement, and a false one.
 \end{hazard}
