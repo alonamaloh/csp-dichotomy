@@ -230,22 +230,24 @@ Condition 3 is a minimality condition, and its statement is where the work is.
 Read as ``if we replace any instance in $\Omega$ by \emph{all} weaker instances
 then 2 is not satisfied'' it inherits the defect of
 Caveat~\ref{haz:weakening}: the replacement need not make progress, and the
-iteration that is supposed to produce $\Omega$ has no measure. Read with single
-weakening steps, as in Proposition~\ref{constr:omega}, both problems go away at
-once --- and the derivation of condition 4 becomes exact rather than
-approximate, because what condition 3 then hands over
-(``$\mathcal J^{(B,\bot)}$ has no solution, every single weakening of it has
-one'') is verbatim Definition~\ref{def:crucial}.
+iteration that is supposed to produce $\Omega$ has no measure. Read as in Proposition~\ref{constr:omega} --- one member replaced by the
+finitely many $\mathcal J[C\Uparrow]$, and termination measured on the
+constraints rather than on the solution set --- both problems go away at once,
+and the derivation of condition 4 becomes exact rather than approximate,
+because what condition 3 then hands over is verbatim
+Definition~\ref{def:crucial}.
 
 Two things about the construction are worth keeping in view.
 
 \begin{enumerate}\alphlabels\tightlist
-\item \emph{The iteration is on a set of instances, so the measure is too.}
-  Lemma~\ref{lem:weakening-terminates} orders instances; the construction
-  removes one member and inserts several smaller ones, which is a step in the
-  multiset extension of that order. The proof above avoids naming the multiset
-  order by counting values in $\mathbb N^{V}$ over the finite value set $V$,
-  which is the same argument in a form whose well-foundedness is visible.
+\item \emph{The counting argument is used twice, one level apart.}
+  Lemma~\ref{lem:weakening-terminates} orders \emph{instances} by counting
+  their constraints by $\nu$-value; Proposition~\ref{constr:omega} orders
+  \emph{sets of instances} by counting their members. Both are the multiset
+  extension of a well-founded order, written as a lexicographic order on a
+  product of copies of $\mathbb N$ indexed by a finite set, which is the same
+  argument in a form whose well-foundedness is visible without citing
+  Dershowitz--Manna.
 \item \emph{Condition 4's witness depends on $\mathcal J$.} The $B$ produced
   varies with the member, so condition 4 is a $\Pi\Sigma$ statement: ``for
   every $\mathcal J$ there is $B$'' may not be strengthened to a single $B$
@@ -273,7 +275,7 @@ solution}\}$. Then there is a finite set $\Omega$ of instances with:
 \item $\bigcap_{\mathcal J\in\Omega}\Sol(\mathcal J)=\varnothing$;
 \item for every $\mathcal J\in\Omega$, the set
   $\bigl(\Omega\setminus\{\mathcal J\}\bigr)\cup
-   \{\mathcal J[C\mapsto C']:C\in\mathcal J,\ C'\text{ weaker than }C\}$
+   \{\mathcal J[C\Uparrow]:C\in\mathcal J\}$
   does \emph{not} satisfy 2;
 \item for every $\mathcal J\in\Omega$ there is $B\in\mathcal B_{0}$ with
   (a) $\mathcal J$ crucial in $D^{(B,\bot)}$ and (b) $B\in\Sol(\mathcal J')$
@@ -294,19 +296,23 @@ displayed set still satisfies 2 --- replace $\Omega$ by that set. Condition 1
 survives, since a single weakening step applied to a weakening of $\mathcal I$
 is again one; condition 2 survives by the choice of the step.
 
-\emph{Termination.} Let $\mu$ be the measure of
-Lemma~\ref{lem:weakening-terminates}, so every single weakening step strictly
-decreases it, and let $V$ be the finite set of values $\mu$ takes on
-weakenings of $\mathcal I$, totally ordered by the lexicographic order it
-inherits. For a finite set $\Omega$ of such instances let
-$c(\Omega)\in\mathbb N^{V}$ count how many members have each value. One
-replacement removes a member of value $v$ and inserts members of values
-strictly below $v$: the coordinate at $v$ drops by one, the coordinates above
-$v$ are untouched, and only coordinates below $v$ grow. Ordering
-$\mathbb N^{V}$ lexicographically from the largest element of $V$ downwards ---
-a lexicographic order on a \emph{finite} product of copies of $\mathbb N$,
-hence well founded --- every replacement strictly decreases $c(\Omega)$. So the
-loop halts, at an $\Omega$ satisfying 1--3.
+\emph{Termination.} Each $\mathcal J[C\Uparrow]$ is one weakening step from
+$\mathcal J$, so by Lemma~\ref{lem:weakening-terminates}(c) it is strictly
+below $\mathcal J$ in the order that lemma provides on the set $W$ of
+weakenings of $\mathcal I$; and $W$ is finite by
+Lemma~\ref{lem:weakening-terminates}(b). Fix a linear order on $W$ extending
+it, and for a finite $\Omega\subseteq W$ let $c(\Omega)\in\mathbb N^{W}$ count
+how many members $\Omega$ has at each element. One replacement removes a member
+and inserts members strictly below it, so the coordinate there drops by one,
+the coordinates above are untouched, and only coordinates below grow. Ordering
+$\mathbb N^{W}$ lexicographically from the largest element of $W$ downwards ---
+again a lexicographic order on a finite product of copies of $\mathbb N$ ---
+every replacement strictly decreases $c(\Omega)$, so the loop halts at an
+$\Omega$ satisfying 1--3.
+
+This is the same counting argument twice over: once inside
+Lemma~\ref{lem:weakening-terminates} to order instances by their constraints,
+and once here to order sets of instances by their members.
 
 \emph{Condition 4.} Fix $\mathcal J\in\Omega$. By condition 3 the displayed set
 fails 2, so some $B\in\mathcal B_{0}$ lies in all of its members' $\Sol$. Then
@@ -314,16 +320,17 @@ $B\in\Sol(\mathcal J')$ for every $\mathcal J'\in\Omega\setminus
 \{\mathcal J\}$, which is 4(b); and $B\notin\Sol(\mathcal J)$, since otherwise
 $B$ would lie in $\bigcap_{\mathcal K\in\Omega}\Sol(\mathcal K)$, empty by
 condition 2. So $\mathcal J^{(B,\bot)}$ has no solution while
-$\mathcal J[C\mapsto C']^{(B,\bot)}$ has one for every constraint $C$ of
-$\mathcal J$ and every $C'$ weaker than $C$.
+$\mathcal J[C\Uparrow]^{(B,\bot)}$ has one for every constraint $C$ of
+$\mathcal J$ --- which is Definition~\ref{def:crucial}, once no constraint of
+$\mathcal J$ has a dummy variable.
 
-That is Definition~\ref{def:crucial} once no constraint of $\mathcal J$ has a
-dummy variable, and none does: if $C$ had one, its projection $C'$ off that
-variable would be weaker than $C$ with the same violation set, so
-$\mathcal J[C\mapsto C']$ and $\mathcal J$ would have the same solutions, and
-$B\in\Sol(\mathcal J[C\mapsto C'])$ would give $B\in\Sol(\mathcal J)$. Finally
-$\mathcal J$ has at least one constraint, since a single weakening step
-replaces a constraint rather than deleting one and $\mathcal I$ is crucial.
+None does. If $C$ had one, its projection $C'$ off that variable is weaker than
+$C$ with the same violation set, and $C'$ is among the constraints of
+$\mathcal J[C\Uparrow]$; so every solution of $\mathcal J[C\Uparrow]$ satisfies
+$C'$ and hence $C$, giving $\Sol(\mathcal J[C\Uparrow])=\Sol(\mathcal J)$ and
+so $B\in\Sol(\mathcal J)$. Finally $\mathcal J$ has at least one constraint,
+since a weakening step replaces a constraint by a nonempty family rather than
+deleting one, and $\mathcal I$ is crucial.
 \end{proof}
 
 \subsection{The three consumed theorems}\label{sec:codim-one}
@@ -372,15 +379,15 @@ Suppose
 \item $\mathcal I$ is a linked cycle-consistent irreducible instance with
   $\Var(\mathcal I)=\{x_{1},\dots,x_{m}\}$;
 \item $\mathbf D_{x_{i}}$ is $\TS$-free for every $i$;
-\item replacing every constraint of $\mathcal I$ by any one constraint weaker
-  than it gives an instance with subdirect solution set;
+\item $\mathcal I[C\Uparrow]$ has subdirect solution set for every constraint
+  $C$ of $\mathcal I$;
 \item $\sigma_{x_{i}}$ is the intersection of all linear congruences $\sigma$
   on $\mathbf D_{x_{i}}$ with $\cover{\sigma}=D_{x_{i}}^{2}$;
 \item $L_{x_{i}}=\mathbf D_{x_{i}}/\sigma_{x_{i}}$;
 \item $\phi\colon\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}\to
   L_{x_{1}}\times\dots\times L_{x_{m}}$ is a homomorphism, $q_{i}$ prime;
-\item $\mathcal I[C\mapsto C']$ has a solution in $\phi(\bar a)$ for every
-  constraint $C$ of $\mathcal I$, every $C'$ weaker than $C$, and every
+\item $\mathcal I[C\Uparrow]$ has a solution in $\phi(\bar a)$ for every
+  constraint $C$ of $\mathcal I$ and every
   $\bar a\in\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}$ --- that is,
   $\mathcal I$ is crucial in every $\phi(\bar a)$
   (Definition~\ref{def:crucial}).
@@ -505,14 +512,77 @@ $\mathcal I^{(2)}$ is $1$-consistent.
 \end{lemma}
 
 \begin{lemma}\label{lem:crucial-irreducible}
-A constraint crucial in a reduction of a cycle-consistent irreducible instance
-is rectangular, and its $\ConOne$'s are irreducible congruences.
+Let $R(x_{1},\dots,x_{n})$ be a \emph{rectangular} constraint of a
+$1$-consistent instance $\mathcal I$, crucial in a reduction $D^{(\top)}$. Then
+$\ConOne(R,i)$ is an irreducible congruence for every $i\in[n]$.
 \end{lemma}
 
-\begin{lemma}\label{lem:bridge-from-relation}
-A relation whose restriction along strong subsets becomes empty yields a bridge
-between the witnessing congruences.
+\begin{proof}
+Take $i=1$; the other coordinates are the same. Suppose
+$\ConOne(R,1)=\omega_{1}\cap\omega_{2}$ with
+$\ConOne(R,1)\lneq\omega_{j}\le\mathbf D_{x_{1}}^{2}$ for $j=1,2$, and put
+\[
+  R_{j}(x_{1},\dots,x_{n})=\exists y\;
+    \bigl(R(y,x_{2},\dots,x_{n})\wedge\omega_{j}(y,x_{1})\bigr).
+\]
+Each $R_{j}$ is a constraint on the same scope with
+$R_{j}\supseteq R$, and the containment is proper because
+$\omega_{j}\supsetneq\ConOne(R,1)$; so each $R_{j}$ is weaker than $R$ and is
+among the constraints of $\mathcal I[R\Uparrow]$. And
+$R_{1}\cap R_{2}=R$: a tuple in both has, for each $j$, a witness $y_{j}$ with
+$R(y_{j},x_{2},\dots,x_{n})$ and $(y_{j},x_{1})\in\omega_{j}$, and rectangularity
+of the first variable makes any two such witnesses $\ConOne(R,1)$-related to
+each other, so $(y_{1},x_{1})\in\omega_{1}\cap\omega_{2}=\ConOne(R,1)$ and
+$x_{1}$ may replace $y_{1}$.
+
+Hence every solution of $\mathcal I[R\Uparrow]^{(\top)}$ satisfies both $R_{1}$
+and $R_{2}$, so it satisfies $R$ and solves $\mathcal I^{(\top)}$ --- which has
+no solution. That contradicts cruciality.
+\end{proof}
+
+\begin{hazard}[Rectangularity is a hypothesis here, not a
+  conclusion]\label{haz:crucial-irreducible}
+An earlier draft of this lemma read ``a constraint crucial in a reduction of a
+cycle-consistent irreducible instance is rectangular, and its $\ConOne$'s are
+irreducible''. That runs two statements together and gets the second one's
+logic backwards: rectangularity is what the argument \emph{uses}, to know that
+two witnesses for the same tuple are $\ConOne(R,1)$-related. Rectangularity of
+crucial constraints is a separate fact, and it comes from the parallelogram
+property (Lemma~\ref{lem:parallelogram-crucial}), not from cruciality alone.
+
+The proof is also the reason Definition~\ref{def:crucial} quantifies over
+$\mathcal I[R\Uparrow]$ rather than over single weaker constraints: what it
+contradicts is that $R_{1}$ and $R_{2}$ can be imposed \emph{together}, and
+each of them alone is a weakening that does gain a solution.
+\end{hazard}
+
+\begin{lemma}[A bridge from a relation]\label{lem:bridge-from-relation}
+Let $R\sdle\mathbf A_{1}\times\dots\times\mathbf A_{n}$ have its first and last
+variables rectangular, and suppose there are
+$(b_{1},a_{2},\dots,a_{n})\in R$ and $(a_{1},\dots,a_{n-1},b_{n})\in R$ with
+$(a_{1},a_{2},\dots,a_{n})\notin R$. Then
+\[
+  \delta(x_{1},x_{2},y_{1},y_{2})=\exists z_{2}\dots\exists z_{n-1}\;
+    R(x_{1},z_{2},\dots,z_{n-1},y_{1})\wedge
+    R(x_{2},z_{2},\dots,z_{n-1},y_{2})
+\]
+is a bridge from $\ConOne(R,1)$ to $\ConOne(R,n)$ with
+$\bcol\delta=\proj_{1,n}(R)$.
 \end{lemma}
+
+\begin{proof}
+Clauses (a) and (b) of Definition~\ref{def:bridge} are immediate from the
+definition of $\ConOne$. For clause (d), rectangularity of the first and last
+variables says exactly that $(x_{1},x_{2})\in\ConOne(R,1)$ if and only if
+$(y_{1},y_{2})\in\ConOne(R,n)$ for tuples sharing the middle block
+$z_{2},\dots,z_{n-1}$. Clause (c) is witnessed by
+$(b_{1},a_{1},a_{n},b_{n})\in\delta$ --- take
+$z_{i}=a_{i}$, so that the two conjuncts are the two tuples of the hypothesis
+--- together with $(b_{1},a_{1})\notin\ConOne(R,1)$, which is what
+$(a_{1},\dots,a_{n})\notin R$ says. Finally $\bcol\delta$ is $\proj_{1,n}(R)$,
+since $(x,x,y,y)\in\delta$ asks for a single tuple of $R$ with first entry $x$
+and last entry $y$.
+\end{proof}
 
 \begin{lemma}[Connected instances]\label{lem:connected}
 Let $\mathcal I$ be a cycle-consistent connected instance. Then
@@ -552,9 +622,13 @@ $D^{(1)}_{y}$ is $\TS$-free then $D^{(2)}\subte{\TMPC}D^{(1)}$.
 \end{lemma}
 
 \begin{lemma}\label{lem:parallelogram-crucial}
-A constraint that becomes empty under a minimal multi-type reduction, in an
-instance crucial there, has the parallelogram property; and in the linear case
-its first induced congruence $\sigma$ satisfies $\cover\sigma=D^{2}$.
+Suppose $D^{(1)}$ is a $1$-consistent reduction for the one-constraint instance
+$R(x_{1},\dots,x_{n})$, that $T\in\{\TL,\TPC,\TD\}$, that
+$D^{(2)}\subte[D]{\MT T}D^{(1)}\lll D$, and that $R$ is crucial in $D^{(2)}$.
+Then $R$ has the parallelogram property, and for every $i\in[n]$ the congruence
+$\ConOne(R,i)$ is of type $T$ with
+$\cover{\ConOne(R,i)}\supseteq(D^{(1)}_{x_{i}})^{2}$. If moreover $T=\TPC$ then
+$n=2$.
 \end{lemma}
 
 \begin{longlemma}[Bridges from a subdirect PC/linear instance]\label{lem:bridge-from-instance}
@@ -568,8 +642,7 @@ Suppose
 \item if $T=\TPC$ then $\mathcal T\in\{\TPC,\TL\}$;
 \item $\mathcal I^{(1)}$ has a solution;
 \item $\mathcal I^{(1)}$ has no solution with $z\in B$;
-\item $\mathcal I[C\mapsto C']$ has a solution in $D^{(1)}$ with $z\in B$, for
-  every constraint $C'$ weaker than $C$.
+\item $\mathcal I[C\Uparrow]$ has a solution in $D^{(1)}$ with $z\in B$.
 \end{enumerate}
 Then $\mathcal T=T$, and for every variable $x$ of $C$ there is a bridge
 $\delta$ from $\xi$ to $\ConOne(C,x)$ with

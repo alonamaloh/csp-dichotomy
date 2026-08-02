@@ -12,6 +12,36 @@ Line numbers are into `main.tex` / `StrongSubalgebras.tex` of the v2 arXiv sourc
 
 ---
 
+## Cruciality: my single-step repair was too weak — corrected
+
+**2026-08-02, correcting a change made earlier the same day.** Phase 7 part 2 replaced the
+source's "replace `C` by *all* constraints weaker than it" by a single-step quantifier, to fix
+the termination of `rem:get-crucial`. Termination was fixed; the notion was broken.
+
+`LEMCrucialMeansIrreducible` (`main:2298`) contradicts cruciality by exhibiting **two** weaker
+constraints `R₁, R₂` with `R₁ ∩ R₂ = R`. Replacing `R` by either one alone *does* gain a
+solution, so single-step cruciality is not contradicted; it is imposing both at once that
+does not. So the consumer needs the family/all-at-once reading.
+
+**The resolution is that the family reading does not cost termination**, which is what the
+external review's §8 third bullet (and my repair) assumed it did. The review is right that the
+conjunction of all constraints weaker than `R` can be `R` itself — intersecting all one-tuple
+extensions recovers `R` — so `I[C⇑]` can have the same solutions as `I`. That does not matter:
+progress is measured on the *constraints*, not on the solution set. `I[C⇑]` replaces one
+constraint by finitely many strictly weaker ones, so the multiset of per-constraint measures
+`ν(C) = (|Viol(C)|, |Var(C)|)` strictly decreases, and the multiset order on a finite pool is
+well founded. Written as a lex order on `ℕ^V` with `V` the finite value set, to keep it
+visible.
+
+So the corrected shape is: `def:crucial` quantifies over `I[C⇑]` (the source's notion); a
+weakening step may replace one constraint by a finite family; `lem:weakening-terminates` is
+stated per constraint and lifted by counting. The same counting then serves `constr:omega` one
+level up, ordering *sets* of instances by their members.
+
+**Method note.** I changed a definition and did not check its consumers. The consumers are
+findable — `def:crucial` has half a dozen — and the check is mechanical. Changing a definition
+is exactly the moment to re-read everything that quantifies over it.
+
 ## The induction measure across expanded coverings — RESOLVED, objection rejected
 
 **Verified 2026-08-02 against `main.tex`.** The measure `μ(D) = Σ_x |D_x|` is well founded for

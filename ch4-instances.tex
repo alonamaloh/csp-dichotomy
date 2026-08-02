@@ -190,10 +190,13 @@ assignment satisfying $C_{2}$ restricts to one satisfying $C_{1}$. It is
 instance $\mathcal I'$ is a \emph{weakening} of $\mathcal I$ if
 $\Var(\mathcal I')\subseteq\Var(\mathcal I)$ and every constraint of
 $\mathcal I'$ is weaker or equivalent to a constraint of $\mathcal I$. A
-\emph{single weakening step} on $\mathcal I$ replaces one constraint $C$ by one
-constraint $C'$ weaker than $C$; we write $\mathcal I[C\mapsto C']$ for the
-result. Constraint relations are subuniverses
-(Definition~\ref{def:constraint-relation}), so $C'$ ranges over a finite set.
+\emph{weakening step} on $\mathcal I$ replaces one constraint $C$ by a finite
+nonempty family of constraints each weaker than $C$. Two cases are named:
+$\mathcal I[C\mapsto C']$ replaces $C$ by the single $C'$, and
+$\mathcal I[C\Uparrow]$ replaces $C$ by \emph{all} constraints weaker than $C$.
+Constraint relations are subuniverses
+(Definition~\ref{def:constraint-relation}), so the family of constraints weaker
+than $C$ is finite and $\mathcal I[C\Uparrow]$ is well defined.
 \end{definition}
 
 \begin{definition}[The violation set]\label{def:violation}
@@ -203,65 +206,79 @@ f|_{\Var(C)}\notin R^{C}\}$, the assignments it rules out.
 \end{definition}
 
 \begin{lemma}[Weakening terminates]\label{lem:weakening-terminates}
-Put $\mu(\mathcal I)=\bigl(\sum_{C}|\Viol(C)|,\ \sum_{C}|\Var(C)|\bigr)$,
-ordered lexicographically. Then
+For a constraint $C$ put $\nu(C)=\bigl(|\Viol(C)|,|\Var(C)|\bigr)$, and let $V$
+be the (finite) set of values $\nu$ takes on constraints weaker than or equal to
+a constraint of $\mathcal I$, ordered lexicographically. Then
 \begin{enumerate}\alphlabels\tightlist
-\item every single weakening step strictly decreases $\mu$;
-\item consequently there is no infinite sequence of single weakening steps, and
-  any maximal such sequence starting from $\mathcal I$ ends after finitely many
-  steps.
+\item $\nu(C')<\nu(C)$ whenever $C'$ is weaker than $C$;
+\item the set $W$ of weakenings of $\mathcal I$ is finite;
+\item writing $v(\mathcal J)\in\mathbb N^{V}$ for the vector counting the
+  constraints of $\mathcal J$ by their $\nu$-value, every weakening step
+  strictly decreases $v$ in the lexicographic order on $\mathbb N^{V}$ that
+  compares the coordinates from the largest element of $V$ downwards. That
+  order is well founded, so there is no infinite sequence of weakening steps.
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-Let $C'$ be weaker than $C$. If $f$ satisfies $C$ then
+(a) If $f$ satisfies $C$ then
 $f|_{\Var(C')}=\proj_{\Var(C')}\bigl(f|_{\Var(C)}\bigr)\in
 \proj_{\Var(C')}(R^{C})\subseteq R^{C'}$, so $f$ satisfies $C'$; contrapositive,
-$\Viol(C')\subseteq\Viol(C)$. Since no other constraint changes, the first
-component of $\mu$ does not increase, and $\Var(C')\subseteq\Var(C)$ makes the
-second component not increase either.
+$\Viol(C')\subseteq\Viol(C)$, and $\Var(C')\subseteq\Var(C)$. If
+$\Viol(C')\subsetneq\Viol(C)$ the first coordinate drops. Otherwise
+$\Viol(C')=\Viol(C)$, and the variable sets cannot be equal: they would force
+$R^{C'}=R^{C}$, since every domain is nonempty, so a tuple on $\Var(C)$ extends
+to some $f$ and membership in $R^{C}$ is exactly non-membership of $f$ in
+$\Viol(C)$ --- and then $C'$ would not be \emph{weaker}. So
+$\Var(C')\subsetneq\Var(C)$ and the second coordinate drops.
 
-It remains to see that one of the two strictly decreases. If
-$\Viol(C')\subsetneq\Viol(C)$ the first does. Otherwise
-$\Viol(C')=\Viol(C)$, and we show $\Var(C')\subsetneq\Var(C)$. Were the
-variable sets equal, $\Viol(C')=\Viol(C)$ would force $R^{C'}=R^{C}$ --- every
-domain is nonempty, so a tuple on $\Var(C)$ extends to some $f$, and membership
-in $R^{C}$ is exactly non-membership of $f$ in $\Viol(C)$ --- contradicting
-that $C'$ is \emph{weaker}, which then requires proper containment of the
-relations. So the variable sets differ, and $\Var(C')\subseteq\Var(C)$ makes
-the inclusion proper.
+(b) A constraint of a weakening has a scope inside $\Var(\mathcal I)$ and a
+relation that is a subuniverse of the corresponding box, so it is drawn from a
+finite pool; a weakening is a set of such constraints.
 
-For (b), $\mu$ takes values in $\mathbb N^{2}$ with the lexicographic order,
-which is well founded.
+(c) A weakening step removes one constraint of value $\nu$ and inserts finitely
+many of values strictly below $\nu$, by (a). So the coordinate at $\nu$ drops
+by one, the coordinates above $\nu$ are untouched, and only coordinates below
+$\nu$ grow. A lexicographic order on a product of copies of $\mathbb N$ indexed
+by a \emph{finite} ordered set is well founded.
 \end{proof}
 
-\begin{hazard}[Why the step is single, and the measure counts
-  exclusions]\label{haz:weakening}
-Two readings of ``weaken the constraint'' have to be rejected before
-Proposition~\ref{rem:get-crucial} is available, and both are tempting.
+\begin{hazard}[The two things a reading of ``weaken $C$'' has to
+  do]\label{haz:weakening}
+It has to make the process terminate, and it has to be strong enough for the
+consumers of cruciality. Two readings each fail one of these, and the failures
+pull in opposite directions.
 
-\emph{Not ``replace $C$ by all constraints weaker than it''.} That operation is
-finite but enormous --- there are $2^{|D|^{t}}$ relations weaker than a given
-one on a given scope, before ranging over sub-scopes --- and, worse, it need
-not make progress: the conjunction of all strict weakenings of a relation can
-be the relation itself, since intersecting all the one-tuple extensions of $R$
-recovers $R$. An instance in which every constraint is like that would have no
-crucial constraint under that reading and the process would not start. So
-cruciality is defined by a universal quantifier over \emph{single} weaker
-constraints, and the construction takes one step at a time.
+\emph{Counting tuples fails on termination.} A properly weaker constraint admits
+\emph{more} tuples, so the total size of the constraint relations
+\emph{increases} along the process and any measure built from it points the
+wrong way. What decreases is the number of assignments \emph{excluded}, which
+is what Definition~\ref{def:violation} counts; the second component of $\nu$ is
+there for the dummy-variable steps, which leave the violation set unchanged.
 
-\emph{Not ``count tuples''.} A properly weaker constraint admits \emph{more}
-tuples, so the total size of the constraint relations \emph{increases} along
-the process and any measure built from it points the wrong way. What decreases
-is the number of assignments \emph{excluded}, which is what
-Definition~\ref{def:violation} counts; the second component of $\mu$ is there
-only for the dummy-variable steps, which leave the violation set unchanged by
-construction.
+\emph{Quantifying over \emph{single} weaker constraints fails on strength.} It
+is tempting, because a step that replaces $C$ by one $C'$ visibly makes
+progress. But the resulting notion of cruciality is too weak for its consumers:
+Lemma~\ref{lem:crucial-irreducible} contradicts cruciality by exhibiting
+\emph{two} weaker constraints $R_{1},R_{2}$ with $R_{1}\cap R_{2}=R$, and
+replacing $R$ by either one alone does gain a solution --- it is replacing it
+by both at once that does not. So Definition~\ref{def:crucial} quantifies over
+$\mathcal I[C\Uparrow]$, and a weakening step is allowed to replace one
+constraint by a whole family.
+
+\emph{And the family reading does not cost termination.} The objection to it
+--- that the conjunction of all constraints weaker than $R$ can be $R$ itself,
+as intersecting all the one-tuple extensions of $R$ recovers $R$, so that
+$\mathcal I[C\Uparrow]$ has the same solutions as $\mathcal I$ --- is true and
+does not matter. Progress is measured on the \emph{constraints}, not on the
+solution set: each member of the family is strictly weaker than $C$, so
+Lemma~\ref{lem:weakening-terminates}(c) applies whether or not the solution set
+moves.
 
 No algorithm performs weakening --- it appears only inside proofs, as the
 device for reaching a crucial instance --- which is why
-Definition~\ref{def:weakening} makes it a relation between instances and gives
-the single step a separate name.
+Definition~\ref{def:weakening} makes it a relation between instances and names
+the steps separately.
 \end{hazard}
 
 \begin{definition}[Crucial]\label{def:crucial}
@@ -269,33 +286,33 @@ Let $D^{(\top)}$ be a reduction for $\mathcal I$. A variable $y_{i}$ of a
 constraint $R(y_{1},\dots,y_{t})$ is \emph{dummy} if $R$ does not depend on its
 $i$-th coordinate. A constraint $C\in\mathcal I$ is \emph{crucial in
 $D^{(\top)}$} if it has no dummy variables, $\mathcal I^{(\top)}$ has no
-solution, and $\mathcal I[C\mapsto C']^{(\top)}$ has a solution for
-\emph{every} constraint $C'$ weaker than $C$. The instance $\mathcal I$ is \emph{crucial in $D^{(\top)}$} if
+solution, and $\mathcal I[C\Uparrow]^{(\top)}$ has a solution. The instance
+$\mathcal I$ is \emph{crucial in $D^{(\top)}$} if
 it has at least one constraint and all of its constraints are crucial in
 $D^{(\top)}$.
 \end{definition}
 
 \begin{proposition}[Reaching a crucial instance]\label{rem:get-crucial}
 Let $D^{(\top)}$ be a reduction with $\mathcal I^{(\top)}$ unsolvable. Then
-finitely many single weakening steps, each preserving unsolvability in
-$D^{(\top)}$, lead from $\mathcal I$ to an instance crucial in $D^{(\top)}$.
+finitely many weakening steps, each preserving unsolvability in $D^{(\top)}$,
+lead from $\mathcal I$ to an instance crucial in $D^{(\top)}$.
 \end{proposition}
 
 \begin{proof}
 Repeat the following while some constraint $C$ of the current instance
-$\mathcal J$ fails to be crucial in $D^{(\top)}$. Unsolvability of
+$\mathcal J$ fails to be crucial in $D^{(\top)}$; unsolvability of
 $\mathcal J^{(\top)}$ is an invariant, so the failure is of one of the other
 two clauses. If $C$ has a dummy variable $y$, replace $C$ by its projection off
-$y$; that projection is weaker, and since $R^{C}$ does not depend on the
-$y$-coordinate the two constraints have the same violation set, so
-unsolvability is preserved. Otherwise there is a $C'$ weaker than $C$ with
-$\mathcal J[C\mapsto C']^{(\top)}$ unsolvable; take that step.
+$y$: that projection is weaker, and since $R^{C}$ does not depend on the
+$y$-coordinate the two have the same violation set, so unsolvability is
+preserved. Otherwise $\mathcal J[C\Uparrow]^{(\top)}$ has no solution, and we
+pass to $\mathcal J[C\Uparrow]$.
 
-Each step is a single weakening step, so by
-Lemma~\ref{lem:weakening-terminates} the process halts, and it can halt only
-at an instance all of whose constraints are crucial. Every relation introduced
-is a projection of a subuniverse or a constraint relation, hence a subuniverse
-of the corresponding product of domains.
+Both are weakening steps, so Lemma~\ref{lem:weakening-terminates}(c) makes the
+process halt, and it can halt only at an instance all of whose constraints are
+crucial. Every relation introduced is a projection of a subuniverse or a
+constraint relation, hence a subuniverse of the corresponding product of
+domains.
 \end{proof}
 
 \subsection{Coverings}\label{sec:coverings}
