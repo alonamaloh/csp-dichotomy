@@ -966,13 +966,28 @@ rendering:* state (i) as `B ∩ D ⋘^A D`, and derive `B ∩ D ⋘ A` as a coro
 ## A citation that does no work
 
 `LEMMultiplyByAllLinear` line 3057 invokes `THMMainStableIntersection` to obtain its Case 1 /
-Case 2 dichotomy. The dichotomy is elementary: walk down the chain `A ⋙ ⋯ ⋙ B₁` and ask where
-`⋂ᵢ(C₁ⁱ ∘ σᵢ) ∩ · ∩ B₂` becomes empty; it is empty at `B₁` by hypothesis, so either it is
-already empty at `A` (Case 1) or there is a first step where it becomes so (Case 2). No
-theorem is consumed. The rest of the lemma is sound, including the two containments and the
-downward induction on `|B₁|`, and the direction of the `ω`-families works out: the inductive
-conclusion is over the smaller family `{ω : ω* ⊇ (B₁'')²}`, hence about a *larger*
-intersection, which is the direction needed.
+Case 2 dichotomy. **Corrected reading (Phase 5):** an earlier note here said no theorem is
+consumed, because walking down the chain for `B₁ ⋘ A` and asking where the intersection with
+`B₂` first becomes empty is elementary. That is true of the *dichotomy* and false of what
+Case 2 asserts. Case 2 produces a step **of type D**, and then applies the inductive
+hypothesis to it — which needs it to be of multi-type `T`. Two obligations, neither given:
+
+- the step is not of type `BA`, `C` or `S`. For `S` this follows from
+  `LEMIntersectionPCLinearIsGood`(s) applied to `B₁''` and `D`. For `BA` and `C` separately it
+  does not: `<_{BA,C}` in (s) and in `LEMStrongNonemptyIntersection` is a conjunction, and one
+  absorbing step supplies only half of it. `LEMIntersectALL`(t) gives
+  `B₁' ∩ D ≤̇_{BA} B₁'' ∩ D`, whose dot is exactly the case to be excluded.
+- when `T ∈ {L, PC}`, that the irreducible congruence of the `D` step is of type `T` and not
+  the other one. **This is a missing hypothesis in the induction, not a suppressed step**, and
+  closing it plausibly means strengthening the inductive statement to carry the types of the
+  intervening steps. It is invisible while the components `C₁^i` are written as `<_D`, as both
+  the source (line 3050) and our first rendering did; `<_{MT}` gives them type `T`, which is
+  also what puts each `σ_i` in the list `ω₁,…,ω_s`.
+
+Everything else in the lemma is fine and is now written out: the two inclusions the review
+said were only asserted are one line each, Case 1 is complete, and Case 2 follows from the
+claim — including the point that the ω-family for `B₁''` is a *subfamily* of that for `B₁`,
+so its intersection is larger and the inductive conclusion specialises the right way.
 
 ## The other twelve proofs are sound
 

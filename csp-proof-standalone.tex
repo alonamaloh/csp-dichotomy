@@ -5,7 +5,7 @@
 %%  csp-proof.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision a3d5455 on 2026-08-02.
+%%  Generated from revision 64d26b6 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-proof.tex
@@ -39,6 +39,9 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
+% A `claim' is a statement local to a proof, numbered in the same sequence so
+% that it can be referred to from the surrounding text.
+\newtheorem{claim}[theorem]{Claim}
 \theoremstyle{mainroman}
 \newtheorem{longtheorem}[theorem]{Theorem}
 \newtheorem{longlemma}[theorem]{Lemma}
@@ -4500,34 +4503,103 @@ $B_{2}\lll A$, $C_{1}\cap B_{2}=\varnothing$ and $B_{1}\cap B_{2}\neq
 of type $T$ on $\mathbf A$ with $\cover{\omega_{i}}\supseteq B_{1}^{2}$.
 \end{lemma}
 
-\begin{proof}
-Downward induction on $|B_{1}|$, starting at $B_{1}=A$. Write
-$C_{1}=\bigcap_{i}C_{1}^{i}$ with $C_{1}^{i}\subt[A]{\TD(\sigma_{i})}B_{1}$, so
-each $\sigma_{i}$ is among the $\omega_{j}$ and
-$C_{1}^{i}=(C_{1}^{i}\circ\sigma_{i})\cap B_{1}$; by
-Corollary~\ref{cor:prop-times-cong}(e),(f),
-$C_{1}^{i}\circ\sigma_{i}\subt[A]{\TD(\sigma_{i})}B_{1}\circ\sigma_{i}\lll A$.
-Since $\bigcap_{i}(C_{1}^{i}\circ\sigma_{i})\cap B_{1}\cap B_{2}=C_{1}\cap
-B_{2}=\varnothing$, walk down a chain from $A$ to $B_{1}$: either the
-intersection with $B_{2}$ is already empty at $A$, and then
-$C_{1}\circ\bigcap_{j}\omega_{j}\subseteq\bigcap_{i}(C_{1}^{i}\circ\sigma_{i})$
-finishes; or there is a first step $B_{1}'\subt{\TD}B_{1}''$ at which it becomes
-empty, and the inductive hypothesis at $B_{1}''$, together with
-$C_{1}\subseteq B_{1}'$ and $\bigcap_{j}\omega_{j}\subseteq\sigma_{i}$, finishes.
+\begin{proof}[Proof of Case~1, and of Case~2 from Claim~\ref{cl:multiply-step}]
+The induction is downward on $|B_{1}|$: the inductive hypothesis is the lemma
+for every larger first argument, and it starts at $B_{1}=A$.
+
+By Definition~\ref{def:multitypes} write $C_{1}=\bigcap_{i\in[t]}C_{1}^{i}$
+with $t\ge1$ and $C_{1}^{i}\subt[A]{T(\sigma_{i})}B_{1}$ --- of type $T$, not
+merely of type $\TD$, which is what makes each $\sigma_{i}$ a congruence of type
+$T$ with $\cover{\sigma_{i}}\supseteq B_{1}^{2}$ and hence one of the
+$\omega_{j}$. Put $K_{i}=C_{1}^{i}\circ\sigma_{i}$ and
+$\Omega=\omega_{1}\cap\dots\cap\omega_{s}$. Definition~\ref{def:types}(ii)
+gives $C_{1}^{i}=K_{i}\cap B_{1}$, and
+Corollary~\ref{cor:prop-times-cong}(e),(f) gives
+$K_{i}\subt[A]{T(\sigma_{i})}B_{1}\circ\sigma_{i}\lll A$, so in particular
+$K_{i}\lll A$. Two inclusions are used, and both are immediate:
+\begin{equation}\label{eq:mal-incl}
+  C_{1}\circ\Omega\;\subseteq\;\bigcap_{i\in[t]}K_{i},
+  \qquad\text{and}\qquad
+  X\subseteq Y\;\Longrightarrow\;X\circ\Omega\subseteq Y\circ\Omega .
+\end{equation}
+The first holds because $C_{1}\subseteq C_{1}^{i}$ and
+$\Omega\subseteq\sigma_{i}$ for each $i$, the latter because $\sigma_{i}$ is
+one of the $\omega_{j}$.
+
+Put $D=\bigcap_{i\in[t]}K_{i}\cap B_{2}$, and note
+$D\cap B_{1}=\bigcap_{i}(K_{i}\cap B_{1})\cap B_{2}=C_{1}\cap B_{2}=
+\varnothing$.
+
+\emph{Case 1: $D=\varnothing$.} Then by \eqref{eq:mal-incl}
+$(C_{1}\circ\Omega)\cap B_{2}\subseteq\bigcap_{i}K_{i}\cap B_{2}=\varnothing$,
+which is the conclusion. This is the whole of the case $B_{1}=A$, since there
+$D=D\cap B_{1}=\varnothing$.
+
+\emph{Case 2: $D\neq\varnothing$.} Each $K_{i}\lll A$ and $B_{2}\lll A$, so
+Corollary~\ref{cor:intersect-all-weak}, applied $t$ times, gives
+$D\dlll A$; as $D\neq\varnothing$, $D\lll A$. Fix the chain
+$A=X_{0}\supsetneq X_{1}\supsetneq\dots\supsetneq X_{r}=B_{1}$ witnessing
+$B_{1}\lll A$. Then $D\cap X_{0}=D\neq\varnothing$ and $D\cap X_{r}=
+D\cap B_{1}=\varnothing$, so there is a least $p\in[r]$ with
+$D\cap X_{p}=\varnothing$. Write $B_{1}'=X_{p}$ and $B_{1}''=X_{p-1}$, so that
+\begin{equation}\label{eq:mal-step}
+  B_{1}\subseteq B_{1}'\subt[A]{}B_{1}''\lll A,\qquad
+  D\cap B_{1}'=\varnothing,\qquad D\cap B_{1}''\neq\varnothing .
+\end{equation}
+
+\begin{claim}\label{cl:multiply-step}
+That step is of multi-type $T$: $B_{1}'\subt[A]{\MT T}B_{1}''$.
+\end{claim}
+
+Granting the claim, the inductive hypothesis applies to
+$B_{1}'\subt[A]{\MT T}B_{1}''\lll A$ and $D\lll A$, whose hypotheses
+$B_{1}'\cap D=\varnothing$ and $B_{1}''\cap D\neq\varnothing$ are
+\eqref{eq:mal-step}, and which sits at a strictly larger first argument since
+$B_{1}\subseteq B_{1}'\subsetneq B_{1}''$. It returns
+$(B_{1}'\circ\Omega'')\cap D=\varnothing$, where $\Omega''$ is the intersection
+of all type-$T$ congruences $\omega$ with $\cover{\omega}\supseteq
+(B_{1}'')^{2}$. Every such $\omega$ has $\cover{\omega}\supseteq B_{1}^{2}$,
+so that family is a \emph{subfamily} of $\{\omega_{1},\dots,\omega_{s}\}$ and
+$\Omega''\supseteq\Omega$; hence $(B_{1}'\circ\Omega)\cap D=\varnothing$ as
+well. Finally, by \eqref{eq:mal-incl} and $C_{1}\subseteq B_{1}\subseteq
+B_{1}'$,
+\[
+  (C_{1}\circ\Omega)\cap B_{2}\;\subseteq\;
+  (B_{1}'\circ\Omega)\cap\bigcap_{i\in[t]}K_{i}\cap B_{2}\;=\;
+  (B_{1}'\circ\Omega)\cap D\;=\;\varnothing . \qedhere
+\]
 \end{proof}
 
-\begin{hazard}[This is not yet a proof]\label{haz:multiply-citation}
-The argument above is not complete, and it should not be read as though it
-were. It does not fix one induction statement --- the components are rewritten
-as type $\TD$ although the lemma tracks a fixed $T\in\{\TPC,\TL,\TD\}$ --- it
-does not construct the object to which the inductive hypothesis is applied at
-the first step, and the two inclusions at the end are asserted rather than
-derived. This needs a rewrite, not polishing. See \S\ref{sec:status}.
+\begin{hazard}[Claim~\ref{cl:multiply-step} is not proved, and it is the whole
+  difficulty]\label{haz:multiply-citation}
+Everything above is a proof except the claim, and the claim carries two
+separate obligations. Neither is discharged here, so
+Lemma~\ref{lem:multiply-all-linear} is \emph{not} available; see
+\S\ref{sec:status}.
 
-One thing the argument does \emph{not} need is a theorem: the Case~1/Case~2
-dichotomy is elementary, since the intersection is empty at $B_{1}$ by
-hypothesis, so either it is empty at $A$ or there is a first step where it
-becomes so.
+\emph{(a) The step is not of type $\TBA$, $\TC$ or $\TS$.} For $\TS$ this is
+Lemma~\ref{lem:intersection-good}(s): $B_{1}'$ then contains some
+$G\subt{\TBA,\TC}B_{1}''$, and (s) applied to $B_{1}''$ and $D$ --- which meet,
+by \eqref{eq:mal-step} --- gives $G\cap D\neq\varnothing$, contradicting
+$B_{1}'\cap D=\varnothing$. For $\TBA$ and $\TC$ separately the same route is
+\emph{not} available, because $\subt{\TBA,\TC}$ in (s) and in
+Lemma~\ref{lem:strong-nonempty} is a conjunction
+(Caveat~\ref{haz:ba-central-meets}) and a single absorbing step supplies only
+one of the two types. Lemma~\ref{lem:intersect-all}(t) gives
+$B_{1}'\cap D\dsubte{\TBA}B_{1}''\cap D$, whose dot is exactly the possibility
+to be excluded.
+
+\emph{(b) When $T\in\{\TL,\TPC\}$, a type-$\TD$ step is not enough.} The
+inductive hypothesis needs $B_{1}'\subt{\MT T}B_{1}''$ for the \emph{same} $T$.
+A $\TD$ step carries an irreducible congruence, which is linear or PC by
+Caveat~\ref{haz:linear-def}, but nothing so far forces it to match $T$. This
+obligation is invisible while the components are written as $\TD$, which is why
+the typing in the first paragraph of the proof matters.
+
+Obligation (b) is the more serious: it is not a suppressed step but a missing
+hypothesis in the induction, and closing it plausibly means strengthening the
+inductive statement to carry the types of the intervening steps rather than
+patching the claim.
 \end{hazard}
 
 \begin{proof}[Proof of Lemma~\ref{lem:maximal-mult}]
@@ -5485,8 +5557,9 @@ that cites it, and the steps are now written out.
 \pkey{lem:block-good-bridge}, \pkey{lem:center-pushed-in},
   \pkey{lem:leftlinked-stay-full}, \pkey{lem:factor-by-delta}
   & \textsc{outlined} & \\
-\pkey{lem:multiply-all-linear} & \textsc{outlined} & not yet a proof;
-  Caveat~\ref{haz:multiply-citation} \\
+\pkey{lem:multiply-all-linear} & \textsc{outlined} & Case~1 and the
+  reduction of Case~2 are proved; Claim~\ref{cl:multiply-step}, which is the
+  whole difficulty, is not. Caveat~\ref{haz:multiply-citation} \\
 \pkey{cor:prop-from-factor}, \pkey{cor:prop-times-cong},
   \pkey{cor:prop-relations}, \pkey{lem:preserve-linked} & \textsc{stated} & \\
 \pkey{lem:maximal-mult} & \textsc{proved} & \emph{under the added

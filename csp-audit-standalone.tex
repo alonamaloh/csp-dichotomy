@@ -5,7 +5,7 @@
 %%  csp-audit.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision a3d5455 on 2026-08-02.
+%%  Generated from revision 64d26b6 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-audit.tex
@@ -39,6 +39,9 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
+% A `claim' is a statement local to a proof, numbered in the same sequence so
+% that it can be referred to from the surrounding text.
+\newtheorem{claim}[theorem]{Claim}
 \theoremstyle{mainroman}
 \newtheorem{longtheorem}[theorem]{Theorem}
 \newtheorem{longlemma}[theorem]{Lemma}
@@ -1678,10 +1681,23 @@ proofs are sound. The steps to supply:
   $\subt{\TS}$ alternative is excluded because the witness also lies in one
   $\sigma$-block.
 \item \texttt{LEMMultiplyByAllLinear} invokes the stable-intersection theorem
-  for its Case~1/Case~2 dichotomy, and \textbf{no theorem is consumed}: walk
-  down the chain and ask where the intersection becomes empty; it is empty at
-  $B_{1}$ by hypothesis, so either it is already empty at $A$ or there is a
-  first step where it becomes so. Proof paper: \pkey{haz:multiply-citation}.
+  (\texttt{SS:3057}) for its Case~1/Case~2 dichotomy. An earlier reading of
+  this entry said no theorem is consumed, on the ground that walking down the
+  chain and asking where the intersection with $B_{2}$ becomes empty is
+  elementary. \textbf{That is right about the dichotomy and wrong about what
+  Case~2 asserts.} Case~2 does not merely produce a step; it produces a step
+  \emph{of type $\TD$}, and the inductive hypothesis is then applied to it,
+  which needs it to be of multi-type $T$. Two things are therefore owed and
+  neither is given: that the step is not of type $\TBA$, $\TC$ or $\TS$ ---
+  provable for $\TS$ from \pkey{lem:intersection-good}(s), but not for the
+  other two, since $\subt{\TBA,\TC}$ there is a conjunction and one absorbing
+  step supplies half of it --- and, when $T\in\{\TL,\TPC\}$, that the
+  irreducible congruence carried by a $\TD$ step is of type $T$ rather than the
+  other one. The second is a missing hypothesis in the induction rather than a
+  suppressed step. The stable-intersection appeal is presumably aimed at the
+  first, but the theorem's conclusion is about a critically inconsistent family
+  having equal types, and the family here is not put in that form.
+  Proof paper: \pkey{haz:multiply-citation}, \pkey{cl:multiply-step}.
 \item \texttt{LEMPCOnTheTopIsEasy} rests on two things it does not state: that
   an idempotent algebra is polynomially complete iff every \emph{reflexive}
   subalgebra of a power is a conjunction of equalities, and that
