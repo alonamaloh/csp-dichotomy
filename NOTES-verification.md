@@ -1405,3 +1405,40 @@ day something consumes it.
 the collar bridge is not the tool and linearity is not the obstruction. Next targets:
 lem:connected(a)/(b) (source proof read, route banked), PC localization
 (lem:pc-on-top), then the Step-1 redesign of point 5 above, then find-consistent's legs.
+
+## `lem:connected` proved, and D6 closed properly
+
+**Same session (after D21).** All three clauses (a), (b), (p) are now proved, from the
+banked route (source main:2364–2423, re-read this session). What changed against the
+source's proof:
+
+- **D6's repair is now real, not promised.** The missing hypothesis of
+  `lem:bridge-from-relation` is isolated as a definition: a constraint **splits at
+  {z,z′}** if it is the conjunction of its two projections omitting z and omitting z′
+  (`def:split`); the witness configuration holds at (z,z′) iff C does NOT split there
+  (`lem:crucial-split-free`(a) — the ⊇ of the join is free, so failure of the config IS
+  the splitting identity). Cruciality forbids splitting ((b): both projections are
+  properly weaker, so both sit in I[C⇑]; a solution of I[C⇑] then satisfies C itself).
+  `lem:connected` now hypothesises every constraint split-free; both call sites
+  discharge it by cruciality ((1c)'s Υ ⊆ J with J crucial; codim-one's instance is
+  itself crucial). The audit's D6 paragraph previously claimed "lem:connected is stated
+  for crucial instances" — the statement never said that; now corrected to the actual
+  repair.
+- **Degenerate path steps.** A path step z_i—C—z_{i+1} with z_i = z_{i+1} cannot use
+  bridge-from-relation; the self-adjacency bridge σ(x₁,x₃)∧σ(x₂,x₄) serves, its collar
+  being ConOne ⊇ diagonal, and its properness requirement is free because every
+  congruence in Con(I) is irreducible hence proper (prop:cover(a)). The same
+  irreducibility kills the worry about unary constraints: their ConOne is full, so a
+  connected instance contains none.
+- **(a) sharpened** to "adjacent in EVERY common variable" — (b)'s junctions need the
+  per-variable form, and the proof gives it (set w₀ = w_{m+1} = x on any adjacency-graph
+  path).
+- **(p)** composes δ_{a,b} over all pairs; every collar contains the diagonal (cycle-
+  consistency), so the composed collar is exactly D_x², and `lem:building-perfect`
+  finishes. (haz:connected-p previously promised the route via lem:perfect-from-linked;
+  updated to match.)
+
+Graph after: 117 statements, 82 proofs, 196 edges. L4 debts drop to four (three stated:
+find-consistent, bridge-from-instance, cor:same-type; plus parallelogram-crucial
+outlined). Next targets unchanged: PC localization (lem:pc-on-top), the Step-1 redesign
+(D21), find-consistent's legs, lem:typed-above t≥2.

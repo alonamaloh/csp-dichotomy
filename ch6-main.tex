@@ -632,9 +632,11 @@ and last entry $y$.
 \end{proof}
 
 \begin{lemma}[Connected instances]\label{lem:connected}
-Let $\mathcal I$ be a cycle-consistent connected instance. Then
+Let $\mathcal I$ be a cycle-consistent connected instance whose every
+constraint is split-free. Then
 \begin{enumerate}\tightlist
-\item[\textup{(a)}] any two constraints with a common variable are adjacent;
+\item[\textup{(a)}] any two constraints with a common variable are adjacent
+  in every common variable;
 \item[\textup{(b)}] for constraints $C_{1},C_{2}$, variables
   $x_{i}\in\Var(C_{i})$, and any path from $x_{1}$ to $x_{2}$, there is a
   bridge $\delta$ from $\ConOne(C_{1},x_{1})$ to $\ConOne(C_{2},x_{2})$ with
@@ -644,13 +646,112 @@ Let $\mathcal I$ be a cycle-consistent connected instance. Then
 \end{enumerate}
 \end{lemma}
 
+\begin{proof}
+Constraints of $\mathcal I$ are subdirect in the products of their current
+domains ($1$-consistency, Definition~\ref{def:consistency}), every variable
+of every constraint is rectangular, and every congruence in
+$\Con(\mathcal I)$ is irreducible (Definition~\ref{def:connected}); so each
+$\ConOne(C,z)$ is a congruence on $\mathbf D_{z}$
+(Lemma~\ref{lem:conone-basics}(c)), it is proper
+(Proposition~\ref{prop:cover}(a)), and every composition of bridges below is
+legitimate for Lemma~\ref{lem:bridge-comp}, all its endpoints lying in
+$\Con(\mathcal I)$. Two kinds of elementary bridge are used besides the
+witnesses of adjacency.
+
+\emph{Within a constraint.} For $C\in\mathcal I$ and $z\neq z'\in\Var(C)$,
+split-freeness and Lemma~\ref{lem:crucial-split-free}(a) supply the witness
+configuration of Lemma~\ref{lem:bridge-from-relation} at the pair $(z,z')$,
+whose other hypotheses --- subdirectness, rectangularity at the two
+coordinates --- were just noted; it returns a bridge from $\ConOne(C,z)$ to
+$\ConOne(C,z')$ with collar exactly $\proj_{z,z'}(R^{C})$. For $z=z'$ take
+instead the self-adjacency bridge after Definition~\ref{def:connected} ---
+legitimate, $\ConOne(C,z)$ being proper --- whose collar is $\ConOne(C,z)$
+itself, which is reflexive on $D_{z}$ (Lemma~\ref{lem:conone-basics}(a) with
+$1$-consistency).
+
+\emph{Across an adjacency.} If $C,C'$ are adjacent in the common variable
+$w$, the witnessing bridge from $\ConOne(C,w)$ to $\ConOne(C',w)$ is
+reflexive, which says exactly that its collar contains the diagonal of
+$D_{w}$.
+
+\emph{(a).} Let $x\in\Var(C_{1})\cap\Var(C_{2})$. The adjacency graph is
+connected, so there are constraints
+$C_{1}=\Gamma_{0},\Gamma_{1},\dots,\Gamma_{m}=C_{2}$ with
+$\Gamma_{i-1},\Gamma_{i}$ adjacent in a common variable $w_{i}$. Set
+$w_{0}=x$ and $w_{m+1}=x$. Compose, by Lemma~\ref{lem:bridge-comp}, the
+within-constraint bridges of $\Gamma_{i}$ from $\ConOne(\Gamma_{i},w_{i})$
+to $\ConOne(\Gamma_{i},w_{i+1})$, for $i=0,\dots,m$, alternately with the
+adjacency bridges at $w_{1},\dots,w_{m}$; the result is a bridge $\delta$
+from $\ConOne(C_{1},x)$ to $\ConOne(C_{2},x)$ whose collar is the
+corresponding alternating composition of collars. It remains to see that
+$\delta$ is reflexive, i.e.\ that $(a,a)\in\bcol\delta$ for every
+$a\in D_{x}$. The sequence
+$x-\Gamma_{0}-w_{1}-\Gamma_{1}-\dots-w_{m}-\Gamma_{m}-x$ is a path from $x$
+to $x$, so cycle-consistency connects $a$ to $a$ along it: there are
+$a=a_{0},a_{1},\dots,a_{m},a_{m+1}=a$ with
+$(a_{i},a_{i+1})\in\proj_{w_{i},w_{i+1}}(R^{\Gamma_{i}})$, read as
+$a_{i}=a_{i+1}$ where $w_{i}=w_{i+1}$. Each pair $(a_{i},a_{i+1})$ lies in
+the $i$-th within-constraint collar --- for $w_{i}\neq w_{i+1}$ that collar
+is the projection itself, for $w_{i}=w_{i+1}$ it contains the diagonal ---
+and each junction pair $(a_{i+1},a_{i+1})$ lies in the corresponding
+adjacency collar. Chaining exhibits $(a,a)\in\bcol\delta$.
+
+\emph{(b).} Write the path as
+$z_{1}-C_{1}'-z_{2}-\dots-C_{\ell}'-z_{\ell+1}$ with $z_{1}=x_{1}$ and
+$z_{\ell+1}=x_{2}$. If the path is a bare variable ($\ell=0$), then
+$x_{1}=x_{2}$ is a common variable of $C_{1}$ and $C_{2}$, the pairs it
+connects form the diagonal of $D_{x_{1}}$, and the reflexive bridge of (a)
+serves. Otherwise compose, in order: the adjacency bridge from
+$\ConOne(C_{1},x_{1})$ to $\ConOne(C_{1}',x_{1})$ --- available by (a),
+both constraints containing $x_{1}$; for $i=1,\dots,\ell$ the
+within-constraint bridge of $C_{i}'$ from $z_{i}$ to $z_{i+1}$,
+interleaved, for $i<\ell$, with the adjacency bridge from
+$\ConOne(C_{i}',z_{i+1})$ to $\ConOne(C_{i+1}',z_{i+1})$ given by (a); and
+the adjacency bridge from $\ConOne(C_{\ell}',x_{2})$ to
+$\ConOne(C_{2},x_{2})$. The result is a bridge $\delta$ from
+$\ConOne(C_{1},x_{1})$ to $\ConOne(C_{2},x_{2})$. If the path connects $b$
+to $c$, witnessed by $a_{1}=b,\dots,a_{\ell+1}=c$ with
+$(a_{i},a_{i+1})\in\proj_{z_{i},z_{i+1}}(R^{C_{i}'})$, then each such pair
+lies in the corresponding within-constraint collar, every adjacency collar
+contains the diagonal pairs at the junctions and at the two ends, and
+chaining gives $(b,c)\in\bcol\delta$.
+
+\emph{(p).} Fix $C$ and $x\in\Var(C)$ and write $\sigma=\ConOne(C,x)$. For
+$a,b\in D_{x}$, linkedness provides a path from $x$ to $x$ connecting $a$
+and $b$; (b), applied with $C_{1}=C_{2}=C$ and $x_{1}=x_{2}=x$, gives a
+bridge $\delta_{a,b}$ from $\sigma$ to $\sigma$ whose collar contains
+$(a,b)$ --- and the whole diagonal of $D_{x}$, since by cycle-consistency
+the same path connects $c$ to $c$ for every $c\in D_{x}$. Compose the
+$\delta_{a,b}$ over all pairs $(a,b)\in D_{x}^{2}$
+(Lemma~\ref{lem:bridge-comp}): the collar of the composite is the
+composition of the collars, which contains each $(a,b)$ --- route through
+the diagonals of the other factors --- and is contained in $D_{x}^{2}$
+outright; so it equals $D_{x}^{2}$. Lemma~\ref{lem:building-perfect} then
+makes $\sigma$ a perfect linear congruence.
+\end{proof}
+
 \begin{hazard}\label{haz:connected-p}
 Clause (p) is the bridge between the bridge machinery and the linear algebra;
-it is what makes Theorem~\ref{thm:codim-one} possible. Its proof is (b)
-followed by Lemma~\ref{lem:perfect-from-linked}: linkedness of the instance
-makes $\bcol{\delta}$ linked as a relation, which upgrades the bridge. The two
-senses of ``linked'' (Caveat~\ref{haz:linked}) meet exactly here, and the step
-where one becomes the other should be isolated.
+it is what makes Theorem~\ref{thm:codim-one} possible. The two senses of
+``linked'' (Caveat~\ref{haz:linked}) meet exactly there: linkedness of the
+\emph{instance} supplies, pair by pair, the paths whose composed collars
+fill $D_{x}^{2}$, at which point Lemma~\ref{lem:building-perfect} converts a
+\emph{relationally} full collar into perfection.
+
+The split-freeness hypothesis is not removable: the within-constraint
+bridges need not exist without it, since
+Lemma~\ref{lem:bridge-from-relation}'s witness configuration fails precisely
+at a split pair, and a constraint can split --- a relation forcing only
+$x\equiv z\equiv y \pmod 2$ on
+$\mathbb Z_{4}\times\mathbb Z_{2}\times\mathbb Z_{4}$ splits at its outer
+pair of coordinates. Both call sites
+discharge it through Lemma~\ref{lem:crucial-split-free}(b): in Case (1c) of
+Theorem~\ref{thm:main-inductive}(2) the subinstance $\Upsilon$ consists of
+constraints of the expanded covering $\mathcal J$, which is crucial in the
+ambient reduction; in Step~1 of Theorem~\ref{thm:codim-one} the instance is
+itself crucial in $\phi(\bar b)$. Cycle-consistency and connectedness of the
+subinstance are inherited: a path of a subinstance is a path of the
+instance.
 \end{hazard}
 
 \begin{lemma}[{\cite[Lem.~5.6]{ZhukStrong}}]\label{lem:tree-coverings}

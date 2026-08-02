@@ -99,6 +99,7 @@ lem:expanded-consistency	4
 lem:tree-coverings	4
 lem:minimal-consistent	4
 lem:crucial-irreducible	4
+lem:crucial-split-free	4
 lem:connected	4
 lem:find-consistent	4
 lem:parallelogram-crucial	4

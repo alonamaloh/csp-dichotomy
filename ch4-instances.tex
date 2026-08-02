@@ -559,3 +559,46 @@ constraints with edges the adjacent pairs is connected.
 
 Note that every proper congruence is adjacent to itself, via
 $\delta(x_{1},x_{2},x_{3},x_{4})=\sigma(x_{1},x_{3})\wedge\sigma(x_{2},x_{4})$.
+
+\begin{definition}[Splitting at a pair of variables]\label{def:split}
+Let $C$ be a constraint, let $z\neq z'\in\Var(C)$, and write $V=\Var(C)$.
+$C$ \emph{splits at $\{z,z'\}$} if
+\[
+  R^{C}=\bigl\{f\in\textstyle\prod_{x\in V}D_{x}:
+    f|_{V\setminus\{z\}}\in\proj_{V\setminus\{z\}}(R^{C})
+    \text{ and }
+    f|_{V\setminus\{z'\}}\in\proj_{V\setminus\{z'\}}(R^{C})\bigr\},
+\]
+that is, if $C$ is the conjunction of its two projections omitting $z$ and
+omitting $z'$. $C$ is \emph{split-free} if it splits at no pair of distinct
+variables.
+\end{definition}
+
+\begin{lemma}[Cruciality forbids splitting]\label{lem:crucial-split-free}
+\begin{enumerate}\alphlabels\tightlist
+\item $C$ does \emph{not} split at $\{z,z'\}$ if and only if there are
+  $g,h\in R^{C}$ and $f\notin R^{C}$ with $f=g$ off $z$ and $f=h$ off $z'$
+  --- the witness configuration of Lemma~\ref{lem:bridge-from-relation} at
+  the pair $(z,z')$.
+\item If a constraint $C$ of $\mathcal I$ is crucial in some reduction
+  $D^{(\top)}$, then $C$ is split-free.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) The containment $\subseteq$ of Definition~\ref{def:split} always holds,
+so $C$ fails to split at $\{z,z'\}$ exactly when some
+$f\notin R^{C}$ has both restrictions, off $z$ and off $z'$, extendable to
+tuples of $R^{C}$ --- and an extension of the restriction off $z$ is exactly
+a $g\in R^{C}$ agreeing with $f$ off $z$.
+
+(b) Suppose $C$ splits at $\{z,z'\}$. The two projections of $C$ omitting
+$z$ and omitting $z'$ are constraints properly weaker than $C$
+(Definition~\ref{def:weakening}: their variable sets are properly smaller),
+so both belong to $\mathcal I[C\Uparrow]$. By cruciality
+$\mathcal I[C\Uparrow]^{(\top)}$ has a solution $f$; it satisfies both
+projections, hence satisfies $C$ by the splitting identity, and it
+satisfies every other constraint of $\mathcal I$, which
+$\mathcal I[C\Uparrow]$ retains. So $\mathcal I^{(\top)}$ has a solution,
+contradicting cruciality of $C$.
+\end{proof}
