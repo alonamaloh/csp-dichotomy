@@ -1321,3 +1321,87 @@ R∩(C₁×C₂) = ∅ for contradiction.
 
 Status: `lem:preserve-linked` stays **stated**. The residue is exactly one case (doubly-cut
 linear), and it should be attacked with the collar bridge in hand, in fresh context.
+
+## The preserve-linked residue, isolated: it is a component-attachment gap (D21)
+
+**2026-08-02, third session.** The "doubly-cut linear endgame" of the previous note
+dissolved under analysis — the residue is not about bridges or linearity at all. Findings,
+in order of importance.
+
+**1. The anchored form is PROVED — `lem:preserve-linked-anchored` (L3).** Statement:
+R ⊴ A₁×A₂, C₁ ⋘ A₁, C₂ ⊂_{D(σ)} B₂ ⋘ A₂, every element of C₁ has an R-neighbour in B₂
+(the anchor), S∩(C₁×C₂) ≠ ∅ ⟹ R∩(C₁×C₂) ≠ ∅. Proof is one dichotomy on
+(RL(R)∩B₂²)/σ:
+- *Full*: leftlinked-stay-full on the transpose (first factor B₂, second factor C₁,
+  nonemptiness from the anchor) makes the restricted linking full mod σ; attained at
+  ([c₂],[c₂]) it puts a point of C₂ in the left projection with a C₁-partner. Done.
+- *Cut*: cut-or-nothing(1) gives RL(R)∩B₂² ⊆ σ. The S-witness (c₁,c₂) plus the witness's
+  own anchor edge (c₁,w), w ∈ B₂: all right-ends of c₁'s component are RL-related
+  (transport: linked left points have linked images — walk the R∘R⁻¹ chain), so
+  (w,c₂) ∈ RL∩B₂² ⊆ σ ⟹ w ∈ B₂∩[c₂]_σ = C₂. Done.
+No stable intersection, no bridges, no (pc) case, no typing of chain steps. The
+S ⊆ {(x,y) : ∃ edge (x′,y′), x LL x′, y′ RL y} step needs that set to be rectangular —
+four-line check via the transport observation.
+
+**2. Full levels never die; the defect is coextensive with the cut regime.** In any
+walk down a chain, a step with (RL∩B²)/σ full cannot be a death: stay-full with the
+left set as side closes it outright (this needs only the mixed nonemptiness, which
+pre-death aliveness supplies). So in AUX and OneStep, every death is a cut-level death —
+and at a cut level the ONLY missing item is an edge from the witness's component into
+the box. Precisely: the residue (†) is: both cuts standing, K := R′∩(L×M) the component
+of the S-witness (L, M single Λ-classes; L∩B₁′ ⊆ C₁′ and M∩B₂′ ⊆ C₂′ *by the cuts*),
+show K∩(B₁′×B₂′) ≠ ∅. Any such edge lands in C₁′×C₂′ automatically. The mixed
+hypotheses give edges in the right boxes but possibly the wrong component. This is
+exactly Zhuk's unjustified SS:2892–2895 step, now recorded as **D21**.
+
+**3. What was tried and where each attempt sticks (all at the same wall).**
+- Descent invariants (edge (u,v), u ∈ C₁, v ∈ E_k, v RL-related to the target): survive
+  cut levels pointwise for free; at a full level stay-full yields a fresh C₁-edge one
+  level down but in an unknown component. Alternating full-then-cut kills both the
+  strong (component-tracking) and weak (any-edge) invariants.
+- The stay-full star (center-pushed-in's c* ∈ C₁ with neighbours in every σ-class) does
+  not help: c*'s component is unknown.
+- W∘ξ-saturation cases (cruciality: either W∘ξ = W, giving ξ ⊆ RL, or a ξ-related
+  witness pair exists): in the saturated case fibres contain whole ξ-blocks and the
+  fullness witness lands in the right component and level — but the C₁-attachment
+  cannot be moved along the component.
+- Quotient/bridge route: σ-saturation (bcol δ = σ₁∘R∘σ₂) joins the components (C₁ is in
+  one σ₁-block) but destroys B-membership; δ-saturation keeps membership
+  (prop-times-cong(e)) but joins only δ-blocks. The gap lives strictly between δ and σ.
+- 2×2 anti-diagonal structure (via cor:intersection-good both ways + the relational
+  parallelogram-D pullback): if R∩(C₁×C₂) = ∅ and R∩(C₁′×C₂′) = ∅ for the induced
+  second blocks, then within B₁×B₂ edges from C₁ land exactly in C₂′ and dually — a
+  matching pattern that satisfies the parallelogram property vacuously. Structure alone
+  cannot refute it; only the path could, and the path does not force left-left linkings.
+
+**4. No counterexample in the affine world.** A subdirect subuniverse of a product of
+affine algebras is a coset; a coset is its own rectangular closure (S = R because
+H₁ᵏ×K₂ ⊆ H for the left/right kernels); so the unanchored statement holds outright
+there. Any counterexample needs a genuinely mixed algebra. None was found; the statement
+is probably true; the proof is genuinely open.
+
+**5. The consumer cannot supply the anchor, but can likely bypass the lemma.** At
+main:2632 / lem:parallelogram-crucial Step 1 the anchor would say: every K-block section
+of R with entries in D^(2) extends through R into ∏_L D^(1). 1-consistency of D^(1) is
+per-variable, not per-tuple. BUT cruciality reduces the parallelogram step to a single
+zigzag: if W′ := W∘W⁻¹∘W ⊋ W then W′ is itself a properly weaker constraint, so
+cruciality yields (p,q) ∈ W′∩(E_K^(2)×E_L^(2)) with witnesses (p,b),(a,b),(a,q) ∈ W —
+i.e. S-membership at zigzag-distance 3 with explicit edges. The remaining need is a
+per-coordinate descent of the same anchored shape as lem:find-consistent and
+cl:typing-anchor (the reduction D^(2) ≤_MT D^(1) is coordinatewise, T ∈ {L,PC,D}
+single-type). REDESIGN PATH: replace the preserve-linked appeal in Step 1 by this
+route, folding D21 into cl:typing-anchor's (α),(β) instead of leaving it a separate
+debt. Not executed; must be checked against ch6's exact statement before attempting.
+
+**6. Also noted.** Zhuk himself has a commented-out alternative proof of a one-sided
+variant (SS:2899–2981) carrying the extra hypothesis R∩(B₁×B₂) ⊴ B₁×B₂ — an anchor —
+via a path relation R_N and CORParallelogramPropertyForD (= our lem:parallelogram-D,
+proved). Its typing step ("T = D") has the same minimal-subfamily problem as
+cl:multiply-step, which is presumably why it was abandoned. The relational pullback of
+lem:parallelogram-D (pattern of cor:intersection-good) is routine and worth adding the
+day something consumes it.
+
+**Corrected priority list.** The doubly-cut *linear* endgame is NOT the next target —
+the collar bridge is not the tool and linearity is not the obstruction. Next targets:
+lem:connected(a)/(b) (source proof read, route banked), PC localization
+(lem:pc-on-top), then the Step-1 redesign of point 5 above, then find-consistent's legs.

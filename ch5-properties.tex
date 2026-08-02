@@ -339,6 +339,44 @@ rectangular closure of $R$, and suppose $R\cap(B_{1}\times B_{2})\neq
 $R\cap(C_{1}\times C_{2})\neq\varnothing$.
 \end{lemma}
 
+\begin{lemma}[Preserving linkedness, anchored form]\label{lem:preserve-linked-anchored}
+Let $R\sdle\mathbf A_{1}\times\mathbf A_{2}$, let $C_{1}\lll A_{1}$, let
+$C_{2}\subt[A_{2}]{\TD(\sigma)}B_{2}\lll A_{2}$, and let $S$ be the
+rectangular closure of $R$. Suppose
+\begin{enumerate}\romanlabels\tightlist
+\item every element of $C_{1}$ has an $R$-neighbour in $B_{2}$; and
+\item $S\cap(C_{1}\times C_{2})\neq\varnothing$.
+\end{enumerate}
+Then $R\cap(C_{1}\times C_{2})\neq\varnothing$.
+\end{lemma}
+
+\begin{hazard}[What the anchor buys]\label{haz:preserve-anchor}
+Membership in the rectangular closure places a pair in the same linked
+component of $R$; both lemmas then ask for an actual edge of that component
+in a box. The difficulty in Lemma~\ref{lem:preserve-linked} is not the
+types. At a step of the right-hand chain where
+$(\RightLinked(R)\cap B^{2})/\sigma$ is full, the intersection cannot die at
+all --- Lemma~\ref{lem:leftlinked-stay-full}, applied to the transpose with
+the left-hand set as its second factor, closes it outright. At a step where
+it is not full, Lemma~\ref{lem:cut-or-nothing}(1) pins every linked
+component of $R$ to a single $\sigma$-block of $B$; but then the known mixed
+nonemptiness $R\cap(C_{1}\times B_{2})\neq\varnothing$ may lie in a
+\emph{different} linked component from the witness of
+$S\cap(C_{1}\times C_{2})\neq\varnothing$, and nothing in this section moves
+an edge between components while keeping one end in $C_{1}$. Hypothesis (i)
+of Lemma~\ref{lem:preserve-linked-anchored} dissolves exactly that
+obstruction: the witness's own neighbour is an edge of the right component,
+and the full/cut dichotomy then closes both ways.
+
+The anchor is not free at the call site of Lemma~\ref{lem:preserve-linked}
+in Lemma~\ref{lem:parallelogram-crucial}: there it would demand that every
+section of the crucial constraint over one block of coordinates whose
+entries lie in $D^{(2)}$ extend to a full tuple with the remaining entries
+in $D^{(1)}$, and $1$-consistency of $D^{(1)}$ is a per-variable statement,
+not a per-tuple one. So Lemma~\ref{lem:preserve-linked} stays as stated,
+with Lemma~\ref{lem:preserve-linked-anchored} as its proved core.
+\end{hazard}
+
 \begin{lemma}[Anchored stable intersection]\label{lem:anchored-intersection}
 Let $W\sdle\mathbf A_{1}\times\mathbf A_{2}$, let
 $C_{1}\subt[A_{1}]{T_{1}(\sigma_{1})}B_{1}\lll A_{1}$ with

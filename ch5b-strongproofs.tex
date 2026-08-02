@@ -2303,6 +2303,70 @@ $\TPC$, and symmetrically for $T_{1}=\TPC$. The contradiction refutes the
 assumption, so $W\cap(C_{1}\times C_{2})\neq\varnothing$.
 \end{proof}
 
+\begin{proof}[Proof of Lemma~\ref{lem:preserve-linked-anchored}]
+Write $\Lambda_{1}=\LeftLinked(R)$ and $\Lambda=\RightLinked(R)$ ---
+congruences on $\mathbf A_{1}$ and $\mathbf A_{2}$ by
+Lemma~\ref{lem:linked-basics}(a), the projections being full by
+subdirectness. Fix $(c_{1},c_{2})\in S\cap(C_{1}\times C_{2})$ and, by (i),
+some $w\in B_{2}$ with $(c_{1},w)\in R$. Let $E$ be the $\sigma$-block with
+$C_{2}=B_{2}\cap E$ (Definition~\ref{def:types}(ii)); since $c_{2}\in C_{2}$,
+$E=[c_{2}]_{\sigma}$.
+
+\emph{Step 1: $(w,c_{2})\in\Lambda$.} First a transport observation:
+\emph{if $(x,x')\in\Lambda_{1}$ and $(x,y),(x',y')\in R$, then
+$(y,y')\in\Lambda$.} Indeed $\Lambda_{1}$ is the transitive closure of
+$R\circ R^{-1}$ (Definition~\ref{def:linked}), so there are
+$x=u_{0},\dots,u_{n}=x'$ and $v_{0},\dots,v_{n-1}$ with
+$(u_{i},v_{i}),(u_{i+1},v_{i})\in R$; consecutive members of the list
+$y,v_{0},\dots,v_{n-1},y'$ share a left neighbour --- $u_{0}$, then
+$u_{1},\dots,u_{n-1}$, then $u_{n}$ --- so all are $\Lambda$-related.
+(For $n=0$ the list is $y,y'$, sharing $x=x'$.) Now put
+\[
+  T=\{(x,y):\text{there is }(x',y')\in R\text{ with }
+    (x,x')\in\Lambda_{1}\text{ and }(y',y)\in\Lambda\} .
+\]
+$T\supseteq R$, both linking equivalences being reflexive on the full
+domains. $T$ is rectangular: let $(a,c),(a,d),(b,c)\in T$, with witnessing
+edges $(a_{1},c^{*}),(a_{2},d^{*}),(b_{1},c^{**})\in R$ respectively. Then
+$(a_{1},a_{2})\in\Lambda_{1}$, so the transport observation gives
+$(c^{*},d^{*})\in\Lambda$, whence
+$c^{**}\,\Lambda\,c\,\Lambda\,c^{*}\,\Lambda\,d^{*}\,\Lambda\,d$, and the
+edge $(b_{1},c^{**})$ witnesses $(b,d)\in T$. Since the rectangular closure
+is the least rectangular relation containing $R$
+(Definition~\ref{def:parallelogram}, Lemma~\ref{lem:rect-basics}(b)),
+$S\subseteq T$. In particular $(c_{1},c_{2})\in T$: there is
+$(x',y')\in R$ with $(c_{1},x')\in\Lambda_{1}$ and $(y',c_{2})\in\Lambda$.
+The transport observation, applied to $(c_{1},x')$ with the edges
+$(c_{1},w)$ and $(x',y')$, gives $(w,y')\in\Lambda$, hence
+$(w,c_{2})\in\Lambda$.
+
+\emph{Step 2: the dichotomy.} Suppose first
+$(\Lambda\cap B_{2}^{2})/\sigma\neq(B_{2}/\sigma)^{2}$. The congruence
+$\sigma$ is a dividing congruence for $B_{2}\le A_{2}$ --- it witnesses the
+step $C_{2}\subt{\TD(\sigma)}B_{2}$ --- so
+Lemma~\ref{lem:cut-or-nothing}(1), applied on $\mathbf A_{2}$ to $B_{2}$
+with its chosen chain and the congruence $\Lambda$, gives
+$\Lambda\cap B_{2}^{2}\subseteq\sigma$. By Step~1,
+$(w,c_{2})\in\Lambda\cap B_{2}^{2}\subseteq\sigma$, so
+$w\in B_{2}\cap E=C_{2}$, and $(c_{1},w)\in R\cap(C_{1}\times C_{2})$.
+
+Suppose instead $(\Lambda\cap B_{2}^{2})/\sigma=(B_{2}/\sigma)^{2}$. Apply
+Lemma~\ref{lem:leftlinked-stay-full} to
+$R^{-1}\sdle\mathbf A_{2}\times\mathbf A_{1}$ with first factor
+$B_{2}\lll A_{2}$, second factor $C_{1}\lll A_{1}$, and the congruence
+$\sigma$. The hypotheses of Lemma~\ref{lem:center-pushed-in} hold:
+$\mathbf B_{2}/\sigma$ is BA and centre free by
+Definition~\ref{def:types}(iii), and
+$R^{-1}\cap(B_{2}\times C_{1})\ni(w,c_{1})$. Moreover
+$\LeftLinked(R^{-1})=\Lambda$, so the fullness hypothesis is the present
+case. The conclusion,
+$\LeftLinked\bigl(R^{-1}\cap(B_{2}\times C_{1})\bigr)/\sigma
+=(B_{2}/\sigma)^{2}$, attained at the pair $(E,E)$, produces
+$u\in\proj_{1}\bigl(R^{-1}\cap(B_{2}\times C_{1})\bigr)$ with $u\in E$;
+then $u\in B_{2}\cap E=C_{2}$, and any $R$-partner of $u$ in $C_{1}$ puts
+an edge in $R\cap(C_{1}\times C_{2})$.
+\end{proof}
+
 \begin{proof}[Proof of Lemma~\ref{lem:linear-on-top}]
 By Lemma~\ref{lem:linear-equiv} there is a bridge $\delta$ from $\sigma$ to
 $\sigma$ with $\bcol\delta\supsetneq\sigma$, reflexive by

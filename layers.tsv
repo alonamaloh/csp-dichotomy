@@ -67,6 +67,7 @@ cor:prop-from-factor	3
 cor:prop-times-cong	3
 cor:prop-relations	3
 lem:preserve-linked	3
+lem:preserve-linked-anchored	3
 lem:anchored-intersection	3
 lem:typed-above	3
 lem:intersect-all	3

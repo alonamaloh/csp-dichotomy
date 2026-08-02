@@ -1,12 +1,14 @@
 %!TeX root=csp-audit.tex
 \section{The register}\label{sec:register}
 
-Eighteen places where \cite{ZhukSimplified} is wrong, incomplete, or states
+Nineteen places where \cite{ZhukSimplified} is wrong, incomplete, or states
 less than its own proof gives. Sixteen are repaired and none of those repairs
-needs new mathematics. Two are open: $\mathrm{D}17$ and $\mathrm{D}19$ ---
-though neither now blocks the proof paper in its original form, since the
-route-four rewrite of Entry~\ref{ent:route-four} moved what remains of both
-into one claim and one stated lemma there.
+needs new mathematics. Three are open: $\mathrm{D}17$, $\mathrm{D}19$ and
+$\mathrm{D}21$ --- though none of the first two now blocks the proof paper in
+its original form, since the route-four rewrite of
+Entry~\ref{ent:route-four} moved what remains of both into one claim and one
+stated lemma there; and $\mathrm{D}21$'s live repair route folds it into the
+same claim (\S\ref{sec:D21}).
 
 \begin{center}\footnotesize
 \begin{longtable}{@{}llp{0.38\textwidth}p{0.26\textwidth}@{}}
@@ -65,6 +67,12 @@ $\mathrm D{20}$ & \texttt{main:2574} & The parallelogram lemma omits the
   subdirectness its own proof spends, and the repair needs $\TS$-freeness of
   the $D^{(1)}$-domains besides &
   \pkey{lem:parallelogram-\brk crucial} \\
+$\mathrm D{21}$ & \texttt{SS:2892} & The linkedness-preservation auxiliary
+  asserts its cross-component step: the $S$-witness and the mixed edge may
+  lie in different linked components, and nothing joins them.
+  \textbf{Open}: the anchored form is proved, the unanchored lemma stays
+  stated &
+  \pkey{lem:preserve-linked-\brk anchored}, \pkey{lem:preserve-linked} \\
 \hline
 \end{longtable}
 \end{center}
@@ -1018,6 +1026,74 @@ paper: \pkey{lem:parallelogram-crucial}, hypotheses (i) and (ii), and its
 Caveat \pkey{haz:parallelogram-hyp}; \pkey{lem:minimal-consistent}, now
 proved with the restored hypothesis, and its Caveat
 \pkey{haz:minimal-consistent}.
+
+\subsection{$\mathrm D{21}$ --- the linkedness-preservation auxiliary asserts
+  its cross-component step. \textbf{Open}}\label{sec:D21}
+
+\texttt{LEMPreserve\brk Linkdness\brk OneStepAUX} (\texttt{SS:2821--2896})
+is the workhorse behind \texttt{LEMPreserve\brk Linkdness}; the chain is AUX
+$\to$ \texttt{LEMPreserve\brk Linkdness\brk OneStep} (\texttt{SS:2984})
+$\to$ the lemma
+(\texttt{SS:3007}), and the outer two links are sound
+(\S\ref{sec:exp-preserve}). Case~2 of AUX's own proof ends, verbatim
+(\texttt{SS:2892--2895}):
+
+\begin{quote}\small
+``Since $S\cap(C_{1}\times C_{2})\neq\varnothing$,
+$C_{1}'\times C_{1}''\subseteq \mathrm{LeftLinked}(R')$, which contradicts
+condition 1 of Lemma [\texttt{LEMCongruenceEitherCutOrDoNothing}].''
+\end{quote}
+
+No justification is given, and none is visible. $S\cap(C_{1}\times
+C_{2})\neq\varnothing$ places one pair in one linked component of $R$;
+$C_{1}''$ is produced by a \emph{different} nonemptiness,
+$R'\cap(B_{1}'\times C_{2}')\neq\varnothing$, and nothing places its
+witness in the same component --- $R'$ could a priori split into components
+with the $S$-witness in one and the mixed edge in another. The saturation
+$\mathrm{LeftLinked}(R')\supseteq\delta_{1}$ is true and useful but joins
+only $\delta_{1}$-related points, and $C_{1}'$ is a union of several
+$\delta_{1}$-blocks.
+
+The gap is exactly a \emph{component-attachment} problem, and it is the
+whole difficulty of the lemma: in the regime where Case~2 is entered,
+condition 1 of \texttt{LEMCongruence\brk Either\brk Cut\brk Or\brk
+DoNothing} pins every linked
+component to a single block, so the components carry disjoint private
+matchings, and the printed hypotheses do not connect the component of the
+$S$-witness to any edge in the box. The fullness regime, by contrast, is
+closed by \texttt{LEMLeftLinkedStayFull} unconditionally --- so the defect
+is confined to, and coextensive with, the cut regime.
+
+Three further facts, established on the proof-paper side. First, the
+statement survives one strengthening: with an \emph{anchor} --- every
+element of $C_{1}$ has an $R$-neighbour in $B_{2}$ --- the witness's own
+neighbour is an edge of the right component, and the full/cut dichotomy
+closes both ways; this is \pkey{lem:preserve-linked-anchored},
+\textsc{proved}. Second, the anchor is not dischargeable at the lemma's one
+consumer (\texttt{main:2632}, the parallelogram step of
+\texttt{LEMParalPropertyFromCrucialInMultiType}): there it would say that
+every section of the crucial constraint over one block of coordinates with
+entries in $D^{(2)}$ extends through $R$ to the other block inside
+$D^{(1)}$, and $1$-consistency of $D^{(1)}$ is per-variable, not
+per-tuple. Third, no counterexample can live in the purely affine world:
+a subdirect subuniverse of a product of affine algebras is a coset, and a
+coset is its own rectangular closure, so there the conclusion holds
+outright. The source itself contains, commented out at
+\texttt{SS:2899--2981}, an abandoned alternative proof of a one-sided
+variant carrying the extra hypothesis
+$R\cap(B_{1}\times B_{2})\le_{sd}B_{1}\times B_{2}$ --- an anchor ---
+which suggests the difficulty was met and sidestepped.
+
+\emph{Status: open.} \pkey{lem:preserve-linked} remains stated;
+\pkey{lem:preserve-linked-anchored} is its proved core, and Caveat
+\pkey{haz:preserve-anchor} records the obstruction. The live repair route
+is not to prove the unanchored lemma but to bypass it at the consumer:
+cruciality reduces the parallelogram step to a single zigzag
+($W\circ W^{-1}\circ W\supsetneq W$ would itself be a properly weaker
+constraint), and the per-coordinate descent that remains is of the same
+anchored shape as \pkey{lem:find-consistent} and
+Claim~\pkey{cl:typing-anchor} --- folding this defect into the debts the
+chain already carries rather than adding a new one.
 
 \section{Statements restated}\label{sec:restated}
 
