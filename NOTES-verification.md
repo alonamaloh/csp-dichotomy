@@ -1442,3 +1442,49 @@ Graph after: 117 statements, 82 proofs, 196 edges. L4 debts drop to four (three 
 find-consistent, bridge-from-instance, cor:same-type; plus parallelogram-crucial
 outlined). Next targets unchanged: PC localization (lem:pc-on-top), the Step-1 redesign
 (D21), find-consistent's legs, lem:typed-above t≥2.
+
+## PC localization: JACM scouting (the mechanism is full transversality, not irreducibility)
+
+**Same session, reconnaissance only.** Read JACM (1704.01914) `AbsCenterPCLinearProperty.tex`
+around `PCBsub` (≈line 1862) and `SequencesOfSubuniverses`, plus the absorption
+restriction lemmas at the top of the file.
+
+**How JACM restricts PC congruences (`PCBsub`'s proof, read and quoted):** "Every
+equivalence class E of σᵢ is a PC subuniverse. Then Lemma [IntersectionOfTwoSubuniverses]
+implies that E has a nonempty intersection with B₂. Therefore B₂/σᵢ ≅ D/σᵢ and
+σᵢ∩(B₂×B₂) is a PC congruence on B₂." Three ingredients, none of which is
+irreducibility: (1) JACM *defines* PC congruence as "quotient polynomially complete", no
+cover condition; (2) blocks of any PC congruence are PC subuniverses outright; (3) the
+pairwise-intersection theorem for one-of-four subuniverses then makes ANY one-of-four
+B meet EVERY block — full transversal — so the induced hom B/(σ∩B²) → D/σ is an algebra
+isomorphism and polynomial completeness transfers. Restriction is a two-line corollary
+of transversality.
+
+**Why this does not transport directly:** our operational definition (PC = irreducible
+not linear, with cover σ ⊇ P² only, not = A²) makes single blocks ⋘-eligible only when
+cover σ = A², and P ⋘ A need not meet σ-classes outside P's cover-block — the JACM
+transversal is unavailable for partial anchors. The localization target in our
+vocabulary is the triple, for σ_P := σ∩P² on 𝐏 (P ⋘ A, cover_A σ ⊇ P², 𝐏/σ BA-centre-
+free — all supplied by the given step B ⊂_{PC(σ)} P): (i) every σ_P-stable subuniverse
+of 𝐏² properly above σ_P contains P² (this is def:types(i) for the re-typed step AND
+implies irreducibility); (ii) the class of σ_P on 𝐏 (it could a priori flip to linear —
+whether the consumers tolerate that or the class must be preserved is undecided).
+Useful fact derived on the way: for irreducible 0 on A′, cover(0) = Sg(diagonal ∪
+{(c,d)}) for ANY nondiagonal pair (c,d) of the cover — so with cover ⊇ P′², ambient
+generation from any P′-pair already fills P′²; localization fails exactly when ambient
+generation strictly beats generation inside 𝐏′.
+
+**Possible routes, in order of promise.** (α) Prove the transversal in our framework
+*within the cover-block*: does P ⋘ A meet every σ-class of [the cover-block containing
+P]? If yes, the JACM iso-transfer runs verbatim with lem:pc-on-top supplying polynomial
+completeness (needs cover = A² — exactly what holds after cutting to the cover-block?
+the cover-block as an algebra with σ restricted... this needs care: the cover-block is
+σ-stable but "cover = full" on it is not automatic). (β) Reprove restriction from
+polynomial completeness directly: if A/σ is polynomially complete (pc-on-top's
+conclusion), reflexive subuniverses of (A/σ)² are conjunctions of equalities = 0 and
+full; then any P′ ⊆ A/σ inherits... note this needs pc-on-top (stated only,
+Istinger–Kaiser) AND cover = A². (γ) Avoid localization: rederive the (pc) payload of
+stable intersection under anchored subdirectness directly — requires reading how
+thm:stable-intersection's proof produces (pc) and what breaks with anchors. Route (γ)
+is likely where cl:typing-anchor's (α),(β) configurations already live, consistent with
+folding all remaining debts there.
