@@ -898,12 +898,30 @@ The remaining possibility is a step of type $\TBA$ or $\TC$:
   E\cap B'\neq\varnothing,\qquad E\cap C'=\varnothing .
 \end{equation}
 
+\emph{Configuration \eqref{eq:config-gamma} does not occur.} Run the
+construction of Step~1 at the split $K=\{1\}$, $L=\{2,\dots,n\}$: since
+$E_{K}=\proj_{1}(R)=A$, this reads $R$ as
+$W\sdle\mathbf A\times\mathbf E_{L}$, and Step~1 established
+$E_{L}^{(2)}\subte[E_{L}]{\TMD}E_{L}^{(1)}\lll E_{L}$. By construction
+$E=\proj_{1}\bigl(W\cap(A\times E_{L}^{(2)})\bigr)$. Both anchor
+configurations of Lemma~\ref{lem:anchored-intersection}(i) are nonempty:
+$W\cap(B'\times E_{L}^{(2)})\neq\varnothing$ is exactly
+$E\cap B'\neq\varnothing$, and $W\cap(C'\times E_{L}^{(1)})\neq\varnothing$
+because every tuple of $R^{(1)}$ has first entry in
+$D^{(1)}_{x_{1}}=B\subseteq C'$ and $L$-part in $E_{L}^{(1)}$, and
+$R^{(1)}\neq\varnothing$. With the member
+$C'\subt[A]{T_{k}}B'\lll A$, $T_{k}\in\{\TBA,\TC\}$, clause (ii) of the
+lemma holds, and its conclusion
+$W\cap(C'\times E_{L}^{(2)})\neq\varnothing$ says $E\cap C'\neq\varnothing$
+--- against \eqref{eq:config-gamma}. So the chain step at the first failure
+is never of type $\TBA$ or $\TC$, and Case~B always lands in
+$\sigma=\xi_{k}$ or in \eqref{eq:config-beta}.
+
 \begin{claim}[The typing anchor]\label{cl:typing-anchor}
 In configuration \eqref{eq:config-alpha}, $\sigma$ is linear if $T=\TL$ and
 PC if $T=\TPC$, with $\cover{\sigma}\supseteq B^{2}$. In configuration
 \eqref{eq:config-beta}, the class of $\sigma=\xi_{k}$ is that of $T$ when
-$T\in\{\TL,\TPC\}$. Configuration \eqref{eq:config-gamma} does not occur.
-And if $T=\TPC$ then $n=2$.
+$T\in\{\TL,\TPC\}$. And if $T=\TPC$ then $n=2$.
 \end{claim}
 
 Granting the claim, the lemma follows. Step~1 is the parallelogram property.
@@ -925,14 +943,17 @@ itself only stated, with its $t=1$ case immediate from
 Proposition~\ref{prop:cover}(b). So what stands complete is: the
 parallelogram property (Step~1, resting on the stated
 Lemma~\ref{lem:preserve-linked} and Corollary~\ref{cor:prop-relations});
-irreducibility (Step~2); the one-class fact (Step~3); and, at each
-coordinate, the reduction of the typing to the three displayed
-configurations. The claim is the residue, and it is a sibling of
-Claim~\ref{cl:multiply-step}: configuration \eqref{eq:config-gamma} is the
-same single-type $\TBA$/$\TC$ obstruction as
-Caveat~\ref{haz:multiply-citation}(a), and the class part of
+irreducibility (Step~2); the one-class fact (Step~3); the exclusion of
+configuration \eqref{eq:config-gamma} by
+Lemma~\ref{lem:anchored-intersection}; and, at each coordinate, the
+reduction of the typing to the two configurations \eqref{eq:config-alpha}
+and \eqref{eq:config-beta}. The claim is the residue, and the class part of
 \eqref{eq:config-beta} is the same type-$\TD$-step mismatch as
-Caveat~\ref{haz:multiply-citation}(b).
+Caveat~\ref{haz:multiply-citation}(b). Note that the single-type
+$\TBA$/$\TC$ obstruction of Caveat~\ref{haz:multiply-citation}(a), though it
+looks like \eqref{eq:config-gamma}, is \emph{not} discharged by the same
+lemma: it arises at the level of subsets of one algebra, where no subdirect
+relation is available to anchor.
 
 One route is closed, and it is worth recording with the example that closes
 it. Configuration \eqref{eq:config-alpha} cannot be \emph{refuted}: it is

@@ -36,8 +36,8 @@ both are written so that a reader can check them in a few lines by hand.
 
 One structural property \emph{is} checked mechanically: the proof-dependency
 graph of this document --- an edge from each statement to every statement its
-proof cites --- is acyclic, over $114$ statements, $78$ of which carry proofs,
-and $182$ edges. That is a check on the arrangement, not on the mathematics,
+proof cites --- is acyclic, over $115$ statements, $79$ of which carry proofs,
+and $185$ edges. That is a check on the arrangement, not on the mathematics,
 and it has caught three real cycles: Caveats~\ref{haz:reverse-hom-split} and
 \ref{haz:central-critical-split}, and a third that a first draft of
 \pkey{lem:self-intersection-pc} introduced by borrowing four steps from the
@@ -133,6 +133,11 @@ that cites it, and the steps are now written out.
 \pkey{lem:intersection-good} & \textsc{proved} & both parts written out, with
   the five properness splits and the two full-fibre steps;
   Caveat~\ref{haz:intersection-draft} \\
+\pkey{lem:anchored-intersection} & \textsc{proved} & the anchored form of
+  stable intersection: leave-one-out is manufactured by first failure along
+  the multi-type chain; closes configuration $(\gamma)$ in the proof of
+  \pkey{lem:parallelogram-crucial} and the mixed-type half of the source's
+  $\mathrm D19$; Caveat~\ref{haz:anchored} \\
 \pkey{lem:block-good-bridge}, \pkey{lem:center-pushed-in},
   \pkey{lem:leftlinked-stay-full}, \pkey{lem:factor-by-delta}
   & \textsc{outlined} & \\
@@ -182,9 +187,10 @@ that cites it, and the steps are now written out.
   $1$-consistency of $\mathcal I$ restored as a hypothesis,
   Caveat~\ref{haz:minimal-consistent} \\
 \pkey{lem:parallelogram-crucial} & \textsc{outlined} & the parallelogram
-  property, irreducibility, the one-class fact, and the good branch of the
-  typing are proved; what remains is Claim~\ref{cl:typing-anchor} and the
-  stated \pkey{lem:typed-above}. Two hypotheses restored: subdirectness of
+  property, irreducibility, the one-class fact, the good branch of the
+  typing, and the exclusion of the $\TBA$/$\TC$ corner (via
+  \pkey{lem:anchored-intersection}) are proved; what remains is
+  Claim~\ref{cl:typing-anchor} and the stated \pkey{lem:typed-above}. Two hypotheses restored: subdirectness of
   $R$ and $\TS$-freeness of the $\mathbf D^{(1)}_{x_{i}}$,
   Caveats~\ref{haz:parallelogram-hyp} and \ref{haz:typing-anchor} \\
 \hline
@@ -221,7 +227,7 @@ that cites it, and the steps are now written out.
 
 The algebraic core of the strong-subuniverse theory
 (\S\ref{sec:properties}--\S\ref{sec:strongproofs}) is the part in the best
-shape: of its sixty-two statements, forty are proved here --- one of them,
+shape: of its sixty-three statements, forty-one are proved here --- one of them,
 \pkey{lem:maximal-mult}, only under Hypothesis~\ref{hyp:maximal-mult} ---
 twelve are imported with exact citations, five are outlined, and five are
 stated only. The two ends of the document, \S\ref{sec:target} and

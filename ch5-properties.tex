@@ -339,6 +339,50 @@ rectangular closure of $R$, and suppose $R\cap(B_{1}\times B_{2})\neq
 $R\cap(C_{1}\times C_{2})\neq\varnothing$.
 \end{lemma}
 
+\begin{lemma}[Anchored stable intersection]\label{lem:anchored-intersection}
+Let $W\sdle\mathbf A_{1}\times\mathbf A_{2}$, let
+$C_{1}\subt[A_{1}]{T_{1}(\sigma_{1})}B_{1}\lll A_{1}$ with
+$T_{1}\in\{\TBA,\TC,\TS,\TL,\TPC\}$, and let
+$C_{2}\subte[A_{2}]{\MT T}B_{2}\lll A_{2}$ with $T\in\{\TL,\TPC,\TD\}$.
+Suppose
+\begin{enumerate}\romanlabels\tightlist
+\item $W\cap(B_{1}\times C_{2})\neq\varnothing$ and
+  $W\cap(C_{1}\times B_{2})\neq\varnothing$;
+\item $T_{1}\in\{\TBA,\TC,\TS\}$; or $T_{1}=\TL$ and $T=\TPC$; or
+  $T_{1}=\TPC$ and $T=\TL$.
+\end{enumerate}
+Then $W\cap(C_{1}\times C_{2})\neq\varnothing$.
+\end{lemma}
+
+\begin{hazard}[What ``anchored'' means, and what the lemma does not
+  cover]\label{haz:anchored}
+Corollary~\ref{cor:stable-intersection} requires its relation subdirect over
+the \emph{ambients} of the typed steps, and its leave-one-out condition frees
+a coordinate to the top of its own step. In applications the known
+nonemptiness lives lower: the relation is subdirect only over a standing
+reduction --- $1$-consistency of a reduction $D^{(1)}$ supplies exactly
+subdirectness over the $D^{(1)}_{x}$ --- and the known emptiness has the
+reduction, not the full domain, at every other coordinate.
+Lemma~\ref{lem:anchored-intersection} is the form that consumes such data:
+hypothesis (i) is the anchor, and the leave-one-out configurations that
+Corollary~\ref{cor:stable-intersection} needs are manufactured inside the
+proof, by walking down the chain of Lemma~\ref{lem:multitype-chain} to the
+first step at which the intersection dies. It is the analogue, in this
+development, of the fit-in lemmas of \cite{ZhukJACM}, which walk chains of
+subuniverses with an anchoring tuple.
+
+Hypothesis (ii) is exactly the condition that \emph{no} alternative of
+Corollary~\ref{cor:stable-intersection} admits the pair of types
+$\{T_{1},T'\}$ with $T'$ the class of a step of the chain: $\TS$ appears in
+no alternative, $\TBA$ and $\TC$ only alongside themselves, and the two
+dividing classes only alongside themselves. What the lemma therefore does
+\emph{not} cover is a family of steps of one class --- two $\TPC$ blocks, or
+a critically inconsistent family of $\TBA$ steps --- where an alternative of
+the corollary is consistent with the data; those configurations retain their
+own routes (Lemma~\ref{lem:strong-nonempty} for $\TS$ at set level,
+Claim~\ref{cl:typing-anchor} for what remains open).
+\end{hazard}
+
 \begin{lemma}[Irreducibles above a typed family]\label{lem:typed-above}
 Let $B\lll A$ with $\mathbf B$ $\TS$-free, let $T\in\{\TL,\TPC,\TD\}$, and
 for $i\in[t]$, $t\ge1$, let $\tau_{i}$ be an irreducible congruence on

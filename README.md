@@ -35,8 +35,8 @@ any repair marker, any commentary on the source, and any mention of a proof assi
 statement in the proof paper is marked *proved*, *imported* (with an exact citation and
 the hypotheses as the source states them), *outlined*, *stated only*, or *open*.
 
-The algebraic core of the strong-subuniverse theory is in the best shape: of its sixty-two
-statements, forty are proved here (one of them, `lem:maximal-mult`, only under an
+The algebraic core of the strong-subuniverse theory is in the best shape: of its sixty-three
+statements, forty-one are proved here (one of them, `lem:maximal-mult`, only under an
 explicitly stated hypothesis), twelve are imported, five are outlined, five are stated only.
 The two ends of the document are now stated rather than gestured at: the theorem is stated
 for a rigid core and derived for arbitrary Γ, `Solve_alg` is a function with a well-founded

@@ -2265,6 +2265,44 @@ Lemma~\ref{lem:intersect-all}(t) gives $D_{j+1}\subte[A]{T}D_{j}$, using
 $D_{j}\lll A$ from part (i); collapsing the equalities gives the chain.
 \end{proof}
 
+\begin{proof}[Proof of Lemma~\ref{lem:anchored-intersection}]
+By Lemma~\ref{lem:multitype-chain} fix a chain
+$C_{2}=F_{s}\subt[A_{2}]{T}\dots\subt[A_{2}]{T}F_{0}=B_{2}$. If $s=0$ then
+$C_{2}=B_{2}$ and the second part of (i) is the conclusion. Each truncation
+of the chain witnesses $F_{j}\lll^{A_{2}}B_{2}$, and concatenating it with
+the chain for $B_{2}\lll A_{2}$ gives $F_{j}\lll A_{2}$ for every $j$.
+
+Suppose for contradiction that $W\cap(C_{1}\times C_{2})=\varnothing$. Along
+the chain, $W\cap(C_{1}\times F_{0})\neq\varnothing$ by (i) and
+$W\cap(C_{1}\times F_{s})=\varnothing$, so there is a least $j$ with
+$W\cap(C_{1}\times F_{j})=\varnothing$; fix it, so that
+$W\cap(C_{1}\times F_{j-1})\neq\varnothing$. Write the step as
+$F_{j}\subt[A_{2}]{T(\xi)}F_{j-1}$ and let $T'$ be the class of $\xi$ ---
+linear or PC, exhaustively, by Definition~\ref{def:linear-congruence} --- so
+that $F_{j}\subt[A_{2}]{T'(\xi)}F_{j-1}$; for $T\in\{\TL,\TPC\}$ the class
+is $T'=T$, and for $T=\TD$ it is whichever the step's congruence has.
+
+Apply Corollary~\ref{cor:stable-intersection} to $W$ with the two-member
+family
+\[
+  C_{1}\subt[A_{1}]{T_{1}(\sigma_{1})}B_{1}\lll A_{1},
+  \qquad
+  F_{j}\subt[A_{2}]{T'(\xi)}F_{j-1}\lll A_{2}.
+\]
+Its hypotheses hold: $W$ is subdirect; the joint intersection
+$W\cap(C_{1}\times F_{j})$ is empty by the choice of $j$; and both
+leave-one-out configurations are nonempty ---
+$W\cap(B_{1}\times F_{j})\supseteq W\cap(B_{1}\times C_{2})\neq\varnothing$
+by (i), since $C_{2}=F_{s}\subseteq F_{j}$, and
+$W\cap(C_{1}\times F_{j-1})\neq\varnothing$ by the minimality of $j$. So one
+of the four alternatives holds of the pair $\{T_{1},T'\}$. None can:
+$T'\in\{\TL,\TPC\}$, so (ba) and (c) fail; $\TS$ occurs in no alternative;
+and (l), (pc) require $T_{1}=T'\in\{\TL,\TPC\}$, which (ii) excludes ---
+for $T_{1}=\TL$ it puts $T=\TPC$, making every step of the chain of class
+$\TPC$, and symmetrically for $T_{1}=\TPC$. The contradiction refutes the
+assumption, so $W\cap(C_{1}\times C_{2})\neq\varnothing$.
+\end{proof}
+
 \begin{proof}[Proof of Lemma~\ref{lem:linear-on-top}]
 By Lemma~\ref{lem:linear-equiv} there is a bridge $\delta$ from $\sigma$ to
 $\sigma$ with $\bcol\delta\supsetneq\sigma$, reflexive by

@@ -57,8 +57,10 @@ $\mathrm D{18}$ & \texttt{main:1373} & The definition of a linear congruence
 $\mathrm D{19}$ & \texttt{main:2663, 2693} & Two stable-intersection
   applications in the typing argument never establish the corollary's
   leave-one-out hypothesis, and it is not recoverable at coordinates where
-  $D^{(2)}$ equals $D^{(1)}$. \textbf{Open} &
-  \pkey{lem:parallelogram-\brk crucial}, \pkey{cl:typing-anchor} \\
+  $D^{(2)}$ equals $D^{(1)}$. \textbf{Partly repaired}: the anchored form
+  now exists and settles the mixed-type corner; the same-class corner is
+  open &
+  \pkey{lem:anchored-\brk intersection}, \pkey{cl:typing-anchor} \\
 $\mathrm D{20}$ & \texttt{main:2574} & The parallelogram lemma omits the
   subdirectness its own proof spends, and the repair needs $\TS$-freeness of
   the $D^{(1)}$-domains besides &
@@ -772,11 +774,15 @@ absorbing-and-central witness back along the quotient map, as in
 \pkey{lem:reverse-hom}(bt)), which confines the old Hypothesis's failure
 modes to collapsed factors.
 
-Residue: \pkey{cl:typing-anchor} --- the bad branch, the two Case-B corner
-configurations, and $n=2$ for $T=\TPC$ --- and \pkey{lem:typed-above} for
+Residue: \pkey{cl:typing-anchor} --- the bad branch, the type-$\TD$
+Case-B corner, and $n=2$ for $T=\TPC$ --- and \pkey{lem:typed-above} for
 $t\ge2$. Both are recorded as open debts in the proof paper's status table;
 $\mathrm D19$ is the corresponding defect of the source's own argument at
-the same site.
+the same site. Since this entry was written, the $\TBA$/$\TC$ Case-B
+corner has come \emph{off} the residue:
+\pkey{lem:anchored-intersection}, the anchored statement called for in
+\S\ref{sec:D19}, excludes that configuration outright, and the claim now
+carries only the remainder.
 \end{entry}
 
 \subsection{$\mathrm C{10}$ --- a citation that drops a case}\label{sec:C10}
@@ -948,18 +954,29 @@ $D^{(2)}$ --- and at a coordinate where $D^{(2)}_{x}=D^{(1)}_{x}$ the
 restriction $D^{(1)}_{x}$ is a $\lll$-chain, not a block of a typed
 congruence, so it cannot be a member of the family at all. The
 inconsistency the shrinking needs, with full domains at such coordinates,
-is not known. What would repair it is an \emph{anchored} form of the
-corollary --- $R$ subdirect onto the $B_{j}$ rather than onto the full
+is not known. What repairs it is an \emph{anchored} form of the
+corollary --- known nonemptiness at the reduction rather than at the full
 domains, which is exactly what $1$-consistency of $D^{(1)}$ supplies ---
-and that anchored form is a sibling of \texttt{FitInLinearSubuniverses} of
-the JACM proof rather than of the corollary as printed.
+a sibling of \texttt{FitInLinearSubuniverses} of the JACM proof rather
+than of the corollary as printed.
 
-\emph{Status: open.} The proof paper does not repair the source's argument;
-its new proof of \pkey{lem:parallelogram-crucial} avoids both applications
-on the generic branches (Entry~\ref{ent:route-four}) and quarantines what
-they were needed for in \pkey{cl:typing-anchor}, where the corner cases
-($\TBA$/$\TC$ chain steps, and $n=2$ for $T=\TPC$) still want precisely
-such an anchored statement.
+\emph{Status: partly repaired.} The proof paper now carries that anchored
+form: \pkey{lem:anchored-\brk intersection}, whose proof manufactures the
+leave-one-out configurations by walking the multi-type chain to the first
+step at which the intersection dies, and feeds that critical pair to the
+relational corollary. It settles every application in which the two types
+in the resulting pair agree with \emph{no} alternative of the corollary ---
+in particular the first application above whenever $\mathcal
+T\in\{\TBA,\TC,\TS\}$ or $\mathcal T$ is of the class opposite to $T$,
+which in the proof paper's rewriting is the exclusion of configuration
+$(\gamma)$ in the proof of \pkey{lem:parallelogram-crucial}
+(Entry~\ref{ent:route-four}). What remains open is the \emph{same-class}
+corner, where an alternative of the corollary is consistent with the data:
+the first application with $\mathcal T=T$ needs no repair (it asserts
+exactly $\mathcal T=T$), but the second application --- the critical
+\emph{pair} of $\TPC$ blocks, and with it $n=2$ for $T=\TPC$ --- still
+wants an anchored statement for a family of steps of one class, and that
+is carried by \pkey{cl:typing-anchor}.
 
 \subsection{$\mathrm D{20}$ --- the parallelogram lemma omits hypotheses its
   proof spends}\label{sec:D20}
