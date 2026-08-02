@@ -12,6 +12,45 @@ Line numbers are into `main.tex` / `StrongSubalgebras.tex` of the v2 arXiv sourc
 
 ---
 
+## The induction measure across expanded coverings — RESOLVED, objection rejected
+
+**Verified 2026-08-02 against `main.tex`.** The measure `μ(D) = Σ_x |D_x|` is well founded for
+every appeal the main induction makes. The contrary claim — ours, and independently the
+external review's §3 — rested on a premise that is false.
+
+`THMMainInductiveCSPClaim`: statement 3408–3429, **proof 3431–3858**. It makes exactly seven
+appeals to its own inductive assumption, at lines **3439, 3507, 3511, 3536, 3689, 3714, 3724**
+(grep for "inductive assumption" within the proof; there are no others). Each is to a
+*weakening* of the current instance, so `Var` only shrinks, paired with a strictly smaller
+reduction:
+
+- 3439 (part 2): `I'` is a weakening of `I^(2)`; reduction `D^(2)`. `≤_T` permits `D^(2) =
+  D^(1)`, but then `I^(2) = I^(1)` has a solution by hypothesis and there is nothing to prove.
+- 3507, 3511 (Case 1): `J` a weakening of `I`; reduction `D^(2) ≤_T D^(1)`.
+- 3536 (Case 2, proof of 1a): the instance weakened to be crucial in `D^(2) ≤_{MT} D^(1)`.
+- 3689, 3714, 3724 (Case 2, `B_0 ≠ ∅`): instances from `Ω`, and **condition 1 of `Ω`
+  (line 3629) is "every instance in `Ω` is a weakening of `I`"**. The reduction is
+  `D^(B,⊥)`, which line 3554 defines as "the maximal 1-consistent (probably empty) reduction
+  **for `I`**" below `D^(B,⊤)`, and `D^(B,⊤)` cuts `D^(1)_z` to a proper
+  `B <_{T(σ)} D^(1)_z`.
+
+Expanded coverings occur in that proof only as **outputs** — alternative (1c), and the
+auxiliary `⊥(·)`, `Δ(·)`, `Θ` built from them. An output carries no well-foundedness
+obligation.
+
+**What misled both readings.** Line **3913** reads "By Theorem `THMMainInductiveCSPClaim`
+applied to `J'` and `D^(G,⊥)`", where `J'` is a weakening of an expanded covering `J` of `I` —
+and the surrounding text even says "the reduction `D^(G,⊤)` was defined for `I` and then
+extended to `J`". That is a genuine application at a covering. But 3913 lies in
+**`THMPCDoesnotKillAllSolutions`, 3860–3976** — a *separate* theorem, proved after the main
+claim and consuming it as a black box. The main proof does not cite it back (checked), so
+there is no mutual induction, and applying an already-proved theorem to a covering is free.
+
+I nearly published the opposite conclusion twice in one sitting: first concluding "no covering
+appeal" from an incomplete `\end{proof}` search, then reversing on finding 3913, then
+reversing back on locating the proof boundary at 3858. **The lesson is the boundary check:
+before attributing a line to a proof, find that proof's `\begin`/`\end`.**
+
 ## Confirmed
 
 ### D2 — `CORPropagationModuloCongruence` is never proved. **CONFIRMED**

@@ -5,7 +5,7 @@
 %%  csp-audit.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision f3274b2 on 2026-08-02.
+%%  Generated from revision e403370 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-audit.tex
@@ -531,18 +531,37 @@ larger measure, so the measure survives intact.
 
 Proof paper: \pkey{thm:main-inductive} and \pkey{haz:case1c}.
 
-\begin{entry}[A caveat on the measure]\label{ent:measure}
-The measure $\mu(D)=\sum_{x}|D_{x}|$ is well founded for the appeals the repair
-above uses, all of which are at a strictly smaller reduction on the
-\emph{same} variable set. It is \emph{not} well founded across expanded
-coverings, where the variable set grows and $\mu$ grows with it. The proof
-paper does not yet resolve that, and it is not a defect of the source alone;
-it is recorded here so that the two questions are not confused. A repair must
-make the measure insensitive to duplicated covering variables --- either by
-formulating the theorem for an instance equipped with a map to a fixed base
-instance and measuring on the base variables, or by carrying a parent-domain
-profile and ordering those. Putting the quantifier over instances inside the
-induction, which is necessary for other reasons, does not by itself solve it.
+\begin{entry}[The measure, and a rejected objection]\label{ent:measure}
+$\mu(D)=\sum_{x}|D_{x}|$ is well founded for every appeal the induction makes.
+An earlier draft of this entry, and the external review independently, held
+that it is not --- on the ground that the induction is applied at expanded
+coverings, where the variable set grows and $\mu$ grows with it. \textbf{That
+is wrong, and the enumeration settles it.}
+
+The proof of \texttt{THMMainInductiveCSPClaim} runs from \texttt{main:3431} to
+\texttt{main:3858} and makes exactly seven appeals to its own inductive
+assumption: \texttt{main:3439}, \texttt{3507}, \texttt{3511}, \texttt{3536},
+\texttt{3689}, \texttt{3714}, \texttt{3724}. Each is to a \emph{weakening} of
+the current instance --- so $\Var$ can only shrink --- with a reduction
+strictly smaller in $\mu$: $D^{(2)}$ in the first four, and $D^{(B,\bot)}$ in
+the last three, the latter being ``the maximal $1$-consistent (probably empty)
+reduction \emph{for $\mathcal I$}'' below $D^{(B,\top)}$
+(\texttt{main:3554}), which cuts $D^{(1)}_{z}$ to a proper
+$B<^{D_{z}}_{T(\sigma)}D^{(1)}_{z}$. The three in the
+$\mathcal B_{0}\neq\varnothing$ branch draw their instances from $\Omega$,
+whose \emph{condition 1} (\texttt{main:3629}) is ``every instance in $\Omega$
+is a weakening of $\mathcal I$''. Expanded coverings occur in that proof only
+as outputs --- alternative (1c), and the auxiliary $\bot(\cdot)$,
+$\Delta(\cdot)$ and $\Theta$ --- which carry no well-foundedness obligation.
+
+What misled both readings is \texttt{main:3913}, ``By Theorem
+\texttt{THMMainInductiveCSPClaim} applied to $\mathcal J'$ and
+$D^{(G,\bot)}$'', where $\mathcal J'$ is a weakening of an expanded covering.
+That line is at \texttt{main:3913}, inside \texttt{THMPCDoesnotKillAllSolutions}
+(\texttt{main:3860--3976}), a \emph{separate} theorem proved afterwards and
+consuming the main claim as a black box; the main proof does not cite it back,
+so there is no mutual induction. Applying a proved theorem to a covering is
+free. Proof paper: \pkey{haz:the-induction}(c).
 \end{entry}
 
 \subsection{$\mathrm D8$ --- minimal-containing-a-point versus minimal-outright}
@@ -2101,6 +2120,15 @@ rather than inferred from the uses.
   \texttt{main:1567} reads ``we write $C<_{\TBA,\TC}B$ meaning that
   $C<_{\TBA}B$ and $C<_{\TC}B$''. The reviewer is right that the notation was
   never defined in our document, and it now is; but the reading is ``both''.
+\item \textbf{The induction measure does survive expanded coverings, because
+  the induction is not applied at one.} The reviewer's \S3, and an earlier
+  draft of ours, hold that $\mu(D)=\sum_{x}|D_{x}|$ is not well founded
+  because a covering has more variables. The premise --- that the induction
+  appeals at a covering --- is false: all seven appeals inside
+  \texttt{main:3431--3858} are to weakenings, and the covering application is
+  at \texttt{main:3913}, inside the \emph{next} theorem. Entry~\ref{ent:measure}
+  gives the enumeration. This is the one review finding whose rejection
+  required reading the source rather than re-reading our own text.
 \end{itemize}
 
 \section{Risk register}\label{sec:risk}
@@ -2110,11 +2138,12 @@ What is least well tested, stated so that a later reader knows where to push.
 \begin{description}\tightlist
 \item[Open mathematics.] $\mathrm D17$ (\S\ref{sec:D17}); the
   rectangularity normalisation in
-  \texttt{LEMNoBridge\brk Between\brk DifferentTypes}; the induction
-  measure across expanded coverings (Entry~\ref{ent:measure}). These gate the
-  statements that depend on them and are marked \emph{open} in the proof
-  paper's status table. The reflexivisation, listed here in an earlier draft,
-  turned out to need no argument at all.
+  \texttt{LEMNoBridge\brk Between\brk DifferentTypes}; and the step
+  \pkey{cl:multiply-step} inside \pkey{lem:multiply-all-linear}.
+  These gate the statements that depend on them. Two items listed here in earlier drafts have since come off: the
+  reflexivisation, which needs no argument at all, and the induction measure
+  across expanded coverings (Entry~\ref{ent:measure}), which was never in
+  difficulty.
 
 \item[Least-tested repairs.] $\mathrm D7$(ii)'s reweakening and $\mathrm D6$'s
   cruciality corollary each touch the CSP-instance machinery rather than the

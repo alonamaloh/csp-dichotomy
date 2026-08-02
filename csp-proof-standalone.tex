@@ -5,7 +5,7 @@
 %%  csp-proof.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision f3274b2 on 2026-08-02.
+%%  Generated from revision e403370 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-proof.tex
@@ -5006,25 +5006,43 @@ Three further points.
   $k=\mu(D^{(1)})$; at each level establish (2) for all instances, then (1) for
   all instances. That is acyclic, and it is why part (2) is proved first.
 \item \emph{Which appeals decrease.} (2) invokes the hypothesis at
-  $D^{(2)}\subsetneq D^{(1)}$: strict because $D^{(2)}\subt{T}D^{(1)}$ has
-  $C\lneq B$ at some variable. Case~1 of (1) likewise. Case~2 invokes it at
+  $D^{(2)}\subsetneq D^{(1)}$. The containment is strict in the only case that
+  needs an argument: $D^{(2)}\subte{T}D^{(1)}$ permits equality, but if
+  $D^{(2)}=D^{(1)}$ then $\mathcal I^{(2)}=\mathcal I^{(1)}$ and (2) is its own
+  hypothesis. Case~1 of (1) likewise. Case~2 invokes it at
   $D^{(B,\bot)}\subseteq D^{(B,\top)}$, which is $D^{(1)}$ with the $z$-domain
-  cut to $B\lneq D^{(1)}_{z}$. In every case the decrease is at a single
-  variable and by at least one element. The uniform statement is: \emph{if
-  $D'\subte{T}D$ with $T$ any type and $D'\neq D$, then $\mu(D')<\mu(D)$}.
-\item \emph{The measure does not survive expanded coverings, and this is
-  open.} An expanded covering has \emph{more} variables than $\mathcal I$, and
-  the reduction of a covering is the extension of $D^{(1)}$ along the parent
-  map (Proposition~\ref{prop:covering-basics}(h)), which repeats the parent
-  domains; its $\mu$ is \emph{larger}. Observing that the domain at one parent
-  variable is properly cut does not compare the two sums, since the reductions
-  live on different variable sets and arbitrarily many children can outweigh
-  the decrease. So $\mu$ as displayed is not a well-founded measure for the
-  appeals made at coverings, and putting the quantifier over instances inside
-  does not repair it. A correct measure must be insensitive to duplicated
-  covering variables --- by measuring on the variables of a fixed base instance
-  equipped with a map from the covering, or by ordering parent-domain profiles
-  rather than summing over children. See \S\ref{sec:status}.
+  cut to $B\lneq D^{(1)}_{z}$, the properness being that of
+  $B\subt[D_{z}]{T(\sigma)}D^{(1)}_{z}$. In every case the decrease is at a
+  single variable and by at least one element. The uniform statement is:
+  \emph{if $D'\subte{T}D$ with $T$ any type and $D'\neq D$, then
+  $\mu(D')<\mu(D)$}.
+\item \emph{The measure does survive, because no appeal is made at an
+  expanded covering.} This looks like the weak point of the scheme and is not.
+  An expanded covering has \emph{more} variables than $\mathcal I$, and the
+  reduction of a covering is the extension of $D^{(1)}$ along the parent map
+  (Proposition~\ref{prop:covering-basics}(h)), which repeats the parent
+  domains; its $\mu$ is \emph{larger}, and no observation about one parent
+  variable being cut compares the two sums, since arbitrarily many children can
+  outweigh the decrease. So if the induction did appeal at a covering, $\mu$
+  would not serve.
+
+  It does not. Every appeal above is to a \emph{weakening} of the current
+  instance --- $\Var$ can only shrink --- paired with a reduction strictly
+  smaller in $\mu$: part (2) at $D^{(2)}$; Case~1 of (1) at $D^{(2)}$ twice;
+  the proof of (1a) at the minimal $\MT T$ reduction; and the three appeals in
+  the $\mathcal B_{0}\neq\varnothing$ branch at $D^{(B,\bot)}$, whose members
+  $\mathcal I'$ come from $\Omega$, every member of which is a weakening of
+  $\mathcal I$ by condition~1 of Construction~\ref{constr:omega}. Expanded
+  coverings enter only as \emph{outputs} --- the $\mathcal J$ of (1c), and the
+  auxiliary $\bot(\cdot)$, $\Delta(\cdot)$ and $\Theta$ built from them --- and
+  an output carries no well-foundedness obligation.
+
+  What does apply this theorem to a covering is
+  Theorem~\ref{thm:pc-safe}, which is a separate statement proved
+  \emph{after} it and consuming it as a black box; the appeal there is an
+  ordinary application of a proved theorem, not a step in this induction.
+  Confusing the two is the natural mistake, and it is what an earlier draft of
+  this caveat made.
 \end{enumerate}
 \end{hazard}
 
@@ -5870,8 +5888,8 @@ are made.
   These are gaps in the logical chain, not imports.
 \item[\textsc{open}] Confirmed to need an argument that is not available.
   There are none left in the table; what remains of that kind is
-  Hypothesis~\ref{hyp:maximal-mult}, which is written into a statement rather
-  than left implicit, and the normalisation of
+  Hypothesis~\ref{hyp:maximal-mult} and Claim~\ref{cl:multiply-step}, both
+  written into statements rather than left implicit, and the normalisation of
   Caveat~\ref{haz:rectangularise}.
 \end{description}
 
@@ -5989,9 +6007,8 @@ that cites it, and the steps are now written out.
 \multicolumn{3}{@{}l}{\textit{\S\ref{sec:main-statements}: the main statements}}\\
 \pkey{thm:main-inductive}(2) & \textsc{proved} & modulo the common-term
   obligation of Caveat~\ref{haz:ba-center-implies} \\
-\pkey{thm:main-inductive}(1) & \textsc{outlined} & structure only; and the
-  measure is not well founded across coverings,
-  Caveat~\ref{haz:the-induction}(c) \\
+\pkey{thm:main-inductive}(1) & \textsc{outlined} & structure only. The
+  measure \emph{is} well founded, Caveat~\ref{haz:the-induction}(c) \\
 \pkey{thm:reductions-safe} & \textsc{outlined} & the $\TBA$ and $\TC$ cases
   follow from \pkey{thm:main-inductive}(2); the $\TPC$ case is
   \pkey{thm:pc-safe}, which is stated only \\
@@ -6078,12 +6095,13 @@ Five items block the rest, and they are the honest reading of the table.
   produces a \emph{uniform} one, now that \pkey{thm:main-inductive}(2)
   hypothesises it (Caveats~\ref{haz:uniform-witness} and
   \ref{haz:witness-moved}).
-\item The induction measure across expanded coverings
-  (Caveat~\ref{haz:the-induction}(c)). The termination of weakening, listed
-  here until now, is \pkey{lem:weakening-terminates}; what remains of it is the
-  \emph{set}-valued iteration of Construction~\ref{constr:omega}, whose
-  condition 3 still replaces a member by all weaker instances
-  (Caveat~\ref{haz:omega}).
+\item The \emph{set}-valued iteration of Construction~\ref{constr:omega},
+  whose condition 3 still replaces a member by all weaker instances
+  (Caveat~\ref{haz:omega}); the single-instance case is
+  \pkey{lem:weakening-\brk terminates}. The induction measure across expanded
+  coverings, listed here until now, is \textbf{not} an open item: no appeal is
+  made at a covering, and Caveat~\ref{haz:the-induction}(c) now enumerates the
+  seven that are made.
 \end{enumerate}
 
 The dependency order among the three large statements is

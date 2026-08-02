@@ -350,6 +350,15 @@ rather than inferred from the uses.
   \texttt{main:1567} reads ``we write $C<_{\TBA,\TC}B$ meaning that
   $C<_{\TBA}B$ and $C<_{\TC}B$''. The reviewer is right that the notation was
   never defined in our document, and it now is; but the reading is ``both''.
+\item \textbf{The induction measure does survive expanded coverings, because
+  the induction is not applied at one.} The reviewer's \S3, and an earlier
+  draft of ours, hold that $\mu(D)=\sum_{x}|D_{x}|$ is not well founded
+  because a covering has more variables. The premise --- that the induction
+  appeals at a covering --- is false: all seven appeals inside
+  \texttt{main:3431--3858} are to weakenings, and the covering application is
+  at \texttt{main:3913}, inside the \emph{next} theorem. Entry~\ref{ent:measure}
+  gives the enumeration. This is the one review finding whose rejection
+  required reading the source rather than re-reading our own text.
 \end{itemize}
 
 \section{Risk register}\label{sec:risk}
@@ -359,11 +368,12 @@ What is least well tested, stated so that a later reader knows where to push.
 \begin{description}\tightlist
 \item[Open mathematics.] $\mathrm D17$ (\S\ref{sec:D17}); the
   rectangularity normalisation in
-  \texttt{LEMNoBridge\brk Between\brk DifferentTypes}; the induction
-  measure across expanded coverings (Entry~\ref{ent:measure}). These gate the
-  statements that depend on them and are marked \emph{open} in the proof
-  paper's status table. The reflexivisation, listed here in an earlier draft,
-  turned out to need no argument at all.
+  \texttt{LEMNoBridge\brk Between\brk DifferentTypes}; and the step
+  \pkey{cl:multiply-step} inside \pkey{lem:multiply-all-linear}.
+  These gate the statements that depend on them. Two items listed here in earlier drafts have since come off: the
+  reflexivisation, which needs no argument at all, and the induction measure
+  across expanded coverings (Entry~\ref{ent:measure}), which was never in
+  difficulty.
 
 \item[Least-tested repairs.] $\mathrm D7$(ii)'s reweakening and $\mathrm D6$'s
   cruciality corollary each touch the CSP-instance machinery rather than the
