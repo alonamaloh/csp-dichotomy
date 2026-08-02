@@ -207,7 +207,7 @@ the algorithm itself.
 Lemma~\ref{lem:connected} --- is stated without proof, and part (1) of the main
 induction is an outline whose measure is not yet well founded.
 
-Five items block the rest, and they are the honest reading of the table.
+Four items block the rest, and they are the honest reading of the table.
 
 \begin{enumerate}\tightlist
 \item Hypothesis~\ref{hyp:maximal-mult} of \pkey{lem:maximal-mult}: that the
@@ -228,13 +228,12 @@ Five items block the rest, and they are the honest reading of the table.
   produces a \emph{uniform} one, now that \pkey{thm:main-inductive}(2)
   hypothesises it (Caveats~\ref{haz:uniform-witness} and
   \ref{haz:witness-moved}).
-\item The \emph{set}-valued iteration of Construction~\ref{constr:omega},
-  whose condition 3 still replaces a member by all weaker instances
-  (Caveat~\ref{haz:omega}); the single-instance case is
-  \pkey{lem:weakening-\brk terminates}. The induction measure across expanded
-  coverings, listed here until now, is \textbf{not} an open item: no appeal is
-  made at a covering, and Caveat~\ref{haz:the-induction}(c) now enumerates the
-  seven that are made.
+\item[] \emph{Two entries stood here and no longer do.} The induction measure
+  across expanded coverings is not an open item --- no appeal is made at a
+  covering, and Caveat~\ref{haz:the-induction}(c) enumerates the seven that
+  are. The set-valued iteration behind $\Omega$ is
+  Proposition~\ref{constr:omega}, proved once condition 3 is stated with
+  single weakening steps.
 \end{enumerate}
 
 The dependency order among the three large statements is

@@ -5,7 +5,7 @@
 %%  csp-proof.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision e403370 on 2026-08-02.
+%%  Generated from revision 1d50a54 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-proof.tex
@@ -5148,47 +5148,106 @@ nonempty, the argument splits:
 \end{itemize}
 \end{proof}
 
-\begin{hazard}[Construction~\ref{constr:omega} is the hardest object]\label{haz:omega}
-The set $\Omega$ is specified by four conditions, one of which (condition 3) is
-a minimality condition ``if we replace any instance in $\Omega$ by all weaker
-instances then 2 is not satisfied''. The paper obtains $\Omega$ by starting
-from $\{\mathcal I\}$ and repeatedly weakening, justified by ``we cannot weaken
-forever''. Condition 4 is then \emph{derived} from condition 3.
+\begin{hazard}[What $\Omega$'s construction turns on]\label{haz:omega}
+Condition 3 is a minimality condition, and its statement is where the work is.
+Read as ``if we replace any instance in $\Omega$ by \emph{all} weaker instances
+then 2 is not satisfied'' it inherits the defect of
+Caveat~\ref{haz:weakening}: the replacement need not make progress, and the
+iteration that is supposed to produce $\Omega$ has no measure. Read with single
+weakening steps, as in Proposition~\ref{constr:omega}, both problems go away at
+once --- and the derivation of condition 4 becomes exact rather than
+approximate, because what condition 3 then hands over
+(``$\mathcal J^{(B,\bot)}$ has no solution, every single weakening of it has
+one'') is verbatim Definition~\ref{def:crucial}.
 
-This is the single most demanding step in \S\ref{sec:main-statements}, for
-three reasons. (i) The iteration weakens a \emph{set} of instances, so the
-termination measure is a measure on finite sets of instances, not on instances.
-Lemma~\ref{lem:weakening-terminates} settles the single-instance case, and the
-multiset extension of a well-founded order is well founded, so the shape of the
-argument is available; but condition 3 replaces a member by \emph{all} weaker
-instances, which is the operation Caveat~\ref{haz:weakening} rejects, and it
-has to be recast as a single step before that extension can be applied.
-(ii) The
-derivation of condition 4 from condition 3 is a two-line argument that
-instantiates condition 3 at
-$\Omega\cup\{\mathcal J_{C}:C\in\mathcal J\}\setminus\{\mathcal J\}$ and reads
-off an existential; the existential witness $B$ depends on $\mathcal J$, so
-condition 4 is a $\Pi\Sigma$ statement and must be stated as such. (iii) The
-subsequent Subcase~1 builds a \emph{second} descending sequence
-$\mathcal B_{1}\supseteq\mathcal B_{2}\supseteq\dots$ inside the first, again
-terminating by finiteness. Nested well-founded constructions of this shape are
-where informal proofs most often hide a circularity, and this one is isolated
-here rather than left inside the proof.
+Two things about the construction are worth keeping in view.
+
+\begin{enumerate}\alphlabels\tightlist
+\item \emph{The iteration is on a set of instances, so the measure is too.}
+  Lemma~\ref{lem:weakening-terminates} orders instances; the construction
+  removes one member and inserts several smaller ones, which is a step in the
+  multiset extension of that order. The proof above avoids naming the multiset
+  order by counting values in $\mathbb N^{V}$ over the finite value set $V$,
+  which is the same argument in a form whose well-foundedness is visible.
+\item \emph{Condition 4's witness depends on $\mathcal J$.} The $B$ produced
+  varies with the member, so condition 4 is a $\Pi\Sigma$ statement: ``for
+  every $\mathcal J$ there is $B$'' may not be strengthened to a single $B$
+  serving all of $\Omega$, and the consumers in \S\ref{sec:main-statements}
+  pick a fresh $B$ for each $\mathcal J$ accordingly.
+\item \emph{A second descending sequence sits inside the first.} Subcase~1 of
+  the $\mathcal B_{0}\neq\varnothing$ branch builds
+  $\mathcal B_{1}\supseteq\mathcal B_{2}\supseteq\dots$ by repeatedly applying
+  the inductive hypothesis, terminating because $\mathcal B_{1}$ is finite and
+  the sequence is strictly decreasing. That is a different and much easier
+  well-foundedness argument than
+  Proposition~\ref{constr:omega}'s, and the two are worth keeping apart:
+  nested constructions of this shape are where informal proofs most often hide
+  a circularity, and neither of these does.
+\end{enumerate}
 \end{hazard}
 
-\begin{remark}[Construction of $\Omega$]\label{constr:omega}
-$\Omega$ is a finite set of weakenings of $\mathcal I$ with:
+\begin{longproposition}[Construction of $\Omega$]\label{constr:omega}
+Let $\mathcal I$ be crucial in $D^{(1)}$ with $\mathcal B_{0}\neq\varnothing$,
+and for a weakening $\mathcal J$ of $\mathcal I$ put
+$\Sol(\mathcal J)=\{B\in\mathcal B_{0}:\mathcal J^{(B,\bot)}\text{ has a
+solution}\}$. Then there is a finite set $\Omega$ of instances with:
 \begin{enumerate}\tightlist
 \item every member is a weakening of $\mathcal I$;
-\item $\bigcap_{\mathcal J\in\Omega}\Sol(\mathcal J)=\varnothing$, where
-  $\Sol(\mathcal J)=\{B\in\mathcal B_{0}:\mathcal J^{(B,\bot)}$ has a
-  solution$\}$;
-\item replacing any member by all weaker instances destroys 2;
+\item $\bigcap_{\mathcal J\in\Omega}\Sol(\mathcal J)=\varnothing$;
+\item for every $\mathcal J\in\Omega$, the set
+  $\bigl(\Omega\setminus\{\mathcal J\}\bigr)\cup
+   \{\mathcal J[C\mapsto C']:C\in\mathcal J,\ C'\text{ weaker than }C\}$
+  does \emph{not} satisfy 2;
 \item for every $\mathcal J\in\Omega$ there is $B\in\mathcal B_{0}$ with
   (a) $\mathcal J$ crucial in $D^{(B,\bot)}$ and (b) $B\in\Sol(\mathcal J')$
   for every $\mathcal J'\in\Omega\setminus\{\mathcal J\}$.
 \end{enumerate}
-\end{remark}
+\end{longproposition}
+
+\begin{proof}
+\emph{Monotonicity.} If $\mathcal J'$ is weaker than $\mathcal J$ then every
+solution of $\mathcal J^{(B,\bot)}$ restricts to one of
+$\mathcal J'^{(B,\bot)}$, so $\Sol(\mathcal J)\subseteq\Sol(\mathcal J')$.
+
+\emph{Conditions 1--3.} Start with $\Omega=\{\mathcal I\}$. Condition 1 is
+clear, and condition 2 holds because $D^{(B,\bot)}\subseteq D^{(1)}$ and
+$\mathcal I^{(1)}$ has no solution, so $\Sol(\mathcal I)=\varnothing$. While
+condition 3 fails at some $\mathcal J\in\Omega$ --- that is, while the
+displayed set still satisfies 2 --- replace $\Omega$ by that set. Condition 1
+survives, since a single weakening step applied to a weakening of $\mathcal I$
+is again one; condition 2 survives by the choice of the step.
+
+\emph{Termination.} Let $\mu$ be the measure of
+Lemma~\ref{lem:weakening-terminates}, so every single weakening step strictly
+decreases it, and let $V$ be the finite set of values $\mu$ takes on
+weakenings of $\mathcal I$, totally ordered by the lexicographic order it
+inherits. For a finite set $\Omega$ of such instances let
+$c(\Omega)\in\mathbb N^{V}$ count how many members have each value. One
+replacement removes a member of value $v$ and inserts members of values
+strictly below $v$: the coordinate at $v$ drops by one, the coordinates above
+$v$ are untouched, and only coordinates below $v$ grow. Ordering
+$\mathbb N^{V}$ lexicographically from the largest element of $V$ downwards ---
+a lexicographic order on a \emph{finite} product of copies of $\mathbb N$,
+hence well founded --- every replacement strictly decreases $c(\Omega)$. So the
+loop halts, at an $\Omega$ satisfying 1--3.
+
+\emph{Condition 4.} Fix $\mathcal J\in\Omega$. By condition 3 the displayed set
+fails 2, so some $B\in\mathcal B_{0}$ lies in all of its members' $\Sol$. Then
+$B\in\Sol(\mathcal J')$ for every $\mathcal J'\in\Omega\setminus
+\{\mathcal J\}$, which is 4(b); and $B\notin\Sol(\mathcal J)$, since otherwise
+$B$ would lie in $\bigcap_{\mathcal K\in\Omega}\Sol(\mathcal K)$, empty by
+condition 2. So $\mathcal J^{(B,\bot)}$ has no solution while
+$\mathcal J[C\mapsto C']^{(B,\bot)}$ has one for every constraint $C$ of
+$\mathcal J$ and every $C'$ weaker than $C$.
+
+That is Definition~\ref{def:crucial} once no constraint of $\mathcal J$ has a
+dummy variable, and none does: if $C$ had one, its projection $C'$ off that
+variable would be weaker than $C$ with the same violation set, so
+$\mathcal J[C\mapsto C']$ and $\mathcal J$ would have the same solutions, and
+$B\in\Sol(\mathcal J[C\mapsto C'])$ would give $B\in\Sol(\mathcal J)$. Finally
+$\mathcal J$ has at least one constraint, since a single weakening step
+replaces a constraint rather than deleting one and $\mathcal I$ is crucial.
+\end{proof}
 
 \subsection{The three consumed theorems}\label{sec:codim-one}
 
@@ -6074,7 +6133,7 @@ the algorithm itself.
 Lemma~\ref{lem:connected} --- is stated without proof, and part (1) of the main
 induction is an outline whose measure is not yet well founded.
 
-Five items block the rest, and they are the honest reading of the table.
+Four items block the rest, and they are the honest reading of the table.
 
 \begin{enumerate}\tightlist
 \item Hypothesis~\ref{hyp:maximal-mult} of \pkey{lem:maximal-mult}: that the
@@ -6095,13 +6154,12 @@ Five items block the rest, and they are the honest reading of the table.
   produces a \emph{uniform} one, now that \pkey{thm:main-inductive}(2)
   hypothesises it (Caveats~\ref{haz:uniform-witness} and
   \ref{haz:witness-moved}).
-\item The \emph{set}-valued iteration of Construction~\ref{constr:omega},
-  whose condition 3 still replaces a member by all weaker instances
-  (Caveat~\ref{haz:omega}); the single-instance case is
-  \pkey{lem:weakening-\brk terminates}. The induction measure across expanded
-  coverings, listed here until now, is \textbf{not} an open item: no appeal is
-  made at a covering, and Caveat~\ref{haz:the-induction}(c) now enumerates the
-  seven that are made.
+\item[] \emph{Two entries stood here and no longer do.} The induction measure
+  across expanded coverings is not an open item --- no appeal is made at a
+  covering, and Caveat~\ref{haz:the-induction}(c) enumerates the seven that
+  are. The set-valued iteration behind $\Omega$ is
+  Proposition~\ref{constr:omega}, proved once condition 3 is stated with
+  single weakening steps.
 \end{enumerate}
 
 The dependency order among the three large statements is

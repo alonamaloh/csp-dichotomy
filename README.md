@@ -46,7 +46,7 @@ The main statements are not: the lemma that produces bridges from an instance is
 without proof, and part (1) of the main induction is an outline whose measure is not yet
 well founded across expanded coverings.
 
-Five items block the rest:
+Four items block the rest:
 
 1. **`lem:maximal-mult`** — proved, but only from an explicitly stated extra
    hypothesis: *the type-`T` factors alone already cut `B₂` out*. Strictly
@@ -61,12 +61,11 @@ Five items block the rest:
 3. The rewrite of **`lem:multiply-all-linear`**, which is not yet a proof.
    `lem:intersection-good` and `lem:self-intersection-pc` are both now written
    out in full, so this is what is left of that layer.
-4. The **set-valued iteration behind Ω**, whose condition 3 still replaces a
-   member by all weaker instances. (Two items listed here before have come off:
-   *termination of weakening* is now proved — the measure counts assignments
-   *excluded*, not tuples admitted — and the *induction measure across expanded
-   coverings* was never in difficulty, since the induction makes no appeal at a
-   covering.)
+*Three items listed here before have come off.* Weakening's termination is proved (the
+measure counts assignments *excluded*, not tuples admitted); Ω's set-valued iteration is
+proved once condition 3 is stated with single weakening steps; and the induction measure
+across expanded coverings was never in difficulty, since the induction makes no appeal at a
+covering.
 5. The **linear algebra** of the codimension-one theorem; and, for the **common
    binary absorption witness**, the check that every producer of a type-`BA`
    reduction produces a *uniform* one, now that `thm:main-inductive`(2)
