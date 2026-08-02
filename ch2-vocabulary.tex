@@ -261,14 +261,89 @@ stable under $\sigma$.
   \emph{is} a congruence is an extra hypothesis in the definition of a linear
   congruence (Definition~\ref{def:linear-congruence}), which would be
   redundant otherwise.
-\item Existence of $\cover{\sigma}$ needs an argument: the family of
-  $\delta\supsetneq\sigma$ stable under $\sigma$ is nonempty (it contains
-  $A^{2}$) and, by irreducibility, closed under the intersections that matter,
-  so a least element exists. Uniqueness is exactly what irreducibility buys;
+\item Existence and uniqueness of $\cover{\sigma}$ need an argument, given in
+  Proposition~\ref{prop:cover}. Uniqueness is exactly what irreducibility buys;
   without it there is no ``the'' cover. A formalization must produce
   $\cover{\sigma}$ as data attached to a proof of irreducibility, not as a
   standalone function.
+\item The family $S_{1},\dots,S_{k}$ may be \emph{empty}
+  (item \ref{leg:emptyfamily} of
+  \S\ref{sec:legislation}). This is not a free choice: the two formulations
+  above agree only under it.
 \end{enumerate}
+\end{hazard}
+
+\begin{proposition}[The cover exists, and is a tolerance]\label{prop:cover}
+Let $\sigma$ be an irreducible congruence on $\mathbf A$. Then
+\begin{enumerate}\alphlabels\tightlist
+\item $\sigma\neq A^{2}$;
+\item the family $\mathcal F$ of $\delta\le\mathbf A\times\mathbf A$ with
+  $\delta\supsetneq\sigma$ and $\delta$ stable under $\sigma$ is nonempty and
+  closed under intersection, so it has a least element $\cover{\sigma}$;
+\item $\cover{\sigma}$ is reflexive and symmetric.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) The empty family is allowed, and its intersection is $A^{2}$; so if
+$\sigma=A^{2}$ then $\sigma$ is an intersection of a family of relations each
+properly containing it, vacuously, and $\sigma$ is reducible.
+
+(b) $\mathcal F\ni A^{2}$ by (a). If $\delta_{1},\delta_{2}\in\mathcal F$ then
+$\delta_{1}\cap\delta_{2}$ is again a subuniverse of $\mathbf A^{2}$ stable
+under $\sigma$ and contains $\sigma$; it contains $\sigma$ \emph{properly},
+since otherwise $\sigma=\delta_{1}\cap\delta_{2}$ exhibits $\sigma$ as an
+intersection of two members of $\mathcal F$, contradicting irreducibility. So
+$\mathcal F$ is closed under binary, hence finite, intersection, and
+$\cover{\sigma}=\bigcap\mathcal F\in\mathcal F$ is its least element.
+
+(c) $\cover{\sigma}\supseteq\sigma\supseteq 0_{\mathbf A}$ is reflexive. For
+symmetry, $(\cover{\sigma})^{-1}$ is a subuniverse of $\mathbf A^{2}$, is
+stable under $\sigma$ because $\sigma$ is symmetric, and properly contains
+$\sigma^{-1}=\sigma$; so $(\cover{\sigma})^{-1}\in\mathcal F$ and therefore
+$\cover{\sigma}\subseteq(\cover{\sigma})^{-1}$, whence equality.
+\end{proof}
+
+\begin{remark}[Why not a congruence]\label{rem:cover-not-cong}
+Nothing in Proposition~\ref{prop:cover} gives transitivity, and the source
+supplies the internal evidence that none is available: that $\cover{\sigma}$ is
+a congruence is item (b) of Definition~\ref{def:linear-congruence} and
+conclusion (a) of Lemma~\ref{lem:nontrivial-bridge}, both of which would be
+redundant otherwise. Symmetry of $\cover{\sigma}$, by contrast, is used
+silently in \cite{ZhukSimplified} --- in the proof of
+Lemma~\ref{lem:pc-bridges-trivial}, where the argument is run again ``switching
+$x_{1}$ and $x_{2}$''.
+\end{remark}
+
+\begin{lemma}[Passing to the quotient]\label{lem:irred-quotient}
+Let $\sigma$ be a congruence on $\mathbf A$. Then $\delta\mapsto\delta/\sigma$
+is an inclusion-preserving bijection, commuting with intersections, from the
+subuniverses of $\mathbf A^{2}$ that contain $\sigma$ and are stable under
+$\sigma$ onto the subuniverses of $(\mathbf A/\sigma)^{2}$, sending $\sigma$ to
+$0_{\mathbf A/\sigma}$. Consequently $\sigma$ is irreducible, linear or PC
+exactly when $0_{\mathbf A/\sigma}$ is, and then
+$\cover{\sigma}/\sigma=\cover{(0_{\mathbf A/\sigma})}$.
+\end{lemma}
+
+\begin{proof}
+A subuniverse $\delta$ of $\mathbf A^{2}$ containing $\sigma$ and stable under
+$\sigma$ is a union of products of $\sigma$-blocks, so it is the preimage of
+$\delta/\sigma$; conversely the preimage of a subuniverse of
+$(\mathbf A/\sigma)^{2}$ is a subuniverse containing $\sigma$ and stable under
+$\sigma$. The two constructions are mutually inverse and preserve inclusion and
+intersection, and $\sigma$ is the preimage of $0_{\mathbf A/\sigma}$. The
+statement of Definition~\ref{def:irreducible} is a statement about that family
+alone, so it transports; and both the least element in
+Proposition~\ref{prop:cover}(b) and the data of
+Definition~\ref{def:linear-congruence} transport with it.
+\end{proof}
+
+\begin{hazard}[This is the licence for ``assume $\sigma=0$'']\label{haz:factor-out}
+Three proofs in \S\ref{sec:properties} open with ``we may factor by $\sigma$
+and assume $\sigma$ is the equality relation''.
+Lemma~\ref{lem:irred-quotient} is what licenses that, and it is one of the
+sentences \cite{ZhukSimplified} states without proof
+(\S\ref{sec:legislation}, item \ref{leg:notice}).
 \end{hazard}
 
 \subsection{Bridges}
@@ -322,6 +397,65 @@ $\bcol{\cdot}$ commutes with composition --- in
 Lemma~\ref{lem:perfect-from-linked}, where a bridge with $\bcol{\delta}$ linked
 is powered up until $\bcol{\delta}=A^{2}$. The irreducibility hypothesis on
 \emph{all three} congruences is needed and is easy to drop by accident.
+\end{hazard}
+
+\begin{definition}[Symmetric and pair-reflexive bridges]\label{def:pair-reflexive}
+Let $\delta$ be a bridge from $\sigma$ to $\sigma$ on $\mathbf D$. Call $\delta$
+\emph{symmetric} if
+$\delta(x_{1},x_{2},x_{3},x_{4})\iff\delta(x_{3},x_{4},x_{1},x_{2})$, and
+\emph{pair-reflexive} if
+\[
+  (x_{1},x_{2})\in\proj_{1,2}(\delta)\;\Longrightarrow\;
+  (x_{1},x_{2},x_{1},x_{2})\in\delta .
+\]
+Write $\delta^{-1}(x_{1},x_{2},x_{3},x_{4})=\delta(x_{3},x_{4},x_{1},x_{2})$.
+\end{definition}
+
+\begin{lemma}[Symmetrisation]\label{lem:symmetrise}
+Let $\delta$ be a reflexive bridge from $\sigma$ to $\sigma$ on $\mathbf D$ and
+put $\delta^{\circ}=\delta\ast\delta^{-1}$, that is
+\[
+  \delta^{\circ}(x_{1},x_{2},x_{3},x_{4})=\exists x_{5}\exists x_{6}\;
+  \delta(x_{1},x_{2},x_{5},x_{6})\wedge\delta(x_{3},x_{4},x_{5},x_{6}).
+\]
+Then $\delta^{\circ}$ is a reflexive, symmetric, pair-reflexive bridge from
+$\sigma$ to $\sigma$ with
+$\proj_{1,2}(\delta^{\circ})=\proj_{3,4}(\delta^{\circ})=\proj_{1,2}(\delta)$
+and $\bcol{\delta^{\circ}}=\bcol{\delta}\circ\bcol{\delta}^{-1}
+\supseteq\bcol{\delta}$. Moreover any pair-reflexive bridge $\varepsilon$
+satisfies $\varepsilon\subseteq\varepsilon\ast\varepsilon$.
+\end{lemma}
+
+\begin{proof}
+Symmetry is visible in the formula. For pair-reflexivity, if
+$(x_{1},x_{2})\in\proj_{1,2}(\delta^{\circ})$ then
+$\delta(x_{1},x_{2},x_{5},x_{6})$ for some $x_{5},x_{6}$, and taking the same
+witnesses twice gives $(x_{1},x_{2},x_{1},x_{2})\in\delta^{\circ}$; the same
+computation shows $\proj_{1,2}(\delta^{\circ})=\proj_{1,2}(\delta)$, the
+inclusion $\subseteq$ being immediate, and symmetry then gives
+$\proj_{3,4}(\delta^{\circ})=\proj_{1,2}(\delta^{\circ})$. Clause (c) of
+Definition~\ref{def:bridge} follows, and clause (d) because
+$(x_{1},x_{2})\in\sigma\iff(x_{5},x_{6})\in\sigma\iff(x_{3},x_{4})\in\sigma$.
+Stability is inherited from $\delta$, and reflexivity from
+$(a,a,a,a)\in\delta$. The identity
+$\bcol{\delta^{\circ}}=\bcol{\delta}\circ\bcol{\delta^{-1}}
+=\bcol{\delta}\circ\bcol{\delta}^{-1}$ is Lemma~\ref{lem:bridge-comp};
+it contains $\bcol{\delta}$ because $\bcol{\delta}$ is reflexive, so
+$(x,y)\in\bcol{\delta}$ gives $(x,y)\in\bcol{\delta}\circ\bcol{\delta}^{-1}$ by
+taking $y$ as the intermediate point. Finally, if $\varepsilon$ is
+pair-reflexive and $\varepsilon(x_{1},x_{2},x_{3},x_{4})$, then taking
+$(x_{1},x_{2})$ itself as the intermediate pair --- legitimate because
+$\varepsilon(x_{1},x_{2},x_{1},x_{2})$ --- gives
+$(\varepsilon\ast\varepsilon)(x_{1},x_{2},x_{3},x_{4})$.
+\end{proof}
+
+\begin{hazard}[Pair-reflexivity is the hypothesis three lemmas need]\label{haz:pair-reflexive}
+\cite{ZhukSimplified} states pair-reflexivity only once, as a hypothesis of
+Lemma~\ref{lem:pc-inductive-step}, but three further statements require it and
+do not say so; without it one of them is false. See
+Hazard~\ref{haz:bridge-repairs}. Lemma~\ref{lem:symmetrise} is what makes this
+costless: every bridge these statements are ever applied to is a
+$\delta^{\circ}$.
 \end{hazard}
 
 \begin{definition}[Perfect linear congruence]\label{def:perfect-linear}

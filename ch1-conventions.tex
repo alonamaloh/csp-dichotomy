@@ -93,3 +93,159 @@ form a product over the variable set of an instance, or over a set of
 subuniverses, and reindexing those to $[m]$ by hand is exactly the kind of
 bookkeeping that a formalization pays for repeatedly and that buys nothing.
 \end{convention}
+
+\subsection{Legislated readings}\label{sec:legislation}
+
+Ten places in \cite{ZhukSimplified} admit more than one reading, and in each the
+choice is invisible in prose but forced in a formalization. This subsection
+fixes all ten. Two of them turn out not to be conventions at all: item
+\ref{leg:Zp} is a theorem, proved here, and item \ref{leg:central} is a missing
+lemma, proved in \S\ref{sec:properties}. Of the remaining eight, six are
+decided by internal evidence --- one reading makes some statement of the source
+true or some proof valid and the other does not, so the ``choice'' is really a
+reconstruction --- and only items \ref{leg:dimension} and \ref{leg:linked} are
+free.
+
+\begin{enumerate}\romanlabels
+
+\item\label{leg:Zp}\textbf{The algebra $\mathbf Z_{p}$.}
+\cite{ZhukSimplified} declares that ``every algebra $\mathbf Z_{p}$ belongs to
+$\Vn$ for a fixed $n$'', with basic operation $x_{1}+\dots+x_{n}\bmod p$. That
+operation is idempotent only when $p\mid n-1$, so the declaration is a
+constraint on $p$, and the source never says where the constraint comes from.
+It comes from Convention~\ref{conv:standing}\ref{conv:special}; see
+Proposition~\ref{prop:p-divides} below. We therefore keep the two roles of
+$\mathbf Z_{p}$ apart: the abelian \emph{group} $(\mathbb Z_{p};+,-)$, which
+supplies the relation $x_{1}-x_{2}=x_{3}-x_{4}$ in
+Definition~\ref{def:linear-congruence} and carries no arity constraint, and the
+\emph{algebra} $\mathbf Z_{p}=(\mathbb Z_{p};x_{1}+\dots+x_{n})\in\Vn$, which
+does. Only the second occurs in Definition~\ref{def:perfect-linear}, where
+$\zeta\le\mathbf A\times\mathbf A\times\mathbf Z_{p}$ is a subuniverse of a
+product and therefore needs a common signature.
+
+\item\label{leg:cover}\textbf{$\cover\sigma$ is a tolerance.} It is a
+reflexive symmetric subuniverse of $\mathbf A^{2}$ and \emph{not} in general a
+congruence (Proposition~\ref{prop:cover}). That $\cover\sigma$ is a congruence
+is item (b) of the definition of a linear congruence and conclusion (a) of
+Lemma~\ref{lem:nontrivial-bridge}; typing it as a congruence would make the
+first vacuous and collapse the linear/PC distinction.
+
+\item\label{leg:empty}\textbf{The empty set.} As in
+Convention~\ref{conv:empty}: subuniverses may be empty, subalgebras may not,
+and the typed relations hold only between nonempty sets. Two statements of the
+source must be restated because they are true only under the opposite reading.
+Read syntactically, $\varnothing$ is vacuously absorbing and vacuously central,
+so \emph{(a)} the clause defining $\subt{\TS}$ needs its witness $D$ required
+nonempty (Definition~\ref{def:ba-center-free}), and \emph{(b)}
+Lemma~\ref{lem:central-relation} needs an explicit alternative ``$C=\varnothing$''
+--- without it the statement is false, as $\mathbf A=\mathbf B=\mathbf Z_{p}$
+with $R=\{(x,x+1)\}$ shows. Likewise Lemma~\ref{lem:linked-implies-abs}
+concludes ``there exists a BA or central subuniverse'', which is vacuous
+because every algebra is a binary absorbing subuniverse of itself; read
+\emph{proper nonempty}, which is how it is used.
+
+\item\label{leg:emptyfamily}\textbf{The empty family is allowed.}
+In Definition~\ref{def:irreducible} the family $S_{1},\dots,S_{k}$ may be
+empty, the empty intersection being $A^{2}$. This is not a free choice: the
+two formulations given there agree \emph{only} under it. Forbid $k=0$ and the
+second no longer excludes $\sigma=A^{2}$ while the first still does. With
+$k=0$ allowed, an irreducible congruence is automatically proper --- which
+recovers the word ``proper'' that \cite{ZhukJACM} carries and
+\cite{ZhukSimplified} drops --- and $\cover\sigma$ exists.
+
+\item\label{leg:chain}\textbf{$\lll$ carries its chain.} $C\lll^{A}B$ is
+\emph{data}: a list of intermediate sets with their typed steps and witnessing
+congruences, not merely the proposition that such a list exists. Several
+statements speak of ``the dividing congruences coming from $C\lll^{A}B$'',
+which is a function of the chain and not of the pair. See
+Hazard~\ref{haz:lll-chain} for the two places where this is load-bearing.
+
+\item\label{leg:dimension}\textbf{``Dimension''.} $\prod_{i}\mathbb Z_{q_{i}}$
+with distinct primes is not a vector space over anything and has no dimension.
+Use the composition length of the finite abelian group, which agrees with the
+source wherever the source is meaningful, and prove its additivity along short
+exact sequences. A free choice; nothing in
+\S\S\ref{sec:types}--\ref{sec:properties} uses the notion.
+
+\item\label{leg:linked}\textbf{``Linked instance''.} Two inequivalent
+definitions coexist in the source: global connectivity of the value graph, and
+the per-variable condition. The second does not imply the first, because a
+fragmented instance is per-variable linked in each component. We use the
+per-variable definition and carry non-fragmentation as a separate hypothesis
+wherever the informal reading was doing that work
+(Hazard~\ref{haz:linked}).
+
+\item\label{leg:quotient}\textbf{Quotients of subsets.} $B/\delta$ always
+means the \emph{image} $\{b/\delta:b\in B\}$ in $\mathbf A/\delta$, for $B$ any
+subset of $A$; never the quotient of $B$ by a congruence of $\mathbf B$.
+Consequently $(C_{1}\cap\dots\cap C_{t})/\delta\subseteq\bigcap_{i}C_{i}/\delta$
+always, with equality false in general
+(Hazard~\ref{haz:quotient-rel}). The reverse inclusion is established on the
+fly inside the proof of Lemma~\ref{lem:propagation}(fm) and must be extracted
+as a standalone lemma with its hypothesis visible.
+
+\item\label{leg:notice}\textbf{Sentences beginning ``Notice that''.} Three of
+them are used as lemmas and never proved. They are promoted here:
+Lemma~\ref{lem:linear-bridge} (the relation $S$ of
+Definition~\ref{def:linear-congruence}(c) is a bridge with
+$\bcol S=\proj_{1,2}(S)=\proj_{3,4}(S)=\cover\sigma$),
+Lemma~\ref{lem:irred-quotient} ($\sigma$ is irreducible, linear or PC exactly
+when $0_{\mathbf A/\sigma}$ is), and
+Lemma~\ref{lem:sfree-equiv} (the two formulations of $\TS$-freeness agree).
+Lemma~\ref{lem:rect-basics} belongs to the same list.
+
+\item\label{leg:central}\textbf{A citation that drops a case.} The source's
+Lemma~\ref{lem:central-relation} cites \cite[Thm.~6.15]{ZhukStrong} but omits
+that theorem's third alternative, a nontrivial \emph{projective} subuniverse.
+The elimination is legitimate under Convention~\ref{conv:standing}, but it is a
+lemma and not a convention, and the source does not state it: see
+Lemma~\ref{lem:no-unary-quotient} and Lemma~\ref{lem:central-relation}.
+
+\end{enumerate}
+
+\begin{proposition}[Where $p\mid n-1$ comes from]\label{prop:p-divides}
+Let $\mathbf U$ be a finite algebra with a single basic operation $w$ of arity
+$n$ that is idempotent, weak near-unanimity and special, and suppose
+$\mathbf U$ is affine over $\mathbb Z_{p}$ with $|U|>1$. Then $p\mid n-1$, and
+$w$ acts on $\mathbf U$ as $x_{1}+\dots+x_{n}$.
+\end{proposition}
+
+\begin{proof}
+Being affine, $\mathbf U$ is polynomially equivalent to a
+$\mathbb Z_{p}$-module, so $w$ acts as $w(\bar x)=\sum_{i}c_{i}x_{i}+d$ for
+scalars $c_{i}\in\mathbb Z_{p}$ and a constant $d$. Idempotence gives
+$\bigl(\sum_{i}c_{i}\bigr)x+d=x$ for all $x$, hence $\sum_{i}c_{i}=1$ and
+$d=0$.
+
+The weak near-unanimity identities
+$w(y,x,\dots,x)=w(x,y,x,\dots,x)=\dots=w(x,\dots,x,y)$ read
+$c_{1}y+(1-c_{1})x=c_{2}y+(1-c_{2})x=\dots$, and comparing coefficients of $y$
+gives $c_{1}=\dots=c_{n}=:c$, so $nc=1$.
+
+Specialness, $w(x,\dots,x,y)=w\bigl(x,\dots,x,w(x,\dots,x,y)\bigr)$, reads
+\[
+  (n-1)c\,x+cy \;=\; (n-1)c\,x+c\bigl((n-1)c\,x+cy\bigr),
+\]
+and comparing coefficients of $y$ gives $c=c^{2}$, so $c\in\{0,1\}$. Now $c=0$
+contradicts $nc=1$, so $c=1$; then $n\cdot 1=1$ in $\mathbb Z_{p}$, i.e.\
+$p\mid n-1$, and $w$ acts as $x_{1}+\dots+x_{n}$.
+\end{proof}
+
+\begin{corollary}\label{cor:Zp-in-Vn}
+$\mathbf Z_{p}=(\mathbb Z_{p};x_{1}+\dots+x_{n})$ lies in $\Vn$ if and only if
+$p\mid n-1$; and whenever a prime $p$ arises from a linear congruence on some
+$\mathbf A\in\Vn$ --- so that some subquotient of $\mathbf A$ is affine over
+$\mathbb Z_{p}$ and nontrivial --- one has $p\mid n-1$. Hence the source's
+standing identification of $\mathbf Z_{p}$ is legitimate.
+\end{corollary}
+
+\begin{hazard}[The proposition is not decoration]\label{haz:p-divides}
+Proposition~\ref{prop:p-divides} is needed twice, and in both places its
+absence would leave a statement that does not typecheck. It is what makes
+$\mathbf Z_{p}$ an object of $\Vn$ at all, hence what makes
+Definition~\ref{def:perfect-linear} well formed; and it is what upgrades the
+group isomorphism of Lemma~\ref{lem:linear-on-top} to an isomorphism of
+algebras. Verified by exhaustion for $p\in\{2,3,5,7\}$ and $3\le n<12$: a
+special idempotent affine WNU of arity $n$ on $\mathbb Z_{p}$ exists exactly
+when $p\mid n-1$, and is then the sum.
+\end{hazard}

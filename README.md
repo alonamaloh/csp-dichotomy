@@ -98,7 +98,7 @@ Section 4 of 2404 (XY-symmetric operations) is an independent second result and 
 6. **§7 The main statements** — the single induction and the three theorems the algorithm
    consumes.
 7. **§8–9 The algorithm and the hard half.**
-8. **§10 Defects in the sources** — the ten blocking items and ten conventions to legislate.
+8. **§10 Defects in the sources** — the fourteen defects, all repaired, and the ten legislated conventions (§1.5).
 9. **§11–12 The complexity layer and the formalization plan.**
 
 ## Formalization notes

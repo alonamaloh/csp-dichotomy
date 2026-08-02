@@ -63,11 +63,31 @@ $\mathbf A$ is \emph{BA and centre free} if it has no proper nonempty binary
 absorbing subuniverse and no proper nonempty central subuniverse.
 
 For $\varnothing\neq C\lneq B\le A$ write $C\subt[A]{\TS}B$ if there is a
-subuniverse $D\subseteq C$ of $\mathbf B$ that is simultaneously binary
-absorbing and central in $\mathbf B$. $\mathbf A$ is \emph{$\TS$-free} if there
-is no $C\subt{\TS}\mathbf A$; equivalently, no nonempty proper $D\le A$ is
-both binary absorbing and central.
+\emph{nonempty} subuniverse $D\subseteq C$ of $\mathbf B$ that is
+simultaneously binary absorbing and central in $\mathbf B$. $\mathbf A$ is
+\emph{$\TS$-free} if there is no $C\subt{\TS}\mathbf A$.
 \end{definition}
+
+\begin{hazard}[The witness must be required nonempty]\label{haz:S-nonempty}
+$\varnothing$ is vacuously binary absorbing and vacuously central
+(\S\ref{sec:legislation}, item \ref{leg:empty}), so without the word
+``nonempty'' the clause defining $\subt{\TS}$ is universally true and the type
+$\TS$ collapses. The global convention that subuniverses are nonempty repairs
+it, but the clause does not inherit that convention on its own, because $D$ is
+introduced by an existential inside the clause rather than as a subalgebra of
+the ambient discourse.
+\end{hazard}
+
+\begin{lemma}[The two readings of $\TS$-freeness agree]\label{lem:sfree-equiv}
+$\mathbf A$ is $\TS$-free if and only if no proper nonempty $D\le A$ is
+simultaneously binary absorbing and central in $\mathbf A$.
+\end{lemma}
+
+\begin{proof}
+If such a $D$ exists then $D\subt{\TS}\mathbf A$, taking $C=D$. Conversely if
+$C\subt{\TS}\mathbf A$ then by definition some nonempty $D\subseteq C\lneq A$
+is binary absorbing and central in $\mathbf A$, and $D$ is proper.
+\end{proof}
 
 \begin{hazard}[$\TS$ is not the conjunction of $\TBA$ and $\TC$]\label{haz:S-type}
 $C\subt{\TS}B$ does not say that $C$ is binary absorbing and central in
@@ -95,9 +115,37 @@ A congruence $\sigma$ on $\mathbf A$ is \emph{linear} if
 An irreducible congruence that is not linear is a \emph{PC congruence}.
 \end{definition}
 
-The relation $S$ of (c) is a bridge from $\sigma$ to $\sigma$ with
-$\bcol{S}=\proj_{1,2}(S)=\proj_{3,4}(S)=\cover{\sigma}$. This is the useful
-reformulation:
+Here $(\cover{\sigma})^{[4]}$ denotes the set of $4$-tuples whose entries lie in
+a single block of $\cover{\sigma}$, which is meaningful because (b) makes
+$\cover{\sigma}$ a congruence. The source records the following in a sentence
+beginning ``Notice that'' and then uses it as a lemma
+(\S\ref{sec:legislation}, item \ref{leg:notice}).
+
+\begin{lemma}[The witness of (c) is a bridge]\label{lem:linear-bridge}
+Let $\sigma$ be a linear congruence and $S$ as in
+Definition~\ref{def:linear-congruence}(c). Then $S$ is a reflexive
+pair-reflexive bridge from $\sigma$ to $\sigma$ with
+$\bcol{S}=\proj_{1,2}(S)=\proj_{3,4}(S)=\cover{\sigma}$.
+\end{lemma}
+
+\begin{proof}
+Work inside a block $B$ of $\cover{\sigma}$ and identify $B/\sigma$ with
+$\mathbb Z_{p}^{m}$ so that $S\cap(B/\sigma)^{4}$ becomes
+$x_{1}-x_{2}=x_{3}-x_{4}$; tuples of $S$ meet no other block. Each variable is
+stable under $\sigma$, since the defining equation is an equation between
+$\sigma$-classes. Clause (d) of Definition~\ref{def:bridge} holds because
+$x_{1}-x_{2}=0$ if and only if $x_{3}-x_{4}=0$, which says
+$(x_{1},x_{2})\in\sigma\iff(x_{3},x_{4})\in\sigma$. For the projections, any
+$(x_{1},x_{2})$ inside a common block satisfies
+$(x_{1},x_{2},x_{1},x_{2})\in S$, so $\proj_{1,2}(S)=\cover{\sigma}$ --- which
+is at once clause (c), since $\cover{\sigma}\supsetneq\sigma$, and
+pair-reflexivity; symmetry of the defining equation in the two pairs gives
+$\proj_{3,4}(S)=\cover{\sigma}$. Finally $(x,x,y,y)\in S$ reads $0=0$, so
+$\bcol{S}$ is the whole of $\cover{\sigma}$, and $(a,a,a,a)\in S$ gives
+reflexivity.
+\end{proof}
+
+This is the useful reformulation:
 
 \begin{lemma}[{\cite[Lem.~\ref*{lem:linear-equiv}]{ZhukSimplified}}]\label{lem:linear-equiv}
 For an irreducible congruence $\sigma$ the following are equivalent:
@@ -169,6 +217,35 @@ $p$.
 If $\sigma$ is a PC congruence on $\mathbf A$ with $\cover{\sigma}=A^{2}$, then
 $\mathbf A/\sigma$ is polynomially complete.
 \end{lemma}
+
+\begin{hazard}[What the two proofs on top actually need]\label{haz:on-top}
+Neither statement is proved in \cite{ZhukSimplified} as it stands.
+
+For Lemma~\ref{lem:linear-on-top} the source produces the witness
+$\zeta$ of Definition~\ref{def:perfect-linear}, sets
+$\xi(x,z)=\zeta(x,a,z)$ for a fixed $a$, and says ``then $\xi$ is a bijective
+relation giving an isomorphism'' --- which is the entire content of the lemma.
+We prove it instead from Lemma~\ref{lem:nontrivial-bridge}(c): with
+$\cover{\sigma}=A^{2}$ that lemma has a single block, so
+$\mathbf A/\sigma\cong\mathbb Z_{p}^{m}$ as a group; $m=0$ would give
+$\sigma=A^{2}$, excluded because irreducible congruences are proper; and
+$m\ge 2$ is excluded by irreducibility, because the $m$ coordinate congruences
+$\theta_{i}=\{(x,y):x_{i}=y_{i}\}$ are subuniverses of $(\mathbf A/\sigma)^{2}$
+--- linear subspaces are preserved by any coordinatewise affine map --- each
+properly above $0_{\mathbf A/\sigma}$, with $\bigcap_{i}\theta_{i}
+=0_{\mathbf A/\sigma}$. So $m=1$. That the resulting bijection is an
+isomorphism of \emph{algebras}, rather than of groups, is
+Proposition~\ref{prop:p-divides}. This route also avoids the import
+\cite[Cor.~8.17.1]{ZhukJACM} that the source's route needs.
+
+For Lemma~\ref{lem:pc-on-top} two things are used and not stated: that an
+idempotent algebra is polynomially complete exactly when every \emph{reflexive}
+subuniverse of a power is a conjunction of equalities --- those being precisely
+the invariants of the clone generated by the basic operations together with all
+constants --- and that $\mathbf A/\sigma$ is BA and centre free, without which
+the step ``$\{a_{i}\}\subt{\TPC}\mathbf A/\sigma$'' is not licensed by
+Definition~\ref{def:types}.
+\end{hazard}
 
 \begin{hazard}[Polynomial completeness]\label{haz:pc-algebra}
 An algebra is \emph{polynomially complete} if the clone generated by its basic
@@ -242,15 +319,37 @@ We write $B\lll A$ for $B\lll^{A}A$, and $C\subte[A]{T(\sigma)}B$ for
 ``$C=B$ or $C\subt[A]{T(\sigma)}B$''.
 \end{definition}
 
-\begin{hazard}[$\lll$ is existential over chains]\label{haz:lll-chain}
-$C\lll^{A}B$ asserts the \emph{existence} of a chain; the intermediate types
-are forgotten. This is deliberate --- it is the paper's central simplification
-over \cite{ZhukJACM}, where the types in the middle had to be tracked --- and
-it is why $\lll$ is usable as a hypothesis. In Lean it is the reflexive
-transitive closure of $\bigcup_{T\in\{\TBA,\TC,\TS,\TD\}}\subt[A]{T}$, i.e.\
-\texttt{Relation.ReflTransGen}, and the induction principle that comes with
-that is exactly the one the proofs use. Note that $\TL$ and $\TPC$ are
-\emph{absent} from the list because $\TD$ subsumes them.
+\begin{hazard}[$\lll$ is data, not a proposition]\label{haz:lll-chain}
+It is tempting to read $C\lll^{A}B$ as the reflexive transitive closure of
+$\bigcup_{T}\subt[A]{T}$ --- in Lean, \texttt{Relation.ReflTransGen} --- and to
+forget the chain. That is wrong, and the error is not cosmetic:
+Definition~\ref{def:lll} also defines ``the congruences coming from
+$C\lll^{A}B$'', which is a function of the chain and not of the pair. Two
+places consume it, and in both the \emph{choice} of chain is what makes the
+argument work.
+
+\begin{enumerate}\alphlabels\tightlist
+\item In the ``moreover'' clause of Lemma~\ref{lem:intersection-good}(d) the
+  conclusion is $\delta\supseteq\delta_{1}\cap\dots\cap\delta_{s}$ where the
+  $\delta_{i}$ are the congruences of the chains for $B\lll A$ and $C\lll A$
+  \emph{fixed at the top of that proof}; the proof establishes exactly
+  $\sigma\cap\omega\subseteq\delta$ for those two intersections.
+\item In the type-$\TD$ case of Lemma~\ref{lem:two-stable} the clause is
+  applied to $C_{2}$ rather than to $B_{2}$, and its output is the intersection
+  of $\omega$ with $\sigma_{2}$ --- which is correct only because the chain
+  witnessing $C_{2}\lll A$ is chosen to be the chain witnessing
+  $B_{2}\lll A$ extended by the single step $C_{2}\subt{\TD(\sigma_{2})}B_{2}$.
+  A different chain gives a different family and the step fails.
+\end{enumerate}
+
+So $\lll^{A}$ should be an inductive family carrying, at each step, the
+intermediate set, its type, and its witnessing congruence; extension by one
+step is an operation on that data. The \texttt{ReflTransGen} version is its
+propositional truncation and may be used only where no congruence is named,
+which is most but not all of the development. What \emph{is} true, and is the
+paper's central simplification over \cite{ZhukJACM}, is that the intermediate
+\emph{types} may be forgotten: $\TL$ and $\TPC$ are absent from the list in
+Definition~\ref{def:lll} because $\TD$ subsumes them.
 \end{hazard}
 
 \begin{convention}[Dotted variants]\label{conv:dotted}
