@@ -5,7 +5,7 @@
 %%  csp-proof.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision fd71bb0 on 2026-08-02.
+%%  Generated from revision 77d1276 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-proof.tex
@@ -2939,16 +2939,35 @@ $\cover\sigma/\sigma$, which is finite, $\delta$ induces a bipartite relation
 whose left neighbourhoods are nonempty, pairwise disjoint --- that is what the
 case gives --- and cover the right side; equal finite cardinalities force every
 neighbourhood to be a singleton, so the induced relation is a bijection and
-determinacy holds in both directions. With that, the auxiliary relations
+determinacy holds in both directions.
+
+With that, introduce
 \begin{align*}
-  \zeta_{1}(x_{1},x_{2},x_{3},x_{4})&=\exists y\;
-    \delta(x_{1},y,x_{3},x_{4})\wedge\delta(x_{2},y,x_{3},x_{4}),\\
-  \zeta_{2}(x_{1},x_{2},x_{3},x_{4})&=\exists y\;
-    \delta(x_{1},x_{2},x_{3},y)\wedge\delta(x_{1},x_{2},x_{4},y)
+  \zeta_{1}(x_{1},x_{2},x_{3},x_{4})=\;&
+    \exists y\exists y'\exists z\exists z'
+    \exists t_{1}\exists t_{2}\exists t_{3}\exists t_{4}\;\\
+    &\delta(x_{1},y,z,t_{1})\wedge\delta(x_{2},y,z',t_{2})\wedge
+     \delta(x_{3},y',z,t_{3})\wedge\delta(x_{4},y',z',t_{4}),\\
+  \zeta_{2}(x_{1},x_{2},x_{3},x_{4})=\;&
+    \exists y\exists z\;\;\delta(x_{1},y,z,x_{3})\wedge\delta(x_{2},y,z,x_{4}),
 \end{align*}
-are bridges from $\sigma$ to $\sigma$ when they need to be, and
-$\bcol{\zeta_{1}}=\bcol{\zeta_{2}}=\sigma$ --- forced, since $\sigma$ is PC ---
-yields $\proj_{1,3}(\delta)=\sigma$ or $\proj_{1,4}(\delta)=\sigma$, and by
+and pick $(a,b,c,d)\in\delta$ with $(a,b)\in\cover\sigma\setminus\sigma$. From
+$(a,b,c,d),(b,b,b,b)\in\delta$ one gets $(a,b,a,b)\in\zeta_{1}$ and hence
+$\proj_{1,2}(\zeta_{1})\supseteq\cover\sigma$. Split.
+
+\emph{If $\zeta_{1}$ is a bridge}, then $\bcol{\zeta_{1}}=\sigma$ --- forced,
+since $\sigma$ is PC --- and $(a,a,c,c)\in\zeta_{1}$ for every
+$(a,b,c,d)\in\delta$, so $\proj_{1,3}(\delta)=\sigma$.
+
+\emph{If $\zeta_{1}$ is not a bridge}, there is $(a,a,b,c)\in\zeta_{1}$ with
+$(b,c)\notin\sigma$. Take witnesses $y=d$, $y'=d'$, $z=e$, $z'=e'$,
+$t_{i}=f_{i}$. Determinacy makes $(e,e')\in\sigma$, so
+$(b,d',e,f_{3}),(c,d',e,f_{4})\in\delta$ and therefore
+$\proj_{1,2}(\zeta_{2})\supsetneq\sigma$; determinacy in both directions then
+makes $\zeta_{2}$ a bridge, whence $\bcol{\zeta_{2}}=\sigma$ and
+$\proj_{1,4}(\delta)=\sigma$.
+
+So $\proj_{1,3}(\delta)=\sigma$ or $\proj_{1,4}(\delta)=\sigma$, and by
 the same argument with $x_{1},x_{2}$ interchanged, $\proj_{2,4}(\delta)=\sigma$
 or $\proj_{2,3}(\delta)=\sigma$. \emph{Two of the four combinations must now be
 excluded:} $\proj_{1,3}=\proj_{2,3}=\sigma$ would
@@ -3288,12 +3307,21 @@ linear and PC cases and apply the lemma to each, the two conclusions being the
 same three alternatives. Then (f) follows by iteration, all three outcomes of
 (ft) staying inside the type list of Definition~\ref{def:lll}.
 
-(bt) is the reverse-homomorphism step. Factor $f$ as the quotient by its kernel
-$\kappa$ followed by an isomorphism; along an isomorphism every clause is
-transported, and for the quotient, $f^{-1}(C')=C'\circ\kappa$ and
-$f^{-1}(B')=B'\circ\kappa$, so the claim is
-Corollary~\ref{cor:prop-from-factor}, whose right-to-left direction is exactly
-this statement.
+(bt) is the reverse-homomorphism step, and it is proved directly rather than
+through Corollary~\ref{cor:prop-from-factor}, which is derived from it. For
+$T\in\{\TBA,\TC\}$ the witnessing term transfers: $f$ is a homomorphism, so
+$f\bigl(t(\bar a)\bigr)=t\bigl(f(\bar a)\bigr)$, and a tuple with all but one
+entry in $f^{-1}(C')$ and the remaining entry in $f^{-1}(B')$ maps to one with
+all but one entry in $C'$ and the remaining entry in $B'$; the centrality
+clause pulls back the same way, since $f\bigl(\Sg(X)\bigr)=\Sg\bigl(f(X)\bigr)$
+for surjective $f$. For $T=\TS$ the witness $D'\subseteq C'$ pulls back to
+$f^{-1}(D')\subseteq f^{-1}(C')$ and the previous case applies. For
+$T\in\{\TD,\TL,\TPC\}$, $C'=B'\cap E$ for a block $E$ of $\sigma$, so
+$f^{-1}(C')=f^{-1}(B')\cap f^{-1}(E)$ with $f^{-1}(E)$ a block of
+$f^{-1}(\sigma)$; condition (i) of Definition~\ref{def:types} transfers because
+$f^{-1}\bigl(\cover\sigma\bigr)=\cover{f^{-1}(\sigma)}$ by
+Lemma~\ref{lem:irred-quotient}, and condition (iii) because
+$f^{-1}(B')/f^{-1}(\sigma)\cong B'/\sigma$.
 
 (fm). Let $C=C_{1}\cap\dots\cap C_{t}$ with $C_{i}\subt[A]{T(\sigma_{i})}B$ and
 induct on $t$. Write $\delta$ for the kernel of $f$, so that $f(X)$ may be read
@@ -4328,7 +4356,9 @@ both are written so that a reader can check them in a few lines by hand.
 \pkey{thm:main-inductive}(1) & \textsc{outlined} & structure only; and the
   measure is not well founded across coverings,
   Caveat~\ref{haz:the-induction}(c) \\
-\pkey{thm:reductions-safe} & \textsc{proved} & from the two above \\
+\pkey{thm:reductions-safe} & \textsc{outlined} & the $\TBA$ and $\TC$ cases
+  follow from \pkey{thm:main-inductive}(2); the $\TPC$ case is
+  \pkey{thm:pc-safe}, which is stated only \\
 \pkey{thm:pc-safe} & \textsc{stated} & \\
 \pkey{thm:codim-one} & \textsc{outlined} & Step 2's linear algebra is wrong as
   written; Caveat~\ref{haz:step2-linear-algebra} \\
