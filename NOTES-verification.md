@@ -1005,3 +1005,46 @@ intersection, which is the direction needed.
   `{aᵢ} <_{PC}^{A/σ} A/σ` is not licensed by the definition of `<_D`.
 - **`LEMMaximalMultExtention`** Case 2 — correct; `δᵢ* ⊇ B₁²` at line 3128 should read
   `δᵢ* ⊇ (B₁/σ)²`.
+
+---
+
+# External review, 2026-08-02: D17 is reopened
+
+A reviewer read `csp-standalone.tex`. The review is `csp-review.md`. Its most important
+finding is correct and reverses a claim made here:
+
+**D17's repair is broken at its first line.** The argument chooses a minimal subfamily
+`F ⊆ {C̄₁ʲ}` with `⋂F ∩ B̄₂ = ∅`, "because the whole family works". The whole family does
+*not* work: what the hypothesis gives is `(⋂ⱼC₁ʲ)/σ ∩ B̄₂ = ∅`, and
+`(⋂ⱼC₁ʲ)/σ ⊆ ⋂ⱼ(C₁ʲ/σ)` with the inclusion generally strict. So `⋂F` can acquire σ-classes
+that meet `B̄₂`, and the subfamily need not exist. This is the image-versus-intersection
+failure that convention item C8 is about — recorded in this document and then walked into.
+
+Where it stands: the saturation identity `δ ∩ B² ⊆ σⱼ ∩ B²` that makes images commute with
+intersection is exactly the "moreover" clause of `LEMFactorByDelta`, and it is available for a
+factor precisely when that factor lands in the type-`T` alternative — not when it lands in
+`<_S`. So the `<_S` factors are the obstruction both to (m) and to the minimal-subfamily
+argument, and the argument is circular as written. Partial progress: a factor with
+`C̄₁ʲ <_S B̄₁` contains a BA-and-central `D̄` of `B̄₁`, which by `LEMStrongNonemptyIntersection`
+meets `B̄₁ ∩ B̄₂`, so `C̄₁ʲ ∩ B̄₂ ≠ ∅` — the `<_S` factors never help cut `B̄₂` out. What is
+missing is that the type-`T` factors alone already cut it out.
+
+**D17: OPEN.** Do not write `LEMMaximalMultExtention`.
+
+Other findings I have checked and accept: `lem:symmetrise` cites bridge composition, which
+carries an irreducibility hypothesis it does not have (fix: prove the collapse identity
+directly — clause (d) forces the two intermediate coordinates equal); `lem:nice-bridge-abelian`
+asserts that `δ⋆δ` is an equivalence relation, which needs a stabilised power or the Maltsev
+route; `lem:block-good-bridge` treats `(ω ∪ ω^{-1}) ∩ D²` as a subalgebra, which a union is
+not (fix: use `(ω ∘ ω^{-1}) ∩ D²`, which is compatible and has the same components since `ω`
+is reflexive); "which we may take reflexive" is used twice with no lemma behind it;
+`lem:bridge-abelian` needs `|A| > 1`; `thm:stable-intersection` is a **duplicate label** —
+my compile check grepped for errors and undefined references but not for multiply-defined
+labels.
+
+Two findings I have checked and reject. The witness in `LEMBridgeBetweenCongruences` is
+correct as printed: `z_i = y_i = x_1` gives `(x₁,x₂,x₁,x₁) ∈ δ` using symmetry of `σ₁` and
+reflexivity of `ω`, whereas the reviewer's proposed `z_i = x_i` needs `(x₁,x₂) ∈ ω`, which is
+not available. And `<_{BA,C}` is a **conjunction**, not a disjunction — `main.tex:1567` says
+"we write `C<_{BA,C} B` meaning that `C<_{BA} B` and `C<_{C} B`" — though the reviewer is
+right that this document never defines it.
