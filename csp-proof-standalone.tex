@@ -5,7 +5,7 @@
 %%  csp-proof.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision b5fe101 on 2026-08-02.
+%%  Generated from revision 3016fec on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-proof.tex
@@ -5751,12 +5751,51 @@ cycle-consistent and irreducible.
 \end{lemma}
 
 \begin{lemma}\label{lem:minimal-consistent}
-Suppose $D^{(1)}$ is a $1$-consistent reduction for $\mathcal I$, every
-$D^{(1)}_{x}$ is $\TS$-free, $T\in\{\TPC,\TL,\TD\}$, $D^{(1)}\lll D$, and
-$D^{(2)}_{x}\subte{\MT T}D^{(1)}_{x}$ is a minimal $\MT T$ subuniverse for
-every $x$. Then either $C^{(2)}=\varnothing$ for some constraint $C$, or
-$\mathcal I^{(2)}$ is $1$-consistent.
+Suppose $\mathcal I$ is a $1$-consistent instance, $D^{(1)}$ is a
+$1$-consistent reduction for $\mathcal I$, every
+$\mathbf D^{(1)}_{x}$ is $\TS$-free, $T\in\{\TPC,\TL,\TD\}$, $D^{(1)}\lll D$,
+and $D^{(2)}_{x}\subte[D_{x}]{\MT T}D^{(1)}_{x}$ is a minimal $\MT T$
+subuniverse of $D^{(1)}_{x}$ for every $x$ --- minimal among the
+$B\subte[D_{x}]{\MT T}D^{(1)}_{x}$. Then either $C^{(2)}=\varnothing$ for
+some constraint $C$, or $\mathcal I^{(2)}$ is $1$-consistent.
 \end{lemma}
+
+\begin{proof}
+If some $C^{(2)}=\varnothing$ we are done; suppose none is. Fix a constraint
+$C$ and $z\in\Var(C)$; by Definitions~\ref{def:constraint-relation} and
+\ref{def:consistency} what must be shown is
+$\proj_{z}\bigl((R^{C})^{(2)}\bigr)=D^{(2)}_{z}$, and the containment
+$\subseteq$ holds because $(R^{C})^{(2)}$ lies in the box
+$\prod_{y\in\Var(C)}D^{(2)}_{y}$.
+
+For the reverse, assemble the hypotheses of
+Corollary~\ref{cor:prop-relations}(m1) for the relation $R^{C}$: it is
+subdirect in $\prod_{y\in\Var(C)}\mathbf D_{y}$, by $1$-consistency of
+$\mathcal I$; each $D^{(1)}_{y}\lll D_{y}$; each
+$D^{(2)}_{y}\subte[D_{y}]{\MT T}D^{(1)}_{y}$; and
+$\proj_{z}\bigl((R^{C})^{(1)}\bigr)=D^{(1)}_{z}$ --- $1$-consistency of the
+reduction --- which is $\TS$-free by hypothesis. The corollary returns
+\[
+  \proj_{z}\bigl((R^{C})^{(2)}\bigr)
+  \;\dsubte[D_{z}]{\MT T}\;D^{(1)}_{z} .
+\]
+The left side is nonempty, since $C^{(2)}\neq\varnothing$; so it is an
+$\MT T$ subuniverse of $D^{(1)}_{z}$ contained in $D^{(2)}_{z}$, and
+minimality of $D^{(2)}_{z}$ forces equality.
+\end{proof}
+
+\begin{hazard}[Where each hypothesis is spent]\label{haz:minimal-consistent}
+$1$-consistency of $\mathcal I$ itself --- restored here as for
+Lemma~\ref{lem:parallelogram-crucial}, and supplied by cycle-consistency at
+both call sites --- is what makes $R^{C}$ subdirect over the \emph{full}
+domains, which is the ambient in which the multi-type data lives; without it
+Corollary~\ref{cor:prop-relations} has no purchase. The $\TS$-freeness of
+$D^{(1)}_{z}$ is exactly clause (m1)'s hypothesis, blocking the middle
+alternative of propagation. And minimality must be \emph{outright}
+minimality among $\MT T$ subuniverses, not minimality containing a given
+point; the call site in Theorem~\ref{thm:main-inductive} produces the
+latter, and Caveat~\ref{haz:minimality} is what converts it to the former.
+\end{hazard}
 
 \begin{lemma}\label{lem:crucial-irreducible}
 Let $R(x_{1},\dots,x_{n})$ be a \emph{rectangular} constraint of a
@@ -6185,8 +6224,8 @@ $\bcol{\delta}\supseteq\mathcal I(z,x)$.
 Lemma~\ref{lem:bridge-from-instance} carries eight numbered hypotheses and is
 \emph{stated without proof here}. It is the only source of bridges in
 \S\ref{sec:main-statements}, and every use of connectedness routes through it;
-stated without proof, likewise, are Lemmas~\ref{lem:minimal-consistent} and
-\ref{lem:find-consistent}, Corollary~\ref{cor:same-type}, and clauses
+stated without proof, likewise, are Lemma~\ref{lem:find-consistent},
+Corollary~\ref{cor:same-type}, and clauses
 (a) and (b) of Lemma~\ref{lem:connected};
 Lemma~\ref{lem:parallelogram-crucial} is proved modulo
 Claim~\ref{cl:typing-anchor} and Lemma~\ref{lem:typed-above}. These are gaps
@@ -6645,8 +6684,8 @@ both are written so that a reader can check them in a few lines by hand.
 
 One structural property \emph{is} checked mechanically: the proof-dependency
 graph of this document --- an edge from each statement to every statement its
-proof cites --- is acyclic, over $114$ statements, $77$ of which carry proofs,
-and $181$ edges. That is a check on the arrangement, not on the mathematics,
+proof cites --- is acyclic, over $114$ statements, $78$ of which carry proofs,
+and $182$ edges. That is a check on the arrangement, not on the mathematics,
 and it has caught three real cycles: Caveats~\ref{haz:reverse-hom-split} and
 \ref{haz:central-critical-split}, and a third that a first draft of
 \pkey{lem:self-intersection-pc} introduced by borrowing four steps from the
@@ -6782,10 +6821,14 @@ that cites it, and the steps are now written out.
   \textsc{proved} & both were paraphrases before; the first had
   rectangularity as a conclusion where it is a hypothesis,
   Caveat~\ref{haz:crucial-irreducible} \\
-\pkey{lem:minimal-consistent}, \pkey{lem:connected},
+\pkey{lem:connected},
   \pkey{lem:find-consistent},
   \pkey{lem:bridge-from-instance}, \pkey{cor:same-type} & \textsc{stated} &
   Caveat~\ref{haz:bridge-from-instance} \\
+\pkey{lem:minimal-consistent} & \textsc{proved} & from
+  Corollary~\ref{cor:prop-relations}(m1) and outright minimality;
+  $1$-consistency of $\mathcal I$ restored as a hypothesis,
+  Caveat~\ref{haz:minimal-consistent} \\
 \pkey{lem:parallelogram-crucial} & \textsc{outlined} & the parallelogram
   property, irreducibility, the one-class fact, and the good branch of the
   typing are proved; what remains is Claim~\ref{cl:typing-anchor} and the

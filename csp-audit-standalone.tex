@@ -5,7 +5,7 @@
 %%  csp-audit.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision b5fe101 on 2026-08-02.
+%%  Generated from revision 3016fec on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-audit.tex
@@ -1244,7 +1244,18 @@ the conclusion itself, where $\ConOne(R,i)$ can only be a congruence on the
 full domain $\mathbf D_{x_{i}}$ if it is reflexive there, i.e.\ if
 $\proj_{i}(R)=D_{x_{i}}$.
 
-\emph{Repair.} Restore the hypothesis: the one-constraint instance is
+The same omission recurs at
+\texttt{LEMMinimalPCLinearReductionIsConsistent} (\texttt{main:2262}): its
+proof opens with ``By Lemma [\texttt{LEMPropagation}](fm)
+$\proj_{i}(R^{(2)})\le_{\TMD}^{D_{x_{i}}}D_{x_{i}}^{(1)}$'', an application
+whose ambient is the full domains, while the lemma hypothesises only that
+the \emph{reduction} $D^{(1)}$ is $1$-consistent. (That proof also
+concludes in $\le_{\TMD}$ and appeals to minimality among $\TMD$
+subuniverses where its statement supplies minimality among
+$\mathcal{M}T$ ones; propagation preserves the type, so the slip is
+notational, and the proof paper's version keeps $T$ throughout.)
+
+\emph{Repair.} Restore the hypothesis: the instance is
 $1$-consistent. Both consumers supply it, their instances being
 cycle-consistent. The proof paper's restatement also adds $\TS$-freeness of
 the $\mathbf D^{(1)}_{x_{i}}$, which is not spent by the source's own route
@@ -1255,7 +1266,9 @@ induction the freeness is automatic (no domain there has a nontrivial
 binary absorbing or central subuniverse); at the codimension-one consumer
 it is a new, recorded obligation on the blocks $\phi(\bar b)_{x}$. Proof
 paper: \pkey{lem:parallelogram-crucial}, hypotheses (i) and (ii), and its
-Caveat \pkey{haz:parallelogram-hyp}.
+Caveat \pkey{haz:parallelogram-hyp}; \pkey{lem:minimal-consistent}, now
+proved with the restored hypothesis, and its Caveat
+\pkey{haz:minimal-consistent}.
 
 \section{Statements restated}\label{sec:restated}
 

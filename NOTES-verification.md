@@ -1199,3 +1199,23 @@ two weaker projections whose conjunction is R — contradicts cruciality); typin
 good branch; residue = `cl:typing-anchor` (configs α/β/γ + PC⇒n=2) and `lem:typed-above`.
 `lem:maximal-mult` consumed by nothing; `hyp:maximal-mult` off the critical path. L3 exports
 2 → 7; the layering absorbed all of it with no upward edge.
+
+## `lem:minimal-consistent` proved; `lem:find-consistent` blocked on the anchor
+
+**Same session.** `LEMMinimalPCLinearReductionIsConsistent` (`main:2262–2294`): short proof,
+transports cleanly through `cor:prop-relations`(m1) once two things are fixed: (a) the same
+D20 omission — its (fm) application has the full domains as ambient, so the *instance* must
+be 1-consistent, not just the reduction (restored; both call sites are cycle-consistent);
+(b) the source proof concludes `≤_MTD` and uses MTD-minimality where its statement gives
+MT-T-minimality — notational, since propagation preserves T; our version keeps T. Now
+**proved** — L4 debts 6 → 5.
+
+`LEMFindOneConsistentForAll` (`main:2457–2506`) is NOT transportable yet: its nonemptiness
+step applies `CORMainStableIntersection` to the tree-covering's solution set with non-children
+restricted to `D^(1)` — the D19 anchoring gap again (the corollary wants subdirectness onto
+the ambient of the typed steps). Two positive finds for later: the cycle-consistency
+contradiction that kills the critical pair of children is clean; and **its BA case is a
+producer of a uniform type-BA reduction**: the restriction is one B at copies of a single x
+(one witnessing term) and equalities elsewhere (any term works), so `lem:ba-center-implies`'s
+common-term hypothesis is satisfiable at this producer — one instance of the
+`haz:witness-moved` check discharged, to be recorded when the lemma is written.
