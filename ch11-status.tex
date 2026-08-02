@@ -145,8 +145,11 @@ that cites it, and the steps are now written out.
   follow from \pkey{thm:main-inductive}(2); the $\TPC$ case is
   \pkey{thm:pc-safe}, which is stated only \\
 \pkey{thm:pc-safe} & \textsc{stated} & \\
-\pkey{thm:codim-one} & \textsc{outlined} & Step 2's linear algebra is wrong as
-  written; Caveat~\ref{haz:step2-linear-algebra} \\
+\pkey{lem:subuniverse-coset} & \textsc{proved} & \\
+\pkey{thm:codim-one} & \textsc{outlined} & Steps 2--4 are now written out and
+  the linear algebra is correct; what is outlined is Step~1, which rests on
+  \pkey{lem:connected}, and two facts taken from the unread half.
+  Caveat~\ref{haz:step2-linear-algebra} \\
 \pkey{lem:expanded-\brk consistency} & \textsc{imported} & \cite[Lem.~6.1]{ZhukJACM} \\
 \pkey{lem:tree-coverings} & \textsc{imported} & \cite[Lem.~5.6]{ZhukStrong} \\
 \pkey{lem:minimal-consistent}, \pkey{lem:crucial-irreducible},
@@ -217,7 +220,8 @@ Five items block the rest, and they are the honest reading of the table.
   proof. With \pkey{lem:inter\brk section-good} and
   \pkey{lem:self-\brk intersection-pc} both written out, this is what is left
   of the intersection-and-factorisation layer.
-\item The linear algebra of \pkey{thm:codim-one}
+\item Step~1 of \pkey{thm:codim-one} and the two facts its Steps~2--4 take
+  from the unread half --- the linear algebra itself is now correct
   (Caveat~\ref{haz:step2-linear-algebra}); and, for the common binary
   absorption witness, the check that every producer of a type-$\TBA$ reduction
   produces a \emph{uniform} one, now that \pkey{thm:main-inductive}(2)

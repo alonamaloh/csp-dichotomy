@@ -5,7 +5,7 @@
 %%  csp-proof.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision 5d1bae9 on 2026-08-02.
+%%  Generated from revision 3b55ded on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-proof.tex
@@ -5132,6 +5132,24 @@ for some $y\in\Var(\mathcal I)$, and $\mathcal I$ has a solution, then
 $\mathcal I$ has a solution with $y\in B$.
 \end{theorem}
 
+\begin{lemma}[Subuniverses of these products are cosets]\label{lem:subuniverse-coset}
+Let $q_{1},\dots,q_{r}$ be primes with $\mathbf Z_{q_{j}}\in\Vn$ and let
+$\varnothing\neq L\le\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{r}}$. Then
+$L=g+M$ for some $g\in L$ and some subgroup $M$ of the product.
+\end{lemma}
+
+\begin{proof}
+By Proposition~\ref{prop:p-divides}, $q_{j}\mid n-1$ for every $j$ and $w$ acts
+on each factor as $x_{1}+\dots+x_{n}$; so $w$ acts on the product as the
+$n$-fold sum, and $(n-1)h=0$ for every $h$ in the product. Fix $g\in L$ and put
+$M=L-g$. If $\bar y_{1},\dots,\bar y_{n}\in M$ then
+$w(\bar y_{1}+g,\dots,\bar y_{n}+g)=\sum_{j}\bar y_{j}+ng=
+\bigl(\sum_{j}\bar y_{j}\bigr)+g$, which lies in $L$; so $M$ is closed under
+the $n$-fold sum. Now $0\in M$, and for $y,z\in M$ taking
+$(y,z,0,\dots,0)$ --- legitimate since $n\ge3$ --- gives $y+z\in M$. A finite
+nonempty subset of a group closed under addition is a subgroup.
+\end{proof}
+
 \begin{longtheorem}[Codimension one]\label{thm:codim-one}
 Suppose
 \begin{enumerate}\romanlabels\tightlist
@@ -5151,8 +5169,12 @@ Suppose
 \end{enumerate}
 Then
 $\Delta=\{\bar a:\mathcal I\text{ has a solution in }\phi(\bar a)\}$ is empty,
-full, or an affine subspace of codimension $1$ --- the solution set of a single
-linear equation.
+full, or a coset of the kernel of a surjective homomorphism
+$\lambda\colon\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}\to
+\mathbf Z_{p}$ --- the solution set of the single equation
+$\lambda(\bar a)=d$. Such a $\lambda$ vanishes on every factor with
+$q_{i}\neq p$, so the equation involves only the coordinates over
+$\mathbb F_{p}$.
 \end{longtheorem}
 
 \begin{proof}[Proof]
@@ -5184,38 +5206,67 @@ replace $x$ in $C$ by a fresh $x'$, and add $\zeta(x,x',z)$, giving
 $\mathcal I'$. Put
 \[
   L=\{(\bar a,b):\mathcal I'\text{ has a solution with }z=b\text{ in }\phi(\bar a)\}
-   \le\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}\times\mathbf Z_{p}.
+   \le\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}\times\mathbf Z_{p},
 \]
-By condition (vii), $\proj_{1..k}(L)$ is full; and $(\bar b,0)\notin L$. So $L$
-has dimension $k$ and is the solution set of one linear equation. If that
-equation is $z=c$ with $c\neq 0$ then $\Delta=\varnothing$; otherwise setting
-$z=0$ gives an equation defining $\Delta$, of dimension $k-1$.
+and write $G=\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}$ and
+$\pi\colon G\times\mathbf Z_{p}\to G$ for the projection. Condition (vii) gives
+$\pi(L)=G$; in particular $L\neq\varnothing$. And $(\bar b,0)\notin L$, since a
+solution of $\mathcal I'$ with $z=0$ in $\phi(\bar b)$ would, by the defining
+property of $\zeta$, yield a solution of $\mathcal I$ in $\phi(\bar b)$, and
+$\bar b\notin\Delta$.
+
+\emph{Step 3: $L$ is a graph.} By Lemma~\ref{lem:subuniverse-coset},
+$L=(\bar g,c)+M$ for some $(\bar g,c)\in L$ and some subgroup $M\le
+G\times\mathbf Z_{p}$; and $\pi(M)=\pi(L)-\bar g=G$. The subgroup
+$M\cap(\{0\}\times\mathbf Z_{p})$ is a subgroup of $\mathbf Z_{p}$, so it is
+trivial or the whole of $\mathbf Z_{p}$. If it were the whole of
+$\mathbf Z_{p}$ then $L$ would be closed under changing its last coordinate
+arbitrarily, and $\pi(L)=G$ would then give $(\bar b,0)\in L$, which Step 2
+excludes. So $M\cap(\{0\}\times\mathbf Z_{p})=0$, $\pi|_{M}$ is an isomorphism
+$M\to G$, and $L$ is the graph of the affine map
+\[
+  f\colon G\to\mathbf Z_{p},\qquad
+  f(\bar a)=c+\lambda(\bar a-\bar g),
+\]
+where $\lambda\colon G\to\mathbf Z_{p}$ is the homomorphism reading off the last
+coordinate of $(\pi|_{M})^{-1}$.
+
+\emph{Step 4: read off $\Delta$.} By the defining property of $\zeta$, an
+$\bar a$ lies in $\Delta$ exactly when $\mathcal I'$ has a solution with $z=0$
+in $\phi(\bar a)$, that is, exactly when $(\bar a,0)\in L$; so
+$\Delta=f^{-1}(0)$. If $\lambda=0$ then $f$ is constant and $\Delta$ is empty
+or full according as $c-\lambda(\bar g)\neq0$ or $=0$. Otherwise $\lambda$ is
+onto $\mathbf Z_{p}$, since its image is a nontrivial subgroup of
+$\mathbf Z_{p}$, and $\Delta$ is the coset of $\ker\lambda$ on which $f$
+vanishes --- the solution set of one equation $\lambda(\bar a)=d$. Finally
+$\lambda$ kills every factor $\mathbf Z_{q_{i}}$ with $q_{i}\neq p$: an element
+of that factor has order dividing $q_{i}$, and its image has order dividing
+$\gcd(q_{i},p)=1$. So the equation involves only the coordinates over
+$\mathbb F_{p}$.
 \end{proof}
 
-\begin{hazard}[The linear algebra of Step 2]\label{haz:step2-linear-algebra}
-Step 2 as written is not yet correct, and the repair is worth setting out.
+\begin{hazard}[Why Step 3 is not one line]\label{haz:step2-linear-algebra}
+An earlier draft compressed Steps 2--4 into ``$L$ has dimension $k$ and is the
+solution set of one linear equation''. Two things make that false as stated.
 
 $L$ is a nonempty subuniverse of an idempotent affine algebra, hence in general
-an \emph{affine coset} and not a subgroup. And a product of prime fields with
-different primes is not one vector space, so ``dimension $k$'' and ``one linear
-equation'' are not meaningful until the primary components are separated: such
-a group splits as a product over primes of $\mathbb F_{q}$-vector spaces, and
-only coordinates over $\mathbb F_{p}$ can carry a nonzero coefficient in an
-equation with target $\mathbf Z_{p}$. The footnote in \cite{ZhukSimplified}
-about ``$J$ may contain only variables on the same field'' is the same issue
-surfacing in the algorithm.
+an \emph{affine coset} and not a subgroup; Lemma~\ref{lem:subuniverse-coset} is
+what supplies the translation, and it is where $n\ge3$ and
+$q\mid n-1$ are spent. And a product of prime fields with \emph{different}
+primes is not one vector space, so ``dimension $k$'' and ``codimension $1$''
+have no meaning until the primary components are separated. What survives is
+not a dimension count but the statement that $\Delta$ is a coset of the kernel
+of a surjection onto $\mathbf Z_{p}$; that kernel has index $p$, which is the
+only sense in which the codimension is one. The footnote in
+\cite{ZhukSimplified} about ``$J$ may contain only variables on the same
+field'' is the same issue surfacing in the algorithm, and \textup{(p3)} of
+\S\ref{sec:algorithm} is organised prime by prime for exactly this reason.
 
-A correct short argument runs as follows. Choose a point of $L$ and translate,
-obtaining a subgroup. The kernel of the projection
-$L\to\prod_{i}\mathbf Z_{q_{i}}$ lies in $0\times\mathbf Z_{p}$, hence is
-either trivial or all of $\mathbf Z_{p}$; a full kernel would put $(\bar b,0)$
-in the fibre over every $\bar b$, contradicting $(\bar b,0)\notin L$. So the
-projection is bijective and $L$ is the graph of an affine homomorphism
-$f\colon\prod_{i}\mathbf Z_{q_{i}}\to\mathbf Z_{p}$, whose linear part
-automatically ignores every $q$-primary factor with $q\neq p$. Then
-$\Delta=f^{-1}(0)$ is empty, full, or an affine hyperplane, which is the
-conclusion. Writing this into the proof is work not yet done;
-see \S\ref{sec:status}.
+What Step 2 still takes from elsewhere is $\pi(L)=G$, which is condition (vii)
+read through the construction of $\mathcal I'$, and the property of $\zeta$
+that relates solutions of $\mathcal I'$ with $z=0$ to solutions of
+$\mathcal I$. Both belong to the half of \cite{ZhukSimplified} this document
+has not yet read adversarially; see \S\ref{sec:status}.
 \end{hazard}
 
 \subsection{The supporting lemmas}
@@ -5879,8 +5930,11 @@ that cites it, and the steps are now written out.
   follow from \pkey{thm:main-inductive}(2); the $\TPC$ case is
   \pkey{thm:pc-safe}, which is stated only \\
 \pkey{thm:pc-safe} & \textsc{stated} & \\
-\pkey{thm:codim-one} & \textsc{outlined} & Step 2's linear algebra is wrong as
-  written; Caveat~\ref{haz:step2-linear-algebra} \\
+\pkey{lem:subuniverse-coset} & \textsc{proved} & \\
+\pkey{thm:codim-one} & \textsc{outlined} & Steps 2--4 are now written out and
+  the linear algebra is correct; what is outlined is Step~1, which rests on
+  \pkey{lem:connected}, and two facts taken from the unread half.
+  Caveat~\ref{haz:step2-linear-algebra} \\
 \pkey{lem:expanded-\brk consistency} & \textsc{imported} & \cite[Lem.~6.1]{ZhukJACM} \\
 \pkey{lem:tree-coverings} & \textsc{imported} & \cite[Lem.~5.6]{ZhukStrong} \\
 \pkey{lem:minimal-consistent}, \pkey{lem:crucial-irreducible},
@@ -5951,7 +6005,8 @@ Five items block the rest, and they are the honest reading of the table.
   proof. With \pkey{lem:inter\brk section-good} and
   \pkey{lem:self-\brk intersection-pc} both written out, this is what is left
   of the intersection-and-factorisation layer.
-\item The linear algebra of \pkey{thm:codim-one}
+\item Step~1 of \pkey{thm:codim-one} and the two facts its Steps~2--4 take
+  from the unread half --- the linear algebra itself is now correct
   (Caveat~\ref{haz:step2-linear-algebra}); and, for the common binary
   absorption witness, the check that every producer of a type-$\TBA$ reduction
   produces a \emph{uniform} one, now that \pkey{thm:main-inductive}(2)
