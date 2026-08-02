@@ -35,23 +35,28 @@ any repair marker, any commentary on the source, and any mention of a proof assi
 statement in the proof paper is marked *proved*, *imported* (with an exact citation and
 the hypotheses as the source states them), *outlined*, *stated only*, or *open*.
 
-The algebraic core of the strong-subuniverse theory is in the best shape: of its sixty
+The algebraic core of the strong-subuniverse theory is in the best shape: of its sixty-two
 statements, forty are proved here (one of them, `lem:maximal-mult`, only under an
-explicitly stated hypothesis), twelve are imported, five are outlined, four are stated only.
+explicitly stated hypothesis), twelve are imported, five are outlined, five are stated only.
 The two ends of the document are now stated rather than gestured at: the theorem is stated
 for a rigid core and derived for arbitrary Γ, `Solve_alg` is a function with a well-founded
 recursion, the hard half's (H0) is proved, and *complete* has a membership statement behind
 it.
 The main statements are not: the lemma that produces bridges from an instance is stated
 without proof, and part (1) of the main induction is an outline whose measure is not yet
-well founded across expanded coverings.
+well founded across expanded coverings. The exception is `lem:parallelogram-crucial`,
+whose parallelogram half is now proved outright and whose typing half is proved up to
+one claim and one stated L3 lemma.
 
 Three items block the rest:
 
-1. **`lem:maximal-mult`** — proved, but only from an explicitly stated extra
-   hypothesis: *the type-`T` factors alone already cut `B₂` out*. Strictly
-   stronger than what the other hypotheses give, and unproved. Three routes to
-   it have failed; the audit records all three.
+1. **`cl:typing-anchor` and `lem:typed-above`** — the residue of the typing half
+   of `lem:parallelogram-crucial`. They replace `lem:maximal-mult`'s unproved
+   hypothesis on this list: the new proof of `lem:parallelogram-crucial` does not
+   cite that lemma, so the hypothesis to which three routes failed is no longer on
+   any path to the main statements. The claim provably cannot be settled at the
+   level of subsets of a single algebra (three pairwise-meeting lines in `Z_p²`),
+   which is also a post-mortem for the three failed routes.
 2. **`cl:multiply-step`** inside `lem:multiply-all-linear`: that the first step
    down `B₁`'s chain at which the intersection dies is of multi-type `T`. Case 1
    and the reduction of Case 2 to this claim are proved.

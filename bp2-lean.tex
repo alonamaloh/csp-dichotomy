@@ -236,18 +236,21 @@ What remains open, and gates the formalization of \S5 of
 \cite{ZhukSimplified}, is:
 
 \begin{itemize}\tightlist
-\item \inproof{lem:maximal-mult} --- the maximal multi-type extension. Its
-  Case~1 is unproved and the published repair is invalid; see the audit
-  document. Nothing downstream of it should be attempted first.
+\item Claim \pkey{cl:typing-anchor} and \inproof{lem:typed-above} --- the
+  residue of the typing half of \inproof{lem:parallelogram-crucial}. They
+  replaced \inproof{lem:maximal-mult} and its unproved hypothesis on the
+  critical path; see the audit document. Nothing downstream of them should
+  be attempted first.
 \item The rectangularity normalisation ``compose the bridge with itself enough
   times'', on which \inproof{lem:no-cross-bridge} and
   \inproof{lem:bridge-to-pc} rest. The reflexivisation that used to stand
   beside it on this list is \emph{not} open: it is an observation about a
   hypothesis every consumer already carries, and it is now
   \inproof{lem:bridge-reflexive}.
-\item \inproof{lem:self-intersection-pc}, now the sole outline under
-  \inproof{lem:intersection-good}, which is otherwise written out in full; and
-  \inproof{lem:multiply-all-linear}, which is not yet a proof.
+\item \inproof{lem:multiply-all-linear}, which is not yet a proof: its
+  Claim \pkey{cl:multiply-step} is open.
+  (\inproof{lem:self-intersection-pc} and \inproof{lem:intersection-good},
+  which stood here, are now both proved in full.)
 \end{itemize}
 
 Those are not throughput-limited. Schedule around them, not around the line

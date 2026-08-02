@@ -339,6 +339,31 @@ rectangular closure of $R$, and suppose $R\cap(B_{1}\times B_{2})\neq
 $R\cap(C_{1}\times C_{2})\neq\varnothing$.
 \end{lemma}
 
+\begin{lemma}[Irreducibles above a typed family]\label{lem:typed-above}
+Let $B\lll A$ with $\mathbf B$ $\TS$-free, let $T\in\{\TL,\TPC,\TD\}$, and
+for $i\in[t]$, $t\ge1$, let $\tau_{i}$ be an irreducible congruence on
+$\mathbf A$ --- linear if $T=\TL$, PC if $T=\TPC$ --- with
+$\cover{\tau_{i}}\supseteq B^{2}$ and $\tau_{i}\not\supseteq B^{2}$. If
+$\delta$ is an irreducible congruence on $\mathbf A$ with
+$\tau_{1}\cap\dots\cap\tau_{t}\subseteq\delta$ and
+$B^{2}\not\subseteq\delta$, then $\delta$ is linear if $T=\TL$ and PC if
+$T=\TPC$, and $\cover{\delta}\supseteq B^{2}$.
+\end{lemma}
+
+\begin{hazard}[Stated only; the $t=1$ case is free]\label{haz:typed-above}
+Lemma~\ref{lem:typed-above} is \emph{stated without proof}. For $t=1$ it is
+immediate: $\delta\supseteq\tau_{1}$ and $\delta\neq\tau_{1}$ would make
+$\delta$ a subuniverse of $\mathbf A^{2}$, stable under $\tau_{1}$ and
+properly containing it, hence $\delta\supseteq\cover{\tau_{1}}\supseteq
+B^{2}$ (Proposition~\ref{prop:cover}(b)), which is excluded; so
+$\delta=\tau_{1}$. For $t\ge2$ the content is that the interval above an
+intersection of typed congruences with large covers contains no irreducible
+of the other class and none with a small cover, and that is not a lattice
+fact: it needs the structure of the quotient
+$\mathbf A/(\tau_{1}\cap\dots\cap\tau_{t})$. Its one consumer is the good
+branch of Case~A in the proof of Lemma~\ref{lem:parallelogram-crucial}.
+\end{hazard}
+
 \begin{longlemma}[Maximal multi-type extension]\label{lem:maximal-mult}
 Let $C_{1}\subt[A]{\MT T}B_{1}\lll A$, $B_{2}\lll A$,
 $C_{1}\cap B_{2}=\varnothing$, $B_{1}\cap B_{2}\neq\varnothing$, and let

@@ -41,7 +41,7 @@ def optional_arg(s, i):
 
 
 def parse():
-    statements, edges, owner_of_proof = [], defaultdict(set), {}
+    statements, proofs = [], []
     for f in sources(MAIN):
         text = (ROOT / f).read_text()
         last_stmt = None
@@ -57,14 +57,21 @@ def parse():
             end = text.find(r"\end{proof}", i)
             body = text[i:end if end != -1 else len(text)]
             named = re.findall(r"\\ref\{([^}]*)\}", opt)
-            owner = named[0] if named else last_stmt
-            if owner is None:
-                continue
-            owner_of_proof[owner] = f
-            for r in re.findall(r"\\ref\{([^}]*)\}", body):
-                if r != owner:
-                    edges[owner].add(r)
+            proofs.append((named, last_stmt, body, f))
     labels = {s for s, _ in statements}
+    # A proof belongs to the first *statement* its title names; a title that
+    # names only non-statements (a Claim, a Caveat) does not steal the proof
+    # from the statement it follows.  Attributing to a non-statement would
+    # silently drop the proof's edges from the cycle and layer checks.
+    edges, owner_of_proof = defaultdict(set), {}
+    for named, last_stmt, body, f in proofs:
+        owner = next((r for r in named if r in labels), last_stmt)
+        if owner is None:
+            continue
+        owner_of_proof[owner] = f
+        for r in re.findall(r"\\ref\{([^}]*)\}", body):
+            if r != owner:
+                edges[owner].add(r)
     edges = {a: {b for b in bs if b in labels} for a, bs in edges.items()}
     return labels, edges, set(owner_of_proof)
 

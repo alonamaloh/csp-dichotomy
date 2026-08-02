@@ -5,7 +5,7 @@
 %%  csp-blueprint.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision b023b35 on 2026-08-02.
+%%  Generated from revision 829f727 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-blueprint.tex
@@ -596,18 +596,21 @@ What remains open, and gates the formalization of \S5 of
 \cite{ZhukSimplified}, is:
 
 \begin{itemize}\tightlist
-\item \inproof{lem:maximal-mult} --- the maximal multi-type extension. Its
-  Case~1 is unproved and the published repair is invalid; see the audit
-  document. Nothing downstream of it should be attempted first.
+\item Claim \pkey{cl:typing-anchor} and \inproof{lem:typed-above} --- the
+  residue of the typing half of \inproof{lem:parallelogram-crucial}. They
+  replaced \inproof{lem:maximal-mult} and its unproved hypothesis on the
+  critical path; see the audit document. Nothing downstream of them should
+  be attempted first.
 \item The rectangularity normalisation ``compose the bridge with itself enough
   times'', on which \inproof{lem:no-cross-bridge} and
   \inproof{lem:bridge-to-pc} rest. The reflexivisation that used to stand
   beside it on this list is \emph{not} open: it is an observation about a
   hypothesis every consumer already carries, and it is now
   \inproof{lem:bridge-reflexive}.
-\item \inproof{lem:self-intersection-pc}, now the sole outline under
-  \inproof{lem:intersection-good}, which is otherwise written out in full; and
-  \inproof{lem:multiply-all-linear}, which is not yet a proof.
+\item \inproof{lem:multiply-all-linear}, which is not yet a proof: its
+  Claim \pkey{cl:multiply-step} is open.
+  (\inproof{lem:self-intersection-pc} and \inproof{lem:intersection-good},
+  which stood here, are now both proved in full.)
 \end{itemize}
 
 Those are not throughput-limited. Schedule around them, not around the line
@@ -642,11 +645,11 @@ boundaries make this class of error checkable rather than discoverable.
 \hline
  & Layer & Stmts & Exported & Open debts \\
 \hline
-L0 & foundations & 12 & 7 & --- \\
+L0 & foundations & 12 & 8 & --- \\
 L1 & absorption & 21 & 15 & --- \\
-L2 & congruences and bridges & 24 & 8 & 2 \\
-L3 & strong subuniverses & 27 & 2$^{*}$ & 8, and both hypothesis-debts \\
-L4 & instances & 13 & 9 & 8 \\
+L2 & congruences and bridges & 24 & 9 & 2 \\
+L3 & strong subuniverses & 28 & 7$^{*}$ & 9, and one claim-debt \\
+L4 & instances & 13 & 9 & 6, and one claim-debt \\
 L5 & main statements & 5 & 0$^{*}$ & 4 \\
 L6 & algorithm, hard half, assembly & 6 & 2 & 1 \\
 L7 & complexity & 5 & 0 & 4 \\
@@ -656,12 +659,20 @@ L7 & complexity & 5 & 0 & 4 \\
 
 ``Exported'' counts statements cited from a strictly higher layer;
 ``open debts'' counts statements not \textsc{proved} or \textsc{imported} in
-the status table of the proof paper. The starred counts are \emph{lower
-bounds}: an interface is only as visible as the proofs that consume it, and
-the biggest consumers of L3 and L5 --- \inproof{lem:bridge-from-instance} and
-\inproof{thm:t1} --- have no proofs yet, so their edges do not exist. Writing
-L4 out will widen L3's interface substantially; that widening is worth
-watching, since every new export is a new obligation on L3's statements.
+the status table of the proof paper, plus the claims written into proofs
+(\pkey{cl:multiply-step} at L3, \pkey{cl:typing-anchor} at L4). The starred
+counts are \emph{lower bounds}: an interface is only as visible as the proofs
+that consume it, and the biggest consumers of L3 and L5 ---
+\inproof{lem:bridge-from-instance} and \inproof{thm:t1} --- have no proofs
+yet, so their edges do not exist. The prediction that writing L4 out would
+widen L3's interface has begun to come true: the first written L4 proof, that
+of \inproof{lem:parallelogram-crucial}, took L3's exports from two to seven
+--- \inproof{cor:prop-relations}, \inproof{lem:preserve-linked},
+\inproof{lem:typed-above}, \inproof{lem:intersect-all},
+\inproof{lem:strong-nonempty} joined \inproof{lem:multitype-chain} and
+\inproof{lem:ubiquity} --- and each new export is a new obligation on L3's
+statements, two of which (\inproof{lem:preserve-linked},
+\inproof{lem:typed-above}) are themselves still unproved.
 
 \subsection{What each layer provides, owes, and imports}
 
@@ -698,22 +709,27 @@ stated (consumed by nothing).
 
 \item[L3 --- strong subuniverses.] The six types, $\lll$, propagation,
 the intersection property, stable intersection. Two facts distinguish this
-layer. \emph{It imports nothing}: every one of its 27 statements is the
+layer. \emph{It imports nothing}: every one of its 28 statements is the
 simplified paper's own contribution, with no external source to fall back on.
-And \emph{it carries both open hypothesis-debts}:
-Hypothesis \pkey{hyp:maximal-mult} and Claim \pkey{cl:multiply-step}, each
-written into a statement and exported upward as a precondition rather than
-hidden in a proof. Debts: four outlined (\pkey{lem:factor-by-delta},
+And \emph{its open problems are written into statements and claims rather
+than hidden in proofs}: Claim \pkey{cl:multiply-step} lives here, and
+Hypothesis \pkey{hyp:maximal-mult} did until the new proof of
+\pkey{lem:parallelogram-crucial} took \pkey{lem:maximal-mult} off every
+path to the main statements. Debts: four outlined
+(\pkey{lem:factor-by-delta},
 \pkey{lem:center-pushed-in}, \pkey{lem:leftlinked-stay-full},
-\pkey{lem:multiply-all-linear}), four stated (the three propagation
-corollaries and \pkey{lem:preserve-linked}), plus the two hypotheses.
+\pkey{lem:multiply-all-linear}), five stated ---
+\pkey{lem:preserve-linked}, \pkey{lem:typed-above}, and the three
+propagation corollaries --- plus the claim.
 
 \item[L4 --- instances.] Consistency, coverings, cruciality, weakening.
 Imports: JACM Lem.~6.1 (\inproof{lem:expanded-consistency}) and
-strong-subalgebras Lem.~5.6 (\inproof{lem:tree-coverings}). Debts: eight of
-its thirteen statements are stated only, including
-\inproof{lem:bridge-from-instance} --- the sole consumer-to-be of stable
-intersection, and the largest single piece of unwritten mathematics in the
+strong-subalgebras Lem.~5.6 (\inproof{lem:tree-coverings}). Debts: six of
+its thirteen statements are not proved --- five stated, and
+\inproof{lem:parallelogram-crucial} now outlined, proved except for
+Claim \pkey{cl:typing-anchor} and L3's \pkey{lem:typed-above} --- including
+\inproof{lem:bridge-from-instance}, the sole consumer-to-be of stable
+intersection and the largest single piece of unwritten mathematics in the
 document.
 
 \item[L5 --- main statements.] The main induction, reductions-safe, PC-safe,

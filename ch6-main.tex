@@ -492,6 +492,14 @@ read through the construction of $\mathcal I'$, and the property of $\zeta$
 that relates solutions of $\mathcal I'$ with $z=0$ to solutions of
 $\mathcal I$. Both belong to the half of \cite{ZhukSimplified} this document
 has not yet read adversarially; see \S\ref{sec:status}.
+
+A further obligation on Step~1, created by the restored hypotheses of
+Lemma~\ref{lem:parallelogram-crucial}
+(Caveat~\ref{haz:parallelogram-hyp}): applying that lemma in the
+$C_{0}^{(1)}=\varnothing$ branch requires every block
+$\phi(\bar b)_{x}$ to be $\TS$-free, which does not follow from
+hypothesis (ii) of this theorem --- $\TS$-freeness of $\mathbf D_{x}$ says
+nothing about its subalgebras --- and is not established here.
 \end{hazard}
 
 \subsection{The supporting lemmas}
@@ -621,15 +629,300 @@ $T\in\{\TBA,\TC\}$ then $D^{(2)}\subte{T}D^{(1)}$; and if $T=\TPC$ and every
 $D^{(1)}_{y}$ is $\TS$-free then $D^{(2)}\subte{\TMPC}D^{(1)}$.
 \end{lemma}
 
-\begin{lemma}\label{lem:parallelogram-crucial}
-Suppose $D^{(1)}$ is a $1$-consistent reduction for the one-constraint instance
-$R(x_{1},\dots,x_{n})$, that $T\in\{\TL,\TPC,\TD\}$, that
-$D^{(2)}\subte[D]{\MT T}D^{(1)}\lll D$, and that $R$ is crucial in $D^{(2)}$.
+\begin{longlemma}[Crucial constraints have the parallelogram
+  property]\label{lem:parallelogram-crucial}
+Suppose
+\begin{enumerate}\romanlabels\tightlist
+\item the one-constraint instance $R(x_{1},\dots,x_{n})$, with
+  $x_{1},\dots,x_{n}$ pairwise distinct, is $1$-consistent --- that is,
+  $R\sdle\mathbf D_{x_{1}}\times\dots\times\mathbf D_{x_{n}}$ --- and
+  $D^{(1)}$ is a $1$-consistent reduction for it;
+\item every $\mathbf D^{(1)}_{x_{i}}$ is $\TS$-free;
+\item $T\in\{\TL,\TPC,\TD\}$ and $D^{(2)}\subte[D]{\MT T}D^{(1)}\lll D$;
+\item $R$ is crucial in $D^{(2)}$.
+\end{enumerate}
 Then $R$ has the parallelogram property, and for every $i\in[n]$ the congruence
-$\ConOne(R,i)$ is of type $T$ with
+$\ConOne(R,i)$ is irreducible --- linear if $T=\TL$, PC if $T=\TPC$ --- with
 $\cover{\ConOne(R,i)}\supseteq(D^{(1)}_{x_{i}})^{2}$. If moreover $T=\TPC$ then
 $n=2$.
-\end{lemma}
+\end{longlemma}
+
+\begin{hazard}[Hypotheses (i) and (ii) are load-bearing]\label{haz:parallelogram-hyp}
+Subdirectness over the \emph{unreduced} domains is what makes each
+$\ConOne(R,i)$ reflexive on all of $D_{x_{i}}$, hence eligible to be a
+congruence on $\mathbf D_{x_{i}}$ at all (Lemma~\ref{lem:conone-basics}), and
+the proof spends it again each time Corollary~\ref{cor:prop-relations} is
+applied with the full domains as ambient. The $\TS$-freeness of the
+$\mathbf D^{(1)}_{x_{i}}$ is what Lemma~\ref{lem:typed-above} carries.
+
+Both call sites supply the two hypotheses. In Case~2 of the proof of
+Theorem~\ref{thm:main-inductive}(1), no $\mathbf D^{(1)}_{x}$ has a nontrivial
+binary absorbing or central subuniverse, and a $\subt{\TS}$-witness would be
+one; and the instance there is cycle-consistent, so each constraint is
+subdirect. In Step~1 of Theorem~\ref{thm:codim-one}, subdirectness again comes
+from cycle-consistency, but the $\TS$-freeness of the blocks
+$\phi(\bar b)_{x}$ does \emph{not} follow from hypothesis (ii) of that theorem
+and is a new obligation on its outline; it is recorded in
+Caveat~\ref{haz:step2-linear-algebra}.
+\end{hazard}
+
+\begin{proof}[Proof of Lemma~\ref{lem:parallelogram-crucial}, modulo the claim]
+Write $\mathbf A_{i}=\mathbf D_{x_{i}}$; hypothesis (i) is used in the form
+$\proj_{i}(R)=A_{i}$. First, $n\ge2$: a subdirect unary constraint is
+$R=A_{1}$, whose reduction $D^{(2)}_{x_{1}}$ is nonempty, contradicting
+cruciality. Second, the form in which cruciality is spent throughout: $R^{(2)}
+=\varnothing$, while any finite set of constraints, \emph{each properly weaker
+than $R$}, is \emph{simultaneously} satisfiable in $D^{(2)}$, because a
+solution of $\mathcal I[R\Uparrow]^{(2)}$ satisfies every weaker constraint at
+once (Definition~\ref{def:crucial}). Third, $R^{(1)}\neq\varnothing$: the
+domains $D^{(1)}_{x_{i}}$ are nonempty by $D^{(1)}\lll D$
+(Caveat~\ref{haz:empty-reduction}), and $1$-consistency projects $R^{(1)}$
+onto them.
+
+\emph{Step 1: the parallelogram property.} By
+Caveat~\ref{haz:permutations} it suffices to fix a split of $[n]$ into
+nonempty blocks $K$ and $L$ and prove the parallelogram implication there. Put
+$E_{K}=\proj_{K}(R)$, $E_{L}=\proj_{L}(R)$ --- subdirect in the corresponding
+products of full domains --- and let $W\sdle\mathbf E_{K}\times\mathbf E_{L}$
+be $R$ read as a binary relation between the blocks. For $j\in\{1,2\}$ let
+$E_{K}^{(j)}=E_{K}\cap\prod_{i\in K}D^{(j)}_{x_{i}}$ and likewise
+$E_{L}^{(j)}$.
+
+Corollary~\ref{cor:prop-relations}(r), applied to the relation $E_{K}$ with
+the chains $D^{(1)}_{x_{i}}\lll A_{i}$, gives $E_{K}^{(1)}\dlll E_{K}$, and
+$E_{K}^{(1)}\supseteq\proj_{K}(R^{(1)})\neq\varnothing$, so
+$E_{K}^{(1)}\lll E_{K}$. Corollary~\ref{cor:prop-relations}(m) gives
+$E_{K}^{(2)}\dsubte[E_{K}]{\MT T}E_{K}^{(1)}$; and $E_{K}^{(2)}$ is nonempty,
+because the constraint $\proj_{K}(R)$ on the variables $\{x_{i}:i\in K\}$ is
+properly weaker than $R$ --- its variable set is properly smaller --- so
+cruciality gives it a solution in $D^{(2)}$. Every $\subt{\TL}$ or
+$\subt{\TPC}$ step is a $\subt{\TD}$ step, so
+$E_{K}^{(2)}\subte[E_{K}]{\TMD}E_{K}^{(1)}\lll E_{K}$, and the same at $L$.
+
+Now $W\cap(E_{K}^{(2)}\times E_{L}^{(2)})=\varnothing$, since a pair there
+assembles to a tuple of $R^{(2)}$, while
+$W\cap(E_{K}^{(1)}\times E_{L}^{(1)})\neq\varnothing$, since $R^{(1)}\neq
+\varnothing$. The \emph{contrapositive} of Lemma~\ref{lem:preserve-linked}
+therefore gives $S\cap(E_{K}^{(2)}\times E_{L}^{(2)})=\varnothing$ for $S$ the
+rectangular closure of $W$. For a binary relation the rectangular closure is
+reached by iterating $W\mapsto W\circ W^{-1}\circ W$: each iterate is a
+subuniverse, positively primitively defined from $W$, the sequence is
+increasing, and its stable value is the least rectangular relation containing
+$W$ (Lemma~\ref{lem:rect-basics}(b)); so $S$ is a subuniverse of
+$\mathbf E_{K}\times\mathbf E_{L}$. Let $S_{R}$ be $S$ read back as an
+$n$-ary relation on the scope of $R$. Then $S_{R}\supseteq R$ is a constraint
+on the same variables, and $S_{R}^{(2)}=\varnothing$: a tuple of
+$S_{R}\cap\prod_{i}D^{(2)}_{x_{i}}$ has its $K$-part in $E_{K}^{(2)}$ and its
+$L$-part in $E_{L}^{(2)}$, and $S$ misses that box. If $S_{R}\supsetneq R$
+then $S_{R}$ is properly weaker than $R$ and cruciality makes
+$S_{R}^{(2)}$ nonempty --- a contradiction. So $S_{R}=R$, i.e.\ $W$ is
+rectangular, which is the parallelogram implication at the split $(K,L)$. As
+the split was arbitrary, $R$ has the parallelogram property; by
+Lemma~\ref{lem:rect-basics}(a) it is rectangular.
+
+\emph{Step 2: the $\ConOne$'s are irreducible congruences.} Every variable of
+$R$ is rectangular and $\proj_{i}(R)=A_{i}$, so
+$\sigma_{i}:=\ConOne(R,i)$ is a congruence on $\mathbf A_{i}$
+(Lemma~\ref{lem:conone-basics}(c)); and the instance $\{R\}$ is $1$-consistent
+with $R$ crucial in $D^{(2)}$, so Lemma~\ref{lem:crucial-irreducible} makes
+every $\sigma_{i}$ irreducible.
+
+\emph{Step 3: all $\sigma_{i}$ are of one class.} For $i\neq j$ there is a
+bridge from $\sigma_{i}$ to $\sigma_{j}$. Permute the coordinates so that
+$i=1$, $j=n$. If the witness configuration of
+Lemma~\ref{lem:bridge-from-relation} fails, then for every $\bar a$: if
+$\bar a[1\mapsto b_{1}]\in R$ for some $b_{1}$ and $\bar a[n\mapsto b_{n}]\in
+R$ for some $b_{n}$, then $\bar a\in R$. That says $R$ is the conjunction of
+the two constraints $\proj_{[n]\setminus\{1\}}(R)$ and
+$\proj_{[n]\setminus\{n\}}(R)$, each properly weaker than $R$; by cruciality
+some assignment in $D^{(2)}$ satisfies both at once, hence satisfies $R$,
+contradicting $R^{(2)}=\varnothing$. So the configuration exists, and
+Lemma~\ref{lem:bridge-from-relation} --- its rectangularity hypotheses are
+Step~1 --- returns a bridge from $\sigma_{1}$ to $\sigma_{n}$. Reversing a
+bridge reverses its ends, so by Lemma~\ref{lem:no-cross-bridge} either every
+$\sigma_{i}$ is linear or none is: \emph{the $\sigma_{i}$ are all linear or
+all PC.}
+
+\emph{Step 4: typing at a coordinate.} Fix the coordinate; permute so it is
+the first; write $\mathbf A=\mathbf A_{1}$, $\sigma=\sigma_{1}$,
+$B=D^{(1)}_{x_{1}}$, and
+\[
+  E=\proj_{1}\bigl(R\cap(A\times D^{(2)}_{x_{2}}\times\dots\times
+    D^{(2)}_{x_{n}})\bigr).
+\]
+Six facts.
+\begin{enumerate}\alphlabels\tightlist
+\item $E\neq\varnothing$: the constraint $\proj_{[n]\setminus\{1\}}(R)$ is
+  properly weaker than $R$, so it has a solution in $D^{(2)}$, and the first
+  entry of a witnessing tuple of $R$ lies in $E$.
+\item $E\cap D^{(2)}_{x_{1}}=\varnothing$, since $R^{(2)}=\varnothing$.
+\item $E\circ\sigma=E$: for $a\in E$ with witness $(a,\bar c)\in R$ and
+  $(a,a')\in\sigma$, stability of the first variable
+  (Lemma~\ref{lem:conone-basics}(b)) gives $(a',\bar c)\in R$.
+\item $E\lll A$: Corollary~\ref{cor:prop-relations}(r1) with the chains
+  $D^{(2)}_{x_{i}}\lll A_{i}$ --- Lemma~\ref{lem:multitype-chain} composed
+  with $D^{(1)}\lll D$ --- gives $E\dlll A$, and (a) removes the dot.
+\item $\sigma$ is \emph{maximal} among congruences $\delta$ on $\mathbf A$
+  with $(E\circ\delta)\cap D^{(2)}_{x_{1}}=\varnothing$; it is one by (b) and
+  (c). Let $\delta\supsetneq\sigma$ and put
+  \[
+    R_{\delta}(x_{1},\dots,x_{n})=\exists z\;
+      R(z,x_{2},\dots,x_{n})\wedge\delta(z,x_{1}),
+  \]
+  a constraint on the scope of $R$ with $R_{\delta}\supseteq R$, by
+  reflexivity of $\delta$. If $R_{\delta}=R$, then the first variable of $R$
+  is stable under $\delta$ --- for $(u,v)\in\delta$ and $(u,\bar c)\in R$ the
+  tuple $(v,\bar c)$ satisfies $R_{\delta}$ --- and then, $\proj_{1}(R)$
+  being all of $A$, every $\delta$-pair is a $\sigma$-pair, contradicting
+  $\delta\supsetneq\sigma$. So $R_{\delta}$ is properly weaker; cruciality
+  gives it a solution in $D^{(2)}$, whose witness $z$ lies in $E$ and
+  satisfies $(z,a_{1})\in\delta$ for its first entry
+  $a_{1}\in D^{(2)}_{x_{1}}$; so $(E\circ\delta)\cap D^{(2)}_{x_{1}}\neq
+  \varnothing$.
+\item If $E\cap B\neq\varnothing$ then $B^{2}\not\subseteq\sigma$: for
+  $b\in E\cap B$ and $c\in D^{(2)}_{x_{1}}\subseteq B$, $(b,c)\in\sigma$
+  would put $c\in E\circ\sigma=E$ against (b).
+\end{enumerate}
+
+\emph{Case A: $E\cap B\neq\varnothing$.} Then $D^{(2)}_{x_{1}}\neq B$ by (b),
+so Definition~\ref{def:multitypes} writes
+$D^{(2)}_{x_{1}}=\bigcap_{j\le t}(B\cap E_{j})$, $t\ge1$, with
+$B\cap E_{j}\subt[A]{T(\tau_{j})}B$: each $\tau_{j}$ is an irreducible
+congruence on $\mathbf A$ --- linear if $T=\TL$, PC if $T=\TPC$ --- with
+$\cover{\tau_{j}}\supseteq B^{2}$, and $E_{j}$ is the block of $\tau_{j}$
+containing $D^{(2)}_{x_{1}}$. Note $\tau_{j}\not\supseteq B^{2}$: otherwise
+$B\subseteq E_{j}$ and the step is not proper. Put
+$\tau=\tau_{1}\cap\dots\cap\tau_{t}$ and consider $R_{\tau}$ as in (e).
+
+If $R_{\tau}=R$: as in (e), $\tau\subseteq\sigma$. If moreover
+$\tau_{j}\subseteq\sigma$ for some $j$, then either $\sigma=\tau_{j}$, or
+$\sigma\supsetneq\tau_{j}$ --- and $\sigma$, a subuniverse of $\mathbf A^{2}$
+stable under $\tau_{j}$ and properly containing it, then contains
+$\cover{\tau_{j}}\supseteq B^{2}$ (Proposition~\ref{prop:cover}(b)),
+against (f). So $\sigma=\tau_{j}$, and the conclusion holds at this
+coordinate. If no $\tau_{j}\subseteq\sigma$ --- possible only for $t\ge2$ ---
+then $\sigma$ is an irreducible congruence with
+$\tau_{1}\cap\dots\cap\tau_{t}\subseteq\sigma$ and, by (f),
+$B^{2}\not\subseteq\sigma$; Lemma~\ref{lem:typed-above}, whose
+$\TS$-freeness hypothesis is (ii), gives the conclusion.
+
+If $R_{\tau}\supsetneq R$: cruciality gives a solution of $R_{\tau}$ in
+$D^{(2)}$ whose witness $z$ lies in $E$ with $(z,a_{1})\in\tau$ for some
+$a_{1}\in D^{(2)}_{x_{1}}$; each $E_{j}$ is a block of
+$\tau_{j}\supseteq\tau$ containing $a_{1}$, so $z\in\bigcap_{j}E_{j}$.
+Together with (b) this is
+\begin{equation}\label{eq:config-alpha}\tag{$\alpha$}
+  E\cap\textstyle\bigcap_{j}E_{j}\neq\varnothing,
+  \qquad
+  E\cap B\cap\textstyle\bigcap_{j}E_{j}=\varnothing,
+  \qquad E\cap B\neq\varnothing .
+\end{equation}
+
+\emph{Case B: $E\cap B=\varnothing$} --- which is where the coordinates with
+$D^{(2)}_{x_{1}}=D^{(1)}_{x_{1}}$ always land, by (b). Fix chain data for
+$B\lll A$ (Definition~\ref{def:lll}): $A=B_{0}\supseteq\dots\supseteq
+B_{m}=B$ with $B_{k}\subt[A]{T_{k}(\xi_{k})}B_{k-1}$ and
+$T_{k}\in\{\TBA,\TC,\TS,\TD\}$. Since $E\cap B_{0}\neq\varnothing$ and
+$E\cap B_{m}=\varnothing$, there is a least $k$ with $E\cap B_{k}=
+\varnothing$; write $B'=B_{k-1}$, $C'=B_{k}$, so $E\cap B'\neq\varnothing$,
+$E\cap C'=\varnothing$, and $D^{(2)}_{x_{1}}\subseteq B\subseteq C'$. As in
+(f), $B'^{2}\not\subseteq\sigma$.
+
+The step cannot be of type $\TS$: it would supply a nonempty
+$D\subseteq C'$ with $D\subt{\TBA,\TC}B'$
+(Definition~\ref{def:ba-center-free}); $E\cap B'$ is nonempty with
+$E\cap B'\dlll^{A}B'$ by Lemma~\ref{lem:intersect-all}(i), so
+Lemma~\ref{lem:strong-nonempty} gives $(E\cap B')\cap D\neq\varnothing$,
+against $E\cap C'=\varnothing$.
+
+If the step is of type $\TD$, consider $R_{\xi_{k}}$ as in (e). If
+$R_{\xi_{k}}=R$ then $\xi_{k}\subseteq\sigma$, and as in Case~A either
+$\sigma\supseteq\cover{\xi_{k}}\supseteq B'^{2}$ --- excluded --- or
+$\sigma=\xi_{k}$: then $\sigma$ is irreducible with
+$\cover{\sigma}\supseteq B'^{2}\supseteq B^{2}$, and for $T=\TD$ the
+coordinate is done, while for $T\in\{\TL,\TPC\}$ only the \emph{class} of
+$\sigma$ remains, which Step~3 settles whenever some coordinate is typed
+outright. If $R_{\xi_{k}}\supsetneq R$, cruciality gives $z\in E$ with
+$(z,a_{1})\in\xi_{k}$, $a_{1}\in D^{(2)}_{x_{1}}\subseteq C'$; writing $E'$
+for the block of $\xi_{k}$ containing $a_{1}$, so that $C'=B'\cap E'$, this
+is
+\begin{equation}\label{eq:config-beta}\tag{$\beta$}
+  E\cap E'\neq\varnothing,\qquad E\cap B'\cap E'=\varnothing,
+  \qquad E\cap B'\neq\varnothing,
+\end{equation}
+the shape of \eqref{eq:config-alpha} one chain step up, with the single
+block $E'$ of the irreducible $\xi_{k}$ in place of the type-$T$ blocks.
+
+The remaining possibility is a step of type $\TBA$ or $\TC$:
+\begin{equation}\label{eq:config-gamma}\tag{$\gamma$}
+  C'\subt[A]{T_{k}}B',\quad T_{k}\in\{\TBA,\TC\},\qquad
+  E\cap B'\neq\varnothing,\qquad E\cap C'=\varnothing .
+\end{equation}
+
+\begin{claim}[The typing anchor]\label{cl:typing-anchor}
+In configuration \eqref{eq:config-alpha}, $\sigma$ is linear if $T=\TL$ and
+PC if $T=\TPC$, with $\cover{\sigma}\supseteq B^{2}$. In configuration
+\eqref{eq:config-beta}, the class of $\sigma=\xi_{k}$ is that of $T$ when
+$T\in\{\TL,\TPC\}$. Configuration \eqref{eq:config-gamma} does not occur.
+And if $T=\TPC$ then $n=2$.
+\end{claim}
+
+Granting the claim, the lemma follows. Step~1 is the parallelogram property.
+Fix a coordinate: Step~4 runs at it, and every branch --- Case~A through
+$\sigma=\tau_{j}$ or Lemma~\ref{lem:typed-above}, Case~A through
+\eqref{eq:config-alpha} and the claim, Case~B through $\sigma=\xi_{k}$ with
+the claim or Step~3 supplying the class, Case~B through
+\eqref{eq:config-beta} and the claim --- ends with $\sigma_{i}$ irreducible,
+of the class of $T$ when $T\in\{\TL,\TPC\}$, and with
+$\cover{\sigma_{i}}\supseteq(D^{(1)}_{x_{i}})^{2}$. The clause $n=2$ for
+$T=\TPC$ is the claim's last part.
+\end{proof}
+
+\begin{hazard}[What is proved, what the claim must do, and why it carries
+  $R$]\label{haz:typing-anchor}
+Everything in the proof above is proved except Claim~\ref{cl:typing-anchor};
+Lemma~\ref{lem:typed-above}, which the good branch of Case~A consumes, is
+itself only stated, with its $t=1$ case immediate from
+Proposition~\ref{prop:cover}(b). So what stands complete is: the
+parallelogram property (Step~1, resting on the stated
+Lemma~\ref{lem:preserve-linked} and Corollary~\ref{cor:prop-relations});
+irreducibility (Step~2); the one-class fact (Step~3); and, at each
+coordinate, the reduction of the typing to the three displayed
+configurations. The claim is the residue, and it is a sibling of
+Claim~\ref{cl:multiply-step}: configuration \eqref{eq:config-gamma} is the
+same single-type $\TBA$/$\TC$ obstruction as
+Caveat~\ref{haz:multiply-citation}(a), and the class part of
+\eqref{eq:config-beta} is the same type-$\TD$-step mismatch as
+Caveat~\ref{haz:multiply-citation}(b).
+
+One route is closed, and it is worth recording with the example that closes
+it. Configuration \eqref{eq:config-alpha} cannot be \emph{refuted}: it is
+realizable by strong subsets. In $\mathbf A=\mathbf Z_{p}\times\mathbf Z_{p}$
+the relations $\delta_{U}=\{(a,b):a-b\in U\}$, for $U$ one of the subgroups
+$\langle(1,0)\rangle$, $\langle(0,1)\rangle$, $\langle(1,1)\rangle$, are
+linear irreducible congruences with $\cover{\delta_{U}}=A^{2}$; take
+$E=\langle(1,0)\rangle$, $B=\langle(0,1)\rangle$, and for $E_{1}$ the block
+$(1,0)+\langle(1,1)\rangle$ of $\delta_{\langle(1,1)\rangle}$. The three
+pairwise intersections are nonempty and the triple intersection is empty, so
+\eqref{eq:config-alpha} holds with $t=1$, $E$ is saturated for
+$\sigma=\delta_{\langle(1,0)\rangle}$, and $\sigma$ is maximal with
+$(E\circ\sigma)\cap(B\cap E_{1})=\varnothing$. In this configuration the
+claim's conclusion is true --- $\sigma$ is linear with full cover --- but no
+contradiction is available: any proof of the claim must therefore
+\emph{derive} the typing inside \eqref{eq:config-alpha}, and must use that
+$E$ is the trace of the crucial $R$, which is the one hypothesis the
+configuration above does not model. This is also why
+Hypothesis~\ref{hyp:maximal-mult} resisted every attempt at the level of
+subsets of a single algebra (Caveat~\ref{haz:maximal-mult}): the statement
+to be proved is not true at that level.
+
+Neither the claim nor anything else in this proof cites
+Lemma~\ref{lem:maximal-mult}, and nothing else consumes it; with this proof
+in place, Hypothesis~\ref{hyp:maximal-mult} is no longer on any path to the
+main statements, and the open obligations of this route are
+Claim~\ref{cl:typing-anchor} and Lemma~\ref{lem:typed-above}. See
+\S\ref{sec:status}.
+\end{hazard}
 
 \begin{longlemma}[Bridges from a subdirect PC/linear instance]\label{lem:bridge-from-instance}
 Suppose
@@ -653,12 +946,13 @@ $\bcol{\delta}\supseteq\mathcal I(z,x)$.
 Lemma~\ref{lem:bridge-from-instance} carries eight numbered hypotheses and is
 \emph{stated without proof here}. It is the only source of bridges in
 \S\ref{sec:main-statements}, and every use of connectedness routes through it;
-so are Lemmas~\ref{lem:minimal-consistent}, \ref{lem:crucial-irreducible},
-\ref{lem:bridge-from-relation}, \ref{lem:find-consistent},
-\ref{lem:parallelogram-crucial}, Corollary~\ref{cor:same-type} and clauses
-(a) and (b) of Lemma~\ref{lem:connected}. These are gaps in the logical chain
-of this document, not imported results, and \S\ref{sec:status} records them as
-such.
+stated without proof, likewise, are Lemmas~\ref{lem:minimal-consistent} and
+\ref{lem:find-consistent}, Corollary~\ref{cor:same-type}, and clauses
+(a) and (b) of Lemma~\ref{lem:connected};
+Lemma~\ref{lem:parallelogram-crucial} is proved modulo
+Claim~\ref{cl:typing-anchor} and Lemma~\ref{lem:typed-above}. These are gaps
+in the logical chain of this document, not imported results, and
+\S\ref{sec:status} records them as such.
 
 Its conclusion has two independent parts --- ``$\mathcal T=T$'' and ``there is a
 bridge with $\bcol\delta\supseteq\mathcal I(z,x)$'' --- and different call

@@ -21,8 +21,12 @@ are made.
   These are gaps in the logical chain, not imports.
 \item[\textsc{open}] Confirmed to need an argument that is not available.
   There are none left in the table; what remains of that kind is
-  Hypothesis~\ref{hyp:maximal-mult} and Claim~\ref{cl:multiply-step}, both
-  written into statements rather than left implicit.
+  Claim~\ref{cl:multiply-step} and Claim~\ref{cl:typing-anchor}, both
+  written into proofs rather than left implicit.
+  Hypothesis~\ref{hyp:maximal-mult} was the third; since the proof of
+  Lemma~\ref{lem:parallelogram-crucial} no longer routes through
+  Lemma~\ref{lem:maximal-mult}, it is no longer on any path to the main
+  statements (Caveat~\ref{haz:typing-anchor}).
 \end{description}
 
 Nothing below is marked \textsc{proved} on the strength of a machine search.
@@ -32,8 +36,8 @@ both are written so that a reader can check them in a few lines by hand.
 
 One structural property \emph{is} checked mechanically: the proof-dependency
 graph of this document --- an edge from each statement to every statement its
-proof cites --- is acyclic, over $108$ statements, $67$ of which carry proofs,
-and $158$ edges. That is a check on the arrangement, not on the mathematics,
+proof cites --- is acyclic, over $114$ statements, $77$ of which carry proofs,
+and $181$ edges. That is a check on the arrangement, not on the mathematics,
 and it has caught three real cycles: Caveats~\ref{haz:reverse-hom-split} and
 \ref{haz:central-critical-split}, and a third that a first draft of
 \pkey{lem:self-intersection-pc} introduced by borrowing four steps from the
@@ -136,11 +140,18 @@ that cites it, and the steps are now written out.
   reduction of Case~2 are proved; Claim~\ref{cl:multiply-step}, which is the
   whole difficulty, is not. Caveat~\ref{haz:multiply-citation} \\
 \pkey{cor:prop-from-factor}, \pkey{cor:prop-times-cong},
-  \pkey{cor:prop-relations}, \pkey{lem:preserve-linked} & \textsc{stated} & \\
+  \pkey{cor:prop-relations}, \pkey{lem:preserve-linked} & \textsc{stated} &
+  the last two are now consumed by
+  \pkey{lem:parallelogram-\brk crucial}'s proof \\
+\pkey{lem:typed-above} & \textsc{stated} & the $t=1$ case is proved in
+  Caveat~\ref{haz:typed-above}; consumed by the good branch of
+  \pkey{lem:parallelogram-crucial} \\
 \pkey{lem:maximal-mult} & \textsc{proved} & \emph{under the added
-  Hypothesis~\ref{hyp:maximal-mult}}, which is a debt at the one call site in
-  the CSP argument and is not discharged here;
-  Caveats~\ref{haz:maximal-mult-hyp} and \ref{haz:maximal-mult} \\
+  Hypothesis~\ref{hyp:maximal-mult}}; consumed by nothing since
+  \pkey{lem:parallelogram-crucial} acquired its own proof, so the hypothesis
+  is no longer a debt of the chain;
+  Caveats~\ref{haz:maximal-mult-hyp}, \ref{haz:maximal-mult} and
+  \ref{haz:typing-anchor} \\
 \hline
 \multicolumn{3}{@{}l}{\textit{\S\ref{sec:main-statements}: the main statements}}\\
 \pkey{thm:main-inductive}(2) & \textsc{proved} & modulo the common-term
@@ -163,10 +174,15 @@ that cites it, and the steps are now written out.
   rectangularity as a conclusion where it is a hypothesis,
   Caveat~\ref{haz:crucial-irreducible} \\
 \pkey{lem:minimal-consistent}, \pkey{lem:connected},
-  \pkey{lem:find-consistent}, \pkey{lem:parallelogram-crucial},
+  \pkey{lem:find-consistent},
   \pkey{lem:bridge-from-instance}, \pkey{cor:same-type} & \textsc{stated} &
-  \pkey{lem:parallelogram-\brk crucial} is now stated in full rather than
-  paraphrased; Caveat~\ref{haz:bridge-from-instance} \\
+  Caveat~\ref{haz:bridge-from-instance} \\
+\pkey{lem:parallelogram-crucial} & \textsc{outlined} & the parallelogram
+  property, irreducibility, the one-class fact, and the good branch of the
+  typing are proved; what remains is Claim~\ref{cl:typing-anchor} and the
+  stated \pkey{lem:typed-above}. Two hypotheses restored: subdirectness of
+  $R$ and $\TS$-freeness of the $\mathbf D^{(1)}_{x_{i}}$,
+  Caveats~\ref{haz:parallelogram-hyp} and \ref{haz:typing-anchor} \\
 \hline
 \multicolumn{3}{@{}l}{\textit{\S\ref{sec:algorithm}--\S\ref{sec:hardness}: the algorithm and the hard half}}\\
 \pkey{def:solve-alg}, \pkey{lem:solve-\brk terminates} & \textsc{proved} &
@@ -201,9 +217,9 @@ that cites it, and the steps are now written out.
 
 The algebraic core of the strong-subuniverse theory
 (\S\ref{sec:properties}--\S\ref{sec:strongproofs}) is the part in the best
-shape: of its sixty-one statements, forty are proved here --- one of them,
+shape: of its sixty-two statements, forty are proved here --- one of them,
 \pkey{lem:maximal-mult}, only under Hypothesis~\ref{hyp:maximal-mult} ---
-twelve are imported with exact citations, five are outlined, and four are
+twelve are imported with exact citations, five are outlined, and five are
 stated only. The two ends of the document, \S\ref{sec:target} and
 \S\S\ref{sec:algorithm}--\ref{sec:hardness}, are now stated rather than
 gestured at: the theorem is stated for a rigid core and derived for an
@@ -215,14 +231,22 @@ the algorithm itself.
 \pkey{lem:bridge-from-instance}, and with it most of
 Lemma~\ref{lem:connected} --- is stated without proof, and part (1) of the main
 induction is an outline whose measure is not yet well founded.
+\pkey{lem:parallelogram-crucial} is the exception: its parallelogram half is
+proved outright, and its typing half is proved up to
+Claim~\ref{cl:typing-anchor} and Lemma~\ref{lem:typed-above}.
 
 Three items block the rest, and they are the honest reading of the table.
 
 \begin{enumerate}\tightlist
-\item Hypothesis~\ref{hyp:maximal-mult} of \pkey{lem:maximal-mult}: that the
-  type-$T$ factors alone cut $B_{2}$ out. The lemma is proved from it; the
-  hypothesis itself is not, and three routes to it have failed
-  (Caveat~\ref{haz:maximal-mult}).
+\item Claim~\ref{cl:typing-anchor} and Lemma~\ref{lem:typed-above}, the
+  residue of the typing half of \pkey{lem:parallelogram-\brk crucial}. They
+  replace Hypothesis~\ref{hyp:maximal-mult} in this list: the new proof does
+  not cite \pkey{lem:maximal-mult}, so that hypothesis --- to which three
+  routes failed, Caveat~\ref{haz:maximal-mult} --- is no longer on any path
+  to the main statements. The claim cannot be settled at the level of
+  subsets of a single algebra (the three-lines example of
+  Caveat~\ref{haz:typing-anchor}), which is also why the failed routes
+  failed.
 \item The rewrite of \pkey{lem:multiply-\brk all-linear}, which is not yet a
   proof. With \pkey{lem:inter\brk section-good} and
   \pkey{lem:self-\brk intersection-pc} both written out, this is what is left
