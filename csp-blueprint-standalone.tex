@@ -1,0 +1,668 @@
+%% =====================================================================
+%%  The formalization companion: Lean representations and scope.
+%%
+%%  GENERATED FILE -- do not edit.  Produced by make_standalone.py from
+%%  csp-blueprint.tex and the per-section sources; edit those and regenerate.
+%%  Line references in a review should therefore be resolved back to the
+%%  section sources, whose names appear in the banners below.
+%%  Generated from revision fd71bb0 on 2026-08-02.
+%% =====================================================================
+
+%% ---------------------------------------------------------------- csp-blueprint.tex
+\documentclass[11pt]{article}
+\def\hazardheading{Formalization note}
+\def\docheading{CSP dichotomy --- blueprint}
+%% ---------------------------------------------------------------- preamble.tex
+% Shared preamble for the three CSP dichotomy documents: the proof paper
+% (csp-proof.tex), the source audit (csp-audit.tex), and the formalization
+% blueprint (csp-blueprint.tex).
+%
+% House style follows the earlier `zhuk_centers` blueprint: numbered theorem
+% environments shared across a single counter, a `longtheorem` upright variant
+% for statements with many numbered hypotheses, and explicit `convention`
+% environments for standing hypotheses.
+%
+% Each main file may set \hazardheading and \docheading before \input-ing this
+% file; the defaults below apply otherwise.
+\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{longtable,array}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\newtheoremstyle{mainplain}{9pt}{9pt}{\itshape}{}{\bfseries}{.}{0.55em}{}
+\newtheoremstyle{mainroman}{9pt}{9pt}{\normalfont}{}{\bfseries}{.}{0.55em}{}
+\theoremstyle{mainplain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{mainroman}
+\newtheorem{longtheorem}[theorem]{Theorem}
+\newtheorem{longlemma}[theorem]{Lemma}
+\newtheorem{longproposition}[theorem]{Proposition}
+\newtheorem{longcorollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{convention}[theorem]{Convention}
+\providecommand{\hazardheading}{Formalization note}
+\newtheorem{hazard}[theorem]{\hazardheading}
+\newtheorem{entry}[theorem]{Entry}
+
+\setlength{\parindent}{1.25em}\setlength{\parskip}{0pt}\setlength{\emergencystretch}{2em}
+\newcommand{\alphlabels}{\renewcommand{\labelenumi}{\textup{(\alph{enumi})}}%
+  \renewcommand{\theenumi}{\alph{enumi}}}
+\newcommand{\romanlabels}{\renewcommand{\labelenumi}{\textup{(\roman{enumi})}}%
+  \renewcommand{\theenumi}{\roman{enumi}}}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\numberwithin{equation}{section}
+\setcounter{tocdepth}{2}\setcounter{secnumdepth}{3}
+\pagestyle{fancy}\fancyhf{}
+\providecommand{\docheading}{CSP dichotomy}
+\fancyhead[L]{\small\docheading}\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0.3pt}
+
+% ------------------------------------------------------- cross-document keys
+% The three documents are compiled separately, so a reference from one to a
+% statement of another cannot be a \ref.  It is the statement's *label*, set in
+% typewriter, which is stable and mechanically checkable.
+\newcommand{\pkey}[1]{\texttt{#1}}
+% A zero-width break opportunity, for the source's very long statement names.
+\newcommand{\brk}{\discretionary{}{}{}}
+\newcommand{\inproof}[1]{the proof paper, \pkey{#1}}
+
+% ---------------------------------------------------------------- operators
+\DeclareMathOperator{\Sg}{Sg}
+\DeclareMathOperator{\Clo}{Clo}
+\DeclareMathOperator{\Pol}{Pol}
+\DeclareMathOperator{\Inv}{Inv}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Con}{Con}
+\DeclareMathOperator{\Sol}{Sol}
+\DeclareMathOperator{\Expanded}{Exp}
+\DeclareMathOperator{\CSP}{CSP}
+\DeclareMathOperator{\GenSAT}{SAT}
+\DeclareMathOperator*{\proj}{pr}
+\newcommand{\ConOne}{\operatorname{Con}_1}
+
+% ---------------------------------------------------------------- algebras
+\newcommand{\bA}{\mathbf A}
+\newcommand{\bB}{\mathbf B}
+\newcommand{\bC}{\mathbf C}
+\newcommand{\bD}{\mathbf D}
+\newcommand{\bE}{\mathbf E}
+\newcommand{\bR}{\mathbf R}
+\newcommand{\bS}{\mathbf S}
+\newcommand{\bZ}{\mathbf Z}
+\newcommand{\Vn}{\mathcal V_{n}}
+
+% ---------------------------------------------------------- subuniverse types
+% The six types of Zhuk's theory.  Typed as upright small capitals so that a
+% type never reads as a product of variables.
+\newcommand{\TBA}{\textup{\textsc{ba}}}
+\newcommand{\TC}{\textup{\textsc{c}}}
+\newcommand{\TS}{\textup{\textsc{s}}}
+\newcommand{\TD}{\textup{\textsc{d}}}
+\newcommand{\TL}{\textup{\textsc{l}}}
+\newcommand{\TPC}{\textup{\textsc{pc}}}
+\newcommand{\MT}[1]{\mathcal M#1}
+\newcommand{\TML}{\MT\TL}
+\newcommand{\TMPC}{\MT\TPC}
+\newcommand{\TMD}{\MT\TD}
+
+% `C <_{T}^{A} B' and its relatives.
+\newcommand{\subt}[2][]{<_{#2}^{#1}}
+\newcommand{\subte}[2][]{\le_{#2}^{#1}}
+\newcommand{\dsubt}[2][]{\dot<_{#2}^{#1}}
+\newcommand{\dsubte}[2][]{\dot\le_{#2}^{#1}}
+\renewcommand{\lll}{\mathrel{\lhd\!\lhd\!\lhd}}
+\newcommand{\dlll}{\mathrel{\dot{\lhd}\!\dot{\lhd}\!\dot{\lhd}}}
+\newcommand{\sdle}{\le_{\mathrm{sd}}}
+
+% congruence cover  sigma^*
+\newcommand{\cover}[1]{#1^{*}}
+% bridge collapse
+\newcommand{\bcol}[1]{\widetilde{#1}}
+% absorption
+\newcommand{\ab}{\lhd}
+\newcommand{\abin}{\lhd_{\mathrm{bin}}}
+\newcommand{\abc}{\lhd_{\mathrm{c}}}
+
+\hypersetup{pdftitle={The CSP Dichotomy Theorem: a formalization blueprint},
+  pdfsubject={Lean representations, missing Mathlib layers, order of attack},
+  pdfauthor={}}
+
+\title{The CSP Dichotomy Theorem\\[2pt]
+  \large A formalization blueprint}
+\author{}\date{}
+
+\begin{document}
+\maketitle\vspace{-2.2em}
+\begin{abstract}
+This is the formalization companion to \emph{The CSP Dichotomy Theorem}, a
+corrected exposition of Zhuk's simplified proof \cite{ZhukSimplified}. It
+carries the material that is about a Lean~4 development rather than about the
+mathematics: which of the five statements a formalization would be proving and
+what each costs (\S\ref{sec:bp-targets}--\S\ref{sec:complexity-layer}), the
+representation decisions and their reasons (\S\ref{sec:design}), the layers
+Mathlib does not supply (\S\ref{sec:mathlib-gaps}), the order in which the
+theorems should be attacked (\S\ref{sec:order}), and what governs the schedule
+(\S\ref{sec:scope}).
+
+References of the form \texttt{lem:\dots} are labels of statements in the proof
+paper, which is compiled separately; the two documents share no cross-reference
+machinery on purpose, so that neither can be read as evidence for the other.
+Claims here about the state of a repository are claims about a repository, and
+should be checked against a commit hash rather than believed.
+\end{abstract}
+
+\tableofcontents\clearpage
+
+%% ---------------------------------------------------------------- bp1-complexity.tex
+\section{What a formalization can claim}\label{sec:bp-targets}
+
+The dichotomy theorem, as stated in the proof paper, is conditional on a model
+of computation: ``solvable in polynomial time'' quantifies over an encoding of
+instances as strings, a machine, and a polynomial bound on its step count, and
+``\textup{NP}-complete'' additionally quantifies over all problems in
+\textup{NP} and over polynomial-time many-one reductions. Mathlib supplies
+Turing machines (\texttt{Mathlib/Computability/TuringMachine/}) and a notion of
+computability, but it has \emph{no} complexity class, no polynomial-time
+predicate, and no notion of polynomial-time reduction. So a formalization must
+say which of the statements it is proving, and the proof paper's five layers
+are the answer.
+
+\subsection{Where the work actually is}\label{sec:program-axis}
+
+An earlier draft of this section concluded from that gap that the
+complexity-theoretic half should be deferred because building it would dominate
+the project. That inference was wrong, and it is worth recording why, because
+the corrected version is what organises the rest of this document.
+
+The complexity vocabulary itself --- languages, a cost model, $\mathrm P$,
+$\mathrm{NP}$ by verifiers, $\le_{p}$, \textup{NP}-hardness,
+\textup{NP}-completeness, and a generic \textup{NP}-hard problem --- has since
+been built, in about $850$ lines. That is consistent with the two existing
+Cook--Levin formalizations, whose class layers are $702$ lines (Isabelle) and
+$992$ lines (Coq) against totals of $56\,514$ and $\approx 16\,500$. Defining
+the classes is cheap in every development that has done it.
+
+What is expensive is not complexity theory. It is any statement that requires
+one to \emph{exhibit a program}. In a formalization, ``$f$ is computable in
+polynomial time'' is not a property one observes of a mathematical function; it
+is an existential over programs, discharged only by writing one and proving a
+bound on its step count. The dividing line runs along that axis, and it cuts
+across the algebra/complexity split rather than agreeing with it:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\hline
+Target & Exhibit a program? & Cost \\
+\hline
+\textup{(T0)} the algebraic core & no & the mathematics \\
+\textup{(T1)} $\textsc{Solve}$ is correct & no (but see Formalization note~\ref{haz:t1-computable}) & moderate \\
+\textup{(T2)} $\textsc{Solve}$ is polynomial & \textbf{yes --- the largest one here} & \textbf{large} \\
+\textup{(H0)} $\Gamma$ pp-interprets \textsc{Nae} & no & the mathematics \\
+\textup{(H1)} pp-interpretation $\Rightarrow\le_{p}$ & yes, a syntactic substitution & small \\
+\hline
+\end{tabular}
+\end{center}
+
+The blueprint is written for \textup{(T0)}, \textup{(T1)} and \textup{(H0)}.
+\textup{(H1)} is a small addition on top; \textup{(T2)} is neither small nor
+mathematics, but it is not \emph{unrelated} to the dichotomy either --- it is
+the assertion that the algorithm one has just proved correct is also fast, and
+it is the second-largest component of the project.
+
+\begin{hazard}[\textup{(T1)} is vacuous unless $\textsc{Solve}$ computes]
+\label{haz:t1-computable}
+``$\textsc{Solve}$ written as a total function'' hides a requirement that no
+cost model would catch. If $\textsc{Solve}$ is defined using classical choice
+--- for instance by deciding ``does $D_{x}$ have a nonempty proper binary
+absorbing subuniverse?'' with \texttt{Classical.dec} --- then
+$\textsc{Solve}(\mathcal I)=\texttt{true}\iff\mathcal I$ has a solution is a
+true theorem that says nothing algorithmic, because $\textsc{Solve}$ does not
+reduce. To mean what it appears to mean, \textup{(T1)} needs every predicate
+the algorithm branches on to carry a genuine decision procedure.
+
+That is a real obligation with a locatable cost. Absorption is defined by an
+existential over \emph{terms} --- an infinite type --- so ``$C$ is a binary
+absorbing subuniverse of $B$'' is not decidable on its face. It becomes
+decidable through a bound on the arity of a sufficient witness, which is a
+theorem and not a definition. For the types actually used here the bound is
+cheap and should be taken that way rather than from a general absorption-arity
+theorem: $\TBA$ has a binary witness by definition, and central absorption has
+a ternary witness by \inproof{lem:central-ternary}. Only finitely many binary
+and ternary operations then need be checked, together with finitely many
+congruences and subsets. The same remark applies to the searches inside
+$\textsc{SolveLinear}$.
+\end{hazard}
+
+\begin{hazard}[\textup{(T2)} is not a wrapper]\label{haz:t2-is-not-small}
+Two things make \textup{(T2)} much larger than the phrase ``complexity
+wrapper'' suggests.
+
+\emph{The program is enormous.} \textup{(T2)} requires $\textsc{Solve}$ ---
+\textsc{ForceConsistency}, the search for a strong subuniverse,
+\textsc{SolveLinear}, and the mutual recursion between them --- to be expressed
+in a cost model, with a proved polynomial bound. Every existing measurement
+says this kind of work dominates: it is the $50\,000$ lines of Turing-machine
+engineering in the Isabelle Cook--Levin development, against $702$ for the
+classes themselves.
+
+\emph{The statement is non-uniform.} Because $\Gamma$ is fixed, the polynomial
+may depend on $\Gamma$, and the searches over subsets of $A$, over congruences
+on $A$, and over term operations of bounded arity are all constant-time. But
+``constant'' here means the search is compiled away into a program whose
+\emph{size} depends on $|A|$. So $\textsc{Solve}$ is not one program: it is a
+family $\textsc{Solve}_{\Gamma}$ with a polynomial $p_{\Gamma}$ for each
+$\Gamma$, and \textup{(T2)} must be stated in that form. Attempting a bound
+uniform in $\Gamma$ would be proving something else, and something false.
+\end{hazard}
+
+\begin{hazard}[From pseudocode to a Lean function]
+\label{haz:algorithm-formalization}
+\begin{enumerate}\alphlabels\tightlist
+\item \emph{Termination is not structural.} $\textsc{Solve}$ recurses on
+  strictly smaller domains, and $\textsc{SolveLinear}$ loops on a strictly
+  decreasing dimension. Neither is a structural recursion; both need an
+  explicit well-founded measure, and the two interleave ---
+  $\textsc{SolveLinear}$ calls $\textsc{Solve}$ on a smaller domain, which
+  calls $\textsc{SolveLinear}$ again. The measure is lexicographic:
+  $\bigl(\sum_{x}|D_{x}|,\ \dim\phi\bigr)$.
+\item \emph{Several steps quantify over objects that are only finitely many by
+  accident.} ``If some $D_{x}$ has a strong subset $B$'' quantifies over
+  subsets of $D_{x}$, over congruences on $D_{x}$, and --- through absorption
+  --- over \emph{term operations}, of which there are infinitely many. See
+  Formalization note~\ref{haz:t1-computable} for the route to decidability that does not
+  depend on an uncited general arity bound.
+\item \emph{Polynomial time is a different subject.} The bound in
+  \cite{ZhukJACM} counts calls and bounds the recursion depth by $|A|$; making
+  that formal needs a cost model. See \S\ref{sec:complexity-layer}.
+\end{enumerate}
+\end{hazard}
+
+\section{The complexity layer}\label{sec:complexity-layer}
+
+Targets \textup{(T2)} and \textup{(H1)} are stated here and not proved. The
+point of stating them is to be precise about what is \emph{not} being claimed.
+
+\begin{definition}[What a cost model would have to supply]\label{def:cost-model}
+To state \textup{(T2)} one needs: an encoding of instances of $\CSP(\Gamma)$ as
+strings; a machine model with a step count; a predicate ``$f$ is computed in
+time bounded by a polynomial in the input length''; and closure of that
+predicate under composition. To state \textup{(H1)} one needs, in addition, a
+polynomial-time many-one reduction relation $\le_{p}$ and the class
+\textup{NP}.
+\end{definition}
+
+Mathlib supplies the machine (\texttt{Turing.TM2}), an encoding
+(\texttt{Computability.Encoding}), and a time-bounded computation predicate
+(\texttt{Turing.TM2ComputableInPolyTime}). It does not supply a complexity
+\emph{class}, \textup{P}, \textup{NP}, \textup{NP}-completeness, $\le_{p}$, or
+\textsc{Sat}; and the composition lemma
+\texttt{TM2ComputableInPolyTime.comp} is an open \texttt{proof\_wanted} in
+Mathlib itself. Moreover \texttt{TM2ComputableInPolyTime} applies to total
+functions $\alpha\to\beta$, never to languages, so even the existing predicate
+would need reshaping.
+
+\begin{remark}[This layer now exists, and it was cheap]\label{rem:complexity-scope}
+An earlier draft of this remark said that building the complexity layer was
+``a substantial project --- comparable in size to the algebraic core'' and that
+attempting it as part of this project ``would be a scoping error''. That was
+wrong, and it has been tested rather than argued: the vocabulary --- words, a
+cost model, $\mathrm P$, $\mathrm{NP}$ by verifiers, $\le_{p}$,
+\textup{NP}-hardness, \textup{NP}-completeness, and a generic
+\textup{NP}-hard problem --- is about $850$ lines of Lean, \texttt{sorry}-free.
+
+So the reason to keep \textup{(T2)} out of scope is \emph{not} that complexity
+theory is unavailable. It is Formalization note~\ref{haz:t2-is-not-small}: \textup{(T2)}
+requires exhibiting $\textsc{Solve}$ as a program with a proved step bound, and
+that is the largest program-construction task in the project. \textup{(H1)},
+by contrast, needs only a syntactic substitution and should be built.
+\end{remark}
+
+\begin{remark}[What the exercise cost, and what it caught]
+\label{rem:complexity-defects}
+Two defects surfaced in those $850$ lines, both in \emph{statements} rather
+than proofs, and neither of a kind a type-checker reports. The generic problem
+was first defined with a single budget bounding both the certificate length and
+the running time, which makes the theorem false --- the two directions pull the
+bound opposite ways. And the language was first given only the tests ``register
+is empty'' and ``register's first bit is $1$'', with which no loop that
+consumes its input can be written at all; that was found by trying to write the
+first program.
+
+The ratio is worth noting for the rest of this project. Two statement-level
+errors in $850$ lines, against fourteen found in Zhuk's fifty pages by readers
+who did not formalize. The defect list of the audit document should be expected
+to grow under formalization, not to be complete.
+\end{remark}
+
+\begin{remark}[\textup{NP} membership]\label{rem:np-membership}
+The proof paper's hard half concludes \textup{NP}-hardness. Recovering
+\textup{NP}-completeness needs the standard theorem that every fixed
+finite-template CSP lies in \textup{NP} under the chosen encoding: a solution
+is a certificate of size linear in the number of variables, and checking it
+means evaluating each constraint, which for fixed $\Gamma$ is a table lookup.
+It is small, it needs the cost model, and it belongs with \textup{(H1)}.
+\end{remark}
+\clearpage
+%% ---------------------------------------------------------------- bp2-lean.tex
+\section{The Lean development}\label{sec:formalization}
+
+\subsection{What is reused}\label{sec:reuse}
+
+The predecessor development \texttt{ZhukLean} is a complete, \texttt{sorry}-free
+Lean~4 formalization of Zhuk's centre theorem, built on
+\texttt{Mathlib.ModelTheory}. It is consumed here as a \texttt{lake} dependency,
+not copied. It supplies:
+
+\begin{itemize}\tightlist
+\item products of structures (\texttt{piStructure}, \texttt{prodStructure},
+  coordinatewise realization, reindexing and evaluation homomorphisms) --- the
+  one part of the universal-algebra vocabulary Mathlib lacks;
+\item absorption in the tuple form (\texttt{Witnesses}, \texttt{Absorbs},
+  \texttt{BinAbsorbs}), Taylor terms (\texttt{IsTaylorOn}), and central
+  absorption (\texttt{CentrallyAbsorbs});
+\item the relational description of absorption by essential relations
+  (Barto--Kazda), which is what converts absorption at some arity into
+  absorption at arity~$3$;
+\item Zhuk's centre theorem itself (\texttt{zhuk\_center}) and the ternary
+  collapse (\texttt{exists\_ternary\_\brk witnesses}) --- which is precisely
+  \inproof{lem:central-ternary}, cited without proof in \cite{ZhukSimplified}.
+\end{itemize}
+
+Those also discharge, in advance, every ingredient of \cite[Lem.~6.11]{ZhukStrong},
+which the proof paper's stable-intersection theorem needs in its type-$\TC$
+case: essentiality, the Barto--Kazda criterion, and ``central implies ternary
+absorbing''.
+
+\subsection{What is built here}\label{sec:built}
+
+\begin{center}
+\begin{tabular}{@{}llr@{}}
+\hline
+Module & Contents & Status \\
+\hline
+\texttt{CSP/Product} & products of structures & complete \\
+\texttt{CSP/Congruence} & \texttt{Congruence L M}, order, \texttt{sInf}, quotient & complete \\
+\texttt{CSP/Irreducible} & irreducibility, existence and uniqueness of $\cover\sigma$ & complete \\
+\texttt{CSP/Bridge} & bridges, collapse, composition, linear/PC & 2 imports open \\
+\texttt{CSP/Types} & the six types, multi-types, $\lll$ & complete \\
+\texttt{CSP/Instance} & instances, reductions, consistency, cruciality & complete \\
+\texttt{CSP/Main} & the main statements & targets \\
+\hline
+\end{tabular}
+\end{center}
+
+Everything below \texttt{CSP/Main} is \texttt{sorry}-free. The two open items in
+\texttt{CSP/Bridge} are \inproof{lem:bridge-comp} and its collapse identity,
+both imported from \cite{ZhukJACM}. These are claims about a repository, not
+about the mathematics; they should be read against a commit hash, and they are
+deliberately kept out of the proof paper for that reason.
+
+\subsection{Design decisions}\label{sec:design}
+
+\begin{description}
+\item[Build on \texttt{Mathlib.ModelTheory}, keep the language generic.]
+  A bespoke ``finite algebra with one WNU operation'' type would bundle the
+  standing hypotheses as fields and avoid threading them, which is a real cost
+  in the predecessor development. But it would discard
+  \texttt{Substructures.lean} --- 985 lines of exactly the $\Sg$ API needed,
+  including \texttt{mem\_closure\_iff\_exists\_term} with the variable type
+  equal to the generating set, an interface no hand-rolled clone matches --- and
+  it would discard the predecessor's 1600 lines wholesale. Congruences and
+  quotients are also \emph{cheaper} in \texttt{ModelTheory}, not dearer.
+  Instantiating to $\Vn$ is a thin layer on top. Carry the standing hypotheses
+  as typeclass instances on the structure rather than as ambient hypotheses, so
+  that the audit of which result consumes which hypothesis is mechanical.
+
+\item[Terms and term operations are different types.]
+  \cite{ZhukSimplified} writes $t\in\Clo(\mathbf A)$ and treats $t$ as both a
+  syntactic term and the operation it induces. Every statement of the proof
+  paper that quantifies over $\Clo(\mathbf A)$ is about \emph{operations}, so
+  the syntactic layer may be quotiented away --- but it cannot be skipped,
+  because $\Sg$ is characterised through terms and because the arity
+  bookkeeping in the absorption arguments is syntactic.
+
+\item[$\lll$ is a witnessed chain, not \texttt{Relation.ReflTransGen}.]
+  An earlier draft of this section said the opposite, and it was wrong: the
+  proof paper's ``the congruences coming from $C\lll^{A}B$'' is a function of
+  the chain and not of the pair, and two arguments turn on \emph{which} chain
+  is chosen. So the primary notion is an inductive family carrying, at each
+  step, the intermediate set, its type, and its witnessing congruence, with
+  extension by one step as an operation on that data;
+  \texttt{Relation.ReflTransGen} is its propositional truncation and may be
+  used only where no congruence is named. Both are needed: the truncation
+  supplies the induction principle most consumers want.
+
+\item[Dotted relations are defined as disjunctions.]
+  \texttt{DotLll C B := C = }$\varnothing$\texttt{ }$\vee$\texttt{ Lll C B}, so
+  the case split is forced at every use site rather than resolved by the
+  reader. Conflating $\lll$ with $\dlll$ is the commonest way to misread the
+  type theory of the proof paper's \S3.
+
+\item[Absorption is stated over coordinatewise-constrained tuples.]
+  That is: for every $\bar a\in A^{k}$ with $a_{j}\in B$ for all $j\neq i$, one
+  has $t(\bar a)\in B$. \emph{Not} as ``for all
+  $b_{1},\dots,b_{k}\in B$ and $a\in A$, $t(b_{1},\dots,a,\dots,b_{k})\in B$''.
+  The two agree, but the second phrasing
+  invites the variant in which $b_{i}$ is quantified and then discarded, which
+  is vacuously true when $B=\varnothing$ and at $k=1$ where the intended
+  content is not vacuous. This was an actual defect in the predecessor
+  blueprint.
+
+\item[The bridge criterion is the definition of linearity.]
+  Zhuk defines a linear congruence by a per-block isomorphism to
+  $\mathbb Z_{p}^{m}$ and derives the bridge criterion. We reverse this: the
+  criterion is first-order over finite data and is what every consumer uses;
+  the block description becomes a structure theorem. See
+  \inproof{haz:linear-def}.
+
+\item[$\cover\sigma$ is data attached to irreducibility.]
+  \texttt{Irreducible.exists\_isCover} produces it; there is no standalone
+  function, because there is no cover without irreducibility. A pleasant
+  by-product: with the definition taken literally, irreducibility \emph{implies}
+  $\sigma\neq A^{2}$, since the empty family intersects to the universe.
+
+\item[$\ConOne$ gets a neutral name until it is a congruence.]
+  The raw relation is always reflexive and symmetric but not transitive; the
+  notation invites the reader to assume congruence-hood. Reserve $\ConOne$ for
+  the case where subdirectness and rectangularity make it one. Note also that
+  it depends on the \emph{position} in the scope, not on the variable, so it is
+  ill-defined if a variable occurs twice.
+
+\item[Instances are lists; scopes are tuples; the variable type is a parameter.]
+  Proofs delete a constraint and reason about $\mathcal I\setminus\{C\}$, and
+  the same relation may occur twice on the same tuple inside an expanded
+  covering, so \texttt{List} with membership by index is the safe choice.
+  Repeated variables in a scope are allowed and occur.
+
+\item[Coverings are built by coproduct of variable types, not by renaming.]
+  \cite{ZhukSimplified} writes ``we rename the variables so that the only
+  common variable of $\Upsilon_{x}$ and $\mathcal J$ is $x$''. With a concrete
+  variable type this means a fresh-name supply, a renaming operation, and a
+  lemma that renaming preserves each of $1$-consistency, cycle-consistency,
+  cruciality, and being a covering --- eight lemmas the paper does not state.
+  Making the variable type a parameter and gluing over $V_{1}\oplus V_{2}$
+  quotiented by the shared variable turns all eight into transport along an
+  equivalence. This is the single most important representation decision below
+  the algebra, and it should be made before anything about coverings is
+  written.
+
+\item[Nothing is stubbed with \texttt{sorry} at the level of a definition.]
+  \texttt{IsConnectedInstance} and \texttt{IsExpandedCovering} are
+  \emph{absent} rather than defined as \texttt{sorry}, because a
+  \texttt{def~:~Prop~:=~sorry} is a junk constant that downstream proofs can
+  silently lean on. Absence forces the design decision; a stub hides it.
+\end{description}
+
+\subsection{What Mathlib is missing}\label{sec:mathlib-gaps}
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.32\textwidth}p{0.60\textwidth}@{}}
+\hline
+\textbf{Layer} & \textbf{Status} \\
+\hline
+Products of first-order structures &
+  Absent from Mathlib; supplied by \texttt{ZhukLean} (\S\ref{sec:reuse}). \\
+Congruences of a structure, quotients &
+  \texttt{ModelTheory} has substructures but not congruences; built here in
+  \texttt{CSP/Congruence}. \\
+Absorption, central subuniverses &
+  Absent; supplied by \texttt{ZhukLean}. \\
+Mixed-prime ``dimension'' &
+  A subgroup of $\prod_{i}\mathbb Z_{q_{i}}$ with distinct $q_{i}$ is not a
+  vector space. \texttt{ZMod} and \texttt{Module (ZMod p)} exist; the primary
+  decomposition into $\mathbb F_{q}$-vector spaces and the codimension-one
+  characterisation must be built. Needed by the proof paper's codimension-one
+  theorem. \\
+The Pol--Inv Galois connection &
+  Absent. Roughly four printed pages, of independent value, and the single
+  largest item in the \textup{(H0)} budget. \\
+Complexity classes, $\le_{p}$, \textup{NP} &
+  Absent; see \S\ref{sec:complexity-layer}. Built separately in $\approx 850$
+  lines. \\
+Polynomial completeness, Istinger--Kaiser &
+  Absent. Needed only for \inproof{lem:pc-on-top}, which nothing else consumes;
+  a staged development should treat ``PC congruence'' as ``irreducible and not
+  linear'' throughout and prove that lemma last or not at all. \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Order of attack}\label{sec:order}
+
+\begin{enumerate}\tightlist
+\item \inproof{lem:ba-center-implies}. Small, self-contained, used everywhere,
+  and adjacent to what is already formalized. Its statement needs both
+  hypotheses the source drops --- subdirectness, and a common binary term ---
+  and the common term should be carried in the type, as \cite{ZhukStrong}
+  writes $\le_{\TBA(t)}$.
+\item The mixed-prime linear algebra of \S\ref{sec:mathlib-gaps}. Independent
+  of everything else; can be done in parallel.
+\item \inproof{lem:bridge-comp}. Twelve source lines of relational algebra;
+  closes the two open items in \texttt{CSP/Bridge}.
+\item The coproduct design for coverings, then the basic properties of expanded
+  coverings.
+\item \inproof{thm:stable-intersection}. The one hard statement in the
+  interface, and the sole source of bridges.
+\item \inproof{lem:bridge-from-instance}. Eight hypotheses, ten pages.
+\item \inproof{thm:main-inductive}. Last.
+\end{enumerate}
+
+\subsection{Scope, and what governs the schedule}\label{sec:scope}
+
+The calibration point is that the predecessor formalized about $3.5$ printed
+pages in about $1670$ lines of Lean --- roughly $480$ lines per page. Excluding
+\S\ref{sec:complexity-layer} and \cite{ZhukSimplified}'s \S4, which is an
+independent second result and not needed for the dichotomy, the transitive
+closure of what must be proved is on the order of $100$--$130$ printed pages,
+so $35\,000$--$60\,000$ lines of Lean.
+
+Line count is not the binding constraint, and it should not be converted into
+person-time here: any such figure would be a claim about a development process
+rather than about this mathematics, and it is not evidence a reader of this
+document can check.
+
+What binds is the \emph{critical path}: the depth of the serial chain, and the
+number of places where the source is wrong and new mathematics is needed. The
+serial chain is
+\begin{center}\small
+\pkey{thm:stable-intersection}\\[2pt]
+$\longrightarrow$\ \pkey{lem:bridge-from-instance}\\[2pt]
+$\longrightarrow$\ \pkey{thm:main-inductive}
+\end{center}
+each a single large proof that cannot be split across workers --- stable
+intersection is the sole source of bridges, bridge-from-instance is the only
+consumer that turns them into instance-level structure, and the main induction
+consumes that.
+
+The new mathematics is a much shorter list than an earlier draft of this
+section claimed, and the items on it are not the ones it named. Of the audit
+document's register, thirteen defects are repaired with no new mathematics.
+What remains open, and gates the formalization of \S5 of
+\cite{ZhukSimplified}, is:
+
+\begin{itemize}\tightlist
+\item \inproof{lem:maximal-mult} --- the maximal multi-type extension. Its
+  Case~1 is unproved and the published repair is invalid; see the audit
+  document. Nothing downstream of it should be attempted first.
+\item The reflexivisation of a bridge, used twice without a lemma behind it.
+\item The expansion of \inproof{lem:intersection-good} from case structure to a
+  full proof, and of \inproof{lem:multiply-all-linear}, which is not yet a
+  proof.
+\end{itemize}
+
+Those are not throughput-limited. Schedule around them, not around the line
+count.
+
+\clearpage
+%% ---------------------------------------------------------------- bibliography.tex
+% Shared bibliography for the three documents.  Kept in one file so that a
+% citation key means the same thing in the proof paper, the audit and the
+% blueprint.
+\begin{thebibliography}{99}
+
+\bibitem{BJK} A.~Bulatov, P.~Jeavons, A.~Krokhin,
+  \emph{Classifying the complexity of constraints using finite algebras},
+  SIAM J. Comput.\ \textbf{34} (2005), 720--742.
+
+\bibitem{BradyNotes} Z.~Brady, \emph{Notes on CSPs and polymorphisms},
+  arXiv:2210.07383. Cited by section title and numbered statement; the
+  sections used here are ``Cores and Idempotent Reducts'' and \S3.11,
+  \S3.15.
+
+\bibitem{BartoKozik} L.~Barto, M.~Kozik, \emph{Absorbing subalgebras, cyclic
+  terms, and the constraint satisfaction problem}, Log. Methods Comput. Sci.
+  \textbf{8} (2012), 1:07.
+
+\bibitem{DecidingAbsorption} L.~Barto, A.~Kazda, \emph{Deciding absorption},
+  Internat. J. Algebra Comput. \textbf{26} (2016), 1033--1060.
+
+\bibitem{Bergman} C.~Bergman, \emph{Universal algebra: fundamentals and
+  selected topics}, CRC Press, 2011.
+
+\bibitem{Bulatov} A.~Bulatov, \emph{A dichotomy theorem for nonuniform CSPs},
+  arXiv:1703.03021; FOCS 2017.
+
+\bibitem{FederVardi} T.~Feder, M.~Y.~Vardi, \emph{The computational structure of
+  monotone monadic SNP and constraint satisfaction}, SIAM J. Comput.\
+  \textbf{28} (1999), 57--104.
+
+\bibitem{HobbyMcKenzie} D.~Hobby, R.~McKenzie, \emph{The structure of finite
+  algebras}, Contemp. Math.~76, Amer. Math. Soc., 1988.
+
+\bibitem{IstingerKaiser} M.~Istinger, H.~K.~Kaiser, \emph{A characterization of
+  polynomially complete algebras}, J. Algebra \textbf{56} (1979), 103--110.
+
+\bibitem{MarotiMcKenzie} M.~Mar\'oti, R.~McKenzie, \emph{Existence theorems for
+  weakly symmetric operations}, Algebra Universalis \textbf{59} (2008),
+  463--489.
+
+\bibitem{MinimalTaylor} L.~Barto, Z.~Brady, A.~Bulatov, M.~Kozik, D.~Zhuk,
+  \emph{Minimal Taylor algebras as a common framework for the three algebraic
+  approaches to the CSP}, LICS 2021.
+
+\bibitem{RossSlides} R.~Willard, \emph{Similarity, critical relations, and
+  Zhuk's bridges}, slides, AAA98 --- 98th Workshop on General Algebra,
+  Dresden, 2019.
+  \url{http://www.math.uwaterloo.ca/~rdwillar/documents/Slides/willard-aaa98-handout.pdf}
+
+\bibitem{ZhukJACM} D.~Zhuk, \emph{A proof of the CSP dichotomy conjecture},
+  J. ACM \textbf{67} (2020), no.~5, 1--78; arXiv:1704.01914.
+
+\bibitem{ZhukSimplified} D.~Zhuk, \emph{A simplified proof of the CSP dichotomy
+  conjecture and XY-symmetric operations}, arXiv:2404.01080v2.
+
+\bibitem{ZhukStrong} D.~Zhuk, \emph{Strong subalgebras and the constraint
+  satisfaction problem}, J. Mult.-Valued Logic Soft Comput.\ \textbf{36} (2021);
+  arXiv:2005.00593.
+
+\end{thebibliography}
+
+\end{document}

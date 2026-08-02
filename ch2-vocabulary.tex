@@ -1,10 +1,8 @@
-%!TeX root=csp.tex
+%!TeX root=csp-proof.tex
 \section{Vocabulary}\label{sec:vocabulary}
 
-This section fixes the universal-algebraic vocabulary. It is Zhuk's
-\S2.1, rewritten so that every definition is unambiguous when read by a
-machine. The substantive content begins in \S\ref{sec:types}; a reader who
-knows the subject should skim to
+This section fixes the universal-algebraic vocabulary. Nothing in it is new,
+and a reader who knows the subject should skim to
 Definition~\ref{def:irreducible} (irreducible congruences) and
 Definition~\ref{def:bridge} (bridges), which are the two places where the
 conventions genuinely matter.
@@ -25,21 +23,17 @@ $\{0,1,\dots,p-1\}$ with $w^{\mathbf Z_{p}}(x_{1},\dots,x_{n})
 \end{definition}
 
 \begin{hazard}[$\mathbf Z_{p}$ is only sometimes in $\Vn$]\label{haz:Zp}
-Zhuk defines $\mathbf Z_{p}$ for every prime $p$ and then asserts that
-``every algebra $\mathbf Z_{p}$ belongs to $\Vn$''. That assertion carries a
-silent side condition. The operation $x_{1}+\dots+x_{n}\bmod p$ is idempotent
-exactly when $n\equiv 1\pmod p$: idempotence says $nx\equiv x$ for all $x$,
-i.e.\ $p\mid n-1$. Given that, it is also a WNU (all the identities read
+The operation $x_{1}+\dots+x_{n}\bmod p$ is idempotent exactly when
+$n\equiv1\pmod p$: idempotence says $nx\equiv x$ for all $x$, i.e.\
+$p\mid n-1$. Given that, it is also a WNU (all the identities read
 $(n-1)x+y=y$) and special (both sides reduce to $y$).
 
 So $\mathbf Z_{p}\in\Vn$ if and only if $p\mid n-1$, and every statement of the
 form ``$\mathbf A/\sigma\cong\mathbf Z_{p}$ for some prime $p$''
 (Lemma~\ref{lem:linear-on-top}, Definition~\ref{def:perfect-linear}) silently
-produces a $p$ dividing $n-1$. A formalization must decide whether
-$\mathbf Z_{p}$ is defined for all $p$ and merely fails to lie in $\Vn$ for bad
-$p$, or is defined only for $p\mid n-1$. The first is cleaner; the second makes
-the membership free. Either way the side condition must be visible, because
-``for some prime $p$'' otherwise reads as an unconstrained existential.
+produces a $p$ dividing $n-1$. The side condition must stay visible, because
+``for some prime $p$'' otherwise reads as an unconstrained existential;
+Corollary~\ref{cor:Zp-in-Vn} is what discharges it.
 \end{hazard}
 
 \begin{definition}[Subuniverse, subalgebra]\label{def:subuniverse}
@@ -57,14 +51,11 @@ operations} of $\mathbf A$.
 \end{definition}
 
 \begin{hazard}[Terms versus term operations]\label{haz:term-vs-op}
-Zhuk writes $t\in\Clo(\mathbf A)$ and treats $t$ as both a syntactic term and
-the operation it induces. These must be distinguished in a formalization: a
-term is a finite tree, and distinct terms may induce the same operation. Every
-statement below that quantifies over $\Clo(\mathbf A)$ is a statement about
-\emph{operations}, so the syntactic layer may be quotiented away --- but it
-cannot be skipped, because $\Sg$ is characterised through terms
-(Lemma~\ref{lem:sg-terms}) and because the arity bookkeeping in the absorption
-arguments is syntactic.
+A term is a finite tree, and distinct terms may induce the same operation.
+Every statement below that quantifies over $\Clo(\mathbf A)$ is a statement
+about \emph{operations}. The syntactic layer nevertheless cannot be dispensed
+with, because $\Sg$ is characterised through terms (Lemma~\ref{lem:sg-terms})
+and because the arity bookkeeping in the absorption arguments is syntactic.
 \end{hazard}
 
 \begin{definition}[Generation]\label{def:sg}
@@ -87,8 +78,7 @@ The ``fixed list'' phrasing is what makes Lemma~\ref{lem:sg-terms} usable. The
 weaker reading --- for each $y$ in the closure there are \emph{some}
 generators and \emph{some} term --- is also true but useless, because every
 later application applies one term simultaneously to several closure elements
-and needs their generator lists to coincide. This was a defect found in review
-of the predecessor blueprint and is called out here for the same reason.
+and needs their generator lists to coincide.
 \end{hazard}
 
 \subsection{Relations}
@@ -116,20 +106,21 @@ Let $R\subseteq A_{1}\times\dots\times A_{m}$.
 \end{definition}
 
 \begin{hazard}[Composition is diagrammatic]\label{haz:comp-order}
-$\delta_{1}\circ\delta_{2}$ applies $\delta_{1}$ \emph{first}. This is the
-order of \texttt{Rel.comp} and the opposite of \texttt{Function.comp}. Every
-composite of bridges and of congruences below is written left to right, and
-silently reversing it produces statements that are true-looking and wrong ---
+$\delta_{1}\circ\delta_{2}$ applies $\delta_{1}$ \emph{first}, the opposite
+of the convention for composition of functions. Every composite of bridges and
+of congruences below is written left to right, and silently reversing it
+produces statements that are true-looking and wrong ---
 in Corollary~\ref{cor:stable-intersection}(l) the composite
 $\sigma_{k}\circ\proj_{k,\ell}(R)\circ\sigma_{\ell}$ is asymmetric in $k$ and
 $\ell$ and the order is the content.
 \end{hazard}
 
 \begin{hazard}[``Linked'' is used for two different things]\label{haz:linked}
-Zhuk uses \emph{linked} both for a binary relation (Definition~\ref{def:rel-vocab}(e))
+The word is used both for a binary relation (Definition~\ref{def:rel-vocab}(e))
 and for a CSP instance (Definition~\ref{def:instance-linked}). They are related
-but not the same predicate, and the coincidence of names causes real confusion
-in \S\ref{sec:main-statements}, where both occur in one proof. Use two names.
+but not the same predicate, and both occur in one proof in
+\S\ref{sec:main-statements}, where the passage from one to the other is the
+crux; Caveat~\ref{haz:connected-p} marks the step.
 \end{hazard}
 
 \begin{definition}[Quotients of relations]\label{def:quotient-rel}
@@ -139,13 +130,14 @@ $R\subseteq A^{m}$, $R/\sigma=\{(b_{1}/\sigma,\dots,b_{m}/\sigma):\bar b\in R\}$
 \end{definition}
 
 \begin{hazard}[Images do not commute with intersection]\label{haz:quotient-rel}
-$B/\sigma$ and $R/\sigma$ are \emph{images}. Three consequences that the source
-navigates silently:
+$B/\sigma$ and $R/\sigma$ are \emph{images}. Three consequences, all of them
+easy to pass over:
 \begin{enumerate}\alphlabels\tightlist
 \item $B/\sigma$ is a subset of $A/\sigma$, not the quotient of $B$ by
   $\sigma\cap B^{2}$. For $B$ a subuniverse and $\sigma$ a congruence the two
-  are canonically isomorphic as algebras, and the source moves between them
-  freely. Fix $B/\sigma$ to be the image and prove the isomorphism once.
+  are canonically isomorphic as algebras, and the two are used
+  interchangeably below; $B/\sigma$ always denotes the image, and the
+  isomorphism is what licenses the interchange.
 \item In general $(C_{1}\cap C_{2})/\sigma\subsetneq C_{1}/\sigma\cap
   C_{2}/\sigma$. Lemma~\ref{lem:propagation}(fm) needs equality for a family
   $C_{1},\dots,C_{t}$, and gets it from the extra hypothesis
@@ -184,7 +176,7 @@ Let $R\subseteq A_{1}\times\dots\times A_{m}$.
 \end{enumerate}
 \end{definition}
 
-\begin{lemma}[Two assertions the source makes in passing]\label{lem:rect-basics}
+\begin{lemma}[Rectangularity basics]\label{lem:rect-basics}
 \begin{enumerate}\alphlabels\tightlist
 \item A relation with the parallelogram property is rectangular.
 \item The rectangular closure exists.
@@ -200,23 +192,11 @@ $A_{1}\times\dots\times A_{m}$); the intersection of all of them is the least
 one.
 \end{proof}
 
-\begin{hazard}\label{haz:rect-closure}
-Both parts are asserted without proof in \cite{ZhukSimplified} --- (a) as ``as
-it follows from the definitions'', (b) by the definite article in ``\emph{the}
-minimal rectangular relation''. Both are easy and both must be present. Note
-that ``$R$ is rectangular'' unqualified --- the form used in ``rectangular
-closure'' --- is never defined in the source; it means every variable is
-rectangular.
-\end{hazard}
-
 \begin{hazard}[Quantifying over permutations]\label{haz:permutations}
-The parallelogram property is stated ``any permutation of its variables gives a
-relation $R'$ satisfying \dots''. Formally this is a quantification over
-$\mathfrak S_{m}$ combined with a quantification over the split point $\ell$;
-equivalently, and more usably, over all ways of splitting $[m]$ into two
-nonempty blocks. The second formulation is the one to formalize: it avoids
-transporting $R$ along a permutation, which in a dependently typed setting
-means an equivalence of index types and a coercion at every use.
+Definition~\ref{def:parallelogram}(b) quantifies over $\mathfrak S_{m}$ and
+over the split point $\ell$. Equivalently, and more usably, it quantifies over
+all ways of splitting $[m]$ into two nonempty blocks; the second formulation
+avoids transporting $R$ along a permutation and is the one used below.
 \end{hazard}
 
 \subsection{Congruences}
@@ -263,9 +243,8 @@ stable under $\sigma$.
   redundant otherwise.
 \item Existence and uniqueness of $\cover{\sigma}$ need an argument, given in
   Proposition~\ref{prop:cover}. Uniqueness is exactly what irreducibility buys;
-  without it there is no ``the'' cover. A formalization must produce
-  $\cover{\sigma}$ as data attached to a proof of irreducibility, not as a
-  standalone function.
+  without it there is no ``the'' cover, and $\cover{\sigma}$ is meaningless for
+  a congruence not known to be irreducible.
 \item The family $S_{1},\dots,S_{k}$ may be \emph{empty}
   (item \ref{leg:emptyfamily} of
   \S\ref{sec:legislation}). This is not a free choice: the two formulations
@@ -305,14 +284,13 @@ $\cover{\sigma}\subseteq(\cover{\sigma})^{-1}$, whence equality.
 \end{proof}
 
 \begin{remark}[Why not a congruence]\label{rem:cover-not-cong}
-Nothing in Proposition~\ref{prop:cover} gives transitivity, and the source
-supplies the internal evidence that none is available: that $\cover{\sigma}$ is
-a congruence is item (b) of Definition~\ref{def:linear-congruence} and
-conclusion (a) of Lemma~\ref{lem:nontrivial-bridge}, both of which would be
-redundant otherwise. Symmetry of $\cover{\sigma}$, by contrast, is used
-silently in \cite{ZhukSimplified} --- in the proof of
-Lemma~\ref{lem:pc-bridges-trivial}, where the argument is run again ``switching
-$x_{1}$ and $x_{2}$''.
+Nothing in Proposition~\ref{prop:cover} gives transitivity, and none is
+available: that $\cover{\sigma}$ is a congruence is item (b) of
+Definition~\ref{def:linear-congruence} and conclusion (a) of
+Lemma~\ref{lem:nontrivial-bridge}, both of which would be redundant otherwise.
+Symmetry, by contrast, comes free from minimality, and is what licenses the
+``switching $x_{1}$ and $x_{2}$'' step in the proof of
+Lemma~\ref{lem:pc-bridges-trivial}.
 \end{remark}
 
 \begin{lemma}[Passing to the quotient]\label{lem:irred-quotient}
@@ -339,11 +317,9 @@ Definition~\ref{def:linear-congruence} transport with it.
 \end{proof}
 
 \begin{hazard}[This is the licence for ``assume $\sigma=0$'']\label{haz:factor-out}
-Three proofs in \S\ref{sec:properties} open with ``we may factor by $\sigma$
-and assume $\sigma$ is the equality relation''.
-Lemma~\ref{lem:irred-quotient} is what licenses that, and it is one of the
-sentences \cite{ZhukSimplified} states without proof
-(\S\ref{sec:legislation}, item \ref{leg:notice}).
+Three proofs in \S\ref{sec:strongproofs} open by factoring out $\sigma$ and
+assuming it is the equality relation. Lemma~\ref{lem:irred-quotient} is what
+licenses that (\S\ref{sec:legislation}, item \ref{leg:notice}).
 \end{hazard}
 
 \subsection{Bridges}
@@ -366,11 +342,14 @@ for all $a\in D$.
 \end{definition}
 
 \begin{remark}[The motivating example]\label{rem:bridge-example}
-On $\mathbb Z_{4}$, the relation
+Let $\mathbf D$ be the group $\mathbb Z_{4}$ with any compatible idempotent
+operation --- for instance $x_{1}-x_{2}+x_{3}$, extended to arity $n$ by dummy
+variables --- so that every subgroup of a power of $\mathbb Z_{4}$ is a
+subuniverse. Then
 $\delta=\{(a_{1},a_{2},a_{3},a_{4}):a_{1}-a_{2}=2a_{3}-2a_{4}\}$ is a bridge
-from $0_{\mathbb Z_{4}}$ to congruence mod~$2$. Condition (d) is the content:
-$a_{1}=a_{2}$ exactly when $a_{3}\equiv a_{4}\pmod 2$. Bridges are the
-formal shadow of a centralizer relation; see \cite{RossSlides}.
+from $0_{\mathbf D}$ to congruence mod~$2$. Condition (d) is the content:
+$a_{1}=a_{2}$ exactly when $a_{3}\equiv a_{4}\pmod 2$. Bridges are the formal
+shadow of a centralizer relation; see \cite{RossSlides}.
 \end{remark}
 
 \begin{definition}[Composition of bridges]\label{def:bridge-comp}
@@ -390,13 +369,13 @@ $\bcol{\delta_{1}\ast\delta_{2}}=\bcol{\delta_{1}}\circ\bcol{\delta_{2}}$.
 \end{lemma}
 
 \begin{hazard}\label{haz:bridge-comp}
-Lemma~\ref{lem:bridge-comp} is imported, not proved, in
-\cite{ZhukSimplified}; it is \cite[Lemma 6.3]{ZhukJACM}. Both conclusions are
-used: the first in every chain of bridges, the second --- the identity
-$\bcol{\cdot}$ commutes with composition --- in
-Lemma~\ref{lem:perfect-from-linked}, where a bridge with $\bcol{\delta}$ linked
-is powered up until $\bcol{\delta}=A^{2}$. The irreducibility hypothesis on
-\emph{all three} congruences is needed and is easy to drop by accident.
+Both conclusions of Lemma~\ref{lem:bridge-comp} are used: the first in every
+chain of bridges, the second --- that $\bcol{\cdot}$ commutes with composition
+--- in Lemma~\ref{lem:perfect-from-linked}, where a bridge with
+$\bcol{\delta}$ linked is powered up until $\bcol{\delta}=A^{2}$. The
+irreducibility hypothesis on \emph{all three} congruences is needed and is easy
+to drop by accident; Lemma~\ref{lem:symmetrise}, which has no such hypothesis,
+proves its own collapse identity directly rather than citing this one.
 \end{hazard}
 
 \begin{definition}[Symmetric and pair-reflexive bridges]\label{def:pair-reflexive}
@@ -450,12 +429,13 @@ $(\varepsilon\ast\varepsilon)(x_{1},x_{2},x_{3},x_{4})$.
 \end{proof}
 
 \begin{hazard}[Pair-reflexivity is the hypothesis three lemmas need]\label{haz:pair-reflexive}
-\cite{ZhukSimplified} states pair-reflexivity only once, as a hypothesis of
-Lemma~\ref{lem:pc-inductive-step}, but three further statements require it and
-do not say so; without it one of them is false. See
-Hazard~\ref{haz:bridge-repairs}. Lemma~\ref{lem:symmetrise} is what makes this
-costless: every bridge these statements are ever applied to is a
-$\delta^{\circ}$.
+Pair-reflexivity is a hypothesis of Lemmas~\ref{lem:nice-bridge-abelian},
+\ref{lem:nontrivial-bridge} and \ref{lem:pc-inductive-step}, and it is not
+optional in any of them: Remark~\ref{rem:phi-twist} exhibits a bridge on
+$\mathbf Z_{3}$ satisfying every other hypothesis of
+Lemma~\ref{lem:nice-bridge-abelian} and none of its conclusion.
+Lemma~\ref{lem:symmetrise} is what makes the hypothesis costless: every bridge
+these statements are applied to below is a $\delta^{\circ}$.
 \end{hazard}
 
 \begin{definition}[Perfect linear congruence]\label{def:perfect-linear}

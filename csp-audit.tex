@@ -1,0 +1,50 @@
+\documentclass[11pt]{article}
+\def\hazardheading{Note}
+\def\docheading{CSP dichotomy --- source audit}
+\input{preamble.tex}
+
+\hypersetup{pdftitle={Zhuk's simplified CSP dichotomy proof: a source audit},
+  pdfsubject={Where our rendering departs from arXiv:2404.01080v2, and why},
+  pdfauthor={}}
+
+\title{Zhuk's Simplified CSP Dichotomy Proof\\[2pt]
+  \large A source audit}
+\author{}\date{}
+
+\begin{document}
+\maketitle\vspace{-2.2em}
+\begin{abstract}
+The companion proof paper corrects \cite{ZhukSimplified} silently: where the
+source is wrong, incomplete or ambiguous, it states the corrected thing and
+proves it, with nothing in the margin about what the source has. This document
+is the record of those departures. For each it says what the source has, quotes
+it, says why it cannot be transcribed, gives the repair, and names the
+statement of the proof paper that carries it.
+
+Fifteen substantive defects, of which fourteen are repaired with no new
+mathematics and one --- the maximal multi-type extension --- is open. Ten
+readings legislated, two of which turn out to be theorems rather than choices.
+Two claims raised and refuted, one declared moot. Four hedges in \S5 of the
+source, all four honest.
+
+References of the form \texttt{lem:\dots} are labels of statements in the proof
+paper, which is compiled separately; the label is the join key between the two
+documents.
+\end{abstract}
+
+\tableofcontents\clearpage
+
+\input{audit0-intro.tex}
+\clearpage
+\input{audit1-defects.tex}
+\clearpage
+\input{audit2-readings.tex}
+\clearpage
+\input{audit3-expansion.tex}
+\clearpage
+\input{audit4-evidence.tex}
+
+\clearpage
+\input{bibliography.tex}
+
+\end{document}

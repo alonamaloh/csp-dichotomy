@@ -1,0 +1,371 @@
+%!TeX root=csp-audit.tex
+\section{Steps performed silently}\label{sec:expansion}
+
+These are not defects. They are the places where the proof paper must write out
+an argument that \cite{ZhukSimplified} performs in a clause, and they are the
+bulk of the work: about two dozen of them against fifteen register entries.
+They are collected here so that a reader comparing the two documents can see
+where the extra text comes from and satisfy themselves that it is expansion
+rather than divergence.
+
+\subsection{Coverage of \S5}\label{sec:coverage}
+
+\S5 of \cite{ZhukSimplified} is $3\,144$ lines, $44$ statements with proofs,
+$152$ proof-dependency edges. All seven subsections have now been read.
+
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}
+\hline
+Lines & Subsection & Proofs & Defects found \\
+\hline
+48--70 & Additional definitions & 0 & --- \\
+71--346 & Subuniverses of types $\TBA$, $\TC$, $\TS$ & 6 & none \\
+347--1021 & Intersection property & 6 & none; $\mathrm F$ localised here \\
+1022--1735 & Properties of PC or linear congruences & 9 & $\mathrm D11$, $\mathrm D12$, $\mathrm D13$, $\mathrm D14$ \\
+1736--1927 & Types interaction & 2 & none; one missing mirror case \\
+1928--2296 & Factorisation of strong subalgebras & 5 & $\mathrm D15$ \\
+2297--3144 & Proof of the remaining statements & 16 & $\mathrm D16$, $\mathrm D17$ \\
+\hline
+\end{tabular}
+\end{center}
+
+The distribution is not an accident. \S5.4 is the only part of \S5 that
+manipulates bridges as objects in their own right rather than consuming them,
+and every one of its four defects is about which auxiliary property survives a
+construction --- symmetrisation, restriction to a block, restriction to a
+strong subuniverse.
+
+\subsection{The four hedges}\label{sec:hedges}
+
+A mechanical sweep for hedging phrases over the thirteen printed pages of \S5
+returns four, an unusually low density: the same regex over other expositions
+in this subject fires many times per page. \textbf{All four are honest.}
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}lp{0.24\textwidth}p{0.50\textwidth}@{}}
+\hline
+Line & In & Disposition \\
+\hline
+\texttt{SS:146} & \texttt{LEMBACenterSImplyFactor} &
+  ``For $T=\TBA$ it is straightforward'': it is one line --- if
+  $t(B,A)\subseteq B$ and $t(A,B)\subseteq B$ then the same $t$ works on
+  images. Only $T=\TC$ is genuinely imported. \\
+\texttt{SS:177} & \texttt{LEMBACenter\brk SOnPower\brk Implies} &
+  ``For $T=\TS$ just repeat the same proof \emph{word to word}'': no repetition
+  is needed --- see below. \\
+\texttt{SS:1560} & before \texttt{LEMNoBridge\brk Between\brk DifferentTypes} &
+  ``This case can be considered in the same way as Case 2'': it is genuinely
+  the mirror. $(a,b,a,b)\in\xi$ places $b$ in the block and
+  $\cover\sigma\subseteq\operatorname{RightLinked}$ places $a$ and $c$;
+  writing it out is mechanical. \\
+\texttt{SS:2428} & \texttt{LEMFactorByDelta} region &
+  ``The inclusion $\subseteq$ is obvious'': it is. \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{entry}[The source undersells its own citation]\label{ent:6.24}
+\texttt{LEMBACenterSOnPowerImplies} says $B\subt{T}\mathbf A^{n}$ with
+$T\in\{\TBA,\TC,\TS\}$ implies some $C\subt{T}\mathbf A$, and proves it by
+``For $T\in\{\TBA,\TC\}$ see \cite[Lem.~6.24]{ZhukStrong}. For $T=\TS$ just
+repeat the same proof word to word replacing $\TBA$ by $\TS$.'' The cited lemma
+reads: \emph{``Suppose $R$ is a nontrivial strong subuniverse of $A_{1}\times
+\dots\times A_{n}$ of type $T\neq\TPC$. Then there exists $i$ such that $A_{i}$
+has a nontrivial subuniverse of type $T$.''} It is already general in $T$ and
+already for a product of distinct algebras --- the power is a special case ---
+and its proof is \emph{type-uniform}: it takes $\proj_{1}(R)$ if that is proper
+and otherwise a fibre, and neither construction mentions the type, which enters
+only through the facts that projections and fibres preserve $\TBA$ and preserve
+$\TC$ respectively. So a single run of the proof produces one witness carrying
+\emph{every} strong type $R$ has at once; if $R$ is simultaneously binary
+absorbing and central --- which is what $\TS$ means --- the witness is too. The
+hedge disappears rather than being discharged three times. Proof paper:
+\pkey{lem:power-to-base}, \pkey{haz:power-to-base}.
+\end{entry}
+
+\subsection{\S5.3, the intersection property}\label{sec:exp-53}
+
+\texttt{LEMIntersectionPCLinearIsGood} (\texttt{SS:623}) is a 292-line proof
+with 20 distinct citations, by a wide margin the largest and most connected in
+\S5. It was read in full and is \textbf{structurally sound}. Every appeal to
+the inductive hypothesis lands at strictly smaller $k+\ell$: part (s) uses (s)
+and (d) at $k+(\ell-1)$; subsubcase 2B2 uses (s) at $(n-1)+k$; 2B3 uses (d) at
+$(n-1)+k$; and $n\le\ell$ throughout. That is worth confirming, since a
+commented-out block shows an earlier draft inducted lexicographically on
+$(|A/(\sigma\cap\omega)|,\,k+\ell)$ and the live proof dropped the first
+component.
+
+Six items for the rendering.
+
+\begin{enumerate}\tightlist
+\item \emph{Part (s), branch $\mathcal T_{\ell}=\TD$.} The text asserts a
+  \emph{proper} containment where the cited lemmas give only $\subseteq$. It is
+  not a defect in the lemma, because the equality case gives the conclusion
+  outright: if $(G\cap C_{\ell-1})/\omega_{\ell}=C_{\ell-1}/\omega_{\ell}$ then
+  every $\omega_{\ell}$-block meeting $C_{\ell-1}$ meets $G\cap C_{\ell-1}$, in
+  particular the block $E$ with $C_{\ell}=C_{\ell-1}\cap E$, so
+  $G\cap C_{\ell}\neq\varnothing$. Split the case rather than assert $<$.
+\item \emph{Properness in 2A1 and 2B1} comes from the minimal choice of $m$
+  (resp.\ $n$); nonemptiness from the constant tuples
+  $(b/\delta,\dots,b/\delta)$ for $b\in B$, which lie in $S_{m,0}$ since
+  $B\subseteq B_{m}$ and $(b,b)\in\sigma\cap\omega$.
+\item \emph{Subsubcase 2B3} writes the first alternative as
+  ``$=C_{n}/\omega_{n}$'', which is stronger than the ``size 1'' the inductive
+  hypothesis supplies. Correct, because $B\cap C\neq\varnothing$ and
+  $C\subseteq C_{n}$ force $B_{k}\cap C_{n}\neq\varnothing$, so the single
+  block is the one defining $C_{n}$; then $B_{k}\cap C_{n-1}\subseteq C_{n}$
+  and $S_{k,n-1}$, $S_{k,n}$ cut $(B/\delta)^{|A|}$ identically, contradicting
+  minimality of $n$.
+\item \emph{The full-fibre step} at \texttt{SS:545, 837, 921} is register entry
+  $\mathrm F$ (\S\ref{sec:F}).
+\item \emph{Is minimality of the chains $k,\ell$ used?} The proof fixes minimal
+  chains and no step consuming minimality could be found; a shorter chain only
+  makes the induction measure smaller. Either identify the use or drop the
+  hypothesis. Nothing depends on the answer for correctness --- a redundant
+  hypothesis costs only bookkeeping --- but a formalization has to decide.
+  \textbf{Open, minor.}
+\item \emph{The corollary} writes $\delta=f^{-1}(\sigma)$ with $f$ undefined;
+  read $f_{1}$. Its conclusion admits ``empty'' where the lemma requires
+  $B\cap C\neq\varnothing$, so the empty case needs its own line at every call
+  site. Proof paper: \pkey{haz:cor-intersection}.
+\end{enumerate}
+
+Three smaller lemmas in the same subsection, never opened before the final
+pass, are all sound. \texttt{LEMTotallySymmetricWithoutBACenter}
+(\texttt{SS:357}) compresses one step: ``by the conditions of the lemma we have
+$(a,\dots,a,c),(a,\dots,a,a)\in R$'' does not follow from one application of
+the shift, which deletes the \emph{last} entry and so destroys $c$. What is
+really happening is that symmetry plus the shift lets one pass from a tuple
+with entry multiset $M$ to any $M+\{u\}-\{v\}$ with $u,v\in M$; $k-2$ such
+steps delete the $b_{i}$ and duplicate $a$. This deserves its own one-line
+lemma, because the same manoeuvre is needed again in
+\texttt{LEMTotallySymmetricRelationForIrreducible} --- where Case~2's ``it
+remains to apply the previous lemma to $R\cap(B/\sigma)^{n}$'' needs
+$\proj_{1,2}(R\cap(B/\sigma)^{n})=(B/\sigma)^{2}$, not merely
+$\proj_{1,2}(R)\supseteq(B/\sigma)^{2}$. Proof paper:
+\pkey{lem:multiset-shift}, \pkey{haz:shift}.
+
+\subsection{\S5.4, the bridge lemmas}\label{sec:exp-54}
+
+Beyond $\mathrm D11$--$\mathrm D14$, \texttt{LEMBlockOfGoodBridgeDoesNotHaveBAC}
+is sound in both cases, and uses five steps without stating them.
+
+\begin{enumerate}\tightlist
+\item $\bcol\delta$ is \emph{reflexive}, because
+  $0_{A}\subseteq\proj_{1,2}(\delta)\subseteq\bcol\delta$, the first inclusion
+  being clause (c). Everything reflexive downstream comes from this.
+\item $\proj_{1,2}(\sigma\cap E^{4})=\omega\cap E^{2}$ for a subuniverse $E$,
+  which is what makes Case~1's choice of $E$ the right one. It needs
+  $\sigma(x_{1},x_{2},x_{1},x_{2})$ for $(x_{1},x_{2})\in\omega$ ---
+  pair-reflexivity again, from the corrected symmetrisation.
+\item \emph{The $E$ of Case~1 exists.} Maximality of $E$ is never used, so it
+  suffices to take the block containing $a$ and $b$ of the transitive closure
+  of a compatible reflexive symmetric relation on $D$ whose components are
+  those of the undirected $\omega$-graph. Note that
+  $(\omega\cup\omega^{-1})\cap D^{2}$, which suggests itself, is \emph{not} a
+  subalgebra --- a union of two subuniverses need not be closed; use
+  $(\omega\circ\omega^{-1})\cap D^{2}$, which is compatible, reflexive and
+  symmetric, and has the same components because $\omega$ is reflexive.
+\item The ``without loss of generality'' at \texttt{SS:1170} needs
+  $\bcol\sigma$ symmetric, which holds for $\bcol\delta\circ\bcol\delta^{-1}$.
+\item $\{a\}\circ\omega$ is a subuniverse, because $\{a\}$ is one by
+  idempotence, which is what makes it equal to $A$ in Case~2.
+\end{enumerate}
+
+The appeal to the relational stable-intersection corollary at \texttt{SS:1214}
+is \textbf{correct but not in the corollary's shape}. The three displayed boxes
+$\{a\}\times B\times C\times B$, $\{a\}\times C\times C\times C$,
+$\{a\}\times C\times B\times B$ are the tight boxes of three witnesses, whereas
+the corollary wants $A$ in the freed coordinate. Widening each to
+$\{a\}\times A\times C\times B$, $\{a\}\times C\times C\times A$,
+$\{a\}\times C\times A\times B$ gives its hypothesis with $n=3$ and all
+ambients $A$, legitimate because $\lll$ is reflexive; and since all three types
+are $\TC$ and $n=3$, every alternative fails. The three witnesses are
+$(a,b,a,b)$, $(a,a,a,a)$, $(a,a,b,b)$. Two smaller things: $C'\subte{\TC}C$ at
+\texttt{SS:1226} comes out of pp-propagation as $\subte{\TC}A$ and needs
+intersection to land in $C$; and the appeal there to $\proj_{1}(\xi)=A$ should
+be to $\{a\}\circ\omega=A$.
+
+\texttt{LEMNontrivialReflexiveBridgeImplies} is otherwise sound: the uniqueness
+of $\cover\sigma$, the upgrade from ``every block of
+$\operatorname{LeftLinked}(\cover\sigma)$ of size $>1$ satisfies
+$B^{2}\subseteq\cover\sigma$'' to $\cover\sigma=
+\operatorname{LeftLinked}(\cover\sigma)$, and the prime argument all check out.
+Note that the contradiction is with the \emph{minimality of $\cover\sigma$},
+not with irreducibility directly; the source says ``contradicts the
+irreducibility of $\sigma$''. The distinction matters where $\cover\sigma$ is
+data attached to a proof of irreducibility. Proof paper:
+\pkey{haz:minimality-not-irred}.
+
+\texttt{LEMPCCongruencePropertyInductiveStep} is sound outside $\mathrm D14$,
+and was checked line by line. The $|A|=1$ worry does not arise: clause (c)
+forces $\proj_{1,2}(\delta)\supsetneq0_{A}$, hence $|A|\ge2$. Case~2's two
+applications of the ternary absorbing operation are correct and were recomputed
+coordinatewise; the step needs \emph{ternary} absorption where $T=\TC$ supplies
+only centrality, so ``central implies ternary absorbing''
+(\texttt{main:1350}) is an unstated citation. Case~3 needs a word for the
+equality case, since the absorbing-equality lemma hypothesises a proper
+containment while the conclusion is immediate when it is an equality.
+
+\texttt{LEMPCBridgesAreTrivial} is sound, with two steps to write out, both in
+Case~1.
+
+\emph{The counting step} (\texttt{SS:1478}): ``since $\proj_{1,2}(\delta)=
+\proj_{3,4}(\delta)$, for any $(a,b,c,d)\in\delta$ the elements $c/\sigma$ and
+$d/\sigma$ are also uniquely determined by $a/\sigma$ and $b/\sigma$''. What
+the case hypothesis gives is uniqueness in the \emph{other} direction --- it is
+a statement about $\delta\ast\delta^{-1}$ and the claim is about
+$\delta^{-1}\ast\delta$. The bridge between them is pigeonhole, and the cited
+equality of projections is what powers it: on $\cover\sigma/\sigma$, which is
+finite, $\delta$ induces a bipartite relation whose left neighbourhoods are
+nonempty, pairwise disjoint (that is what the case says) and cover the right
+side; equal finite cardinalities force every neighbourhood to be a singleton.
+
+\emph{The four combinations} (\texttt{SS:1534}): the proof derives
+$\proj_{1,4}(\delta)=\sigma$ or $\proj_{1,3}(\delta)=\sigma$, and by the same
+argument with $x_{1},x_{2}$ switched $\proj_{2,4}(\delta)=\sigma$ or
+$\proj_{2,3}(\delta)=\sigma$, then says ``This completes this case''. Two of
+the four combinations are the conclusion; the other two must be excluded, and
+they are, because either would give $\proj_{1,2}(\delta)\subseteq\sigma$
+against $\proj_{1,2}(\delta)=\cover\sigma\supsetneq\sigma$. The reverse
+inclusion in the conclusion comes from stability under $\sigma$. The
+``switching $x_{1}$ and $x_{2}$'' appeal needs $\cover\sigma$ symmetric.
+
+One gap at the Case~2 call: hypothesis (3) of the bridge definition for
+$\xi\cap B^{4}$ requires $\cover\sigma\cap B^{2}\supsetneq\sigma\cap B^{2}$,
+which is not argued. It is not needed --- if it fails, clause (d) puts both
+pairs of every tuple in $\sigma$, and linkedness on a $B$ that is not a
+$\sigma$-block produces $(x_{1},x_{1},x_{3},x_{3})\in\xi$ with
+$(x_{1},x_{3})\notin\sigma$ directly, which is the conclusion. But the lemma
+cannot be \emph{cited} on a non-bridge; the case has to be inlined. Proof
+paper: inside \pkey{lem:pc-bridges-trivial}.
+
+\subsection{\S5.5, types interaction}\label{sec:exp-55}
+
+Both statements are correct. \texttt{LEMBridgeBetweenCongruences} omits one
+direction: clause (4) is an \emph{equivalence}, and the proof establishes only
+$(x_{1},x_{2})\in\sigma_{1}\Rightarrow(y_{1},y_{2})\in\sigma_{2}$. The converse
+is the mirror argument, and it is where the \emph{other} half of the hypothesis
+$\omega\cap\sigma_{1}=\omega\cap\sigma_{2}$ is spent. Also unstated: clause (3)
+needs $\sigma_{1}\subseteq\proj_{1,2}(\delta)$ as well as the strictness
+witness, and $(a,b)\notin\sigma_{2}$ follows because
+$\omega\setminus\sigma_{1}=\omega\setminus\sigma_{2}$.
+
+\texttt{LEMTwoStableIntersection} is missing one case and six steps. The
+missing case is the mirror $T_{1}=\TD$, $T_{2}\in\{\TBA,\TC\}$: the hypotheses
+are symmetric so it is the same argument with the indices swapped, but nothing
+says so, where \texttt{SS:1805} does say ``similarly'' for the mirror of the
+$\TS$ case. The six steps, all short and all discharged by
+$C_{1}\cap C_{2}=\varnothing$:
+
+\begin{enumerate}\tightlist
+\item $C_{1}\cap B_{2}\subt{T_{1}}B_{1}\cap B_{2}$ needs \emph{properness}: if
+  $C_{1}\cap B_{2}=B_{1}\cap B_{2}$ then $B_{1}\cap C_{2}\subseteq
+  C_{1}\cap C_{2}=\varnothing$.
+\item \texttt{SS:1830}: factoring returns $\subseteq$ and can collapse a proper
+  containment; properness holds because $(C_{1}\cap B_{2})/\sigma_{2}=
+  B_{2}/\sigma_{2}$ would make the $\sigma_{2}$-block defining $C_{2}$ meet
+  $C_{1}$.
+\item \texttt{SS:1817} writes the first alternative as $(B_{1}\cap B_{2})/
+  \sigma_{2}=C_{2}/\sigma_{2}$ where the clause supplies only size $1$; which
+  block it is follows from $B_{1}\cap C_{2}\neq\varnothing$.
+\item The $\TD\times\TD$ case must apply the clause to $C_{2}$, not $B_{2}$
+  (\S\ref{sec:leg-chain}).
+\item The chain for $C_{2}\lll\mathbf A$ must be \emph{chosen} to extend the
+  chain for $B_{2}\lll\mathbf A$ (\S\ref{sec:leg-chain}).
+\item $(c_{1},c_{2})\in\omega\setminus\sigma_{1}$: membership in $\omega$
+  because each $B_{i}$ lies in a single block of every dividing congruence of
+  its own chain and $c_{1},c_{2}\in B_{1}\cap B_{2}$; non-membership in
+  $\sigma_{1}$ because $c_{2}\in B_{1}$ and $c_{2}\,\sigma_{1}\,c_{1}\in C_{1}$
+  would give $c_{2}\in C_{1}\cap C_{2}$.
+\end{enumerate}
+
+Proof paper: \pkey{lem:bridge-between-congruences}, \pkey{lem:two-stable}.
+
+\subsection{\S5.6 and \S5.7}\label{sec:exp-5657}
+
+Beyond $\mathrm D15$, $\mathrm D16$ and $\mathrm D17$, the remaining sixteen
+proofs are sound. The steps to supply:
+
+\begin{itemize}\tightlist
+\item \texttt{LEMCenterCanBePushedIn} takes the ``full'' alternative of the
+  intersection corollary without a word. ``Empty'' is excluded by
+  $R\cap(B_{1}\times B_{2})\neq\varnothing$. \emph{``Size one'' needs two
+  lines}: the class would have to be $[c]_{\delta}$, since $c$ has an
+  $R$-partner in $B_{1}$; and then $B_{2}''=B_{2}'\cap E$ either has
+  $E=[c]_{\delta}$, putting $c$ in $B_{2}''$ against the minimal choice of
+  $B_{2}'$, or misses $[c]_{\delta}$ entirely, so $R\cap(B_{1}\times B_{2}'')=
+  \varnothing$ against $B_{2}\subseteq B_{2}''$. Smaller: $S'=(B_{1}/\sigma)^{
+  |A_{1}|}$ holds because a \emph{single} good $c$ witnesses every tuple, and
+  $S''\neq\varnothing$ is where $R\cap(B_{1}\times B_{2})\neq\varnothing$ is
+  spent.
+\item \texttt{LEMLeftLinkedStayFull}: Case~2's restriction to $n=2^{k}$ is not
+  cosmetic --- $R_{n}=(R\circ R^{-1})^{n}$ is symmetric, so
+  $R_{2n}=R_{n}\circ R_{n}^{-1}$, which is what makes
+  $\operatorname{LeftLinked}$ of the auxiliary relation computable in one step.
+  Unstated: the auxiliary relation is subdirect over
+  $(B_{1}/\sigma)\times\proj_{2}$ of itself, not over $(B_{1}/\sigma)\times
+  A_{2}$; and $R_{n}\supseteq0_{A_{1}}$ by subdirectness.
+\item \texttt{LEMCongruenceEitherCutOrDoNothing} leans throughout on
+  $B^{2}\subseteq\omega$ --- every $B_{i}$ in the chain lies inside a single
+  block of its own dividing congruence --- which is never stated and is used at
+  least four times. Also unstated: $|B/\sigma|>1$, and that a path witnessing
+  linkedness must contain a single step crossing $\sigma$-classes.
+\item \texttt{LEMFactorByDelta}: Case~2 is a chain of six steps of which the
+  source states three, and the \textbf{``moreover'' clause is never argued} ---
+  it holds because Case~2 gives $\delta\cap B^{2}\subseteq\delta'\cap B^{2}=
+  \sigma\cap B^{2}$ and Case~1 never produces the type-$T$ alternative. That
+  clause is the saturation identity, and it is what \S\ref{sec:D17} turns on.
+\item \texttt{LEMPropagation}: clause (ft) is discharged by citing the
+  factorisation lemma, which is stated only for $T\in\{\TPC,\TL\}$; the
+  $\{\TBA,\TC,\TS\}$ cases need clause (fs) and a sentence. And clause (fm)'s
+  $t=1$ base case is where the $\TS$-freeness hypothesis is \emph{spent} --- it
+  kills the factorisation lemma's middle alternative, which a multi-type cannot
+  absorb. Nothing says so.
+\item \texttt{CORPropagateToRelations}(e) needs two unstated steps:
+  $C\circ\delta=B\circ\delta$ is excluded because $\delta\subseteq\sigma$ puts
+  $C\circ\delta$ inside one $\sigma$-block while $|B/\sigma|>1$; and the
+  $\subt{\TS}$ alternative is excluded because the witness also lies in one
+  $\sigma$-block.
+\item \texttt{LEMMultiplyByAllLinear} invokes the stable-intersection theorem
+  for its Case~1/Case~2 dichotomy, and \textbf{no theorem is consumed}: walk
+  down the chain and ask where the intersection becomes empty; it is empty at
+  $B_{1}$ by hypothesis, so either it is already empty at $A$ or there is a
+  first step where it becomes so. Proof paper: \pkey{haz:multiply-citation}.
+\item \texttt{LEMPCOnTheTopIsEasy} rests on two things it does not state: that
+  an idempotent algebra is polynomially complete iff every \emph{reflexive}
+  subalgebra of a power is a conjunction of equalities, and that
+  $\mathbf A/\sigma$ is BA and centre free, without which the step
+  $\{a_{i}\}\subt{\TPC}\mathbf A/\sigma$ is not licensed. Proof paper:
+  \pkey{haz:on-top}.
+\item Typographical: \texttt{LEMUbiquity}'s ``block $D$ of $B/\delta$'' should
+  read ``block $D$ of $\delta$''; \texttt{LEMCenter\brk CanBePushedIn}'s $\neq$ at
+  \texttt{SS:2014} should be $\not\subseteq$;
+  \texttt{CORParallelogramPropertyForD}'s undefined $C$ at \texttt{SS:1000}
+  should be $C_{1}$; \texttt{LEMMaximalMultExtention}'s
+  $\cover{\delta_{i}}\supseteq B_{1}^{2}$ at \texttt{SS:3128} should be
+  $\cover{\delta_{i}}\supseteq(B_{1}/\sigma)^{2}$; and the instance-fragmented
+  definition writes $X_{1}$ twice where the second should be $X_{2}$.
+\end{itemize}
+
+\subsection{\texttt{LEMPreserveLinkdness}: a flag withdrawn}\label{sec:exp-preserve}
+
+Flagged in an earlier survey on the grounds that the workhorse
+\texttt{LEMPreserve\brk Linkdness\brk OneStepAUX} assumes both
+$R\cap(B_{1}\times C_{2})\neq\varnothing$ and $R\cap(C_{1}\times B_{2})\neq
+\varnothing$ while the target lemma assumes only $R\cap(B_{1}\times B_{2})\neq
+\varnothing$. \textbf{Not a defect}: the flag conflates the auxiliary lemma
+with \texttt{LEMPreserveLinkdnessOneStep}, which is what the four-line proof
+actually invokes and which needs only $R\cap(B_{1}\times B_{2})\neq\varnothing$
+and $S\cap(C_{1}\times B_{2})\neq\varnothing$.
+
+The four-line proof is correct and unpacks to a two-phase argument the proof
+paper should write out. Decompose both multi-type reductions into chains.
+\emph{Phase 1}: shrink coordinate 1 along its chain with $B_{2}$ fixed; at each
+step the needed $R\cap(B_{1}^{(j)}\times B_{2})\neq\varnothing$ is the previous
+step's conclusion, and the needed $S\cap(B_{1}^{(j+1)}\times B_{2})\neq
+\varnothing$ follows from $S\cap(C_{1}\times C_{2})\neq\varnothing$ by
+monotonicity. This yields $R\cap(C_{1}\times B_{2})\neq\varnothing$.
+\emph{Phase 2}: the same on the transpose $R^{-1}$, whose rectangular closure
+is $S^{-1}$, shrinking coordinate 2 with $C_{1}$ fixed --- legitimate because
+$C_{1}\lll A_{1}$. Proof paper: \pkey{lem:preserve-linked}.

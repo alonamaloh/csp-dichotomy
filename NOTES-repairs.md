@@ -576,7 +576,19 @@ singleton, or all of `ℤ_p`. It is not all of `ℤ_p`, since that fibre would c
 nonzero element, making `(a₁,a₂)` both `σ`-related and not. It is not empty on `σ*`, since
 `proj_{1,2}(ζ) = σ*`. ∎
 
-## D17 — **solved**: pass to a minimal subfamily, and the type argument does the rest
+## D17 — **OPEN**. The repair below is invalid; kept for the record
+
+**Status, 2026-08-02.** An external reviewer found that the repair below is broken at its
+first line, and the finding is correct. The minimal subfamily `F` need not exist: the
+hypothesis gives `(⋂ⱼC₁ʲ)/σ ∩ B̄₂ = ∅`, whereas `(⋂ⱼC₁ʲ)/σ ⊆ ⋂ⱼ(C₁ʲ/σ)` with the inclusion
+generally strict, so `⋂F` can acquire σ-classes meeting `B̄₂`. This is the
+image-versus-intersection failure of convention item C8 — catalogued in these notes and then
+walked into. **Do not write `LEMMaximalMultExtention`.** The target is now: *the type-`T`
+factors alone already cut `B̄₂` out*; if that is proved, saturation applies to them and the
+rest of Step 4–5 below runs unchanged. The one fragment that survives is that the `<_S`
+factors never help — see the end of this section.
+
+What follows is the invalid argument, kept so that the failure is legible.
 
 Case 1 of `LEMMaximalMultExtention` cannot be closed as written — see the analysis below — but
 the citation of `THMMainStableIntersection` was pointing at the right tool. It just has to be
@@ -618,9 +630,17 @@ statement requires.
 `(C₁' ∘ (ω₁ ∩ ⋯ ∩ ω_r)) ∩ B₂ = ∅`, hence `(C₁ ∘ (ω₁ ∩ ⋯ ∩ ω_r)) ∩ B₂ = ∅`. Since each
 `ωᵢ ⊇ σ` and `σ` is maximal with that property, `σ = ω₁ ∩ ⋯ ∩ ω_r`. ∎
 
-So the S-free split disappears: one never needs `B̄₁` to be S-free, only that a *minimal*
-subfamily cutting `B̄₂` out contains no `S`-typed member, which the stable-intersection theorem
-delivers.
+So the S-free split would disappear: one would never need `B̄₁` to be S-free, only that a
+*minimal* subfamily cutting `B̄₂` out contains no `S`-typed member. **Step 1 is where this
+fails**, for the reason at the head of this section.
+
+**The surviving fragment.** A factor with `C̄₁ʲ <_S B̄₁` contains a BA-and-central `D̄` of
+`B̄₁`, which by `LEMStrongNonemptyIntersection` meets `B̄₁ ∩ B̄₂`, so `C̄₁ʲ ∩ B̄₂ ≠ ∅`: the
+`<_S` factors never help cut `B̄₂` out. What is missing is that the type-`T` factors alone
+already cut it out. The saturation identity `δ ∩ B² ⊆ σⱼ ∩ B²` that would make images commute
+with intersection is the "moreover" clause of `LEMFactorByDelta`, available for a factor
+exactly when that factor lands in the type-`T` alternative and not when it lands in `<_S` — so
+the argument is circular as written.
 
 ### Why the source's Case 1 cannot be patched in place
 
@@ -655,4 +675,4 @@ altogether.
 | D14 | yes | no — the citation needed the subrelation form of absorption-preserves-linkedness |
 | D15 | yes | no — read `δ` for `σ`, and restore the stability clause |
 | D16 | yes | no — via `LEMNontrivialReflexiveBridgeImplies`(3) and irreducibility; one fewer external import than the source |
-| D17 | yes | no — pass to a minimal subfamily; `THMMainStableIntersection` then excludes type `S` |
+| D17 | **open** | unknown — the minimal-subfamily repair is invalid (C8); target is "the type-`T` factors alone cut `B̄₂` out" |

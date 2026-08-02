@@ -1,0 +1,295 @@
+%!TeX root=csp-audit.tex
+\section{Claims examined and withdrawn}\label{sec:refuted}
+
+Two claims were raised, survived a round of review, and turned out to be
+wrong. They are the most instructive entries in this document, because both
+failed in the same way and it is the way a defect list is prone to fail:
+reading the formal-looking part of a paper and not the sentence before it.
+
+\subsection{The claimed citation cycle in \S5}\label{sec:refuted-cycle}
+
+The claim was a cycle
+$\text{Lemma }9\Rightarrow7\Rightarrow86\Rightarrow85\Rightarrow
+\text{Cor }22\Rightarrow\text{Thm }21\Rightarrow\text{Lemma }8\Rightarrow
+\text{Lemma }9$, closed at \texttt{SS:1214}, and that it ``has to be broken
+before anything in \S5.4 or \S5.7 can be formalized''.
+
+\textbf{Refuted mechanically.} Every \verb|\begin{proof}| in \texttt{main.tex},
+\texttt{StrongSubalgebras.tex} and \texttt{necessary\brk Claims.tex} was parsed,
+attributed to its statement (including the \verb|\newtheorem*| duplicates the
+paper uses to restate results proved later), and its \verb|\ref|s extracted.
+\textbf{58 statements with proofs, 152 edges, no cycles.}
+
+The named edge is real: \texttt{LEMBlockOfGoodBridgeDoesNotHaveBAC} does invoke
+the relational stable-intersection corollary at \texttt{SS:1214}, in its
+$T=\TC$ case. But it closes nothing. That corollary's transitive proof-closure
+is 25 statements and does not contain
+\texttt{LEMBlockOfGoodBridgeDoesNotHaveBAC}; its direct dependencies are
+Propagation and the stable-intersection theorem, and the latter's closure is 15
+statements, also disjoint from it.
+
+Consequence: \S5 can be written in dependency order, and there is no hidden
+simultaneous induction to untangle. The claim would not have survived ten
+minutes of parsing.
+
+\subsection{The recursion-depth bound}\label{sec:refuted-depth}
+
+The claim was that the depth bound $|A|+|\Gamma|$ of \cite[Lem.~5.2]{ZhukJACM}
+was ``not established for the \textsc{CheckTuple} $\to$ \textsc{SolveNonlinked}
+path'', and that ``without the repair the algorithm is not polynomial''.
+\textbf{Withdrawn.}
+
+Lemma~5.2 bounds the depth by arguing that every recursion site except
+\textsc{CheckWeakerInstance} ``reduce[s] all domains of size greater than 1''.
+At the \textsc{SolveNonlinked} site this needs the instance to be neither
+linked nor fragmented --- otherwise the linked-component congruence can be
+trivial on some domain, that domain does not shrink, and the bound degrades
+from the constant $|A|$ to $O(|A|\cdot n)$, which is fatal, since the total
+work is $\mathrm{poly}(N)^{\text{depth}}$. The source does state the hypothesis
+and does discharge it. It is simply not in one place:
+
+\begin{itemize}\tightlist
+\item the precondition ``an instance that is not linked and not fragmented'' is
+  in the prose introducing the function (\texttt{1704.01914:892}), and
+  \emph{not} in the \texttt{Input:} line of its pseudocode;
+\item it is discharged at the call site (\texttt{:635}) by ``$\Theta_{0}$ is
+  not fragmented because it is crucial'' --- itself a one-line argument the
+  source does not give: a fragmented unsatisfiable instance has an
+  unsatisfiable part, and no constraint of the \emph{other} part is then
+  crucial;
+\item the step from ``not fragmented'' to ``\emph{every} domain splits'' ---
+  propagate the partition along a path, which exists by non-fragmentedness and
+  is value-preserving by $1$-consistency --- appears once, at \texttt{:1070},
+  inside the proof of a \emph{different} lemma, and is never cited here.
+\end{itemize}
+
+So the mathematics is present and the theorem is not in doubt. What is absent
+is any single place where the six recursion sites of Lemma~5.2 are discharged.
+The same pattern holds for the $\Gamma$-order argument, whose case (3) needs
+the projections to be unchanged under weakening, which holds because the
+instance is $1$-consistent when \textsc{CheckWeakerInstance} runs --- true, and
+unstated.
+
+\emph{Chasing it down did leave one genuine hole}, and closing it needed an
+argument that is not in the source. \textsc{CheckTuple} calls
+\textsc{SolveNonlinked} not on $\Theta_{0}$ but on $\Theta_{0}$ with domains
+restricted, and restricting can only \emph{destroy} the ``not linked''
+precondition.
+
+\begin{lemma}[The \textsc{SolveNonlinked} call site]\label{lem:solvenonlinked-callsite}
+Let $\Theta_{0}$ be cycle-consistent, non-fragmented and not linked, and let
+$\Theta_{0}'$ be $\Theta_{0}$ with each domain restricted to a subset
+$D_{x}'\subseteq D_{x}$. Then every domain of $\Theta_{0}$ of size greater than
+one is strictly shrunk by the time \textsc{SolveNonlinked}$(\Theta_{0}')$
+recurses into \textsc{Solve}.
+\end{lemma}
+
+\begin{proof}
+Write $\tau_{x}=\mathrm{LinkedCon}(\Theta_{0},x)$, a congruence by
+\cite[Lem.~6.2]{ZhukJACM}. First, $\tau_{x}$ is proper at \emph{every}
+variable. Since $\Theta_{0}$ is not linked there are at least two connected
+components of the graph on $\bigsqcup_{z}\{z\}\times D_{z}$; and every
+component meets every variable, because from any $(x,a)$ non-fragmentedness
+supplies a path to $y$ and $1$-consistency extends $a$ along it. So each
+$D_{y}$ is partitioned into at least two nonempty $\tau_{y}$-blocks, each
+therefore proper.
+
+Now split on whether $\Theta_{0}'$ is linked.
+
+\emph{Not linked.} Then \textsc{SolveNonlinked} recurses on a component, whose
+trace on each $D_{y}$ is a $\tau_{y}$-block intersected with $D_{y}'$ --- a
+proper subset of $D_{y}$ by the previous paragraph.
+
+\emph{Linked.} Then for every $z$ and all $a,b\in D_{z}'$ some path of
+$\Theta_{0}'$ connects them; every such path is a path of $\Theta_{0}$, so
+$D_{z}'\times D_{z}'\subseteq\tau_{z}$, i.e.\ $D_{z}'$ lies inside a single
+$\tau_{z}$-block. That block is proper, so $D_{z}'\subsetneq D_{z}$ --- every
+domain has \emph{already} been shrunk, at the \textsc{CheckTuple} step, before
+\textsc{SolveNonlinked} was called at all.
+\end{proof}
+
+\begin{entry}[Why this is the right argument]\label{ent:callsite-moral}
+Two things are worth extracting.
+
+First, the question this replaces was the wrong one. The natural worry is
+whether the restriction preserves the stated precondition ``not linked'', and
+one then starts asking how the minimal linear congruence $\mathrm{ConLin}$
+relates to $\mathrm{LinkedCon}$ --- a relation the source never states, and
+which is not needed. The dichotomy above uses no relation between them:
+\emph{either} the precondition survives and the component split does the
+shrinking, \emph{or} it fails and the restriction has already done it.
+
+Second, it follows that \textsc{SolveNonlinked}'s precondition is not required
+for the depth bound at all. The function is correct on a linked instance too
+--- there is then one component and it recurses on the whole of it --- and the
+lemma covers that case. The precondition should be read as documentation of the
+intended use, not as an obligation the caller must discharge.
+\end{entry}
+
+\subsection{Declared moot: the arity in the special-WNU lemma}\label{sec:moot}
+
+\cite[Lem.~4.7]{MarotiMcKenzie} is cited for the existence of a special
+idempotent WNU of arity $n^{n!}$ in $\Clo(w)$. The concern raised was that the
+period of $y\mapsto w(x,\dots,x,y)$ need not divide $n!$. The suggested
+counterexample --- $n=3$ with a $5$-cycle --- does not work, since idempotence
+makes $x$ a fixed point of that map and a full $5$-cycle on five elements is
+then impossible; but cycles of length up to $|A|-1$ remain possible, and
+$|A|-1$ need not divide $n!$ when $|A|>n$.
+
+\emph{Moot.} The dichotomy proof consumes only ``there exist $N$ and a special
+idempotent WNU of arity $N$ in $\Clo(w)$''. The precise arity matters only for
+\S4 of \cite{ZhukSimplified}, which is an independent second result and out of
+scope. The proof paper states the weaker form.
+
+\section{The machine checks}\label{sec:machine-checks}
+
+Everything reducible to a finite check has had one. Each entry gives the scope,
+so that a reader can see what it does and does not cover. Two of the original
+claims of this document died to exactly such checks.
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}p{0.20\textwidth}p{0.30\textwidth}p{0.38\textwidth}@{}}
+\hline
+\textbf{Check} & \textbf{Scope} & \textbf{Result} \\
+\hline
+Proof-dependency graph & 58 statements, 152 edges over the three \TeX{}
+  files & Acyclic; \S\ref{sec:refuted-cycle} \\
+Statement audit & all 81 labelled statements & 9 flagged, 8 cleared by hand;
+  $\mathrm D2$ is the sole survivor \\
+$\mathrm C1$: special idempotent affine WNU on $\mathbb Z_{p}$ &
+  $p\in\{2,3,5,7\}$, $3\le n<12$ & exists exactly when $p\mid n-1$, and is then
+  the sum \\
+$\mathrm D6$: the third hypothesis can fail &
+  $\mathbb Z_{4}\times\mathbb Z_{2}\times\mathbb Z_{4}$ & witness found;
+  \S\ref{sec:D6} \\
+$\mathrm D{12}$: counterexample & all six bijections $\mathbb Z_{3}\to
+  \mathbb Z_{3}$, exhaustive over $\mathbb Z_{3}^{4}$ & none carries $\delta$
+  to the difference relation \\
+$\mathrm D{14}$: the subrelation form &
+  nine small Taylor algebras (min-semilattices, the dual discriminator,
+  $\mathbb Z_{2}$ minority, $\mathbb Z_{3}$, $\mathbb Z_{2}^{2}$, a semilattice
+  square), $527+99\,477$ pairs $(W,W')$ & no counterexample; and $0_{C}$
+  absorbs $C^{2}$ in no algebra tested \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{entry}[What the searches are and are not]\label{ent:search-limits}
+A search over nine small algebras is evidence that a statement is not
+\emph{obviously} false, and nothing more; the two positive entries above
+($\mathrm C1$ and $\mathrm D14$) are backed by written proofs in the proof
+paper, and the searches were run first, to decide whether the proofs were worth
+attempting. The two \emph{negative} entries are different in kind: a
+counterexample found by exhaustion over a finite structure is a proof, and
+$\mathrm D6$ and $\mathrm D12$ rest on nothing else. Those two are stated in
+the proof paper in a form a reader can check by hand in a few lines, which is
+the right standard for a paper; the exhaustive verification is a check on the
+transcription, not the argument.
+
+Where the proof paper still says ``verified by exhaustion'' for a claim with no
+short symbolic proof, that is a gap, and it is listed in
+\S\ref{sec:risk}.
+\end{entry}
+
+\section{Disposition of the external review}\label{sec:review}
+
+An external reviewer read a single-file build of an earlier draft. Its
+findings, and what was done with each.
+
+\subsection{Accepted}\label{sec:review-accepted}
+
+\begin{itemize}\tightlist
+\item \textbf{$\mathrm D17$ is broken at its first line.} Correct, and it
+  reverses a claim made here. \S\ref{sec:D17}; the item is reopened.
+\item The symmetrisation lemma cited bridge composition, which carries an
+  irreducibility hypothesis it does not have. Fixed by proving the collapse
+  identity directly.
+\item The nice-bridge lemma asserted that $\delta\ast\delta$ is an equivalence
+  relation, which needs a stabilised power or the Maltsev route.
+\item The block-good-bridge proof treated $(\omega\cup\omega^{-1})\cap D^{2}$ as
+  a subalgebra, which a union is not; use $(\omega\circ\omega^{-1})\cap D^{2}$
+  (\S\ref{sec:exp-54}).
+\item ``Which we may take reflexive'' is used twice with no lemma behind it.
+  \textbf{Open}; see \S\ref{sec:risk}.
+\item The abelian-bridge characterisation needs $|A|>1$, and ``composing enough
+  times'' needs an explicit stabilised power.
+\item The reason given for reflexivity in \pkey{lem:perfect-from-linked} is
+  false: $(a,a)$ lying in the first projection gives some $\delta(a,a,c,d)$,
+  not $\delta(a,a,a,a)$. The repair is the reviewer's: clause (d) gives
+  $c\,\sigma\,d$ and stability replaces $d$ by $c$.
+\item The document had the wrong shape, mixing a proof paper with a project
+  status report. That is what this three-way split answers.
+\item A duplicate label, several overfull boxes, a \verb|\ref| printed inside a
+  \verb|\cite|, and an unidentifiable bibliography entry. All fixed; the build
+  gate now fails on each class.
+\end{itemize}
+
+Several further findings concern statements the proof paper had not yet written
+in full --- the induction measure across coverings (Entry~\ref{ent:measure}),
+weakening's termination order, the common binary absorption witness
+(\S\ref{sec:D1}), the mixed-prime linear algebra, and the definition of
+$\textsc{Solve}$. They are scheduled work rather than audit entries, and they
+are listed in the proof paper's status table.
+
+\subsection{Rejected, with reasons}\label{sec:review-rejected}
+
+\begin{itemize}\tightlist
+\item \textbf{The witness in \texttt{LEMBridgeBetweenCongruences} is correct as
+  printed.} The reviewer proposed reading $z_{i}=y_{i}=x_{i}$ for
+  $z_{i}=y_{i}=x_{1}$. The printed choice works: it gives
+  $(x_{1},x_{2},x_{1},x_{1})\in\delta$ using symmetry of $\sigma_{1}$ and
+  reflexivity of $\omega$, which is what is needed for
+  $\sigma_{1}\subseteq\proj_{1,2}(\delta)$. The proposed choice needs
+  $(x_{1},x_{2})\in\omega$, which is not available.
+\item \textbf{$\subt{\TBA,\TC}$ is a conjunction, not a disjunction.}
+  \texttt{main:1567} reads ``we write $C<_{\TBA,\TC}B$ meaning that
+  $C<_{\TBA}B$ and $C<_{\TC}B$''. The reviewer is right that the notation was
+  never defined in our document, and it now is; but the reading is ``both''.
+\end{itemize}
+
+\section{Risk register}\label{sec:risk}
+
+What is least well tested, stated so that a later reader knows where to push.
+
+\begin{description}\tightlist
+\item[Open mathematics.] $\mathrm D17$ (\S\ref{sec:D17}); the reflexivisation
+  of a bridge, used twice with nothing behind it; the induction measure across
+  expanded coverings (Entry~\ref{ent:measure}). These gate the statements that
+  depend on them and are marked \emph{open} in the proof paper's status table.
+
+\item[Least-tested repairs.] $\mathrm D7$(ii)'s reweakening and $\mathrm D6$'s
+  cruciality corollary each touch the CSP-instance machinery rather than the
+  algebra, and each has been checked against only the call site that motivated
+  it.
+
+\item[Least-tested positive verdicts.] The self-intersection lemma was read only
+  where the central-relation call sites forced it open. \S5.3's three small
+  lemmas were opened last, and one of them is what splits the main case of the
+  largest proof in \S5.
+
+\item[Unread.] \texttt{main.tex}'s CSP half --- instances, coverings,
+  cruciality, the main induction, the algorithm --- has been read only where
+  $\mathrm D6$, $\mathrm D7$ and $\mathrm D8$ touch it. That is roughly two
+  thousand lines to which the standard of \S\ref{sec:standard} has not been
+  applied, and the register above should not be read as covering them. \S4 of
+  the source (\texttt{XYSymmetric.tex}, 1\,640 lines) is out of scope by
+  decision.
+
+\item[Claims resting on exhaustion alone.] None of the register's positive
+  claims, but the proof paper still carries ``verified by exhaustion'' where a
+  short symbolic argument would serve --- for instance the $\mathbb Z_{3}$
+  counterexample of $\mathrm D12$, where setting
+  $(x_{1},x_{2},x_{3},x_{4})=(0,b,b,0)$ forces $2(f(0)-f(b))=0$, so $f$ is
+  constant for odd $p$ and no bijection can work. Replace them.
+\end{description}
+
+\begin{entry}[The failure mode this document is prone to]\label{ent:meta}
+Three times now a claim here has been published, reviewed, and turned out to be
+wrong: the citation cycle, the recursion-depth bound, and the repair of
+$\mathrm D17$. In each case the error survived internal review and died to
+someone reading the argument from outside. A list like this one is exactly as
+reliable as the reading behind each entry, and the failure mode is not
+carelessness --- it is confidence in a step that was never read at the standard
+of \S\ref{sec:standard}. The entries most at risk are the ones in the
+\emph{unread} row above.
+\end{entry}

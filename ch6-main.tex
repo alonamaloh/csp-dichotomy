@@ -1,7 +1,7 @@
-%!TeX root=csp.tex
+%!TeX root=csp-proof.tex
 \section{The main statements}\label{sec:main-statements}
 
-This section is Zhuk's \S\S3.3--3.4. Everything converges here.
+Everything converges here.
 Theorem~\ref{thm:main-inductive} is the single induction that carries the whole
 proof; the three theorems the algorithm consumes are corollaries of it.
 
@@ -50,13 +50,11 @@ be a $1$-consistent reduction for $\mathcal I$ with $D^{(1)}\lll D$.
 \end{longtheorem}
 
 \begin{hazard}[The induction, stated precisely]\label{haz:the-induction}
-The proof reads ``we prove the claim by induction on the size of $D^{(1)}$'',
-and this one line hides the entire well-foundedness argument. Making it precise
-is the first thing a formalization must do, because \emph{the two halves of the
-conclusion are proved by mutual induction and each invokes the other at a
-smaller reduction}.
+``Induction on the size of $D^{(1)}$'' hides the entire well-foundedness
+argument, and it must be made precise, because \emph{the two halves of the
+conclusion are proved by mutual induction and each invokes the other}.
 
-The measure is
+The intended measure is
 \[
   \mu(D^{(1)})=\sum_{x\in\Var(\mathcal I)}\bigl|D^{(1)}_{x}\bigr|\in\mathbb N,
 \]
@@ -74,26 +72,34 @@ with $D^{(2)}$; Case~2 applies it to weakenings and to expanded coverings. An
 induction that fixed $\mathcal I$ and inducted on $D^{(1)}$ alone does not go
 through.
 
-Two further points that the one-line phrasing conceals.
+Three further points.
 \begin{enumerate}\alphlabels\tightlist
-\item \emph{The instance grows.} Expanded coverings have \emph{more} variables
-  than $\mathcal I$. So $\mu$ is not monotone in the instance, and the
-  induction is genuinely on $\mu(D^{(1)})$ alone --- with the reduction of a
-  covering being the extension of $D^{(1)}$ along the parent map
-  (Proposition~\ref{prop:covering-basics}(h)), whose $\mu$ is \emph{larger}.
-  Every appeal to the inductive hypothesis at a covering must therefore be
-  checked to occur at a strictly smaller reduction, not merely at a different
-  instance. In Case~2 of (1) the reductions used are the $D^{(B,\bot)}$, which
-  are contained in $D^{(1)}$ restricted at $z$ to a proper subset $B$; that is
-  where the decrease comes from.
+\item \emph{The two halves are established in a fixed order at each level.}
+  Part (2) at a given measure uses (1) only at strictly smaller measure,
+  whereas part (1) at that measure uses \emph{(2) at the same measure} ---
+  Case~1 below does exactly that. So the scheme is: strong induction on
+  $k=\mu(D^{(1)})$; at each level establish (2) for all instances, then (1) for
+  all instances. That is acyclic, and it is why part (2) is proved first.
 \item \emph{Which appeals decrease.} (2) invokes the hypothesis at
   $D^{(2)}\subsetneq D^{(1)}$: strict because $D^{(2)}\subt{T}D^{(1)}$ has
   $C\lneq B$ at some variable. Case~1 of (1) likewise. Case~2 invokes it at
   $D^{(B,\bot)}\subseteq D^{(B,\top)}$, which is $D^{(1)}$ with the $z$-domain
   cut to $B\lneq D^{(1)}_{z}$. In every case the decrease is at a single
-  variable and by at least one element. A formalization should extract this as
-  a lemma: \emph{if $D'\subte{T}D$ with $T$ any type and $D'\neq D$, then
-  $\mu(D')<\mu(D)$}, and use it uniformly.
+  variable and by at least one element. The uniform statement is: \emph{if
+  $D'\subte{T}D$ with $T$ any type and $D'\neq D$, then $\mu(D')<\mu(D)$}.
+\item \emph{The measure does not survive expanded coverings, and this is
+  open.} An expanded covering has \emph{more} variables than $\mathcal I$, and
+  the reduction of a covering is the extension of $D^{(1)}$ along the parent
+  map (Proposition~\ref{prop:covering-basics}(h)), which repeats the parent
+  domains; its $\mu$ is \emph{larger}. Observing that the domain at one parent
+  variable is properly cut does not compare the two sums, since the reductions
+  live on different variable sets and arbitrarily many children can outweigh
+  the decrease. So $\mu$ as displayed is not a well-founded measure for the
+  appeals made at coverings, and putting the quantifier over instances inside
+  does not repair it. A correct measure must be insensitive to duplicated
+  covering variables --- by measuring on the variables of a fixed base instance
+  equipped with a map from the covering, or by ordering parent-domain profiles
+  rather than summing over children. See \S\ref{sec:status}.
 \end{enumerate}
 \end{hazard}
 
@@ -206,10 +212,11 @@ instances then 2 is not satisfied''. The paper obtains $\Omega$ by starting
 from $\{\mathcal I\}$ and repeatedly weakening, justified by ``we cannot weaken
 forever''. Condition 4 is then \emph{derived} from condition 3.
 
-For a formalization this is the single most demanding step in
-\S\ref{sec:main-statements}, for three reasons. (i) The iteration weakens a
-\emph{set} of instances, so the termination measure is a measure on finite sets
-of instances, not on instances --- see Hazard~\ref{haz:weakening}. (ii) The
+This is the single most demanding step in \S\ref{sec:main-statements}, for
+three reasons. (i) The iteration weakens a \emph{set} of instances, so the
+termination measure is a measure on finite sets of instances, not on instances
+--- and Caveat~\ref{haz:weakening} shows that even the single-instance measure
+is not settled. (ii) The
 derivation of condition 4 from condition 3 is a two-line argument that
 instantiates condition 3 at
 $\Omega\cup\{\mathcal J_{C}:C\in\mathcal J\}\setminus\{\mathcal J\}$ and reads
@@ -218,9 +225,8 @@ condition 4 is a $\Pi\Sigma$ statement and must be stated as such. (iii) The
 subsequent Subcase~1 builds a \emph{second} descending sequence
 $\mathcal B_{1}\supseteq\mathcal B_{2}\supseteq\dots$ inside the first, again
 terminating by finiteness. Nested well-founded constructions of this shape are
-where informal proofs most often hide a circularity, and this one should be
-isolated and stated as a standalone lemma before Theorem~\ref{thm:main-inductive}
-is attempted.
+where informal proofs most often hide a circularity, and this one is isolated
+here rather than left inside the proof.
 \end{hazard}
 
 \begin{remark}[Construction of $\Omega$]\label{constr:omega}
@@ -320,27 +326,29 @@ $z=0$ gives an equation defining $\Delta$, of dimension $k-1$.
 \end{proof}
 
 \begin{hazard}[The linear algebra of Step 2]\label{haz:step2-linear-algebra}
-Step 2 uses four facts about subgroups of
-$\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}\times\mathbf Z_{p}$ that
-are stated as if obvious:
-\begin{enumerate}\alphlabels\tightlist
-\item $L$ is a subuniverse, hence (the $q_{i},p$ being prime and $w$ being
-  a sum) a subgroup;
-\item ``dimension'' is well defined for a subgroup of a product of
-  $\mathbf Z_{q}$ with \emph{different} primes $q$. It is not a vector space;
-  the correct statement is that such a group splits as a product over primes
-  of $\mathbb F_{q}$-vector spaces, and dimension is the tuple of dimensions.
-  The footnote in \cite{ZhukSimplified} about ``$J$ may contain only variables
-  on the same field'' is the same issue surfacing in the algorithm;
-\item a subgroup of codimension one is the kernel of a single homomorphism to
-  $\mathbb F_{q}$, i.e.\ the solution set of one linear equation;
-\item ``$\proj_{1..k}(L)$ full and $(\bar b,0)\notin L$ imply $\dim L=k$''.
-\end{enumerate}
-Item (b) is the one to be careful about: it is the reason
-Theorem~\ref{thm:codim-one} is stated with mixed primes $q_{1},\dots,q_{k}$ and
-the reason (c) must be proved prime by prime. In Mathlib the substrate exists
-(\texttt{ZMod}, \texttt{Module} over \texttt{ZMod p}) but the mixed-prime
-dimension notion and the codimension-one characterisation are not there; see \S\ref{sec:formalization}.
+Step 2 as written is not yet correct, and the repair is worth setting out.
+
+$L$ is a nonempty subuniverse of an idempotent affine algebra, hence in general
+an \emph{affine coset} and not a subgroup. And a product of prime fields with
+different primes is not one vector space, so ``dimension $k$'' and ``one linear
+equation'' are not meaningful until the primary components are separated: such
+a group splits as a product over primes of $\mathbb F_{q}$-vector spaces, and
+only coordinates over $\mathbb F_{p}$ can carry a nonzero coefficient in an
+equation with target $\mathbf Z_{p}$. The footnote in \cite{ZhukSimplified}
+about ``$J$ may contain only variables on the same field'' is the same issue
+surfacing in the algorithm.
+
+A correct short argument runs as follows. Choose a point of $L$ and translate,
+obtaining a subgroup. The kernel of the projection
+$L\to\prod_{i}\mathbf Z_{q_{i}}$ lies in $0\times\mathbf Z_{p}$, hence is
+either trivial or all of $\mathbf Z_{p}$; a full kernel would put $(\bar b,0)$
+in the fibre over every $\bar b$, contradicting $(\bar b,0)\notin L$. So the
+projection is bijective and $L$ is the graph of an affine homomorphism
+$f\colon\prod_{i}\mathbf Z_{q_{i}}\to\mathbf Z_{p}$, whose linear part
+automatically ignores every $q$-primary factor with $q\neq p$. Then
+$\Delta=f^{-1}(0)$ is empty, full, or an affine hyperplane, which is the
+conclusion. Writing this into the proof is work not yet done;
+see \S\ref{sec:status}.
 \end{hazard}
 
 \subsection{The supporting lemmas}
@@ -388,7 +396,7 @@ Clause (p) is the bridge between the bridge machinery and the linear algebra;
 it is what makes Theorem~\ref{thm:codim-one} possible. Its proof is (b)
 followed by Lemma~\ref{lem:perfect-from-linked}: linkedness of the instance
 makes $\bcol{\delta}$ linked as a relation, which upgrades the bridge. The two
-senses of ``linked'' (Hazard~\ref{haz:linked}) meet exactly here, and the step
+senses of ``linked'' (Caveat~\ref{haz:linked}) meet exactly here, and the step
 where one becomes the other should be isolated.
 \end{hazard}
 
@@ -432,20 +440,22 @@ $\delta$ from $\xi$ to $\ConOne(C,x)$ with
 $\bcol{\delta}\supseteq\mathcal I(z,x)$.
 \end{longlemma}
 
-\begin{hazard}[The longest proof in the section]\label{haz:bridge-from-instance}
-Lemma~\ref{lem:bridge-from-instance} carries eight numbered hypotheses and its
-proof runs to roughly ten pages. It is the only source of bridges in
-\S\ref{sec:main-statements}, and every use of connectedness routes through it.
-Its conclusion has two independent parts --- ``$\mathcal T=T$'' and ``there is a
-bridge with $\bcol\delta\supseteq\mathcal I(z,x)$'' --- and different call sites
-use different parts; splitting it into two lemmas is tempting but the proof
-produces them together.
+\begin{hazard}[Stated only]\label{haz:bridge-from-instance}
+Lemma~\ref{lem:bridge-from-instance} carries eight numbered hypotheses and is
+\emph{stated without proof here}. It is the only source of bridges in
+\S\ref{sec:main-statements}, and every use of connectedness routes through it;
+so are Lemmas~\ref{lem:minimal-consistent}, \ref{lem:crucial-irreducible},
+\ref{lem:bridge-from-relation}, \ref{lem:find-consistent},
+\ref{lem:parallelogram-crucial}, Corollary~\ref{cor:same-type} and clauses
+(a) and (b) of Lemma~\ref{lem:connected}. These are gaps in the logical chain
+of this document, not imported results, and \S\ref{sec:status} records them as
+such.
 
-A formalization should attack this lemma \emph{last} among the \S3.2 material
-and \emph{first} among the things budgeted generously. It, together with
-Theorem~\ref{thm:stable-intersection} (which it consumes) and
-Theorem~\ref{thm:main-inductive} (which consumes it), is where the majority of
-the effort will go.
+Its conclusion has two independent parts --- ``$\mathcal T=T$'' and ``there is a
+bridge with $\bcol\delta\supseteq\mathcal I(z,x)$'' --- and different call
+sites use different parts. The dependency order is
+Theorem~\ref{thm:stable-intersection}, which it consumes, then this lemma, then
+Theorem~\ref{thm:main-inductive}, which consumes it.
 \end{hazard}
 
 \begin{corollary}\label{cor:same-type}

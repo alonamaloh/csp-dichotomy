@@ -1,9 +1,9 @@
-%!TeX root=csp.tex
+%!TeX root=csp-proof.tex
 \section{The six types of strong subuniverse}\label{sec:types}
 
-This section is Zhuk's \S2.2. It defines six binary relations
-$C\subt[A]{T}B$ between subsets of a fixed algebra $\mathbf A$, one for each
-type $T$, and the transitive-closure relation $C\lll^{A}B$. Everything in
+This section defines six binary relations $C\subt[A]{T}B$ between subsets of a
+fixed algebra $\mathbf A$, one for each type $T$, and the transitive-closure
+relation $C\lll^{A}B$. Everything in
 \S\S\ref{sec:properties}--\ref{sec:main-statements} is expressed in this
 language, so the definitions repay care.
 
@@ -27,15 +27,15 @@ chosen binary, $B$ is a \emph{binary absorbing} subuniverse ($\TBA$); if
 ternary, a \emph{ternary absorbing} subuniverse.
 \end{definition}
 
-\begin{hazard}[The tuple form]\label{haz:absorption-tuples}
-Definition~\ref{def:absorbing} must be formalized over \emph{tuples
-constrained coordinatewise}, not as ``for all $b_{1},\dots,b_{k}\in B$ and
-$a\in A$, $t(b_{1},\dots,b_{i-1},a,b_{i+1},\dots,b_{k})\in B$''. The two agree,
-but the second phrasing invites the variant in which $b_{i}$ is quantified and
-then discarded, which is vacuously true when $B=\varnothing$ and at $k=1$
-where the intended content is not vacuous. This was an actual defect in the
-predecessor blueprint. State it as: for every $\bar a\in A^{k}$ such that
-$a_{j}\in B$ for all $j\neq i$, one has $t(\bar a)\in B$.
+\begin{hazard}[The tuple form, and $k\ge1$]\label{haz:absorption-tuples}
+Definition~\ref{def:absorbing} is a condition on \emph{tuples constrained
+coordinatewise}: for every $\bar a\in A^{k}$ with $a_{j}\in B$ for all
+$j\neq i$, one has $t(\bar a)\in B$. The equivalent-looking phrasing ``for all
+$b_{1},\dots,b_{k}\in B$ and $a\in A$,
+$t(b_{1},\dots,b_{i-1},a,b_{i+1},\dots,b_{k})\in B$'' invites the variant in
+which $b_{i}$ is quantified and then discarded, which is vacuously true at
+$k=1$, where the intended content is not vacuous. The arity is required to
+satisfy $k\ge1$.
 \end{hazard}
 
 \begin{definition}[Central subuniverse]\label{def:central}
@@ -50,12 +50,11 @@ and for every $a\in A\setminus C$,
 A central subuniverse is a ternary absorbing subuniverse.
 \end{lemma}
 
-\begin{remark}[Already formalized]\label{rem:center-done}
-Lemma~\ref{lem:central-ternary} is the one deep import of this theory that is
-already available in Lean: it is the main theorem of the predecessor project
-(\texttt{zhuk\_main} in \texttt{ZhukLean}), proved there from the definitions
-via the Barto--Kazda relational description of absorption and the Zhuk--Kozik
-doubling trick. See \S\ref{sec:reuse}.
+\begin{remark}[Zhuk's centre theorem]\label{rem:center-done}
+Lemma~\ref{lem:central-ternary} is the deepest import of this section. It is
+proved from the definitions via the Barto--Kazda relational description of
+absorption (Lemma~\ref{lem:barto-kazda}) and a doubling argument, and it is the
+step that converts absorption at some arity into absorption at arity three.
 \end{remark}
 
 \begin{definition}[BA and centre free; $\TS$]\label{def:ba-center-free}
@@ -72,10 +71,9 @@ simultaneously binary absorbing and central in $\mathbf B$. $\mathbf A$ is
 $\varnothing$ is vacuously binary absorbing and vacuously central
 (\S\ref{sec:legislation}, item \ref{leg:empty}), so without the word
 ``nonempty'' the clause defining $\subt{\TS}$ is universally true and the type
-$\TS$ collapses. The global convention that subuniverses are nonempty repairs
-it, but the clause does not inherit that convention on its own, because $D$ is
-introduced by an existential inside the clause rather than as a subalgebra of
-the ambient discourse.
+$\TS$ collapses. The global convention that subalgebras are nonempty does not
+repair it on its own, because $D$ is introduced by an existential inside the
+clause rather than as a subalgebra of the ambient discourse.
 \end{hazard}
 
 \begin{lemma}[The two readings of $\TS$-freeness agree]\label{lem:sfree-equiv}
@@ -96,6 +94,10 @@ $\TS$ exists precisely so that it is closed under enlarging $C$, which
 $\TBA$ and $\TC$ are not. Note also the asymmetry with $\TS$-freeness, which
 \emph{is} stated as a conjunction. Getting this backwards makes
 Lemma~\ref{lem:propagation}(ft) unprovable.
+
+Distinct from all of these is the notation $C\subt[A]{\TBA,\TC}B$, which is a
+\emph{conjunction}: it says that $C\subt[A]{\TBA}B$ and $C\subt[A]{\TC}B$
+both hold. It is not a seventh type, and it is not the disjunction.
 \end{hazard}
 
 \subsection{Linear and PC congruences}
@@ -117,8 +119,7 @@ An irreducible congruence that is not linear is a \emph{PC congruence}.
 
 Here $(\cover{\sigma})^{[4]}$ denotes the set of $4$-tuples whose entries lie in
 a single block of $\cover{\sigma}$, which is meaningful because (b) makes
-$\cover{\sigma}$ a congruence. The source records the following in a sentence
-beginning ``Notice that'' and then uses it as a lemma
+$\cover{\sigma}$ a congruence. The following is used repeatedly below
 (\S\ref{sec:legislation}, item \ref{leg:notice}).
 
 \begin{lemma}[The witness of (c) is a bridge]\label{lem:linear-bridge}
@@ -160,16 +161,14 @@ For an irreducible congruence $\sigma$ the following are equivalent:
 Definition~\ref{def:linear-congruence}(c) is a per-block isomorphism statement
 with an existential $m$ \emph{depending on the block}, and it quantifies over
 blocks of $\cover{\sigma}$, not of $\sigma$. Lemma~\ref{lem:linear-equiv}
-replaces all of that by one bridge. A formalization should take (b) as the
-\emph{definition} and prove (c) as a structure theorem, reversing the paper's
-order: (b) is a $\Sigma_1$ statement over finite data and is what every
-consumer actually uses, while (c) drags in a quotient, a choice of prime, and a
-family of isomorphisms.
+replaces all of that by one bridge, and the criterion is what every consumer
+below actually uses; the block description is better read as a structure
+theorem than as a definition.
 
-The dichotomy ``linear or PC'' is then \emph{by definition} exhaustive on
-irreducible congruences, which is how the paper uses it. Note that PC-ness is a
-negative condition; every lemma about PC congruences is proved by contradiction
-against Lemma~\ref{lem:linear-equiv}(b).
+The dichotomy ``linear or PC'' is \emph{by definition} exhaustive on
+irreducible congruences. Note that PC-ness is a negative condition: every lemma
+about PC congruences is proved by contradiction against
+Lemma~\ref{lem:linear-equiv}(b).
 \end{hazard}
 
 \begin{lemma}[No bridge crosses the types]\label{lem:no-cross-bridge}
@@ -218,46 +217,34 @@ If $\sigma$ is a PC congruence on $\mathbf A$ with $\cover{\sigma}=A^{2}$, then
 $\mathbf A/\sigma$ is polynomially complete.
 \end{lemma}
 
-\begin{hazard}[What the two proofs on top actually need]\label{haz:on-top}
-Neither statement is proved in \cite{ZhukSimplified} as it stands.
-
-For Lemma~\ref{lem:linear-on-top} the source produces the witness
-$\zeta$ of Definition~\ref{def:perfect-linear}, sets
-$\xi(x,z)=\zeta(x,a,z)$ for a fixed $a$, and says ``then $\xi$ is a bijective
-relation giving an isomorphism'' --- which is the entire content of the lemma.
-We prove it instead from Lemma~\ref{lem:nontrivial-bridge}(c): with
+\begin{hazard}[What the two statements on top rest on]\label{haz:on-top}
+Lemma~\ref{lem:linear-on-top} is proved in \S\ref{sec:headline} from
+Lemma~\ref{lem:nontrivial-bridge}(c), and the route matters: with
 $\cover{\sigma}=A^{2}$ that lemma has a single block, so
-$\mathbf A/\sigma\cong\mathbb Z_{p}^{m}$ as a group; $m=0$ would give
-$\sigma=A^{2}$, excluded because irreducible congruences are proper; and
-$m\ge 2$ is excluded by irreducibility, because the $m$ coordinate congruences
-$\theta_{i}=\{(x,y):x_{i}=y_{i}\}$ are subuniverses of $(\mathbf A/\sigma)^{2}$
---- linear subspaces are preserved by any coordinatewise affine map --- each
-properly above $0_{\mathbf A/\sigma}$, with $\bigcap_{i}\theta_{i}
-=0_{\mathbf A/\sigma}$. So $m=1$. That the resulting bijection is an
-isomorphism of \emph{algebras}, rather than of groups, is
-Proposition~\ref{prop:p-divides}. This route also avoids the import
-\cite[Cor.~8.17.1]{ZhukJACM} that the source's route needs.
+$\mathbf A/\sigma\cong\mathbb Z_{p}^{m}$ as a group, and irreducibility then
+forces $m=1$. That the resulting bijection is an isomorphism of \emph{algebras}
+rather than of groups is Proposition~\ref{prop:p-divides}, without which the
+statement does not typecheck against $\mathbf Z_{p}\in\Vn$.
 
-For Lemma~\ref{lem:pc-on-top} two things are used and not stated: that an
-idempotent algebra is polynomially complete exactly when every \emph{reflexive}
-subuniverse of a power is a conjunction of equalities --- those being precisely
-the invariants of the clone generated by the basic operations together with all
-constants --- and that $\mathbf A/\sigma$ is BA and centre free, without which
-the step ``$\{a_{i}\}\subt{\TPC}\mathbf A/\sigma$'' is not licensed by
-Definition~\ref{def:types}.
+Lemma~\ref{lem:pc-on-top} is \emph{stated only}. Its proof needs two things
+this document does not establish: that an idempotent algebra is polynomially
+complete exactly when every \emph{reflexive} subuniverse of a power is a
+conjunction of equalities --- those being precisely the invariants of the clone
+generated by the basic operations together with all constants --- and that
+$\mathbf A/\sigma$ is BA and centre free, without which the step
+$\{a_{i}\}\subt{\TPC}\mathbf A/\sigma$ is not licensed by
+Definition~\ref{def:types}. Nothing below consumes it; it is retained only to
+connect the vocabulary with \cite{ZhukJACM}.
 \end{hazard}
 
 \begin{hazard}[Polynomial completeness]\label{haz:pc-algebra}
 An algebra is \emph{polynomially complete} if the clone generated by its basic
 operations together with all constants is the clone of \emph{all} operations on
 its universe. Lemma~\ref{lem:pc-on-top} is where the name ``PC'' comes from,
-and it is the only place in the development where polynomial completeness is
-used as more than a label. Formalizing it needs the Istinger--Kaiser
-characterization \cite{IstingerKaiser}; formalizing everything else needs only
-the \emph{name}. A staged development should therefore treat ``PC congruence''
-as ``irreducible and not linear'' throughout, and prove
-Lemma~\ref{lem:pc-on-top} last or not at all --- it is used only to connect
-with \cite{ZhukJACM}, not by any argument here.
+and it is the only place below where polynomial completeness means more than a
+label; proving it needs the Istinger--Kaiser characterization
+\cite{IstingerKaiser}. Everywhere else ``PC congruence'' may be read as
+``irreducible and not linear''.
 \end{hazard}
 
 \subsection{The types}
@@ -291,9 +278,8 @@ For $T\in\{\TD,\TL,\TPC\}$ the witnessing congruence lives on $\mathbf A$, not
 on $\mathbf B$, and condition (i) relates the two: $B^{2}\subseteq
 \cover{\sigma}$ says $B$ sits inside a single block of $\cover{\sigma}$. This
 is why the relation carries the ambient algebra as a superscript. For
-$T\in\{\TBA,\TC,\TS\}$ the superscript is genuinely irrelevant and Zhuk drops
-it. A formalization should not overload: define $\subt[A]{T}$ with $A$ always
-present, and prove the independence for the three absorption types as a lemma.
+$T\in\{\TBA,\TC,\TS\}$ the superscript is genuinely irrelevant, and it is
+retained only so that one relation symbol serves all six types.
 
 Note also that $\mathbf B/\sigma$ in (iii) means $B/\sigma$ with the induced
 algebra structure, which requires $B$ to be a subuniverse and $\sigma$
@@ -304,7 +290,8 @@ single point, and its being BA and centre free is a real condition.
 
 \begin{definition}[Multi-types]\label{def:multitypes}
 For $T\in\{\TL,\TPC,\TD\}$ write $C\subt[A]{\MT T}B$ if $C\neq\varnothing$ and
-$C=C_{1}\cap\dots\cap C_{t}$ with $C_{i}\subt[A]{T}B$ for every $i\in[t]$.
+$C=C_{1}\cap\dots\cap C_{t}$ with $t\ge1$ and $C_{i}\subt[A]{T}B$ for every
+$i\in[t]$.
 \end{definition}
 
 \begin{definition}[The strong-reduction relation]\label{def:lll}
@@ -321,10 +308,9 @@ We write $B\lll A$ for $B\lll^{A}A$, and $C\subte[A]{T(\sigma)}B$ for
 
 \begin{hazard}[$\lll$ is data, not a proposition]\label{haz:lll-chain}
 It is tempting to read $C\lll^{A}B$ as the reflexive transitive closure of
-$\bigcup_{T}\subt[A]{T}$ --- in Lean, \texttt{Relation.ReflTransGen} --- and to
-forget the chain. That is wrong, and the error is not cosmetic:
-Definition~\ref{def:lll} also defines ``the congruences coming from
-$C\lll^{A}B$'', which is a function of the chain and not of the pair. Two
+$\bigcup_{T}\subt[A]{T}$ and to forget the chain. That is wrong, and the error
+is not cosmetic: Definition~\ref{def:lll} also defines ``the congruences coming
+from $C\lll^{A}B$'', which is a function of the chain and not of the pair. Two
 places consume it, and in both the \emph{choice} of chain is what makes the
 argument work.
 
@@ -342,17 +328,16 @@ argument work.
   A different chain gives a different family and the step fails.
 \end{enumerate}
 
-So $\lll^{A}$ should be an inductive family carrying, at each step, the
-intermediate set, its type, and its witnessing congruence; extension by one
-step is an operation on that data. The \texttt{ReflTransGen} version is its
-propositional truncation and may be used only where no congruence is named,
-which is most but not all of the development. What \emph{is} true, and is the
-paper's central simplification over \cite{ZhukJACM}, is that the intermediate
+So $\lll^{A}$ carries, at each step, the intermediate set, its type, and its
+witnessing congruence, and extension by one step is an operation on that data.
+The bare existential statement may be used only where no congruence is named,
+which is most but not all of what follows. What \emph{is} true, and is the
+central simplification over \cite{ZhukJACM}, is that the intermediate
 \emph{types} may be forgotten: $\TL$ and $\TPC$ are absent from the list in
 Definition~\ref{def:lll} because $\TD$ subsumes them.
 \end{hazard}
 
 \begin{convention}[Dotted variants]\label{conv:dotted}
 $C\dsubt[A]{T}B$, $C\dsubte[A]{T}B$ and $C\dlll^{A}B$ mean that the undotted
-relation holds \emph{or} $C=\varnothing$. See Hazard~\ref{haz:dot}.
+relation holds \emph{or} $C=\varnothing$. See Caveat~\ref{haz:dot}.
 \end{convention}

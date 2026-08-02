@@ -1,0 +1,86 @@
+%!TeX root=csp-audit.tex
+\section{What this document is}\label{sec:audit-intro}
+
+The proof paper is written in the Jordan--Schönflies mould: where
+\cite{ZhukSimplified} is wrong, incomplete, or ambiguous, the proof paper
+simply states the corrected thing and proves it, with no marginal notes about
+what the source has. That is the right shape for a document whose job is to be
+checked as mathematics. It is the wrong shape for a reader who wants to know
+\emph{where our rendering differs from Zhuk's paper and why}, and it would be
+dishonest to make those differences invisible.
+
+This document is the difference. For every place where the proof paper departs
+from \cite{ZhukSimplified}, there is an entry here that says what the source
+has, quotes it, says why it cannot be transcribed, gives the repair, and names
+the statement of the proof paper that carries it.
+
+None of this is a criticism of \cite{ZhukSimplified}, which is unusually careful
+prose --- across nine thousand lines of \TeX{} it says ``obvious'' three times
+and ``clearly'' never, and a mechanical sweep of \S5 turns up four hedges in
+thirteen printed pages, all four of which turn out to be honest
+(\S\ref{sec:hedges}). Fifteen substantive defects in fifty pages is roughly
+the rate one should expect of any informal exposition of a proof this size, and
+finding them is the point of reading it this way.
+
+\subsection{The evidentiary standard}\label{sec:standard}
+
+A claim counts as checked here only when the cited lines \emph{and the prose
+around them} have been read, and the passage that does or does not discharge
+the claim can be quoted. The standard is not pedantry: two of the original
+claims died to it. One was taken from a reader who worked from a pseudocode
+block's \texttt{Input:} line while the hypothesis it needed was in the
+paragraph above (\S\ref{sec:refuted-depth}); the other asserted a citation
+cycle that a parser refuted in minutes (\S\ref{sec:refuted-cycle}). Both
+failure modes are the same: reading the formal-looking part of a paper and not
+the sentence before it.
+
+Where a claim is reducible to a finite check, it has had one. The searches are
+listed in \S\ref{sec:machine-checks} with their scope, so that a reader can see
+what they do and do not cover.
+
+\subsection{Line numbers, and how entries are keyed}\label{sec:keying}
+
+Line numbers are into \texttt{main.tex} and \texttt{StrongSubalgebras.tex} of
+the v2 arXiv source of \cite{ZhukSimplified}, obtainable from
+\texttt{arxiv.org/e-print/2404.01080v2}. Zhuk's paper is not redistributed
+here, and its statement names are its own: \texttt{LEMPropagation},
+\texttt{THMMainStableIntersection} and so on are the source's labels, not ours.
+
+Each entry names the statement of the proof paper that carries the repair, by
+that statement's label, set in typewriter: \pkey{lem:propagation},
+\pkey{thm:stable-intersection}. The two documents are compiled separately and
+share no cross-reference machinery, deliberately, so that neither can be read
+as evidence for the other. The label is the join key.
+
+The tags $\mathrm D2$, $\mathrm D4,\dots$ are historical: they were assigned in
+the order the claims were raised, and some early tags were retired when the
+claims they named were refuted or restated. The register of
+\S\ref{sec:register} is the current and complete list; the retired claims are
+in \S\ref{sec:refuted}.
+
+\subsection{Where things stand}\label{sec:audit-tally}
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.52\textwidth}r@{}}
+\hline
+\textbf{} & \textbf{Count} \\
+\hline
+Defects confirmed and repaired, needing no new mathematics & 14 \\
+\quad of which: a citation the later paper dropped & 3 \\
+\quad a typographical slip & 1 \\
+\quad a statement that is false as printed & 2 \\
+\quad omitted steps and dropped hypotheses & 8 \\
+Defects confirmed and \textbf{open} & 1 \\
+Claims examined and refuted & 2 \\
+Claims examined and declared moot & 1 \\
+Readings legislated (of which two are theorems, not choices) & 10 \\
+Hedges in \S5 of the source, all discharged & 4 \\
+\hline
+\end{tabular}
+\end{center}
+
+The single open item is $\mathrm{D}17$ (\S\ref{sec:D17}), the maximal
+multi-type extension. It was declared solved in an earlier draft; an external
+review found the repair invalid at its first line, and the finding is correct.
+It is recorded here as open rather than quietly weakened, and the proof paper
+marks the corresponding statement as open in its status table.

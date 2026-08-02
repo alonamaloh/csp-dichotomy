@@ -1,4 +1,4 @@
-%!TeX root=csp.tex
+%!TeX root=csp-proof.tex
 \section{The hard half}\label{sec:hardness}
 
 If no weak near-unanimity operation preserves $\Gamma$, then $\CSP(\Gamma)$ is
@@ -9,17 +9,22 @@ the tractable half, and it factors cleanly into algebra and complexity.
 
 \begin{description}\tightlist
 \item[\textup{(1)}] \emph{Reduction to a core, and to an idempotent algebra.}
-  One may assume $\Gamma$ contains all singleton unary relations, so that
-  $\Pol(\Gamma)$ is idempotent, at the cost of a polynomial-time reduction.
+  One may assume $\Gamma$ is a rigid core containing all singleton unary
+  relations, so that $\Pol(\Gamma)$ is idempotent, at the cost of a
+  logspace reduction \cite[``Cores and Idempotent Reducts'']{BradyNotes}.
+  This is Caveat~\ref{haz:core}.
 \item[\textup{(2)}] \emph{Maróti--McKenzie.} A finite idempotent algebra has a
   Taylor term if and only if it has a weak near-unanimity term
   \cite{MarotiMcKenzie}.
 \item[\textup{(3)}] \emph{No Taylor term $\Rightarrow$ pp-interpretation.} If a
   finite idempotent algebra has no Taylor term, then the variety it generates
-  contains a two-element algebra whose only operations are projections;
-  equivalently, $\Gamma$ primitively positively interprets every finite
-  constraint language, in particular a template for \textsc{$3$-Sat} or
-  \textsc{Nae-$3$-Sat}.
+  contains a two-element algebra whose only operations are projections; and
+  from there $\Gamma$ primitively positively interprets every finite constraint
+  language, in particular a template for \textsc{Nae-$3$-Sat}. The word
+  ``and'' hides three steps --- an \textup{HSP} representation in a finite
+  power, its translation into a pp-interpretation, and the finite Inv--Pol
+  theorem (Theorem~\ref{thm:galois}) --- which are imported rather than proved
+  here.
 \item[\textup{(4)}] \emph{Bulatov--Jeavons--Krokhin.} A primitive positive
   interpretation of $\Delta$ in $\Gamma$ yields a polynomial-time many-one
   reduction $\CSP(\Delta)\le_{p}\CSP(\Gamma)$ \cite{BJK}.
@@ -39,16 +44,25 @@ constraint language $\{\textsc{Nae}\}$ on $\{0,1\}$, where
 $\textsc{Nae}=\{0,1\}^{3}\setminus\{(0,0,0),(1,1,1)\}$.
 \end{theorem}
 
-\begin{theorem}[Target \textup{(H1)}]\label{thm:h1}
+\begin{theorem}[Target \textup{(H1)}; stated, not proved]\label{thm:h1}
 If $\Gamma$ primitively positively interprets $\Delta$ then
 $\CSP(\Delta)\le_{p}\CSP(\Gamma)$. Consequently, under \textup{(H0)},
 $\CSP(\Gamma)$ is \textup{NP}-hard.
 \end{theorem}
 
+\begin{hazard}[Hardness is not completeness]\label{haz:np-membership}
+Theorem~\ref{thm:h1} concludes \textup{NP}-\emph{hardness}. The word
+\emph{complete} in Theorem~\ref{thm:dichotomy} additionally needs that every
+fixed finite-template CSP lies in \textup{NP}: a solution is a certificate of
+size linear in the number of variables, and checking it means evaluating each
+constraint, which for fixed $\Gamma$ is a table lookup. Small, but it needs the
+cost model, so it belongs with \textup{(H1)}.
+\end{hazard}
+
 Theorem~\ref{thm:h0} mentions no machine. Theorem~\ref{thm:h1} is where the
 complexity layer enters, and it is small --- the reduction is a syntactic
-substitution of formulas --- but it cannot be stated at all without a
-formalized notion of polynomial-time many-one reduction.
+substitution of formulas --- but it cannot be stated at all without a precise
+notion of polynomial-time many-one reduction.
 
 \subsection{Definitions}
 
@@ -79,8 +93,6 @@ easy direction is a one-line calculation. The hard direction --- every relation
 preserved by all polymorphisms is pp-definable --- goes through the free algebra
 on $|A|^{k}$ generators and an indicator-instance construction; it is roughly
 four printed pages and is the single largest item in the \textup{(H0)} budget.
-It is also of independent value and would be a reasonable Mathlib contribution
-on its own.
 \end{hazard}
 
 \begin{remark}[Why the hard half is not the hard half]\label{rem:hardness-easier}

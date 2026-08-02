@@ -1,0 +1,271 @@
+%!TeX root=csp-proof.tex
+\section{Status and imports}\label{sec:status}
+
+This section says, for every statement in this document, whether it is proved
+here, imported, or not yet proved. It replaces the running commentary that a
+partial exposition invites, and it is the only place where completeness claims
+are made.
+
+\subsection{The five verdicts}\label{sec:verdicts}
+
+\begin{description}\tightlist
+\item[\textsc{proved}] A complete proof is given here, or the statement is an
+  immediate specialisation of one that is.
+\item[\textsc{imported}] Proved elsewhere and used as a black box. Every such
+  statement carries an exact citation in \S\ref{sec:imports-ledger}, with the
+  hypotheses in the form the source states them.
+\item[\textsc{outlined}] An argument is given at the level of its case
+  structure, or with steps suppressed. \emph{This is not a proof} and the
+  statement should not be relied on.
+\item[\textsc{stated}] The statement appears and nothing is offered towards it.
+  These are gaps in the logical chain, not imports.
+\item[\textsc{open}] Confirmed to need an argument that is not available. There
+  is one.
+\end{description}
+
+Nothing below is marked \textsc{proved} on the strength of a machine search.
+Two claims here rest on finite verification --- the counterexamples of
+Remark~\ref{rem:phi-twist} and of Caveat~\ref{haz:ba-center-implies} --- and
+both are written so that a reader can check them in a few lines by hand.
+
+\subsection{The table}\label{sec:status-table}
+
+\begin{center}\footnotesize
+\begin{longtable}{@{}p{0.33\textwidth}p{0.13\textwidth}p{0.46\textwidth}@{}}
+\hline
+\textbf{Statement} & \textbf{Verdict} & \textbf{Note} \\
+\hline\endhead
+\multicolumn{3}{@{}l}{\textit{\S\ref{sec:conventions}--\S\ref{sec:types}: vocabulary}}\\
+\pkey{prop:p-divides}, \pkey{cor:Zp-in-Vn} & \textsc{proved} & \\
+\pkey{lem:sg-terms} & \textsc{imported} & standard; \cite{Bergman} \\
+\pkey{lem:rect-basics}, \pkey{prop:cover}, \pkey{lem:irred-quotient} & \textsc{proved} & \\
+\pkey{lem:bridge-comp} & \textsc{imported} & \cite[Lem.~6.3]{ZhukJACM} \\
+\pkey{lem:symmetrise} & \textsc{proved} & \\
+\pkey{lem:central-ternary} & \textsc{imported} & \cite[Cor.~6.11.1]{ZhukStrong} \\
+\pkey{lem:sfree-equiv}, \pkey{lem:linear-bridge} & \textsc{proved} & \\
+\pkey{lem:linear-equiv} & \textsc{outlined} & $(b)\Rightarrow(a)$ needs the
+  reflexivisation of Caveat~\ref{haz:reflexivise} \\
+\pkey{lem:no-cross-bridge}, \pkey{lem:bridge-to-pc} & \textsc{stated} &
+  consumed by \pkey{thm:stable-intersection} and \pkey{lem:factor-by-delta} \\
+\pkey{lem:pc-bridges-trivial} & \textsc{proved} & third case not written out \\
+\pkey{lem:linear-on-top} & \textsc{outlined} & same reflexivisation \\
+\pkey{lem:pc-on-top} & \textsc{stated} & consumed by nothing;
+  Caveat~\ref{haz:on-top} \\
+\hline
+\multicolumn{3}{@{}l}{\textit{\S\ref{sec:instances}: instances}}\\
+\pkey{prop:covering-basics}, \pkey{lem:conone-basics} & \textsc{stated} &
+  routine, but not written \\
+\pkey{rem:get-crucial} & \textsc{stated} & termination is
+  Caveat~\ref{haz:weakening} \\
+\hline
+\multicolumn{3}{@{}l}{\textit{\S\ref{sec:properties}--\S\ref{sec:strongproofs}: strong subuniverses}}\\
+\pkey{thm:brady-absorption} & \textsc{imported} & \cite[Thm.~3.11.1]{BradyNotes} \\
+\pkey{lem:linked-implies-abs} & \textsc{proved} & a corollary of the above \\
+\pkey{lem:pp-propagation} & \textsc{imported} & \cite[Lem.~2.9]{DecidingAbsorption} \\
+\pkey{lem:barto-kazda} & \textsc{imported} & \cite[Prop.~2.14]{DecidingAbsorption} \\
+\pkey{lem:factor-type} & \textsc{imported} & $\TC$ only; \cite[Lem.~6.8]{ZhukStrong} \\
+\pkey{lem:power-to-base} & \textsc{imported} & \cite[Lem.~6.24]{ZhukStrong} \\
+\pkey{thm:central-\brk relation-source} & \textsc{imported} & \cite[Thm.~6.15]{ZhukStrong} \\
+\pkey{lem:hobby-mckenzie} & \textsc{imported} & \cite{HobbyMcKenzie} \\
+\pkey{lem:possible-\brk intersections} & \textsc{imported} & \cite[Lem.~6.25]{ZhukStrong} \\
+\pkey{lem:absorbing-\brk equality} & \textsc{imported} & \cite[Lem.~7.2]{ZhukJACM} \\
+\pkey{lem:ba-center-\brk implies} & \textsc{imported} &
+  \cite[Cor.~6.1.2, 6.9.2]{ZhukStrong}; both hypotheses restored,
+  Caveat~\ref{haz:ba-center-implies} \\
+\pkey{lem:special-wnu} & \textsc{imported} & \cite[Lem.~4.7]{MarotiMcKenzie} \\
+\pkey{lem:building-perfect} & \textsc{imported} & \cite[Cor.~8.17.1]{ZhukJACM} \\
+\pkey{lem:bridge-abelian}, \pkey{lem:ba-center-intersect},
+  \pkey{lem:no-absorbing-diagonal}, \pkey{lem:absorb-linked-sub},
+  \pkey{lem:no-unary-quotient}, \pkey{lem:central-relation},
+  \pkey{lem:strong-nonempty}, \pkey{lem:multiset-shift},
+  \pkey{lem:tot-sym-full}, \pkey{lem:tot-sym-irred}, \pkey{lem:full-fibre},
+  \pkey{cor:intersection-good}, \pkey{lem:parallelogram-D},
+  \pkey{lem:nice-bridge-abelian}, \pkey{lem:nontrivial-bridge},
+  \pkey{lem:pc-inductive-step}, \pkey{lem:bridge-between-congruences},
+  \pkey{lem:two-stable}, \pkey{lem:cut-or-nothing}, \pkey{lem:main-existence},
+  \pkey{lem:ubiquity}, \pkey{lem:intersect-all},
+  \pkey{cor:intersect-all-weak}, \pkey{lem:propagation},
+  \pkey{cor:prop-quotient}, \pkey{thm:stable-intersection},
+  \pkey{cor:stable-intersection}, \pkey{lem:multitype-chain},
+  \pkey{lem:perfect-from-linked}, \pkey{lem:no-abs-in-linear}
+  & \textsc{proved} & \\
+\pkey{lem:bacon-left} & \textsc{outlined} & $|A|=1$, the linkedness of $W_{k}$,
+  and the nonemptiness and properness at the pp-propagation step are all
+  suppressed \\
+\pkey{lem:self-intersection-pc} & \textsc{outlined} & \\
+\pkey{lem:intersection-good} & \textsc{outlined} & twelve subcases of (d)
+  unexpanded; Caveat~\ref{haz:intersection-draft}. \textbf{Much of
+  \S\ref{sec:bridge-proofs} onwards depends on it} \\
+\pkey{lem:block-good-bridge}, \pkey{lem:center-pushed-in},
+  \pkey{lem:leftlinked-stay-full}, \pkey{lem:factor-by-delta}
+  & \textsc{outlined} & \\
+\pkey{lem:multiply-all-linear} & \textsc{outlined} & not yet a proof;
+  Caveat~\ref{haz:multiply-citation} \\
+\pkey{cor:prop-from-factor}, \pkey{cor:prop-times-cong},
+  \pkey{cor:prop-relations}, \pkey{lem:preserve-linked} & \textsc{stated} & \\
+\pkey{lem:maximal-mult} & \textsc{open} & Caveat~\ref{haz:maximal-mult} \\
+\hline
+\multicolumn{3}{@{}l}{\textit{\S\ref{sec:main-statements}: the main statements}}\\
+\pkey{thm:main-inductive}(2) & \textsc{proved} & modulo the common-term
+  obligation of Caveat~\ref{haz:ba-center-implies} \\
+\pkey{thm:main-inductive}(1) & \textsc{outlined} & structure only; and the
+  measure is not well founded across coverings,
+  Caveat~\ref{haz:the-induction}(c) \\
+\pkey{thm:reductions-safe} & \textsc{proved} & from the two above \\
+\pkey{thm:pc-safe} & \textsc{stated} & \\
+\pkey{thm:codim-one} & \textsc{outlined} & Step 2's linear algebra is wrong as
+  written; Caveat~\ref{haz:step2-linear-algebra} \\
+\pkey{lem:expanded-\brk consistency} & \textsc{imported} & \cite[Lem.~6.1]{ZhukJACM} \\
+\pkey{lem:tree-coverings} & \textsc{imported} & \cite[Lem.~5.6]{ZhukStrong} \\
+\pkey{lem:minimal-consistent}, \pkey{lem:crucial-irreducible},
+  \pkey{lem:bridge-from-relation}, \pkey{lem:connected},
+  \pkey{lem:find-consistent}, \pkey{lem:parallelogram-crucial},
+  \pkey{lem:bridge-from-instance}, \pkey{cor:same-type} & \textsc{stated} &
+  Caveat~\ref{haz:bridge-from-instance} \\
+\hline
+\multicolumn{3}{@{}l}{\textit{\S\ref{sec:algorithm}--\S\ref{sec:hardness}: the algorithm and the hard half}}\\
+\pkey{thm:t1} & \textsc{stated} & needs $\textsc{Solve}$ defined as a function;
+  Caveat~\ref{haz:t1-names-solve} \\
+\pkey{thm:t2}, \pkey{thm:h1} & \textsc{stated} & need a cost model \\
+\pkey{thm:h0} & \textsc{stated} & \\
+\pkey{thm:galois} & \textsc{imported} & Geiger; Bodnarchuk et al. \\
+\pkey{thm:dichotomy} & \textsc{stated} & and needs the core reduction,
+  Caveat~\ref{haz:core} \\
+\hline
+\end{longtable}
+\end{center}
+
+\subsection{What this adds up to}\label{sec:status-summary}
+
+The algebraic core of the strong-subuniverse theory
+(\S\ref{sec:properties}--\S\ref{sec:strongproofs}) is the part in the best
+shape: of its statements, thirty are proved here, eleven are imported with
+exact citations, seven are outlined, four are stated only, and one is open.
+\S\ref{sec:main-statements} is in much worse shape: its spine ---
+\pkey{lem:bridge-from-instance}, and with it most of
+Lemma~\ref{lem:connected} --- is stated without proof, and part (1) of the main
+induction is an outline whose measure is not yet well founded.
+
+Six items block the rest, and they are the honest reading of the table.
+
+\begin{enumerate}\tightlist
+\item \pkey{lem:maximal-mult} (Caveat~\ref{haz:maximal-mult}). \textsc{open}.
+\item The reflexivisation of a bridge, Caveat~\ref{haz:reflexivise}, which is
+  used by both \pkey{lem:linear-equiv} and \pkey{lem:linear-on-top}.
+\item The expansion of \pkey{lem:intersection-good}, on which much of
+  \S\ref{sec:bridge-proofs} onwards rests, and the rewrite of
+  \pkey{lem:multiply-all-linear}.
+\item \pkey{lem:no-cross-bridge} and \pkey{lem:bridge-to-pc}, which
+  \pkey{thm:stable-intersection} consumes.
+\item The induction measure across expanded coverings
+  (Caveat~\ref{haz:the-induction}(c)) and the termination of weakening
+  (Caveat~\ref{haz:weakening}).
+\item The linear algebra of \pkey{thm:codim-one}
+  (Caveat~\ref{haz:step2-linear-algebra}), and the common binary absorption
+  witness at the call site of \pkey{lem:ba-center-implies}
+  (Caveat~\ref{haz:ba-center-implies}).
+\end{enumerate}
+
+The dependency order among the three large statements is
+\[
+  \text{\pkey{thm:stable-intersection}}\;\longrightarrow\;
+  \text{\pkey{lem:bridge-from-instance}}\;\longrightarrow\;
+  \text{\pkey{thm:main-inductive}} .
+\]
+Stable intersection is the sole source of bridges; bridge-from-instance is the
+only thing that turns them into instance-level structure; the main induction
+consumes that. Nothing in the reverse direction is used.
+
+\subsection{The import ledger}\label{sec:imports-ledger}
+
+Every statement used and not proved here, with its source and the hypotheses in
+the form the source states them. Where our statement differs from the printed
+one --- because a hypothesis has been restored, or an alternative added --- the
+difference is noted, and the reasons are in the companion audit document.
+
+\begin{center}\footnotesize
+\begin{longtable}{@{}p{0.28\textwidth}p{0.24\textwidth}p{0.40\textwidth}@{}}
+\hline
+\textbf{Here} & \textbf{Source} & \textbf{Hypotheses, and any difference} \\
+\hline\endhead
+\pkey{thm:brady-absorption} & \cite[Thm.~3.11.1]{BradyNotes} &
+  $R\sdle\mathbf A\times\mathbf B$ subdirect and linked, $\mathbf A,\mathbf B$
+  finite idempotent Taylor. Stated here in the source's three-alternative form;
+  \pkey{lem:linked-implies-abs} is our weaker symmetric \emph{corollary} under
+  properness, and is not Brady's theorem. \\
+\pkey{lem:pp-propagation} & \cite[Lem.~2.9]{DecidingAbsorption},
+  \cite[Lem.~6.1, Thm.~6.9]{ZhukStrong} &
+  $R$ pp-defined by $\Phi$ in which $S$ occurs; $S'\subt{T}S$ with
+  $T\in\{\TBA,\TC\}$ replaces \emph{every} occurrence. Note the conclusion is
+  \emph{dotted}: replacing a relation by a proper strong subrelation can make
+  the pp-defined result empty, so $R'\dsubte{T}R$ unless nonemptiness of $R'$
+  is separately known. Every use below is in dotted form. \\
+\pkey{lem:barto-kazda} & \cite[Prop.~2.14]{DecidingAbsorption},
+  \cite[Lem.~3.2]{ZhukStrong} &
+  $B\le\mathbf A$, $n\ge2$. Stated as printed. \\
+\pkey{lem:factor-type} & \cite[Lem.~6.8]{ZhukStrong} &
+  $B\subte{\TC}\mathbf A$, $\sigma$ a congruence on $\mathbf A$. Only the
+  $\TC$ case is imported; $\TBA$ and $\TS$ are proved here
+  (Caveat~\ref{haz:factor-type}). \\
+\pkey{lem:power-to-base} & \cite[Lem.~6.24]{ZhukStrong} &
+  $R$ a nontrivial strong subuniverse of $\mathbf A_{1}\times\dots\times
+  \mathbf A_{n}$ of type $T\neq\TPC$. Already general in $T$; the case $T=\TS$
+  needs no separate argument (Caveat~\ref{haz:power-to-base}). \\
+\pkey{thm:central-relation-source} & \cite[Thm.~6.15]{ZhukStrong} &
+  $R\sdle\mathbf A\times\mathbf B$, $\mathbf A,\mathbf B$ finite idempotent.
+  Three alternatives, the third being a nontrivial projective subuniverse of
+  $\mathbf B$; \pkey{lem:central-relation} eliminates it under
+  Convention~\ref{conv:standing}, using also \cite[Lem.~3.4]{ZhukStrong}. \\
+\pkey{lem:possible-intersections} & \cite[Lem.~6.25]{ZhukStrong} &
+  $B\subt{T_{1}}\mathbf A$, $C\subt{T_{2}}\mathbf A$, $B\cap C=\varnothing$,
+  $T_{1},T_{2}\in\{\TBA,\TC,\TS\}$. Stated as printed. \\
+\pkey{lem:ba-center-implies} & \cite[Cor.~6.1.2, 6.9.2]{ZhukStrong} &
+  $R\le\mathbf A_{1}\times\dots\times\mathbf A_{m}$ with
+  $\proj_{1}(R)=A_{1}$, and $C_{i}\subte{\TBA(t)}\mathbf A_{i}$ for a
+  \emph{single} binary $t$. Both hypotheses are as in
+  \cite{ZhukStrong} and both are needed
+  (Caveat~\ref{haz:ba-center-implies}). \\
+\pkey{lem:hobby-mckenzie} & \cite{HobbyMcKenzie} &
+  Abelian iff some congruence of the square has the diagonal as a block;
+  Abelian iff affine, for a finite algebra with a WNU term. \\
+\pkey{lem:absorbing-equality} & \cite[Lem.~7.2]{ZhukJACM} &
+  $0_{\mathbf A}\subseteq\sigma\le\mathbf A^{2}$, $\omega\subt{\TBA}\sigma$
+  \emph{proper}. The equality case needs separate treatment and gets it at the
+  one call site. \\
+\pkey{lem:bridge-comp} & \cite[Lem.~6.3]{ZhukJACM} &
+  $\sigma_{0},\sigma_{1},\sigma_{2}$ \emph{all} irreducible. The hypothesis is
+  easy to drop by accident; \pkey{lem:symmetrise} avoids the citation
+  altogether. \\
+\pkey{lem:building-perfect} & \cite[Cor.~8.17.1]{ZhukJACM} &
+  $\sigma$ irreducible on $\mathbf A\in\Vn$, $\delta$ a bridge from $\sigma$ to
+  $\sigma$ with $\bcol\delta=A^{2}$. Used only by
+  \pkey{lem:perfect-from-linked}. \\
+\pkey{lem:special-wnu} & \cite[Lem.~4.7]{MarotiMcKenzie} &
+  $w$ an idempotent WNU of arity $n$ on a finite $A$. We use only
+  ``$\Clo(w)$ contains a special idempotent WNU of some arity $N$'', not the
+  printed bound. \\
+\pkey{lem:expanded-consistency} & \cite[Lem.~6.1]{ZhukJACM} &
+  an expanded covering of a cycle-consistent irreducible instance. \\
+\pkey{lem:tree-coverings} & \cite[Lem.~5.6]{ZhukStrong} &
+  a $1$-consistent instance and a reduction. \\
+\pkey{lem:sg-terms} & \cite{Bergman} &
+  standard; the ``fixed generator list'' phrasing is the one used
+  (Caveat~\ref{haz:sg-fixed-list}). \\
+\pkey{lem:central-ternary} & \cite[Cor.~6.11.1]{ZhukStrong} &
+  a central subuniverse is ternary absorbing. \\
+\pkey{thm:galois} & Geiger; Bodnarchuk--Kalu\v znin--Kotov--Romov &
+  $A$ finite. See Caveat~\ref{haz:galois}. \\
+Essential relations for $n\ge3$ & \cite[Lem.~6.11]{ZhukStrong} &
+  $C_{i}\subte{\TC}\mathbf A_{i}$, $n\ge3$: no
+  $(C_{1},\dots,C_{n})$-essential $R$. Used once, in
+  \pkey{thm:stable-intersection}; its printed proof cites itself where it means
+  the preceding lemma (Caveat~\ref{haz:d4}). \\
+Cores and idempotent reducts & \cite{BradyNotes} &
+  used by Caveat~\ref{haz:core} and \S\ref{sec:hardness}. \\
+\hline
+\end{longtable}
+\end{center}
+
+That is nineteen imported statements. The two that are real work are
+\pkey{thm:brady-\brk absorption} and
+\pkey{thm:central-\brk relation-source}; the rest are short or routine.

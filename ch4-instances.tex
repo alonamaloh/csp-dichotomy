@@ -1,12 +1,11 @@
-%!TeX root=csp.tex
+%!TeX root=csp-proof.tex
 \section{Instances}\label{sec:instances}
 
-This section is Zhuk's \S3.1. It is entirely combinatorial: no algebra is used
-beyond the fact that each domain carries a $w$ and each constraint relation is
-a subuniverse of a product of domains. It is also where a formalization must
-make the most decisions, because the paper's instances are informal syntactic
-objects manipulated by operations --- weakening, covering, renaming --- that are
-described in words.
+This section is entirely combinatorial: no algebra is used beyond the fact that
+each domain carries a $w$ and each constraint relation is a subuniverse of a
+product of domains. It is also where the most representation decisions are
+forced, because instances are syntactic objects manipulated by operations ---
+weakening, covering, renaming --- that are usually described in words.
 
 \subsection{Instances and solutions}
 
@@ -26,15 +25,14 @@ is a solution with $s(x)=a$.
 \end{definition}
 
 \begin{hazard}[Lists, not sets; tuples, not sets of variables]\label{haz:instance-list}
-Two representation choices are forced by the way the paper argues, and both
-differ from the naive one.
+Two representation choices are forced by the way the arguments below go, and
+both differ from the naive one.
 
 \emph{Constraints form a list, not a set.} Proofs delete ``a constraint
 $C\in\mathcal I$'' and reason about $\mathcal I\setminus\{C\}$, and the same
-relation may occur twice on different variable tuples --- and, in the
-expanded coverings of \S\ref{sec:coverings}, the same relation on the
-\emph{same} tuple can legitimately occur twice. Multiset or list semantics is
-required; \texttt{List} with membership by index is the safe choice.
+relation may occur twice on different variable tuples --- and, in the expanded
+coverings of \S\ref{sec:coverings}, the same relation on the \emph{same}
+tuple can legitimately occur twice. Multiset or list semantics is required.
 
 \emph{A constraint's scope is a tuple, not a set.} Repeated variables in a
 scope are allowed and occur --- $\zeta(x,x',z)$ in
@@ -42,6 +40,16 @@ scope are allowed and occur --- $\zeta(x,x',z)$ in
 $R(x,x,\dots,x)$ appears explicitly in Definition~\ref{def:expanded}. So
 $\Var(C)$ is the image of the scope, and $|{\Var(C)}|$ may be smaller than the
 arity.
+
+Once repeated variables are allowed, every semantic operation below that names
+a \emph{variable} rather than a \emph{position} --- $\proj_{z}(C)$ in
+$1$-consistency, $\proj_{z_{i},z_{i+1}}(C)$ along a path, $\ConOne(C,x)$,
+adjacency at a common variable, weakening by a set of variable names, and the
+projections in Definition~\ref{def:instance-linked}(ii) --- must be read as
+pulled back along the equal-variable diagonal first. Otherwise a constraint
+$R(x,x)$ has a full first-coordinate projection even when $R$ contains no
+diagonal tuple and the constraint admits no value for $x$. Fixing this notation
+uniformly is work this document has not yet done; see \S\ref{sec:status}.
 \end{hazard}
 
 \begin{definition}[Relations defined by an instance]\label{def:instance-relation}
@@ -121,10 +129,6 @@ of constraints of $\mathcal I$ --- a finite but exponentially large family
 variables). It is finite, so the predicate is decidable, but it is not
 something to unfold. Every use in \S\ref{sec:main-statements} goes through
 Lemma~\ref{lem:crucial-irreducible} and \emph{never} through the definition.
-Formalize it once, prove the two consequences, and never unfold it again.
-
-The typo in the source at this point (``$\Var(C)\subseteq X_{1}$ or
-$\Var(C)\subseteq X_{1}$'') is corrected above to $X_{2}$.
 \end{hazard}
 
 \subsection{Weakening and cruciality}
@@ -140,24 +144,33 @@ $\Var(\mathcal I')\subseteq\Var(\mathcal I)$ and every constraint of
 $\mathcal I'$ is weaker or equivalent to a constraint of $\mathcal I$.
 \end{definition}
 
-\begin{hazard}[``Replace by all weaker constraints'']\label{haz:weakening}
-Read literally this is an infinite operation: there are $2^{|D|^{t}}$ relations
-weaker than a given one on a given scope, and one must also range over all
-sub-scopes. It is finite for a fixed instance, but the resulting instance is
-astronomically large, and no algorithm performs this operation --- it appears
-only inside proofs, as a device for reaching a crucial instance
-(Remark~\ref{rem:get-crucial}).
+\begin{hazard}[``Replace by all weaker constraints'', and its termination]
+\label{haz:weakening}
+The operation is finite but enormous: there are $2^{|D|^{t}}$ relations weaker
+than a given one on a given scope, and one must also range over all sub-scopes.
+No algorithm performs it --- it appears only inside proofs, as a device for
+reaching a crucial instance (Remark~\ref{rem:get-crucial}). Weakening is
+therefore defined above as a \emph{relation between instances}, not as a
+function producing one.
 
-Two consequences for a formalization. First, weakening must be defined as a
-\emph{relation between instances} (``$\mathcal I'$ is a weakening of
-$\mathcal I$''), not as a function producing one. Second, the descending chain
-argument in Remark~\ref{rem:get-crucial} needs a well-founded measure; the
-natural one is the total number of tuples in all constraint relations, which
-strictly decreases when a constraint is properly weakened, together with the
-fact that only finitely many scopes are available. State that measure
-explicitly --- ``we cannot weaken forever'' occurs three times in
-\S\ref{sec:main-statements} and is the kind of step that silently fails to be
-well-founded if the scope is allowed to grow.
+The termination of Remark~\ref{rem:get-crucial} is a genuine obligation and is
+\emph{not} discharged here. Two things make it delicate, and both must be
+faced before ``we cannot weaken forever'' --- which is used three times in
+\S\ref{sec:main-statements} --- can be relied on.
+
+\emph{The obvious measure points the wrong way.} A properly weaker constraint
+admits \emph{more} tuples, so the total number of tuples in all constraint
+relations \emph{increases}. A measure with the right orientation would be a
+rank in the finite implication order on constraints, or the number of
+assignments forbidden by the instance.
+
+\emph{Replacing a constraint by \emph{all} its strict weakenings need not make
+progress.} The conjunction of all strict weakenings of a relation can be the
+relation itself --- intersecting all one-tuple extensions of $R$ recovers $R$.
+So the construction must choose one proper weakening, or a finite antichain
+with a proved rank decrease, and the choice must be part of the statement.
+
+See \S\ref{sec:status}.
 \end{hazard}
 
 \begin{definition}[Crucial]\label{def:crucial}
@@ -172,10 +185,11 @@ $D^{(\top)}$.
 \end{definition}
 
 \begin{remark}[Reaching a crucial instance]\label{rem:get-crucial}
-If $\mathcal I^{(\top)}$ has no solution, then iteratively replacing each
-constraint by all weaker constraints without dummy variables terminates in an
-instance crucial in $D^{(\top)}$. Every relation so introduced is still a
-subuniverse of the corresponding product of domains.
+If $\mathcal I^{(\top)}$ has no solution, then iteratively weakening
+constraints that are not crucial, dropping dummy variables as they appear,
+terminates in an instance crucial in $D^{(\top)}$. Every relation so introduced
+is still a subuniverse of the corresponding product of domains. The termination
+is Caveat~\ref{haz:weakening} and is not proved here.
 \end{remark}
 
 \subsection{Coverings}\label{sec:coverings}
@@ -216,23 +230,14 @@ Let $\mathcal I'$ be an expanded covering of $\mathcal I$.
 \end{enumerate}
 \end{proposition}
 
-\begin{hazard}[Variable renaming is the hidden cost]\label{haz:renaming}
-Expanded coverings are where a formalization pays. The paper writes ``we
-rename the variables so that the only common variable of $\Upsilon_{x}$ and
-$\mathcal J$ is $x$'', and forms conjunctions
-$\bigwedge_{\mathcal J\in\Omega}\bot(\mathcal J)$ of instances whose variable
-sets must first be made disjoint. Doing this with a concrete variable type
-means a fresh-name supply and a renaming operation, with a lemma that renaming
-preserves each of $1$-consistency, cycle-consistency, cruciality, and being a
-covering --- eight lemmas that the paper does not state.
-
-The cheaper design is to make the variable type a parameter and build instances
-by \emph{disjoint union} of variable types: $\Upsilon_{x}$ and $\mathcal J$ are
-placed over $V_{1}\oplus V_{2}$ quotiented by identifying the single shared
-variable. Renaming then disappears into the coproduct, and the eight lemmas
-become transport along an equivalence. This is the single most important
-representation decision in \S\ref{sec:instances}, and it should be made before
-anything downstream is written.
+\begin{hazard}[Variable renaming carries obligations]\label{haz:renaming}
+The constructions of \S\ref{sec:main-statements} say ``rename the variables so
+that the only common variable of $\Upsilon_{x}$ and $\mathcal J$ is $x$'', and
+form conjunctions $\bigwedge_{\mathcal J\in\Omega}\mathcal J$ of instances
+whose variable sets must first be made disjoint. Renaming is not free: each of
+$1$-consistency, cycle-consistency, cruciality and being a covering has to be
+shown invariant under it. Those four facts are used throughout
+\S\ref{sec:main-statements} and are nowhere stated.
 \end{hazard}
 
 \subsection{Induced congruences and connectedness}
@@ -257,11 +262,11 @@ then $\ConOne(R,i)$ is a congruence.
 $\ConOne(R,i)$ is always reflexive and symmetric but is \emph{not} transitive
 in general, hence not always a congruence; Lemma~\ref{lem:conone-basics} is
 what makes it one, and its hypotheses (subdirect \emph{and} rectangular at $i$)
-are both needed. The notation $\ConOne$ invites the reader to assume
-congruence-hood; a formalization should give the raw relation a neutral name
-and reserve $\ConOne$ for the case where the lemma applies. Note also
-$\ConOne(C,x_{i})$ is ill-defined if $x$ occurs twice in the scope: it depends
-on the \emph{position} $i$, not the variable.
+are both needed. The notation invites the reader to assume congruence-hood, and
+every use below must check the hypotheses. Note also that
+$\ConOne(C,x_{i})$ depends on the \emph{position} $i$, not on the variable, so
+it is ill-defined if $x$ occurs twice in the scope
+(Caveat~\ref{haz:instance-list}).
 \end{hazard}
 
 \begin{definition}[Types of relations and instances]\label{def:rel-type}

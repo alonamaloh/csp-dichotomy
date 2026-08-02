@@ -1,10 +1,9 @@
-%!TeX root=csp.tex
+%!TeX root=csp-proof.tex
 \section{Properties of strong subuniverses}\label{sec:properties}
 
-This section is Zhuk's \S2.3. It is the \emph{interface} between the algebraic
-theory and the CSP argument: \S\ref{sec:main-statements} uses the results
-below and nothing else from \S\S\ref{sec:types}. Proofs are deferred to \S5 of \cite{ZhukSimplified}, which is not
-reproduced here; \S\ref{sec:formalization} budgets it.
+This section is the \emph{interface} between the algebraic theory and the CSP
+argument: \S\ref{sec:main-statements} uses the results below and nothing else
+from \S\S\ref{sec:types}. The proofs are \S\ref{sec:strongproofs}.
 
 Its shape is worth naming. Four of the five groups say that the relation
 $\lll$ and the types $T$ \emph{propagate}: forward and backward along
@@ -35,10 +34,10 @@ the reason the algorithm terminates with singleton domains or a linear
 instance.
 
 \begin{hazard}\label{haz:ubiquity-hyp}
-The hypothesis is $B\lll A$, not $B\le A$. A subalgebra reached by no chain
-of strong reductions need admit nothing. In the algorithm this hypothesis is
-maintained as an invariant of the reduction loop; in a formalization it should
-be carried in the state, not re-derived.
+The hypothesis is $B\lll A$, not $B\le A$. A subalgebra reached by no chain of
+strong reductions need admit nothing. In the algorithm the hypothesis is
+maintained as an invariant of the reduction loop, and it is carried rather than
+re-derived.
 \end{hazard}
 
 \subsection{Propagation}
@@ -73,8 +72,8 @@ usable. Pushing a strong subset forward along a homomorphism can
 The type $\TS$ exists to be the value of the middle case. Every downstream
 proof that pushes a reduction through a quotient does a three-way case split
 here, and the middle case is the one that is easy to forget; in \cite{ZhukJACM}
-it is the source of the ``go forward and backward from global to local''
-induction that this paper eliminates.
+it is what forces the ``go forward and backward from global to local''
+induction that the present route eliminates.
 
 Note the asymmetry: the backward clauses (b), (bt), (bm) are clean
 implications with no disjunction. Preimages behave; images do not.
@@ -140,44 +139,41 @@ $\proj_{1}\bigl(R\cap(C_{1}\times\dots\times C_{m})\bigr)\dsubte{T}A_{1}$,
 again with the same $t$ when $T=\TBA$.
 \end{lemma}
 
-\begin{hazard}[The source's restatement is false; this is the repair]
+\begin{hazard}[Both hypotheses of Lemma~\ref{lem:ba-center-implies} are needed]
 \label{haz:ba-center-implies}
 Lemma~\ref{lem:ba-center-implies} is the workhorse of case (2) of
-Theorem~\ref{thm:main-inductive}, and \cite[Lemma~19]{ZhukSimplified} restates
-it from \cite{ZhukStrong} \emph{dropping two hypotheses}: the subdirectness
-$\proj_{1}(R)=A_{1}$, and --- in the $\TBA$ case --- that the $C_{i}$ absorb
-with a common term. Both are present in the cited source
-(\cite[Cor.~6.1.2]{ZhukStrong} reads ``Suppose $R\le A_{1}\times\dots\times
-A_{n}$, $\proj_{1}(R)=A_{1}$, $B_{i}\le_{\TBA(t)}A_{i}$ for every $i$''), and
-without the first the statement is false.
+Theorem~\ref{thm:main-inductive}, and neither of its hypotheses may be dropped.
 
-\emph{Counterexample to the printed form.} Take $R=\{(0,0)\}\le\mathbf Z_{p}
-\times\mathbf Z_{p}$ --- a subuniverse, by idempotence --- and $C_{i}=A_{i}$,
-which is allowed because $\subte{T}$ admits equality. Then
-$R\cap(C_{1}\times C_{2})=R$ and $\proj_{1}(R)=\{0\}$, which is neither empty
-nor all of $\mathbf Z_{p}$, so the conclusion asserts $\{0\}\subt{\TBA}
-\mathbf Z_{p}$ --- contradicting Lemma~\ref{lem:no-abs-in-linear}, the paper's
-own Lemma~29. The failure is exactly the missing subdirectness: $\proj_{1}(R)
-=\{0\}\neq\mathbf Z_{p}$.
+\emph{Subdirectness.} Without $\proj_{1}(R)=A_{1}$ the statement is false. Take
+$R=\{(0,0)\}\le\mathbf Z_{p}\times\mathbf Z_{p}$ --- a subuniverse, by
+idempotence --- and $C_{i}=A_{i}$, which is allowed because $\subte{T}$ admits
+equality. Then $R\cap(C_{1}\times C_{2})=R$ and $\proj_{1}(R)=\{0\}$, which is
+neither empty nor all of $\mathbf Z_{p}$, so the conclusion would assert
+$\{0\}\subt{\TBA}\mathbf Z_{p}$, contradicting
+Lemma~\ref{lem:no-abs-in-linear}.
 
-The repair is to restore both hypotheses, as above. A formalization must also
-check that they hold at each of the call sites --- in particular in the proof of
-Theorem~\ref{thm:main-inductive}(2), where the lemma is applied to the relation
-computing $E_{2}$ from $E_{1}$. The common-term condition is the reason
-\cite{ZhukStrong} writes $\le_{\TBA(t)}$ with the term in the notation, and
-carrying $t$ in the type is the cheapest way to keep it.
+\emph{The common term.} In the $\TBA$ case the $m$ absorptions must be
+witnessed by a \emph{single} binary $t$; that is why $\subte{\TBA(t)}$ carries
+the term in the notation, and the conclusion returns the same $t$.
 
-This is the single highest-value import to formalize first: small,
-self-contained, used everywhere, and adjacent to what the predecessor project
-already proves.
+At the call site inside Theorem~\ref{thm:main-inductive}(2) neither hypothesis
+is currently discharged: the theorem records that every coordinate reduction
+has type $\TBA$, and that does not by itself produce a term common to all of
+them. Closing this needs either a lemma synthesising one common binary term
+from a finite family of coordinate absorptions, or reduction data that carries
+a common witness from the start. See \S\ref{sec:status}.
 \end{hazard}
 
 \subsection{Intersections}
 
 \begin{lemma}[Intersecting with a strong subset]\label{lem:intersect-all}
-If $B\lll A$ and $D\lll A$ then \textup{(i)} $B\cap D\dlll A$, and
+If $B\lll A$ and $D\lll A$ then \textup{(i)} $B\cap D\dlll^{A}D$, and
 \textup{(t)} $C\subt[A]{T(\sigma)}B\Rightarrow C\cap D\dsubte[A]{T(\sigma)}B\cap D$.
 \end{lemma}
+
+\begin{corollary}\label{cor:intersect-all-weak}
+Under the same hypotheses, $B\cap D\dlll A$.
+\end{corollary}
 
 The next theorem is the heart of \S\ref{sec:properties}. Read it as follows:
 if a family of strong reductions is \emph{jointly} inconsistent but
@@ -230,14 +226,24 @@ $R'=\{(\bar a,a_{k}):\bar a\in R\}$) and restrict the copies separately.
 \begin{hazard}[Minimality is a hypothesis, not a construction]\label{haz:minimality}
 Hypotheses (ii)--(iii) of Theorem~\ref{thm:stable-intersection} say the family
 is \emph{critically} inconsistent. In applications one starts with an
-inconsistent family and shrinks it to a critical subfamily. That shrinking step
-is left implicit in the paper (``let $\mathcal M$ be a minimal set of children
-of $z$ we need to restrict''). It is easy --- a minimal subset of a finite set
-with a monotone property --- but it must be stated as a lemma, because it is
-performed at least four times and each time the property being minimised is
-slightly different. State once: \emph{if $P$ is a monotone predicate on subsets
-of a finite set $X$ and $P(X)$ holds, there is $M\subseteq X$ minimal with
-$P(M)$}, and instantiate.
+inconsistent family and shrinks it to a critical subfamily. The shrinking step
+is elementary --- \emph{if $P$ is a monotone predicate on subsets of a finite
+set $X$ and $P(X)$ holds, there is $M\subseteq X$ minimal with $P(M)$} --- but
+it is performed at least four times below, each time with a different $P$, so
+it is worth naming rather than repeating.
+
+A related step is used with the multi-types: an inclusion-minimal
+$\MT T$ subuniverse of $B$ \emph{containing a given point $b$} is
+automatically minimal outright. That is not immediate, and it is what
+Lemma~\ref{lem:minimal-consistent} consumes. It holds because
+$M(b)=B\cap\bigcap_{\sigma\in\Sigma}[b]_{\sigma}$, over the $T$-dividing
+congruences $\Sigma$ for $B$, is the \emph{least} $\MT T$ subuniverse
+containing $b$ (each $B\cap[b]_{\sigma}$ is $\subt[A]{T}B$, and any $\MT T$ set
+containing $b$ is an intersection of blocks each containing $b$), and because
+$c\in M(b)$ forces $[c]_{\sigma}=[b]_{\sigma}$ for every $\sigma\in\Sigma$ and
+hence $M(c)=M(b)$. So the image of $b\mapsto M(b)$ consists of pairwise
+disjoint minimal sets, and a minimal set containing $b$ is $M(b)$, which has no
+proper $\MT T$ subset.
 \end{hazard}
 
 \subsection{Multi-types}
@@ -293,22 +299,31 @@ a perfect linear congruence.
 
 \begin{proof}
 Let $\delta^{-1}(y_{1},y_{2},x_{1},x_{2})=\delta(x_{1},x_{2},y_{1},y_{2})$,
-which is again a bridge from $\sigma$ to $\sigma$. Since $\bcol{\delta}$ is
-linked, $(\bcol{\delta}\circ\bcol{\delta^{-1}})^{N}=A^{2}$ for $N$ large.
-Composing $2N$ bridges $\delta,\delta^{-1},\dots$ by
-Lemma~\ref{lem:bridge-comp} gives a bridge $\delta'$ from $\sigma$ to $\sigma$
-with $\bcol{\delta'}=A^{2}$; apply Lemma~\ref{lem:building-perfect}.
+which is again a bridge from $\sigma$ to $\sigma$. By
+Caveat~\ref{haz:linked-power} the relation
+$\rho=\bcol{\delta}\circ\bcol{\delta}^{-1}$ is reflexive and symmetric, and it
+is connected because $\bcol\delta$ is linked; so $\rho^{N}=A^{2}$ for
+$N\ge|A|$. Composing $2N$ bridges $\delta,\delta^{-1},\dots$ by
+Lemma~\ref{lem:bridge-comp} --- legitimate, all the congruences involved being
+$\sigma$, which is irreducible --- gives a bridge $\delta'$ from $\sigma$ to
+$\sigma$ with $\bcol{\delta'}=\rho^{N}=A^{2}$; apply
+Lemma~\ref{lem:building-perfect}.
 \end{proof}
 
-\begin{hazard}[``for sufficiently large $N$'']\label{haz:linked-power}
-The step $(\bcol{\delta}\circ\bcol{\delta^{-1}})^{N}=A^{2}$ deserves a lemma of
-its own: if a reflexive symmetric relation $\rho$ on a finite set $A$ has
-connected graph, then $\rho^{N}=A^{2}$ for $N\ge|A|$. Reflexivity is what makes
-the powers increase monotonically; $\bcol{\delta}$ is reflexive because
-$(a,a,a,a)\in\delta$ is not assumed --- so the reflexivity must come from
-$\delta$ being a bridge from $\sigma$ to $\sigma$ with $\sigma$ reflexive, via
-$\proj_{1,2}(\delta)\supsetneq\sigma$. Check this: it is the sort of step where
-the informal proof is right for a reason it does not give.
+\begin{hazard}[Where the reflexivity comes from]\label{haz:linked-power}
+The step $(\bcol{\delta}\circ\bcol{\delta}^{-1})^{N}=A^{2}$ is the elementary
+fact that a reflexive symmetric relation $\rho$ on a finite set $A$ with
+connected graph satisfies $\rho^{N}=A^{2}$ for $N\ge|A|$; reflexivity is what
+makes the powers increase monotonically.
+
+The reflexivity of $\bcol\delta$ itself does \emph{not} follow from
+$\proj_{1,2}(\delta)\supseteq\sigma$, which gives only some tuple
+$\delta(a,a,c,d)$ and not $\delta(a,a,a,a)$. It follows instead from clause (d)
+of Definition~\ref{def:bridge} together with stability: from
+$\delta(a,a,c,d)$, clause (d) gives $(c,d)\in\sigma$, and stability of the last
+two variables under $\sigma$ replaces $d$ by $c$, giving $\delta(a,a,c,c)$. So
+$\bcol{\delta}$ is left-total, and $\bcol{\delta}\circ\bcol{\delta}^{-1}$ is
+reflexive and symmetric --- which is the relation the power is taken of.
 \end{hazard}
 
 \begin{lemma}\label{lem:no-abs-in-linear}
@@ -317,7 +332,15 @@ $C\subt{T}B$ with $T\in\{\TBA,\TC\}$.
 \end{lemma}
 
 \begin{proof}
-It suffices to check that for every term $\tau$, if the last variable of
-$\tau^{\mathbf Z_{p}}(a,\dots,a,x)$ is not dummy then it takes all values;
-hence no absorbing subuniverse exists.
+$\mathbf B$ is affine over the product of the $\mathbf Z_{p}$, so every term
+operation acts as $\tau(\bar x)=\sum_{i}c_{i}x_{i}$ with $\sum_{i}c_{i}=1$, and
+every nonempty subuniverse is an affine coset. Suppose $C\subt{T}B$ with
+$T\in\{\TBA,\TC\}$; a central subuniverse is absorbing
+(Definition~\ref{def:central}), so in either case some $k$-ary $\tau$ absorbs
+at every coordinate. Translating so that $C$ is a subgroup, absorption at
+coordinate $i$ says $\tau$ carries $C^{i-1}\times B\times C^{k-i}$ into $C$;
+taking all entries but the $i$-th to be $0$ gives $c_{i}b\in C$ for every
+$b\in B$, so $c_{i}$ annihilates $B/C$. Doing this at every $i$ makes
+$\sum_{i}c_{i}=1$ annihilate $B/C$ as well, i.e.\ $B=C$, contradicting
+properness.
 \end{proof}

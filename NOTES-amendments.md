@@ -24,14 +24,17 @@ rendering does not silently differ from the source.
 | D14 | Case 1 of `LEMPCCongruencePropertyInductiveStep` cites the **box** form of absorption-preserves-linkedness for a **subrelation** restriction | use the subrelation form: `W ≤_sd P×A` linked, `∅ ≠ W' ≤_T W` ⟹ `W'` linked. Proved from `LEMBACenterSImplyPPDefinition`, `LEMBACenterImplyIntersection`, `LEMBACenterSImplyFactor` and the elementary fact that `0_C` never absorbs `C²` | no | R |
 | D15 | `LEMMainExistenceOfIrreducibleCongruence` factors the relation by `σ` where the argument needs `δ`, and the properness that step requires is unsupported | read `δ` for `σ` in the last four lines, and restore the "stable under `δ`" clause the source drops when unfolding irreducibility — that clause is exactly what makes the factored relation proper | no | V, R |
 | D16 | `LEMLInearOnTheTopIsEasy` asserts "`ξ` is a bijective relation", which is the entire content of the lemma | abandon that route: `LEMNontrivialReflexiveBridgeImplies`(3) with `σ* = A²` gives `A/σ ≅ ℤ_p^m`, and irreducibility forces `m = 1` (the `m` coordinate congruences would exhibit `0_{A/σ}` as a proper intersection); C1 upgrades it to an isomorphism of algebras | no — and **one fewer external import** than the source's route | V, R |
-| D17 | Case 1 of `LEMMaximalMultExtention` concludes that two sets meet from the fact that each meets a third | pass to a **minimal** subfamily `F` of the `C̄₁ʲ` cutting `B̄₂` out; minimality supplies `THMMainStableIntersection`'s leave-one-out hypothesis, and its conclusion admits only `BA, C, L, PC`, so no member of `F` is `S`-typed — the case evaporates instead of being contradicted | no | V, R |
+| D17 | Case 1 of `LEMMaximalMultExtention` concludes that two sets meet from the fact that each meets a third | **OPEN.** The published minimal-subfamily repair is invalid: the subfamily need not exist, because images do not commute with intersection (C8). Surviving fragment: the `<_S` factors never help cut `B̄₂` out. Target: the type-`T` factors alone already do | unknown | V, R |
 | D3 | claimed citation cycle in §5 | **refuted** — 58 statements, 152 edges, acyclic | — | V |
 | D10 (orig) | recursion-depth bound not established | **refuted** — the precondition is in the prose, discharged at the call site | — | V |
 | D10 (now) | the arity `n^{n!}` in the special-WNU lemma | **moot** — state it as "there exist `N` and a special idempotent WNU of arity `N` in `Clo(w)`" | — | V |
 
-**None of the fourteen confirmed defects needs new mathematics, and all fourteen are repaired.** Three needed a citation the
-later paper dropped (D4, D14, C10), one was a typo (D11), one a false statement with a live
-counterexample (D12), and the rest were omitted steps.
+**Fourteen of the fifteen confirmed defects are repaired and none of those repairs needs new
+mathematics.** Three needed a citation the later paper dropped (D4, D14, C10), one was a typo
+(D11), one a false statement with a live counterexample (D12), and the rest were omitted
+steps. **D17 is open**, and D1 — the two hypotheses dropped from `LEMBACenterImplies` — is
+repaired at the statement but carries a live obligation at its one call site (a common binary
+absorption term).
 
 ## 2. Conventions
 
@@ -128,7 +131,10 @@ lines) is out of scope by decision, with D10 declared moot.
 
 ### (b) Read, and unresolved
 
-Nothing. D16 and D17 are settled. One small item remains: **does `LEMIntersectionPCLinearIsGood` use the minimality of its
+**D17 is open** — see `NOTES-repairs.md`. Two further items are open in our own rendering
+rather than in the source: the reflexivisation of a bridge, used twice with no lemma behind
+it, and the induction measure across expanded coverings, which is not well founded as
+displayed. A smaller one: **does `LEMIntersectionPCLinearIsGood` use the minimality of its
 chains `k, ℓ`?** The proof fixes minimal chains for `B ⋘ A` and `C ⋘ A` and I could not find a
 step that consumes minimality; a shorter chain would only make the induction measure smaller.
 Either identify the use or drop the hypothesis. Nothing depends on the answer for

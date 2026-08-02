@@ -1,35 +1,49 @@
-%!TeX root=csp.tex
+%!TeX root=csp-proof.tex
 \section{Proofs of the strong-subalgebra theory}\label{sec:strongproofs}
 
-This section proves the statements of \S\ref{sec:properties}. It renders
-\S5 of \cite{ZhukSimplified}, the part its author calls the most technical.
-Fourteen places there are wrong, incomplete, or state less than their own
-proofs give; each repair is marked \textbf{[R]} and carries a note saying what
-the source has. Everything else is expansion: about two dozen steps that the
-source performs silently and that a formalization cannot.
-
-Throughout, Convention~\ref{conv:standing} is in force --- every algebra is
-finite, idempotent, and has a WNU term operation --- and
-\S\ref{sec:legislation} fixes the readings.
+This section proves the statements of \S\ref{sec:properties}. Throughout,
+Convention~\ref{conv:standing} is in force --- every algebra is finite,
+idempotent, and has a WNU term operation --- and \S\ref{sec:legislation} fixes
+the readings.
 
 \subsection{What is imported}\label{sec:imports}
 
-The rendering is self-contained except for the following, which are proved in
+The development is self-contained except for the following, which are proved in
 the literature and used here as black boxes. Two are substantial; the rest are
-routine.
+routine. \S\ref{sec:imports-ledger} lists them again with their exact
+hypotheses.
 
-\begin{longtheorem}[Absorption Theorem; {\cite[Thm.~3.11.1]{BradyNotes}}]\label{lem:linked-implies-abs}
-Let $R\lneq_{sd}\mathbf A\times\mathbf B$ be a proper subdirect relation
-between finite idempotent Taylor algebras. If $R$ is linked then $\mathbf A$ or
-$\mathbf B$ has a proper nonempty binary absorbing or central subuniverse.
+\begin{longtheorem}[Absorption Theorem]\label{thm:brady-absorption}
+Let $R\sdle\mathbf A\times\mathbf B$ be a subdirect relation between finite
+idempotent Taylor algebras. If $R$ is linked then one of the following holds:
+$R=A\times B$; or $\mathbf A$ has a proper nonempty binary absorbing or
+centrally absorbing subalgebra; or $\mathbf B$ has a proper nonempty subalgebra
+that is both binary absorbing and centrally absorbing.
 \end{longtheorem}
 
-\begin{hazard}[Two words the source omits]\label{haz:linked-abs-proper}
-\cite{ZhukSimplified} states this as ``there exists a BA or central subuniverse
-on $\mathbf A$ or $\mathbf B$'', with no properness. Read literally it is
-vacuous, since every algebra is a binary absorbing subuniverse of itself; every
-use is the proper nonempty one (\S\ref{sec:legislation}, item
-\ref{leg:empty}). This is the single heaviest import in the section.
+\begin{corollary}[{a corollary of Theorem~\ref{thm:brady-absorption}}]
+\label{lem:linked-implies-abs}
+Let $R\lneq_{sd}\mathbf A\times\mathbf B$ be a \emph{proper} subdirect
+relation between finite idempotent Taylor algebras. If $R$ is linked then
+$\mathbf A$ or $\mathbf B$ has a proper nonempty binary absorbing or central
+subuniverse.
+\end{corollary}
+
+\begin{proof}
+Properness excludes the first alternative of
+Theorem~\ref{thm:brady-absorption}. The second is the conclusion on
+$\mathbf A$; the third is stronger than the conclusion on $\mathbf B$.
+\end{proof}
+
+\begin{hazard}[Both words in ``proper nonempty'' are load-bearing]
+\label{haz:linked-abs-proper}
+Without them Corollary~\ref{lem:linked-implies-abs} is vacuous, since every
+algebra is a binary absorbing subuniverse of itself and $\varnothing$ is
+vacuously one (\S\ref{sec:legislation}, item \ref{leg:empty}); every use below
+is the proper nonempty one. Theorem~\ref{thm:brady-absorption} is the single
+heaviest import of this section, and it is stated here in the form its source
+gives rather than in the weaker symmetric form actually used, so that the
+strengthening is visible.
 \end{hazard}
 
 \begin{lemma}[{\cite[Lem.~2.9]{DecidingAbsorption}}, {\cite[Lem.~6.1, Thm.~6.9]{ZhukStrong}}]\label{lem:pp-propagation}
@@ -50,12 +64,11 @@ If $B\subte{T}\mathbf A$ with $T\in\{\TBA,\TC,\TS\}$ and $\sigma$ is a
 congruence on $\mathbf A$, then $B/\sigma\subte{T}\mathbf A/\sigma$.
 \end{lemma}
 
-\begin{hazard}[The $\TBA$ and $\TS$ cases are not imports]\label{haz:factor-type}
-\cite{ZhukSimplified} writes ``for $T=\TBA$ it is straightforward, for $T=\TC$
-see \cite[Lem.~6.8]{ZhukStrong}, for $T=\TS$ it is just a combination''. The
-first is indeed one line --- if $t(B,A)\subseteq B$ and $t(A,B)\subseteq B$ then
-the same $t$ works on images --- and the third follows from the other two by
-Definition~\ref{def:ba-center-free}. Only $\TC$ is imported.
+\begin{hazard}[Only the $\TC$ case is imported]\label{haz:factor-type}
+For $T=\TBA$ the statement is one line: if $t(B,A)\subseteq B$ and
+$t(A,B)\subseteq B$ then the same $t$ works on images. The case $T=\TS$ follows
+from the other two by Definition~\ref{def:ba-center-free}. Only $\TC$ is
+genuinely imported.
 \end{hazard}
 
 \begin{lemma}[{\cite[Lem.~6.24]{ZhukStrong}}]\label{lem:power-to-base}
@@ -66,17 +79,15 @@ $B\subt{T}\mathbf A^{n}$ with $T\in\{\TBA,\TC,\TS\}$ yields some
 $C\subt{T}\mathbf A$.
 \end{lemma}
 
-\begin{hazard}[The source undersells its own citation]\label{haz:power-to-base}
-\cite{ZhukSimplified} proves the case $T=\TS$ by ``just repeat the same proof
-word to word replacing $\TBA$ by $\TS$''. No repetition is needed. The cited
-lemma is already stated for every type $T\neq\TPC$, and its proof is
+\begin{hazard}[One run of the proof serves all three types]\label{haz:power-to-base}
+The cited lemma is stated for every type $T\neq\TPC$, and its proof is
 \emph{type-uniform}: it takes $\proj_{1}(R)$ if that is proper and otherwise a
 fibre $R'=\{(a_{2},\dots,a_{n}):(a_{1},\dots,a_{n})\in R\}$, and neither
 construction mentions the type --- the type enters only through the facts that
-projections and fibres preserve $\TBA$ and preserve $\TC$. So a single run of
-the proof produces one witness carrying \emph{every} strong type that $R$ has,
-and a subuniverse that is simultaneously binary absorbing and central yields one
-that is too.
+projections and fibres preserve $\TBA$ and preserve $\TC$. So a single run
+produces one witness carrying \emph{every} strong type that $R$ has; in
+particular a subuniverse that is simultaneously binary absorbing and central
+yields one that is too, which is the case $T=\TS$.
 \end{hazard}
 
 \begin{longtheorem}[{\cite[Thm.~6.15]{ZhukStrong}}]\label{thm:central-relation-source}
@@ -86,13 +97,14 @@ $\mathbf A$, or $\mathbf B$ has a nontrivial binary absorbing subuniverse, or
 $\mathbf B$ has a nontrivial \emph{projective} subuniverse.
 \end{longtheorem}
 
-\begin{hazard}[To do]\label{haz:615-todo}
-Theorem~\ref{thm:central-relation-source} is the one import we are not yet
-comfortable taking on faith, and it should eventually be proved here. Its
-proof in \cite{ZhukStrong} is two pages and uses only the Barto--Kazda
-criterion (Lemma~\ref{lem:barto-kazda}) and the theory of projective
-subuniverses; none of that theory is needed anywhere else in this document,
-which is why absorbing it has been deferred.
+\begin{hazard}[The heaviest import after Theorem~\ref{thm:brady-absorption}]
+\label{haz:615-todo}
+Theorem~\ref{thm:central-relation-source} is taken on faith here. Its proof in
+\cite{ZhukStrong} is two pages and uses only the Barto--Kazda criterion
+(Lemma~\ref{lem:barto-kazda}) and the theory of projective subuniverses; none
+of that theory is needed anywhere else below, which is why absorbing it has
+been deferred. The same applies to \cite[Lem.~3.4]{ZhukStrong}, used once, in
+the proof of Lemma~\ref{lem:central-relation}.
 \end{hazard}
 
 \begin{lemma}[{\cite{HobbyMcKenzie}}]\label{lem:hobby-mckenzie}
@@ -102,16 +114,26 @@ if and only if it is affine.
 \end{lemma}
 
 \begin{lemma}\label{lem:bridge-abelian}
-$\mathbf A$ is Abelian if and only if there is a bridge $\delta$ from
-$0_{\mathbf A}$ to $0_{\mathbf A}$ with
+Let $|A|>1$. Then $\mathbf A$ is Abelian if and only if there is a bridge
+$\delta$ from $0_{\mathbf A}$ to $0_{\mathbf A}$ with
 $\bcol\delta=\proj_{1,2}(\delta)=\proj_{3,4}(\delta)=A^{2}$.
 \end{lemma}
 
 \begin{proof}
-A congruence of $\mathbf A^{2}$ with the diagonal as a block is such a bridge.
-Conversely, composing a bridge with itself enough times yields a reflexive,
-symmetric, transitive relation on $\mathbf A^{2}$, whose diagonal class is the
-diagonal by clause (d); now apply Lemma~\ref{lem:hobby-mckenzie}.
+If $\mathbf A$ is Abelian, a congruence of $\mathbf A^{2}$ having the diagonal
+as a block is such a bridge; clause (c) needs $|A|>1$, since for $|A|=1$ no
+relation properly contains $0_{\mathbf A}=A^{2}$.
+
+Conversely, regard $\delta$ as a binary relation $\hat\delta$ on $A^{2}$,
+$\hat\delta\bigl((x_{1},x_{2}),(x_{3},x_{4})\bigr)\iff\delta(x_{1},x_{2},
+x_{3},x_{4})$, and put $\rho=\hat\delta\circ\hat\delta^{-1}$, a reflexive
+symmetric compatible relation on $\mathbf A^{2}$ --- reflexive because
+$\proj_{1,2}(\delta)=A^{2}$ makes $\hat\delta$ left-total. Its powers increase,
+so $\theta=\rho^{N}$ for $N\ge|A|^{2}$ is reflexive, symmetric and transitive,
+hence a congruence of $\mathbf A^{2}$. Clause (d) of
+Definition~\ref{def:bridge} is preserved by each composition, so every pair of
+$\theta$ relates a diagonal element only to diagonal elements: the diagonal is
+a $\theta$-block. Now apply Lemma~\ref{lem:hobby-mckenzie}.
 \end{proof}
 
 \subsection{Absorption preliminaries}\label{sec:abs-prelim}
@@ -176,19 +198,17 @@ $\lambda=(P')^{2}$, which says $W'$ is linked.
 \end{proof}
 
 \begin{hazard}[The box form is not enough]\label{haz:box-vs-sub}
-\textbf{[R]} \cite{ZhukSimplified} has only the \emph{box} form of this
-principle, \cite[Prop.~2.15(i)]{BartoKozik}: if $W\sdle\mathbf A_{1}\times
-\mathbf A_{2}$ is linked, $B_{i}$ absorbs $\mathbf A_{i}$, and
-$W\cap(B_{1}\times B_{2})$ is subdirect in $B_{1}\times B_{2}$, then
-$W\cap(B_{1}\times B_{2})$ is linked. It cites that form for a restriction that
-is not a box, in the proof of Lemma~\ref{lem:pc-inductive-step}, and the two
-really do differ: for the meet-semilattice on $\{0,1,2\}$ with $B=\{0,1\}$, the
-subalgebra $K=\{(0,0),(1,2)\}$ of $A^{2}$ meets $B^{2}$ and has
-$\proj_{1}(K)\cap B=\{0,1\}$ while $\proj_{1}(K\cap B^{2})=\{0\}$.
-Lemma~\ref{lem:absorb-linked-sub} is the form the paper actually needs; it also
-discharges the subdirectness hypothesis of the box form for free. Checked by
-exhaustive search over nine small Taylor algebras and about $10^{5}$ pairs
-$(W,W')$: no counterexample.
+The familiar form of this principle, \cite[Prop.~2.15(i)]{BartoKozik},
+restricts by a \emph{box}: if $W\sdle\mathbf A_{1}\times\mathbf A_{2}$ is
+linked, $B_{i}$ absorbs $\mathbf A_{i}$, and $W\cap(B_{1}\times B_{2})$ is
+subdirect in $B_{1}\times B_{2}$, then $W\cap(B_{1}\times B_{2})$ is linked.
+That form cannot reach the restrictions used in
+Lemma~\ref{lem:pc-inductive-step}, and the two really do differ: for the
+meet-semilattice on $\{0,1,2\}$ with $B=\{0,1\}$, the subalgebra
+$K=\{(0,0),(1,2)\}$ of $A^{2}$ meets $B^{2}$ and has
+$\proj_{1}(K)\cap B=\{0,1\}$ while $\proj_{1}(K\cap B^{2})=\{0\}$. The
+subrelation form also discharges the box form's subdirectness hypothesis for
+free.
 \end{hazard}
 
 \begin{lemma}[A WNU forbids essentially unary quotients]\label{lem:no-unary-quotient}
@@ -212,7 +232,7 @@ identities, hence hold in every member of $\mathrm{HS}(\mathbf A)$.
 \end{proof}
 
 \begin{longlemma}[Central relations]\label{lem:central-relation}
-\textbf{[R]} Let $\mathbf A,\mathbf B$ satisfy Convention~\ref{conv:standing},
+Let $\mathbf A,\mathbf B$ satisfy Convention~\ref{conv:standing},
 let $R\sdle\mathbf A\times\mathbf B$, and put
 $C=\{c\in A:\{c\}\times B\subseteq R\}$. Then
 \begin{enumerate}\alphlabels\tightlist
@@ -232,21 +252,15 @@ unary $\mathbf U\in\mathrm{HS}(\mathbf B)$ with $|U|\ge2$, which
 Lemma~\ref{lem:no-unary-quotient} forbids.
 \end{proof}
 
-\begin{hazard}[Both changes are necessary]\label{haz:central-relation}
-\cite{ZhukSimplified} states this with two alternatives, (b) and (c), citing
-\cite[Thm.~6.15]{ZhukStrong} --- which has three. The elimination of the third
-is legitimate but is nowhere stated; it is the proof above, and Zhuk himself
-runs exactly this argument on exactly this trichotomy in the proof of
-\cite[Thm.~4.15]{ZhukStrong}, step (4)\,$\Rightarrow$\,(5), without ever
-connecting it to Theorem~6.15.
-
-Alternative (a) is also not optional. The two-alternative statement is true in
-\cite{ZhukStrong} only because $\varnothing$ counts as central there; under
-Convention~\ref{conv:empty} it is false, as
-$\mathbf A=\mathbf B=\mathbf Z_{p}$ with $R=\{(x,x+1)\}$ shows --- $R$ is
-subdirect, $C=\varnothing$, and $\mathbf Z_{p}$ has no nontrivial binary
-absorbing subuniverse at all. Every one of the nine call sites discharges (a)
-by exhibiting a point of $C$ first.
+\begin{hazard}[Alternative (a) is not optional]\label{haz:central-relation}
+Under Convention~\ref{conv:empty} the two-alternative form (b)--(c) is false:
+$\mathbf A=\mathbf B=\mathbf Z_{p}$ with $R=\{(x,x+1)\}$ is subdirect, has
+$C=\varnothing$, and $\mathbf Z_{p}$ has no nontrivial binary absorbing
+subuniverse at all. It is true in \cite{ZhukStrong} only because $\varnothing$
+counts as central there. Every call site below discharges (a) by exhibiting a
+point of $C$ first, and two further obligations go with each contrapositive
+use: the centre produced must be shown \emph{proper}, and a strong subuniverse
+of a \emph{power} must be moved down by Lemma~\ref{lem:power-to-base}.
 \end{hazard}
 
 \begin{lemma}\label{lem:bacon-left}
@@ -263,7 +277,7 @@ $b$ for the tuple listing all of $A$ lies in $C$. Otherwise choose $k$ minimal
 with $W_{k}\neq A^{k}$. Since $\operatorname{LeftLinked}(R)=A^{2}$ we get
 $\operatorname{LeftLinked}(W_{k})=A^{2}$, and viewing $W_{k}$ as a binary
 relation in $\mathbf A\times\mathbf A^{k-1}$ --- subdirect by minimality of $k$
---- Theorem~\ref{lem:linked-implies-abs} and Lemma~\ref{lem:power-to-base}
+--- Corollary~\ref{lem:linked-implies-abs} and Lemma~\ref{lem:power-to-base}
 produce a proper nonempty binary absorbing or central subuniverse of
 $\mathbf A$, contrary to hypothesis. So $C\neq\varnothing$.
 
@@ -309,49 +323,59 @@ point or all of $B/\delta$. Everything in \S\ref{sec:strongproofs} that
 produces a bridge goes through it.
 
 \begin{lemma}[The shift manoeuvre]\label{lem:multiset-shift}
-Let $R\le A^{k}$ be totally symmetric and closed under
-$(a_{1},\dots,a_{k})\mapsto(a_{1},a_{1},a_{2},\dots,a_{k-1})$. If
-$\bar a\in R$ has entry multiset $M$, then $R$ contains a tuple with entry
-multiset $M+\{u\}-\{v\}$ for any $u,v\in M$ occupying distinct positions. In
-particular, if $|\{$distinct entries of $\bar a\}|=r$ then $R$ contains a tuple
-whose entries are any prescribed $k$-element multiset drawn from those $r$
-values, provided that multiset uses at least one of them.
+Let $k\ge2$ and let $R\le A^{k}$ be totally symmetric and closed under
+$(a_{1},\dots,a_{k})\mapsto(a_{1},a_{1},a_{2},\dots,a_{k-1})$. Identify a tuple
+of $R$ with its entry multiset, a $k$-element multiset over $A$. If
+$\bar a\in R$ has entry multiset $M$, then for any $u,v\in M$ ---
+\emph{occupying distinct positions of $\bar a$, though possibly with $u=v$ as
+elements of $A$} --- the multiset $M+\{u\}-\{v\}$ is again the entry multiset of
+a tuple of $R$. Consequently every $k$-element multiset over the set $S$ of
+distinct entries of $\bar a$ is reached, provided it is reached by such steps;
+in particular, for any $u\in S$, the constant multiset $k\cdot\{u\}$ is
+reached, in at most $k-1$ steps.
 \end{lemma}
 
 \begin{proof}
 Total symmetry lets us place $u$ first and $v$ last; the shift then duplicates
-$u$ and deletes $v$. Iterating and permuting gives every reachable multiset.
+$u$ and deletes $v$, giving $M+\{u\}-\{v\}$. For the last clause, apply this
+$k-1$ times with the same $u$, deleting a different position each time.
 \end{proof}
 
 \begin{hazard}[The shift deletes the last entry]\label{haz:shift}
-\textbf{[R]} \cite{ZhukSimplified} uses this twice with the words ``by the
-conditions of the lemma we have\dots''. A single application of the shift to
-$(a,b_{2},\dots,b_{k-1},c)$ destroys $c$, so the claimed conclusion
-$(a,\dots,a,c)\in R$ does not follow from one step; it needs $k-2$ steps
+A single application of the shift to $(a,b_{2},\dots,b_{k-1},c)$ destroys $c$,
+so $(a,\dots,a,c)\in R$ does not follow from one step; it needs $k-2$ steps
 interleaved with permutations, which is what Lemma~\ref{lem:multiset-shift}
-packages.
+packages. The lemma is used twice below and the one-step reading fails both
+times.
 \end{hazard}
 
 \begin{lemma}\label{lem:tot-sym-full}
-Let $\mathbf A$ be BA and centre free and let $R\le A^{k}$ be totally
-symmetric, closed under the shift, with $\proj_{1,2}(R)=A^{2}$. Then $R=A^{k}$.
+Let $k\ge2$, let $\mathbf A$ be BA and centre free, and let $R\le A^{k}$ be
+totally symmetric, closed under the shift, with $\proj_{1,2}(R)=A^{2}$. Then
+$R=A^{k}$.
 \end{lemma}
 
 \begin{proof}
-Induct on $k$; for $k=2$ the hypothesis is the conclusion. Let $k>2$. By total
-symmetry $\proj_{1,k}(R)=A^{2}$, so for any $a,c$ there is a tuple of $R$ with
-first entry $a$ and last entry $c$; by Lemma~\ref{lem:multiset-shift} we may
-replace all other entries by $a$, giving $(a,\dots,a,c)\in R$, and deleting $c$
-gives $(a,\dots,a)\in R$. Hence, viewing $R\le A^{k-1}\times A$, every left
-vertex $(a,\dots,a)$ is adjacent to every $c$, so $R$ is subdirect and
-$\operatorname{RightLinked}(R)=A^{2}$.
+Induct on $k$; for $k=2$ the hypothesis is the conclusion. Let $k>2$.
 
-The relation $R'=\proj_{1,\dots,k-1}(R)$ inherits total symmetry, has
-$\proj_{1,2}(R')=A^{2}$, and is shift-closed: from $\bar a\in R'$ extend to
-$R$, shift there, and project. By induction $R'=A^{k-1}$, so
-$R\sdle A^{k-1}\times A$. If $R\neq A^{k}$ then
-Theorem~\ref{lem:linked-implies-abs} gives a proper nonempty binary absorbing
-or central subuniverse on $\mathbf A^{k-1}$ or on $\mathbf A$, and
+\emph{Step 1: $(a,\dots,a,c)\in R$ for all $a,c$.} By total symmetry
+$\proj_{1,k}(R)=A^{2}$, so there is a tuple of $R$ with first entry $a$ and
+last entry $c$. Apply Lemma~\ref{lem:multiset-shift} $k-2$ times with $u=a$,
+deleting on each step one position other than the last: the entry multiset
+becomes $(k-1)\cdot\{a\}+\{c\}$, which by total symmetry gives
+$(a,\dots,a,c)\in R$. Deleting $c$ as well gives $(a,\dots,a)\in R$.
+
+\emph{Step 2: the left projection is full.} $R'=\proj_{1,\dots,k-1}(R)$
+inherits total symmetry, has $\proj_{1,2}(R')=A^{2}$, and is shift-closed: from
+$\bar a\in R'$ extend to $R$, shift there, and project. By the inductive
+hypothesis $R'=A^{k-1}$.
+
+\emph{Step 3.} Only now may $R$ be viewed as a subdirect relation
+$R\sdle A^{k-1}\times A$: Step 2 gives the left projection and Step 1 gives the
+right. It is linked, since by Step 1 every $c$ is adjacent to the single left
+vertex $(a,\dots,a)$. If $R\neq A^{k}$ then
+Corollary~\ref{lem:linked-implies-abs} gives a proper nonempty binary
+absorbing or central subuniverse on $\mathbf A^{k-1}$ or on $\mathbf A$, and
 Lemma~\ref{lem:power-to-base} moves the first case to $\mathbf A$ ---
 contradicting the hypothesis either way.
 \end{proof}
@@ -397,16 +421,15 @@ $\bar x$; closure gives $(\bar y,d)\in W$.
 \end{proof}
 
 \begin{hazard}[Why the arity is $|A|$]\label{haz:full-fibre}
-\textbf{[R]} Three proofs in \cite{ZhukSimplified} contain, verbatim modulo
-names, ``since $\proj_{1,\dots,|A|}(R')=(B/\delta)^{|A|}$, there exists $d$ with
+Lemma~\ref{lem:full-fibre} is used three times below, always in the shape
+``since $\proj_{1,\dots,|A|}(R')=(B/\delta)^{|A|}$, there is $d$ with
 $(B/\delta)^{|A|}\times\{d\}\subseteq R'$''. Surjectivity of a projection does
-not produce a full fibre, and as stated this is a non sequitur. It is true
-because each such $R'$ is cut out by a conjunction of unary and binary
-conditions on its first $|A|$ entries, hence closed under substituting entries
-for one another, and because $|B/\delta|\le|A|$. \textbf{The exponent $|A|$ is
-load-bearing}: it must be at least the number of blocks, so that one tuple can
-enumerate them. A rendering that normalises the arity away breaks all three
-proofs.
+not by itself produce a full fibre; what makes the step valid is that each such
+$R'$ is cut out by a conjunction of unary and binary conditions on its first
+$|A|$ entries, hence closed under substituting entries for one another, and
+that $|B/\delta|\le|A|$. \textbf{The exponent $|A|$ is load-bearing}: it must be
+at least the number of blocks, so that one tuple can enumerate them.
+Normalising the arity away breaks all three proofs.
 \end{hazard}
 
 \begin{longlemma}\label{lem:self-intersection-pc}
@@ -418,19 +441,19 @@ $B_{m-1}/\sigma_{m}$ or $B_{m}/\sigma_{m}$; and in the second case
 $\sigma_{m}\supseteq\delta\cap\sigma_{1}\cap\dots\cap\sigma_{m-1}$.
 \end{longlemma}
 
-\begin{proof}[Proof sketch]
+\begin{proof}[Proof outline]
 Induction on $k$, splitting on $T_{k}$ and on whether $k>m$. The absorption
 cases run through Lemmas~\ref{lem:pp-propagation} and \ref{lem:factor-type} to
 produce a strong subuniverse of $B_{k-1}/\sigma_{k}$ and contradict
-Definition~\ref{def:types}(iii); the $\TD$ cases build the auxiliary relation
-$R'$ on $(B_{k-1}/\sigma_{k})^{|A|}\times B_{n-1}/\sigma_{n}$, obtain a full
+Definition~\ref{def:types}(iii). The $\TD$ cases build an auxiliary relation
+$R'$ on $(B_{k-1}/\sigma_{k})^{|A|}\times B_{m-1}/\sigma_{m}$, obtain a full
 fibre from Lemma~\ref{lem:full-fibre}, and finish with
-Lemma~\ref{lem:central-relation}. Two steps must be supplied at each such
-finish: the centre is \emph{proper}, the witness being the displayed
-non-containment two lines earlier, and the binary absorbing subuniverse
-produced lives on a \emph{power} and is moved down by
-Lemma~\ref{lem:power-to-base}, which the source cites at one of the three sites
-and omits at the other two.
+Lemma~\ref{lem:central-relation}, discharging at each such finish the two
+obligations of Caveat~\ref{haz:central-relation}: the centre is \emph{proper},
+the witness being the non-containment established one step earlier, and the
+binary absorbing subuniverse produced lives on a \emph{power} and is moved down
+by Lemma~\ref{lem:power-to-base}. This is an outline and not a proof; see
+\S\ref{sec:status}.
 \end{proof}
 
 \begin{longlemma}[The intersection property]\label{lem:intersection-good}
@@ -445,21 +468,23 @@ Let $B\lll A$, $C\lll A$ with $B\cap C\neq\varnothing$. Then
 \end{enumerate}
 \end{longlemma}
 
-\begin{proof}[Proof outline, with the repaired steps in full]
+\begin{proof}[Proof outline, with the delicate steps in full]
 Fix chains $B=B_{k}<\dots<B_{0}=A$ and $C=C_{\ell}<\dots<C_{0}=A$, put
 $\sigma=\bigcap_{i}\sigma_{i}$ and $\omega=\bigcap_{j}\omega_{j}$, and induct on
 $k+\ell$. Every appeal to the inductive hypothesis lands at strictly smaller
-$k+\ell$.
+$k+\ell$: (s) uses (s) and (d) at $k+(\ell-1)$, subcase 2B2 uses (s) at
+$(n-1)+k$, and subcase 2B3 uses (d) at $(n-1)+k$, with $n\le\ell$ throughout.
 
 \smallskip\noindent\textbf{(s).} Split on the type $\mathcal T_{\ell}$ of the
-last step of $C$'s chain. In the case $\mathcal T_{\ell}=\TD$ the source
-asserts $(G\cap C_{\ell-1})/\omega_{\ell}\subt{\TBA,\TC}C_{\ell-1}/
-\omega_{\ell}$ with a \emph{proper} containment, where the cited lemmas supply
-only $\subte{}$. \textbf{[R]} Split the case instead: if the containment is an
-equality then every $\omega_{\ell}$-block meeting $C_{\ell-1}$ meets
-$G\cap C_{\ell-1}$, in particular the block $E$ with
-$C_{\ell}=C_{\ell-1}\cap E$, so $G\cap C_{\ell}\neq\varnothing$, which is what
-was to be proved.
+last step of $C$'s chain. In the case $\mathcal T_{\ell}=\TD$ the natural move
+is to derive $(G\cap C_{\ell-1})/\omega_{\ell}\subt{\TBA,\TC}C_{\ell-1}/
+\omega_{\ell}$ and contradict Definition~\ref{def:types}(iii). But
+Lemmas~\ref{lem:ba-center-intersect} and \ref{lem:factor-type} supply only
+$\subte{}$, so the case must be split: if the containment is an equality then
+every $\omega_{\ell}$-block meeting $C_{\ell-1}$ meets $G\cap C_{\ell-1}$, in
+particular the block $E$ with $C_{\ell}=C_{\ell-1}\cap E$, so
+$G\cap C_{\ell}\neq\varnothing$, which is the conclusion; and if it is proper
+the contradiction stands.
 
 \smallskip\noindent\textbf{(d).} Put
 $S=\{(a_{1}/\delta,\dots,a_{|A|}/\delta): \forall i,j\;(a_{i},a_{j})\in
@@ -473,8 +498,8 @@ $(a,b)\in\sigma\cap\omega$, so $|(B\cap C)/\delta|=1$.
 \emph{Case 2: $(B/\delta)^{|A|}\subseteq S$.} Refine $S$ to $S_{m,n}$ by
 requiring $a_{i}\in B_{m}\cap C_{n}$, and take the least $m$ (subcase 2A) or
 least $n$ (subcase 2B) at which containment fails, splitting on the type of the
-corresponding step. \textbf{[R]} Three steps are supplied here that the source
-does not state. \emph{Properness}: in 2A1 and 2B1 the containments
+corresponding step. Three steps in that split deserve to be written out.
+\emph{Properness}: in 2A1 and 2B1 the containments
 $S_{m,0}\cap(B/\delta)^{|A|}\subt{T_{m}}(B/\delta)^{|A|}$ are proper by the
 minimal choice of $m$, and nonempty because the constant tuples
 $(b/\delta,\dots,b/\delta)$ for $b\in B$ lie in $S_{m,0}$, since $B\subseteq
@@ -489,13 +514,16 @@ Subcase 2C survives and gives $(B\cap C)/\delta=B/\delta$.
 \end{proof}
 
 \begin{hazard}[What remains to be expanded]\label{haz:intersection-draft}
-The proof above is written at the level of its case structure, with every
-repaired step in full. Expanding the twelve subcases of (d) to the level of the
-rest of this section is the largest single piece of writing left; the source
-occupies 292 lines here and nothing in it is wrong. One loose end: the proof
-fixes \emph{minimal} chains for $B$ and $C$ and I could find no step that
-consumes minimality --- a shorter chain only makes the induction measure
-smaller. Either identify the use or drop the hypothesis.
+The argument above is written at the level of its case structure, and is
+therefore \emph{not yet a proof}: the twelve subcases of (d) remain to be
+expanded to the level of the rest of this section. This is the largest single
+piece of writing outstanding, and much of \S\ref{sec:bridge-proofs} onwards
+depends on it. See \S\ref{sec:status}.
+
+One loose end in the statement rather than the proof: minimality of the chains
+for $B$ and $C$ is hypothesised and no step appears to consume it --- a shorter
+chain only makes the induction measure smaller. Either the use should be
+identified or the hypothesis dropped.
 \end{hazard}
 
 \begin{corollary}\label{cor:intersection-good}
@@ -513,10 +541,11 @@ congruence $f_{1}^{-1}(\sigma)$, and read the conclusion back through $f_{1}$.
 \end{proof}
 
 \begin{hazard}\label{haz:cor-intersection}
-\cite{ZhukSimplified} writes $\delta=f^{-1}(\sigma)$ with $f$ undefined; read
-$f_{1}$. The alternative ``empty'' is present here and absent from
-Lemma~\ref{lem:intersection-good}, which hypothesises $B\cap C\neq\varnothing$;
-the empty case needs its own line at every call site.
+The alternative ``empty'' is present in
+Corollary~\ref{cor:intersection-good} and absent from
+Lemma~\ref{lem:intersection-good}, which hypothesises $B\cap C\neq\varnothing$.
+It is a real alternative, and every call site below has to exclude it
+separately.
 \end{hazard}
 
 \begin{lemma}[Parallelogram property for $\TD$]\label{lem:parallelogram-D}
@@ -556,43 +585,13 @@ so $C_{2}=C_{2}'$ and $C_{1}\cap C_{2}=C_{1}\cap C_{2}'\neq\varnothing$.
 
 \subsection{Bridges}\label{sec:bridge-proofs}
 
-This subsection is where the source is least reliable: of its five proofs, one
-rests on a formula that defines the wrong relation, one proves a statement that
-is false, and one asserts a hypothesis it does not have. All three are cured by
-a single missing property, and Lemma~\ref{lem:symmetrise} supplies it free.
-
-\begin{hazard}[Three defects, one cause]\label{haz:bridge-repairs}
-\textbf{[R]} In \cite{ZhukSimplified}:
-\begin{enumerate}\alphlabels\tightlist
-\item the symmetrisation opening the proof of
-  Lemma~\ref{lem:block-good-bridge} is written
-  $\sigma(x_{1},x_{2},x_{3},x_{4})=\exists x_{5}\exists x_{6}\,
-  \delta(x_{1},x_{2},x_{5},x_{5})\wedge\delta(x_{3},x_{4},x_{5},x_{6})$.
-  Clause (d) of Definition~\ref{def:bridge} turns the repeated $x_{5}$ into
-  $x_{1}=x_{2}$, so $\proj_{1,2}(\sigma)\subseteq 0_{A}$ and the relation
-  defined is \emph{never} a bridge, for any $\sigma_{1}$. It is a
-  one-character slip: the intended relation is $\delta^{\circ}$ of
-  Lemma~\ref{lem:symmetrise}, which the source writes correctly $210$ lines
-  later, in the proof of Lemma~\ref{lem:linear-equiv}.
-\item Lemma~\ref{lem:nice-bridge-abelian} is stated there without
-  pair-reflexivity, and is then \emph{false}: on $\mathbf Z_{3}\in\mathcal
-  V_{4}$ the relation
-  $\delta=\{(x_{1},x_{2},x_{3},x_{4}):x_{1}-x_{2}+x_{3}-x_{4}=0\}$ satisfies
-  every hypothesis, and none of the six bijections $\mathbb Z_{3}\to\mathbb
-  Z_{3}$ carries it to $\{x_{1}-x_{2}=x_{3}-x_{4}\}$ (verified by exhaustion).
-  The step that breaks is ``composing $\delta$ with itself we get
-  $\delta_{0}\supseteq\delta$''.
-\item Lemma~\ref{lem:nontrivial-bridge} asserts that
-  $\proj_{1,2}(\delta\cap B^{4}\cap(\cover\sigma\times\cover\sigma))$ is linked
-  ``since $\bcol\delta\supseteq\cover\sigma$''. That inclusion bears on a
-  different hypothesis; linkedness does not follow, and without
-  pair-reflexivity the projection can collapse to $0_{B}$.
-\end{enumerate}
-Pair-reflexivity (Definition~\ref{def:pair-reflexive}) repairs all three, and
-costs nothing: Lemma~\ref{lem:nontrivial-bridge} is invoked exactly once in
-\cite{ZhukSimplified}, on a $\delta^{\circ}$, and
-Lemma~\ref{lem:nice-bridge-abelian} exactly once from inside that proof.
-\end{hazard}
+Three of the statements below --- Lemmas~\ref{lem:nice-bridge-abelian},
+\ref{lem:block-good-bridge} and \ref{lem:nontrivial-bridge} --- require their
+bridge to be \emph{pair-reflexive}, and the hypothesis is not cosmetic in any
+of them: Remark~\ref{rem:phi-twist} exhibits a bridge satisfying every other
+hypothesis of the first and none of its conclusion. Lemma~\ref{lem:symmetrise}
+is what makes the hypothesis free, since every bridge these statements are
+applied to below is a $\delta^{\circ}$.
 
 \begin{lemma}\label{lem:nice-bridge-abelian}
 Let $\sigma$ be a congruence on $\mathbf A$ and $\delta$ a symmetric,
@@ -602,28 +601,54 @@ $(G;+,-)$ with $(A/\sigma;\delta/\sigma)\cong(G;x_{1}-x_{2}=x_{3}-x_{4})$.
 \end{lemma}
 
 \begin{proof}
-By Lemma~\ref{lem:bridge-abelian} and Hobby--McKenzie, $\mathbf A/\sigma$ is
-affine, hence polynomially equivalent to a module $\mathbf G$. Composing
-$\delta$ with itself gives $\delta_{0}=\delta\ast\delta$, an equivalence
-relation on $\mathbf A^{2}$, and $\delta\subseteq\delta_{0}$ by
-Lemma~\ref{lem:symmetrise} --- this is the step that needs pair-reflexivity.
-Then $\delta_{0}/\sigma$ is a congruence of $\mathbf G^{2}$ having the diagonal
-as a block, so it is $\{((x_{1},y_{1}),(x_{2},y_{2})):x_{1}-x_{2}=y_{1}-y_{2}\}$.
-Finally $\delta/\sigma$ is preserved by the Maltsev operation $x-y+z$ and has
-$\bcol\delta=\proj_{1,2}(\delta)=A^{2}$, so $\proj_{1,2,3}(\delta)=A^{3}$; since
-the last entry of $\delta_{0}/\sigma$ is determined by the first three, counting
-gives $\delta=\delta_{0}$.
+Factor by $\sigma$ (Lemma~\ref{lem:irred-quotient}) and assume
+$\sigma=0_{\mathbf A}$. By Lemma~\ref{lem:bridge-abelian} and
+Lemma~\ref{lem:hobby-mckenzie}, $\mathbf A$ is affine, hence polynomially
+equivalent to a $\mathbb Z_{p}$-module $\mathbf G$ and Maltsev via $x-y+z$.
+
+View $\delta$ as a binary relation on $\mathbf A^{2}$ as in the proof of
+Lemma~\ref{lem:bridge-abelian}. It is reflexive, by pair-reflexivity together
+with $\proj_{1,2}(\delta)=A^{2}$, and symmetric by hypothesis. In a Maltsev
+algebra a reflexive compatible binary relation is a congruence: if $\eta$ is
+reflexive and compatible then for $(x,y),(y,z)\in\eta$ the Maltsev term applied
+to $(x,y),(y,y),(y,z)$ gives $(x,z)\in\eta$. So $\delta$ is a congruence of
+$\mathbf G^{2}$.
+
+Clause (d) of Definition~\ref{def:bridge} says that a pair
+$\bigl((x_{1},x_{2}),(x_{3},x_{4})\bigr)$ of $\delta$ has $x_{1}=x_{2}$ exactly
+when $x_{3}=x_{4}$, so the diagonal of $\mathbf G^{2}$ is a $\delta$-block. A
+congruence of $\mathbf G^{2}$ with the diagonal as a block is the kernel of
+$(x,y)\mapsto x-y$ composed with a quotient of $\mathbf G$; since the diagonal
+is exactly one block, no further collapsing occurs, and
+$\delta=\{x_{1}-x_{2}=x_{3}-x_{4}\}$. Taking $G=\mathbf G$ finishes.
 \end{proof}
 
-\begin{remark}[What the untwisted form really is]\label{rem:phi-twist}
+\begin{remark}[Pair-reflexivity is not removable]\label{rem:phi-twist}
 Without pair-reflexivity the correct conclusion is
 $\delta=\{(x_{1},x_{2},x_{3},x_{4}):\varphi(x_{1}-x_{2})=x_{3}-x_{4}\}$ for an
 automorphism $\varphi$ of $G$: factoring out the diagonal exhibits $\delta$ as
 the preimage of a subgroup $K\le G\times G$ that meets $G\times 0$ and
 $0\times G$ trivially and is subdirect, hence a graph. Symmetry says
-$\varphi^{2}=\mathrm{id}$; pair-reflexivity says $\varphi=\mathrm{id}$. The
-counterexample of Hazard~\ref{haz:bridge-repairs}(b) is $\varphi=-\mathrm{id}$,
-which is why it needs $p$ odd.
+$\varphi^{2}=\mathrm{id}$; pair-reflexivity says $\varphi=\mathrm{id}$.
+
+Both $\varphi$ occur. On $\mathbf Z_{3}\in\mathcal V_{4}$ --- the operation
+$x_{1}+x_{2}+x_{3}+x_{4}$ is idempotent since $4\equiv1$, and is a special WNU
+--- take $\sigma=0$ and
+\[
+  \delta=\{(x_{1},x_{2},x_{3},x_{4})\in\mathbb Z_{3}^{4}:
+    x_{1}-x_{2}+x_{3}-x_{4}=0\},
+\]
+which is $\varphi=-\mathrm{id}$. It is a subuniverse of $\mathbf A^{4}$, being
+a subgroup; clause (d) holds because $x_{1}=x_{2}$ iff $x_{3}=x_{4}$;
+$\proj_{1,2}(\delta)=\bcol\delta=A^{2}$; and it is symmetric. Yet no bijection
+$f\colon\mathbb Z_{3}\to\mathbb Z_{3}$ carries $\delta$ to
+$\{x_{1}-x_{2}=x_{3}-x_{4}\}$: such an $f$ would have to satisfy
+$f(x_{1})-f(x_{2})=f(x_{3})-f(x_{4})$ whenever $x_{1}-x_{2}+x_{3}-x_{4}=0$, and
+putting $(x_{1},x_{2},x_{3},x_{4})=(0,b,b,0)$ gives $2\bigl(f(0)-f(b)\bigr)=0$,
+hence $f(0)=f(b)$ for every $b$ since $p$ is odd --- so $f$ is constant, not a
+bijection. Since every abelian group of order $3$ is $\mathbb Z_{3}$, no $G$
+works, and Lemma~\ref{lem:nice-bridge-abelian} genuinely fails without its
+hypothesis.
 \end{remark}
 
 \begin{lemma}\label{lem:block-good-bridge}
@@ -632,24 +657,32 @@ $\proj_{1,2}(\delta)\subseteq\bcol\delta$ and $\proj_{1,2}(\delta)$ linked.
 Then $\mathbf A$ is BA and centre free.
 \end{lemma}
 
-\begin{proof}[Proof outline, with the supplied steps]
+\begin{proof}[Proof outline, with the delicate steps in full]
 Replace $\delta$ by $\sigma:=\delta^{\circ}$ of Lemma~\ref{lem:symmetrise} and
 put $\omega=\proj_{1,2}(\sigma)=\proj_{1,2}(\delta)$. Note first that
-$\bcol\delta$ is \emph{reflexive}, because $0_{A}\subseteq\proj_{1,2}(\delta)
-\subseteq\bcol\delta$ by clause (c); hence $\omega\subseteq\bcol\delta
-\subseteq\bcol\sigma$, and $\bcol\sigma$ is symmetric, which is what legitimises
-the ``without loss of generality'' below. Induct on $|A|$.
+$\bcol\delta$ is \emph{reflexive}: clause (c) of Definition~\ref{def:bridge}
+gives $0_{A}\subseteq\proj_{1,2}(\delta)$, and the hypothesis gives
+$\proj_{1,2}(\delta)\subseteq\bcol\delta$. Hence $\delta$ is a reflexive
+bridge, so Lemma~\ref{lem:symmetrise} applies and gives
+$\omega\subseteq\bcol\delta\subseteq\bcol\sigma$ with $\bcol\sigma$
+symmetric, which is what legitimises the ``without loss of generality'' below.
+Induct on $|A|$.
 
 Suppose $B\subt{T}\mathbf A$ with $T\in\{\TBA,\TC\}$. Since $\omega$ is linked,
 $\omega$ meets $(A\setminus B)\times B$ or $B\times(A\setminus B)$; say the
 first, and pick $(a,b)$ there.
 
-\emph{Case 1: some subalgebra $D\lneq A$ contains $a$ and $b$.} Let $E$ be the
-block containing $a,b$ of the transitive closure of
-$(\omega\cup\omega^{-1})\cap D^{2}$; that closure is a congruence on $\mathbf D$,
-because the transitive closure of a subalgebra of $D^{2}$ is a subalgebra, so
-$E$ is a subuniverse, and $\omega\cap E^{2}$ is linked by construction.
-\emph{This is the existence of $E$, which the source asserts.} Moreover
+\emph{Case 1: some subalgebra $D\lneq A$ contains $a$ and $b$.} Put
+$\rho=(\omega\circ\omega^{-1})\cap D^{2}$, which is a subalgebra of
+$\mathbf D^{2}$, reflexive because $\omega$ is reflexive and symmetric by
+construction. Its transitive closure is again a subalgebra, hence a congruence
+on $\mathbf D$; let $E$ be the block containing $a$ and $b$, a subuniverse.
+Because $\omega$ is reflexive, every undirected $\omega$-edge is a $\rho$-edge
+and every $\rho$-edge is a two-edge undirected $\omega$-path, so $\rho$ and the
+undirected $\omega$-graph have the same connected components; hence
+$\omega\cap E^{2}$ is linked, and $a,b$ lie in one component.
+\emph{Note that $(\omega\cup\omega^{-1})\cap D^{2}$ would not serve: a union of
+two subuniverses need not be closed.} Moreover
 $\proj_{1,2}(\sigma\cap E^{4})=\omega\cap E^{2}$: the inclusion $\subseteq$ is
 trivial and $\supseteq$ holds because pair-reflexivity puts
 $(x_{1},x_{2},x_{1},x_{2})$ in $\sigma$ for every $(x_{1},x_{2})\in\omega$.
@@ -679,10 +712,10 @@ $(a,a,b,b)$ witness
 which is hypothesis (4) of Corollary~\ref{cor:stable-intersection} for the
 ternary relation $\{(x_{2},x_{3},x_{4}):\sigma(a,x_{2},x_{3},x_{4})\}$ with
 $n=3$, all types $\TC$ and all ambients $A$ --- legitimate because $\lll$ is
-reflexive. \emph{The source displays the three tight boxes
-$\{a\}\times B\times C\times B$, $\{a\}\times C\times C\times C$,
-$\{a\}\times C\times B\times B$ instead, which are subsets of these and so do
-not match the corollary's shape; widening them is the missing step.} Since
+reflexive. \emph{The three tight boxes of these witnesses --- $\{a\}\times B\times C\times
+B$, $\{a\}\times C\times C\times C$, $\{a\}\times C\times B\times B$ --- are
+subsets of the displayed ones and do not match the corollary's shape; the
+widening is what makes the appeal legitimate.} Since
 $n=3$ and all types are $\TC$, every alternative of the corollary fails, so
 hypothesis (3) must fail:
 $\sigma\cap(\{a\}\times C\times C\times B)\neq\varnothing$. Put
@@ -725,12 +758,13 @@ $\proj_{1,2}(\delta')=\cover\sigma\cap B^{2}$: for
 $(x_{1},x_{2})\in\cover\sigma\cap B^{2}$ pair-reflexivity puts
 $(x_{1},x_{2},x_{1},x_{2})$ in $\delta$ --- legitimate because
 $\cover\sigma\subseteq\proj_{1,2}(\delta)$ --- and that tuple lies in $B^{4}$
-and in $\cover\sigma\times\cover\sigma$. \emph{This is the step the source
-asserts.} The resulting relation is linked precisely because $B$ is a block,
+and in $\cover\sigma\times\cover\sigma$ --- \emph{this is where
+pair-reflexivity is spent, and without it the projection can collapse to
+$0_{B}$}. The resulting relation is linked precisely because $B$ is a block,
 and is contained in $\bcol{\delta'}$ because $\cover\sigma\subseteq\bcol\delta$;
 so Lemma~\ref{lem:block-good-bridge} makes $B$ BA and centre free. Then
 $\cover\sigma\cap B^{2}$, being linked and subdirect on $B$, must be all of
-$B^{2}$ by Theorem~\ref{lem:linked-implies-abs}. Blocks of size $1$ satisfy
+$B^{2}$ by Corollary~\ref{lem:linked-implies-abs}. Blocks of size $1$ satisfy
 $B^{2}\subseteq\cover\sigma$ trivially, so
 $\cover\sigma=\operatorname{LeftLinked}(\cover\sigma)$ is an equivalence
 relation and hence a congruence, giving (a); and (b) follows, one-element
@@ -763,11 +797,10 @@ $G_{B}\cong\mathbb Z_{p}^{n_{B}}$.
 \end{proof}
 
 \begin{hazard}[It is minimality, not irreducibility]\label{haz:minimality-not-irred}
-The contradiction at the end is with the \emph{minimality of $\cover\sigma$},
-which is a consequence of irreducibility; \cite{ZhukSimplified} says
-``contradicts the irreducibility of $\sigma$''. The distinction matters in a
-formalization, where $\cover\sigma$ is data attached to a proof of
-irreducibility (Hazard~\ref{haz:irreducible}).
+The contradiction at the end of the proof is with the \emph{minimality of
+$\cover\sigma$}, which is a consequence of irreducibility and not the same
+statement. The distinction matters wherever $\cover\sigma$ is treated as data
+attached to a proof of irreducibility (Caveat~\ref{haz:irreducible}).
 \end{hazard}
 
 \begin{proof}[Proof of Lemma~\ref{lem:linear-equiv}]
@@ -775,14 +808,35 @@ $(a)\Rightarrow(b)$: take $\delta=S$ of Definition~\ref{def:linear-congruence},
 which by Lemma~\ref{lem:linear-bridge} is a bridge with
 $\bcol S=\cover\sigma\supsetneq\sigma$.
 
-$(b)\Rightarrow(a)$: given a bridge $\delta$ with $\bcol\delta\supsetneq\sigma$,
-which we may take reflexive, form $\delta^{\circ}$ of
+$(b)\Rightarrow(a)$: given a \emph{reflexive} bridge $\delta$ with
+$\bcol\delta\supsetneq\sigma$, form $\delta^{\circ}$ of
 Lemma~\ref{lem:symmetrise}; it is symmetric and pair-reflexive, and
 $\bcol{\delta^{\circ}}\supseteq\bcol\delta\supsetneq\sigma$. Now
 Lemma~\ref{lem:nontrivial-bridge} gives items (b) and (c) of
 Definition~\ref{def:linear-congruence}, with the witness
 $S=\delta^{\circ}\cap(\cover\sigma\times\cover\sigma)$.
 \end{proof}
+
+\begin{hazard}[The reflexivisation is an open obligation]\label{haz:reflexivise}
+The direction $(b)\Rightarrow(a)$ as just proved consumes a \emph{reflexive}
+bridge, because Lemma~\ref{lem:symmetrise} needs reflexivity of its input for
+two of its conclusions: that $\delta^{\circ}$ is reflexive, and ---
+what is actually used here --- that
+$\bcol{\delta^{\circ}}=\bcol\delta\circ\bcol\delta^{-1}$ contains
+$\bcol\delta$. Lemma~\ref{lem:linear-equiv}(b) as stated supplies only a
+bridge.
+
+Two routes close the gap and neither is taken here. Either prove a
+reflexivisation lemma --- that a bridge $\delta$ from $\sigma$ to $\sigma$ with
+$\bcol\delta\supsetneq\sigma$ may be replaced by a reflexive one with the
+same property --- or restate (b) as ``there is a \emph{reflexive} bridge
+$\delta$ from $\sigma$ to $\sigma$ with $\bcol\delta\supsetneq\sigma$'', which
+is what $(a)\Rightarrow(b)$ produces, since the witness of
+Lemma~\ref{lem:linear-bridge} \emph{is} reflexive, and then check the two call
+sites. Until one is done, $(b)\Rightarrow(a)$ and the proof of
+Lemma~\ref{lem:linear-on-top}, which makes the same move, are incomplete. See
+\S\ref{sec:status}.
+\end{hazard}
 
 \begin{longlemma}\label{lem:pc-inductive-step}
 Let $\sigma$ be a congruence on $\mathbf A$ and $\delta$ a reflexive bridge
@@ -802,7 +856,7 @@ $P=\proj_{1,2}(\delta)$, which is symmetric by (ii), and
 $W=\proj_{1,2,3}(\delta)\sdle\mathbf P\times\mathbf A$. Induct on $|A|$.
 
 \emph{Case 1: some $B\subt{T}\mathbf A$ with $|B|>1$, $T\in\{\TBA,\TC\}$.}
-\textbf{[R]} Put $W'=\proj_{1,2,3}(\delta\cap B^{4})$ and write
+Put $W'=\proj_{1,2,3}(\delta\cap B^{4})$ and write
 $W(x_{1},x_{2},x_{3})=\exists x_{4}\,\delta(x_{1},x_{2},x_{3},x_{4})\wedge
 A(x_{1})\wedge A(x_{2})\wedge A(x_{3})\wedge A(x_{4})$ with $A$ the full unary
 relation. Replacing $A$ by $B$ --- a \emph{single} application of
@@ -825,8 +879,8 @@ $(a,b,c,d)\in\delta$ with $c\neq a$. If $a=b$ then $c=d$ by clause (d) and we
 are done. If $\{a\}\circ\proj_{1,3}(\delta)\neq A$ then that set is a strong
 subuniverse containing $a$ and $c$, so of size $>1$, which is Case 1.
 Otherwise choose $(a,e,b,f)\in\delta$. By (ii), $(b,a,b,a)\in\delta$. Let $g$
-be a ternary absorbing operation for $\{a\}$ --- available for $T=\TC$ by
-Lemma~\ref{lem:central-ternary}, which the source does not cite. Applying $g$
+be a ternary absorbing operation for $\{a\}$, available for $T=\TC$ by
+Lemma~\ref{lem:central-ternary}. Applying $g$
 to $(a,e,b,f)$, $(b,a,b,a)$ and $(a,a,a,a)$ gives $(a,a,g(b,b,a),a)\in\delta$,
 whence $g(b,b,a)=a$ by clause (d); applying $g$ to $(b,a,b,a)$, $(b,a,b,a)$ and
 $(a,e,b,f)$ then gives $(a,a,b,a)\in\delta$, whence $b=a$, a contradiction.
@@ -855,21 +909,27 @@ $\cover\sigma$; this gives three cases.
 
 If both equal $\sigma$, then for $(a,b,c,d)\in\xi$ the classes $c/\sigma$ and
 $d/\sigma$ are determined by $a/\sigma,b/\sigma$; since $(a,b,a,b)\in\xi$ we get
-$(a,c),(b,d)\in\sigma$, so $\xi$ is trivial. \emph{The source then asserts that
-the same determinacy holds for $\delta$, ``since
-$\proj_{1,2}(\delta)=\proj_{3,4}(\delta)$''. The bridge between the two is a
-counting argument, and this is where that hypothesis is spent:} on
+$(a,c),(b,d)\in\sigma$, so $\xi$ is trivial. \emph{Transferring that
+determinacy from $\xi=\delta\ast\delta^{-1}$ to $\delta$ itself is a counting
+argument, and it is where the hypothesis
+$\proj_{1,2}(\delta)=\proj_{3,4}(\delta)$ is spent:} on
 $\cover\sigma/\sigma$, which is finite, $\delta$ induces a bipartite relation
 whose left neighbourhoods are nonempty, pairwise disjoint --- that is what the
 case gives --- and cover the right side; equal finite cardinalities force every
 neighbourhood to be a singleton, so the induced relation is a bijection and
-determinacy holds in both directions. With that, the two auxiliary relations
-$\zeta_{1},\zeta_{2}$ of the source are bridges when they need to be, and
+determinacy holds in both directions. With that, the auxiliary relations
+\begin{align*}
+  \zeta_{1}(x_{1},x_{2},x_{3},x_{4})&=\exists y\;
+    \delta(x_{1},y,x_{3},x_{4})\wedge\delta(x_{2},y,x_{3},x_{4}),\\
+  \zeta_{2}(x_{1},x_{2},x_{3},x_{4})&=\exists y\;
+    \delta(x_{1},x_{2},x_{3},y)\wedge\delta(x_{1},x_{2},x_{4},y)
+\end{align*}
+are bridges from $\sigma$ to $\sigma$ when they need to be, and
 $\bcol{\zeta_{1}}=\bcol{\zeta_{2}}=\sigma$ --- forced, since $\sigma$ is PC ---
 yields $\proj_{1,3}(\delta)=\sigma$ or $\proj_{1,4}(\delta)=\sigma$, and by
 the same argument with $x_{1},x_{2}$ interchanged, $\proj_{2,4}(\delta)=\sigma$
 or $\proj_{2,3}(\delta)=\sigma$. \emph{Two of the four combinations must now be
-excluded, which the source does not do:} $\proj_{1,3}=\proj_{2,3}=\sigma$ would
+excluded:} $\proj_{1,3}=\proj_{2,3}=\sigma$ would
 give $\proj_{1,2}(\delta)\subseteq\sigma$, against
 $\proj_{1,2}(\delta)=\cover\sigma\supsetneq\sigma$, and likewise for
 $\proj_{1,4}=\proj_{2,4}$. The two surviving combinations are the conclusion,
@@ -889,11 +949,10 @@ produces $(x_{1},x_{1},x_{3},x_{3})\in\xi$ with $(x_{1},x_{3})\notin\sigma$
 directly.} The third case is the mirror image, using $\proj_{1,2,4}$.
 \end{proof}
 
-\begin{hazard}[Two more hedges]\label{haz:pc-bridges-hedges}
-The third case above is ``this case can be considered in the same way as
-Case 2'' in \cite{ZhukSimplified}. It is genuinely the mirror: $(a,b,a,b)\in\xi$
-places $b$ in the block, and $\cover\sigma\subseteq\operatorname{RightLinked}$
-places $a$ and $c$. Writing it out is mechanical.
+\begin{hazard}[The third case]\label{haz:pc-bridges-hedges}
+The third case is genuinely the mirror of the second: $(a,b,a,b)\in\xi$ places
+$b$ in the block, and $\cover\sigma\subseteq\operatorname{RightLinked}$ places
+$a$ and $c$. Writing it out is mechanical, and it is not written out here.
 \end{hazard}
 
 \subsection{Types interaction}\label{sec:types-interaction}
@@ -949,8 +1008,9 @@ since $C_{1}\cap B_{2}=B_{1}\cap B_{2}$ would put $B_{1}\cap C_{2}$ inside
 $C_{1}\cap C_{2}=\varnothing$. Their intersection is empty, so
 Lemma~\ref{lem:possible-intersections} gives $T_{1}=T_{2}\in\{\TBA,\TC\}$.
 
-\emph{Mixed.} Let $T_{1}\in\{\TBA,\TC\}$ and $T_{2}=\TD$ (the mirror case,
-which \cite{ZhukSimplified} does not mention, is identical). By
+\emph{Mixed.} Let $T_{1}\in\{\TBA,\TC\}$ and $T_{2}=\TD$; the mirror case
+$T_{1}=\TD$, $T_{2}\in\{\TBA,\TC\}$ is identical with the indices swapped, the
+hypotheses being symmetric. By
 Lemma~\ref{lem:intersection-good}(d), $(B_{1}\cap B_{2})/\sigma_{2}$ has size
 $1$ or is all of $B_{2}/\sigma_{2}$. In the first case the single block is the
 one defining $C_{2}$, because $B_{1}\cap C_{2}\neq\varnothing$; then
@@ -972,7 +1032,7 @@ not follow.} Its second alternative, $(B_{1}\cap C_{2})/\sigma_{1}=B_{1}/
 $C_{1}$; so $|(B_{1}\cap C_{2})/\sigma_{1}|=1$ and the ``moreover'' clause
 gives $\sigma_{1}\supseteq\omega\cap\sigma_{2}$, because the chain witnessing
 $C_{2}\lll A$ is the chain for $B_{2}$ extended by the step
-$C_{2}\subt{\TD(\sigma_{2})}B_{2}$ (Hazard~\ref{haz:lll-chain}). Symmetrically
+$C_{2}\subt{\TD(\sigma_{2})}B_{2}$ (Caveat~\ref{haz:lll-chain}). Symmetrically
 $\sigma_{2}\supseteq\omega\cap\sigma_{1}$, so
 $\omega\cap\sigma_{1}=\omega\cap\sigma_{2}$. Finally, for $c_{1}\in C_{1}\cap
 B_{2}$ and $c_{2}\in B_{1}\cap C_{2}$ we have $(c_{1},c_{2})\in\omega$, since
@@ -1011,8 +1071,8 @@ For $T=\TD$ one builds
 $S\le(B_{1}/\sigma)^{|A_{1}|}\times B_{2}'/\delta$ and finds a full column over
 $d=c/\delta$, while $(B_{1}/\sigma)^{|A_{1}|}\times B_{2}''/\delta\not\subseteq
 S$ by minimality. Corollary~\ref{cor:intersection-good} then computes
-$\proj_{|A_{1}|+1}(S)$. \textbf{[R]} It offers three alternatives and the source
-takes the third without comment. ``Empty'' is excluded by
+$\proj_{|A_{1}|+1}(S)$. It offers three alternatives and only the third gives
+the contradiction. ``Empty'' is excluded by
 $R\cap(B_{1}\times B_{2})\neq\varnothing$. ``Size one'' is excluded thus: the
 single $\delta$-class would have to be $[c]_{\delta}$, since $c$ has an
 $R$-partner in $B_{1}$; and $B_{2}''=B_{2}'\cap E$ for a $\delta$-block $E$, so
@@ -1057,8 +1117,7 @@ $(\delta\vee(\sigma\cap\omega))\cap\omega=\sigma\cap\omega$.
 \begin{proof}
 Throughout we use $B^{2}\subseteq\omega$, which holds because each $B_{i}$ in
 the chain lies inside a single block of its own dividing congruence, and $B$ is
-contained in every $B_{i}$. \emph{The source uses this at least four times and
-never states it.}
+contained in every $B_{i}$. \emph{It is used at least four times below.}
 
 (2). The hypothesis gives $\sigma$-classes $C_{1},C_{2}$ meeting $B$ with
 $\bigl((C_{1}\cap B)\times(C_{2}\cap B)\bigr)\cap\delta=\varnothing$. Then
@@ -1087,7 +1146,7 @@ $\delta'\supseteq\sigma\cap\omega$ this is (4).
 \end{proof}
 
 \begin{lemma}\label{lem:main-existence}
-\textbf{[R]} Let $B\lll A$ and let $\sigma$ be a congruence on $\mathbf A$ with
+Let $B\lll A$ and let $\sigma$ be a congruence on $\mathbf A$ with
 $|B/\sigma|>1$ and $B/\sigma$ BA and centre free. Then there is a dividing
 congruence $\delta\supseteq\sigma$ for $B\le A$.
 \end{lemma}
@@ -1111,18 +1170,19 @@ $\delta$}, $\operatorname{LeftLinked}(S_{i}\cap B^{2})/\delta=(B/\delta)^{2}$,
 so $(S_{i}\cap B^{2})/\delta$ is linked. It is also \emph{proper}: stability
 under $\delta$ makes $S_{i}$ a union of products of $\delta$-blocks, so
 $(S_{i}\cap B^{2})/\delta=(B/\delta)^{2}$ would give $B^{2}\subseteq S_{i}$.
-Theorem~\ref{lem:linked-implies-abs} then produces a proper nonempty strong
+Corollary~\ref{lem:linked-implies-abs} then produces a proper nonempty strong
 subuniverse of $B/\delta$, a contradiction.
 \end{proof}
 
-\begin{hazard}[Two slips, one cause]\label{haz:main-existence}
-\cite{ZhukSimplified} factors by $\sigma$ in the last four lines and states the
-conclusion for $B/\delta$; those do not match, and with $\sigma$ the properness
-step has no support. Reading $\delta$ throughout is plainly what was meant ---
-$B/\delta$ was shown BA and centre free two lines earlier for exactly this use.
-Properness then needs the stability clause, which the source drops when it
-introduces the $S_{i}$; stability is the only part of
-Definition~\ref{def:irreducible} doing work here.
+\begin{hazard}[Where each hypothesis is spent]\label{haz:main-existence}
+Two things in that proof are easy to lose. The relation must be factored by
+$\delta$ and not by $\sigma$ --- $(S_{i}\cap B^{2})/\sigma$ lives on $B/\sigma$
+and the conclusion is about $B/\delta$, and it is $B/\delta$ that was shown BA
+and centre free. And properness needs the words \emph{stable under $\delta$} in
+the unfolding of irreducibility: that clause is what makes $S_{i}$ a union of
+products of $\delta$-blocks, and it is the only part of
+Definition~\ref{def:irreducible} doing work here. Without it,
+$S_{i}\cap B^{2}\subsetneq B^{2}$ survives factoring only by accident.
 \end{hazard}
 
 \begin{lemma}\label{lem:factor-by-delta}
@@ -1172,7 +1232,8 @@ $\delta$} with $B\cap E\neq B$, which exists because $|B/\delta|>1$. Its type is
 $\TL$ or $\TPC$ according to $\delta$.
 \end{proof}
 
-\begin{proof}[Proof of Lemma~\ref{lem:intersect-all}]
+\begin{proof}[Proof of Lemma~\ref{lem:intersect-all} and
+  Corollary~\ref{cor:intersect-all-weak}]
 (t). For $T\in\{\TBA,\TC\}$ this is Lemma~\ref{lem:ba-center-intersect}. For
 $T=\TS$, take $E\subseteq C$ with $E\subt{\TBA,\TC}B$; if $C\cap D=\varnothing$
 there is nothing to prove, and otherwise $B\cap D\neq\varnothing$, so
@@ -1184,29 +1245,39 @@ $C\cap D\in\{\varnothing,B\cap D\}$, and $C\cap D\subt{T(\sigma)}B\cap D$
 respectively.
 
 (i). Apply (t) to each step of a chain for $B\lll^{A}A$, obtaining
-$B\cap D\dlll^{A}D$; with $D\lll A$ this gives $B\cap D\dlll A$.
+$B\cap D\dlll^{A}D$. The corollary follows by composing with $D\lll A$.
 \end{proof}
 
-\begin{hazard}[The statement is weaker than the proof]\label{haz:intersect-all-strength}
-\textbf{[R]} The proof of (i) establishes $B\cap D\dlll^{A}D$ and then weakens
-it. Three later arguments use the stronger form while citing (i):
-Corollary~\ref{cor:prop-relations}(b) and (m), and
-Lemma~\ref{lem:multitype-chain}. State (i) as $B\cap D\dlll^{A}D$ and derive
-$B\cap D\dlll A$ as a corollary.
+\begin{hazard}[The superscript in (i) is needed]\label{haz:intersect-all-strength}
+Corollary~\ref{cor:intersect-all-weak} is weaker than
+Lemma~\ref{lem:intersect-all}(i), and three later arguments need the stronger
+form: Corollary~\ref{cor:prop-relations}(b) and (m), which conclude
+$R''\dlll^{R}R'$, and Lemma~\ref{lem:multitype-chain}. Stating only the
+corollary --- as is natural, since it is the symmetric-looking form --- makes
+all three unprovable.
 \end{hazard}
 
 \begin{proof}[Proof of Lemma~\ref{lem:propagation}]
 (bt) is the reverse-homomorphism lemma and (b) follows by iteration. (fs) is
-Lemma~\ref{lem:factor-type}. (ft) is Lemma~\ref{lem:factor-by-delta} for
-$T\in\{\TPC,\TL,\TD\}$ and follows from (fs) for $T\in\{\TBA,\TC,\TS\}$ ---
-\emph{the source cites only the former, which does not cover the absorption
-types}; (f) then follows by iteration, all three outcomes of (ft) staying inside
-the type list of Definition~\ref{def:lll}.
+Lemma~\ref{lem:factor-type}. (ft) splits by type. For $T\in\{\TBA,\TC,\TS\}$ it follows from (fs). For
+$T\in\{\TPC,\TL\}$ it is Lemma~\ref{lem:factor-by-delta}; and for $T=\TD$,
+which that lemma does not cover, split the witnessing congruence into its
+linear and PC cases and apply the lemma to each, the two conclusions being the
+same three alternatives. Then (f) follows by iteration, all three outcomes of
+(ft) staying inside the type list of Definition~\ref{def:lll}.
+
+(bt) is the reverse-homomorphism step. Factor $f$ as the quotient by its kernel
+$\kappa$ followed by an isomorphism; along an isomorphism every clause is
+transported, and for the quotient, $f^{-1}(C')=C'\circ\kappa$ and
+$f^{-1}(B')=B'\circ\kappa$, so the claim is
+Corollary~\ref{cor:prop-from-factor}, whose right-to-left direction is exactly
+this statement.
 
 (fm). Let $C=C_{1}\cap\dots\cap C_{t}$ with $C_{i}\subt[A]{T(\sigma_{i})}B$ and
-induct on $t$. For $t=1$ this is (ft), and \emph{the hypothesis that $f(B)$ is
-$\TS$-free is exactly what kills its middle alternative}, which $\MT T$ cannot
-absorb. If $C_{i}/\delta=B/\delta$ for some $i$, say $i=t$, put
+induct on $t$. Write $\delta$ for the kernel of $f$, so that $f(X)$ may be read
+as $X/\delta$ throughout. For $t=1$ this is (ft), and \emph{the hypothesis that
+$f(B)$ is $\TS$-free is exactly what kills its middle alternative}, which
+$\MT T$ cannot absorb. If $C_{i}/\delta=B/\delta$ for some $i$, say $i=t$, put
 $D_{j}=C_{j}\cap C_{t}$; by Lemma~\ref{lem:intersect-all}(t)
 $D_{j}\subte[A]{T(\sigma_{j})}C_{t}$, and the inductive hypothesis applied to
 $C\subte{\MT T}C_{t}$ gives the claim. Otherwise every
@@ -1220,8 +1291,9 @@ every $C_{i}/\delta$ has $E\cap B\subseteq C_{1}\cap\dots\cap C_{t}$, whence
 \]
 the inclusion $\subseteq$ being trivial. This is the one place where the failure
 of images to commute with intersections (\S\ref{sec:legislation}, item
-\ref{leg:quotient}) is repaired, and it should be extracted as a lemma in its
-own right. (bm) follows from (bt) by intersecting.
+\ref{leg:quotient}) is repaired, and the saturation hypothesis
+$\delta\cap B^{2}\subseteq\sigma_{i}\cap B^{2}$ is precisely what buys it.
+(bm) follows from (bt) by intersecting.
 \end{proof}
 
 \begin{longtheorem}[Stable intersection, restated from Theorem~\ref{thm:stable-intersection}]
@@ -1242,17 +1314,23 @@ Lemma~\ref{lem:intersect-all}, properly because $C_{2}'=B_{2}'$ would make
 $C_{1}\cap B_{2}'$ empty. The three hypotheses of the pair case hold, so
 $T_{1}=T_{2}$ and, for the dividing types, the bridge exists.
 
-If $T_{1}=\TPC$ then $\sigma_{1}\circ\sigma_{2}=\sigma_{1}=\sigma_{2}$, since
-otherwise composing the bridge with its transpose gives a bridge from
-$\sigma_{1}$ to itself with $\bcol{}\supsetneq\sigma_{1}$, making $\sigma_{1}$
-linear. With $\sigma_{1}=\sigma_{2}=:\sigma$, the blocks $E_{1},E_{2}$ defining
+If $T_{1}=\TPC$ then $\sigma_{1}\circ\sigma_{2}=\sigma_{1}=\sigma_{2}$. Indeed,
+composing the bridge with its transpose gives a bridge from $\sigma_{1}$ to
+itself, and if $\sigma_{1}\circ\sigma_{2}\supsetneq\sigma_{1}$ its collapse
+properly contains $\sigma_{1}$, making $\sigma_{1}$ linear by
+Lemma~\ref{lem:linear-equiv}. That leaves the possibility of proper nesting,
+$\sigma_{1}\circ\sigma_{2}=\sigma_{1}$ with $\sigma_{1}\neq\sigma_{2}$, which
+is excluded by Lemma~\ref{lem:bridge-to-pc}: a bridge between PC congruences
+makes $\mathbf A/\sigma_{1}\cong\mathbf A/\sigma_{2}$ with the induced relation
+on blocks bijective, and two congruences on one finite algebra with equal
+quotient sizes and $\sigma_{2}\subseteq\sigma_{1}$ are equal. With $\sigma_{1}=\sigma_{2}=:\sigma$, the blocks $E_{1},E_{2}$ defining
 $C_{1},C_{2}$ are \emph{distinct} --- equal blocks would put the point of
 $B_{1}\cap C_{2}'$ in $C_{1}\cap C_{2}'$ --- so $C_{1}\cap C_{2}=\varnothing$;
 applying this to every pair and then the hypothesis at $j=3$ forces $n=2$.
 
-\textbf{[R]} For $T_{1}=\TC$ the source offers nothing, and the argument above
-has no analogue: there is no congruence and no pair of blocks. Here is the
-missing proof. Suppose $n\ge3$, put $D=\bigcap_{i}B_{i}$ and $E_{i}=C_{i}\cap D$.
+For $T_{1}=\TC$ the argument just given has no analogue: there is no congruence
+and no pair of blocks. Suppose $n\ge3$, put $D=\bigcap_{i}B_{i}$ and
+$E_{i}=C_{i}\cap D$.
 Then $D$ is a nonempty subuniverse, containing $B_{1}\cap C_{2}\cap\dots\cap
 C_{n}$; each $E_{i}\subte{\TC}D$ by Lemma~\ref{lem:ba-center-intersect}, and
 properly, since $E_{j}=D$ would give $\bigcap_{i}E_{i}=\bigcap_{i\neq j}E_{i}
@@ -1268,13 +1346,20 @@ $(E_{1},\dots,E_{n})$-essential. By \cite[Lem.~6.11]{ZhukStrong} no such
 relation exists for $n\ge3$ when the $E_{i}$ are central. Hence $n=2$.
 \end{proof}
 
-\begin{hazard}[What the repair costs]\label{haz:d4}
-\cite{ZhukSimplified} argues $n=2$ only for $\TPC$, then asserts case (c). The
-repair needs \cite[Lem.~6.11]{ZhukStrong}, whose printed proof cites
-\emph{itself} three times where it means the preceding lemma; a self-contained
-rendering must supply both. Every ingredient is already formalised in the
-predecessor Lean development: essentiality, the Barto--Kazda criterion, and
-``central implies ternary absorbing''.
+\begin{hazard}[What the type-$\TC$ case costs]\label{haz:d4}
+The type-$\TC$ argument is the one place in this section that reaches outside
+the material developed here, to \cite[Lem.~6.11]{ZhukStrong}: \emph{for
+$n\ge3$ and $E_{i}$ central in $\mathbf D$, there is no
+$(E_{1},\dots,E_{n})$-essential relation $R\le D^{n}$}. Two notes for anyone
+checking it. Its printed proof cites \emph{itself} three times where it means
+the preceding lemma, so a self-contained rendering must supply both. And its
+ingredients are exactly the Barto--Kazda criterion
+(Lemma~\ref{lem:barto-kazda}) and ``central implies ternary absorbing''
+(Lemma~\ref{lem:central-ternary}), both of which are already available above.
+
+Nonemptiness and properness of each $E_{i}$ are established before the
+essential-relation theorem is applied, and both are needed: essentiality is a
+statement about proper nonempty subsets.
 \end{hazard}
 
 \begin{proof}[Proof of Corollary~\ref{cor:stable-intersection}]
@@ -1292,9 +1377,10 @@ $D_{j}\lll A$ from part (i); collapsing the equalities gives the chain.
 \end{proof}
 
 \begin{proof}[Proof of Lemma~\ref{lem:linear-on-top}]
-\textbf{[R]} By Lemma~\ref{lem:linear-equiv} there is a bridge $\delta$ from
-$\sigma$ to $\sigma$ with $\bcol\delta\supsetneq\sigma$, which we may take
-reflexive; replace it by $\delta^{\circ}$, symmetric and pair-reflexive.
+By Lemma~\ref{lem:linear-equiv} there is a bridge $\delta$ from $\sigma$ to
+$\sigma$ with $\bcol\delta\supsetneq\sigma$; take it reflexive
+(Caveat~\ref{haz:reflexivise}) and replace it by $\delta^{\circ}$, symmetric
+and pair-reflexive.
 Lemma~\ref{lem:nontrivial-bridge}(c) applies, and $\cover\sigma=A^{2}$ is a
 congruence with the single block $A$, so $A/\sigma\cong\mathbb Z_{p}^{m}$ as a
 group. Now $m=0$ gives $\sigma=A^{2}$, impossible for an irreducible congruence
@@ -1334,54 +1420,55 @@ empty, and the inductive hypothesis at $B_{1}''$, together with
 $C_{1}\subseteq B_{1}'$ and $\bigcap_{j}\omega_{j}\subseteq\sigma_{i}$, finishes.
 \end{proof}
 
-\begin{hazard}[A citation that does no work]\label{haz:multiply-citation}
-\cite{ZhukSimplified} invokes Theorem~\ref{thm:stable-intersection} for the
-dichotomy above. No theorem is consumed: the intersection is empty at $B_{1}$
-by hypothesis, so either it is empty at $A$ or there is a first step where it
+\begin{hazard}[This is not yet a proof]\label{haz:multiply-citation}
+The argument above is not complete, and it should not be read as though it
+were. It does not fix one induction statement --- the components are rewritten
+as type $\TD$ although the lemma tracks a fixed $T\in\{\TPC,\TL,\TD\}$ --- it
+does not construct the object to which the inductive hypothesis is applied at
+the first step, and the two inclusions at the end are asserted rather than
+derived. This needs a rewrite, not polishing. See \S\ref{sec:status}.
+
+One thing the argument does \emph{not} need is a theorem: the Case~1/Case~2
+dichotomy is elementary, since the intersection is empty at $B_{1}$ by
+hypothesis, so either it is empty at $A$ or there is a first step where it
 becomes so.
 \end{hazard}
 
-\begin{proof}[Proof of Lemma~\ref{lem:maximal-mult}]
-\textbf{[R]} Write $\bar X$ for $X/\sigma$ and $C_{1}=\bigcap_{j\le t}C_{1}^{j}$
-as above. By Lemma~\ref{lem:propagation}(ft) each $\bar C_{1}^{j}$ is
-$\bar B_{1}$, or $\subt{\TS}\bar B_{1}$, or $\subt{T}\bar B_{1}$. Choose
-$F\subseteq\{\bar C_{1}^{1},\dots,\bar C_{1}^{t}\}$ \emph{minimal} with
-$\bigcap F\cap\bar B_{2}=\varnothing$; it exists because the whole family works,
-it is nonempty because $\bigcap\varnothing=\bar B_{1}$ meets $\bar B_{2}$, and no
-member of it equals $\bar B_{1}$.
+\begin{hazard}[Lemma~\ref{lem:maximal-mult} is open]\label{haz:maximal-mult}
+\textbf{Lemma~\ref{lem:maximal-mult} is stated above and is not proved.} It is
+the one statement of \S\ref{sec:properties} in that position, and nothing in
+this document may be built on it until it is settled. What is known:
 
-Walk down a chain for $\bar B_{2}\lll\bar A$ to the first step
-$\bar B_{2}'\subt{T'}\bar B_{2}''$ with $\bigcap F\cap\bar B_{2}'=\varnothing$
-and $\bigcap F\cap\bar B_{2}''\neq\varnothing$. Apply
-Theorem~\ref{thm:stable-intersection} to the family $F\cup\{\bar B_{2}'\}$, with
-ambient $\bar B_{1}$ for the members of $F$ and $\bar B_{2}''$ for
-$\bar B_{2}'$. Its leave-one-out hypothesis holds in both shapes: omitting a
-member of $F$ is minimality of $F$ together with $\bar B_{2}\subseteq
-\bar B_{2}'$, and omitting $\bar B_{2}'$ is the choice of the step. So all the
-types coincide, and the theorem's four conclusions admit only $\TBA$, $\TC$,
-$\TL$ and $\TPC$: \emph{no member of $F$ has type $\TS$}.
+Write $\bar X$ for $X/\sigma$ and $C_{1}=\bigcap_{j\le t}C_{1}^{j}$ with
+$C_{1}^{j}\subt[A]{T(\sigma_{j})}B_{1}$. By Lemma~\ref{lem:propagation}(ft)
+each $\bar C_{1}^{j}$ is $\bar B_{1}$, or $\subt{\TS}\bar B_{1}$, or
+$\subt{T}\bar B_{1}$. The target is to show that the type-$T$ factors alone
+already cut $\bar B_{2}$ out; given that, the saturation clause of
+Lemma~\ref{lem:factor-by-delta} applies to them, the intersection of their
+images is the image of their intersection, and
+Lemma~\ref{lem:multiply-all-linear} finishes with the ambient still
+$\bar B_{1}$, which is what the conclusion's congruence family
+$\cover{\omega_{i}}\supseteq B_{1}^{2}$ requires.
 
-Hence every member of $F$ is $\subt{T}\bar B_{1}$, so
-$\bigcap F\subt{\MT T}\bar B_{1}$ --- properly, since $\bigcap F\cap\bar B_{2}
-=\varnothing$ while $\bar B_{1}\cap\bar B_{2}\neq\varnothing$ --- with the
-ambient still $\bar B_{1}$. Lemma~\ref{lem:multiply-all-linear} inside
-$\mathbf A/\sigma$ now returns congruences $\delta_{i}$ of type $T$ with
-$\cover{\delta_{i}}\supseteq\bar B_{1}^{2}$ and
-$\bigl(\bigcap F\circ\bigcap_{i}\delta_{i}\bigr)\cap\bar B_{2}=\varnothing$.
-Their preimages $\omega_{i}\supseteq\sigma$ satisfy
-$\cover{\omega_{i}}\supseteq B_{1}^{2}$ and, since $C_{1}$ is contained in the
-preimage of $\bigcap F$, also
-$\bigl(C_{1}\circ\bigcap_{i}\omega_{i}\bigr)\cap B_{2}=\varnothing$. Maximality
-of $\sigma$ gives $\sigma=\bigcap_{i}\omega_{i}$.
-\end{proof}
+Two things are established. First, the $\subt{\TS}$ factors never help: a
+factor with $\bar C_{1}^{j}\subt{\TS}\bar B_{1}$ contains a subuniverse
+$\bar D$ of $\bar B_{1}$ that is simultaneously binary absorbing and central,
+and Lemma~\ref{lem:strong-nonempty} makes $\bar D$ meet
+$\bar B_{1}\cap\bar B_{2}$, so $\bar C_{1}^{j}\cap\bar B_{2}\neq\varnothing$.
+Second, one cannot simply pass to a minimal subfamily $F$ of the
+$\bar C_{1}^{j}$ with $\bigcap F\cap\bar B_{2}=\varnothing$ and read off the
+types from Theorem~\ref{thm:stable-intersection}: the hypothesis gives
+$\bigl(\bigcap_{j}C_{1}^{j}\bigr)/\sigma\cap\bar B_{2}=\varnothing$, whereas
+$\bigl(\bigcap_{j}C_{1}^{j}\bigr)/\sigma\subseteq\bigcap_{j}\bar C_{1}^{j}$
+with the inclusion generally strict (\S\ref{sec:legislation}, item
+\ref{leg:quotient}), so no such $F$ need exist. The saturation identity that
+would close that gap is available for a factor precisely when the factor lands
+in the type-$T$ alternative, which is what was to be proved.
 
-\begin{hazard}[What the source does instead]\label{haz:maximal-mult}
-\cite{ZhukSimplified} splits on whether $\bar B_{1}$ is $\TS$-free and, in the
-negative case, argues that a BA-and-central $E\subt{\TS}\bar B_{1}$ meets both
-$\bar C_{1}$ and $\bar B_{2}$, ``hence'' those two meet. They need not: two sets
-meeting a third need not meet each other, and the configuration reproduces
-itself on $E$, so no iteration of those facts can close it. Passing to a
-minimal subfamily avoids the split altogether --- minimality is precisely the
-leave-one-out hypothesis the stable-intersection theorem wants, and its
-conclusion has no room for $\TS$.
+Nor can the configuration be attacked by descent. Passing to a
+BA-and-central $\bar D$ reproduces it: $\bar D\lll\bar A$,
+$\bar C_{1}\cap\bar D\lll\bar D$, $\bar B_{2}\cap\bar D\lll\bar D$, still
+disjoint, with $\bar D\cap\bar B_{2}\neq\varnothing$. And the descent shrinks
+the ambient, while the conclusion's congruence family is indexed by the
+ambient. See \S\ref{sec:status}.
 \end{hazard}

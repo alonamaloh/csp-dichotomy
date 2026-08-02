@@ -1,0 +1,233 @@
+%!TeX root=csp-audit.tex
+\section{The legislated readings}\label{sec:readings}
+
+Ten places where \cite{ZhukSimplified} admits more than one reading. The choice
+is invisible in prose and forced in a formalization, and in six of the ten it is
+not really a choice: one reading makes some statement of the source true or
+some proof valid and the other does not, so the ``convention'' is a
+reconstruction. Two of the ten are not conventions at all --- one is a theorem
+and one is a missing lemma --- and only two are free.
+
+\begin{center}\small
+\begin{tabular}{@{}llp{0.46\textwidth}@{}}
+\hline
+\S & \textbf{Item} & \textbf{Status} \\
+\hline
+\ref{sec:leg-Zp} & the algebra $\mathbf Z_{p}$ & \textbf{a theorem}, proved \\
+\ref{sec:leg-cover} & $\cover\sigma$ is a tolerance & decided by internal evidence \\
+\ref{sec:leg-empty} & the empty set & decided; and it bites three statements \\
+\ref{sec:leg-emptyfamily} & the empty family is allowed & decided; the two formulations agree only under it \\
+\ref{sec:leg-chain} & $\lll$ carries its chain & decided; \S5.5 is the sharpest instance \\
+\ref{sec:leg-dimension} & ``dimension'' & \textbf{free} \\
+\ref{sec:leg-linked} & ``linked instance'' & \textbf{free} \\
+\ref{sec:leg-quotient} & quotients of subsets & decided; and see $\mathrm D17$ \\
+\ref{sec:leg-notice} & sentences beginning ``Notice that'' & decided; promote to lemmas \\
+\ref{sec:C10} & the dropped projective alternative & \textbf{a missing lemma}, proved \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{The algebra $\mathbf Z_{p}$: not a convention, a theorem}
+\label{sec:leg-Zp}
+
+\texttt{main:1115} declares \emph{``In the paper every algebra $\mathbf Z_{p}$
+belongs to $\Vn$ for a fixed $n$, hence the algebra $\mathbf Z_{p}$ is uniquely
+defined''}, with $w^{\mathbf Z_{p}}=x_{1}+\dots+x_{n}\bmod p$. That operation is
+idempotent only when $n\equiv1\pmod p$, so the declaration is a constraint on
+$p$, and the source never says where the constraint comes from.
+
+It comes from \emph{specialness}. If $\mathbf U$ is affine over $\mathbb Z_{p}$
+with $|U|>1$ and $w$ is idempotent, weak near-unanimity and special of arity
+$n$, then $w$ acts as $\sum_{i}c_{i}x_{i}+d$; idempotence gives
+$\sum_{i}c_{i}=1$ and $d=0$; the WNU identities force all $c_{i}$ equal to a
+single $c$ with $nc=1$; and specialness compares the coefficient of $y$ on the
+two sides of $w(x,\dots,x,y)=w(x,\dots,x,w(x,\dots,x,y))$ to give $c^{2}=c$, so
+$c\in\{0,1\}$, and $c=0$ contradicts $nc=1$. Hence $c=1$, $n\equiv1\pmod p$,
+and $w$ acts as the sum.
+
+\emph{Rendering.} Keep the two roles of $\mathbf Z_{p}$ apart: the abelian
+\emph{group} $(\mathbb Z_{p};+,-)$, which supplies the relation
+$x_{1}-x_{2}=x_{3}-x_{4}$ in the definition of a linear congruence and carries
+no arity constraint; and the \emph{algebra}
+$\mathbf Z_{p}=(\mathbb Z_{p};x_{1}+\dots+x_{n})\in\Vn$, which does. Only the
+second occurs at \texttt{main:1300} ($\zeta\le\mathbf A\times\mathbf A\times
+\mathbf Z_{p}$, a subalgebra of a product, which needs a common signature) and
+at \texttt{main:3484}. Proof paper: \pkey{prop:p-divides},
+\pkey{cor:Zp-in-Vn}, \pkey{haz:Zp}.
+
+The proposition is not decoration: it is needed twice, and in both places its
+absence leaves a statement that does not typecheck --- it is what makes the
+definition of a perfect linear congruence well formed, and what upgrades the
+group isomorphism of $\mathrm D16$ to an isomorphism of algebras.
+
+\subsection{$\cover\sigma$ is a tolerance}\label{sec:leg-cover}
+
+$\cover\sigma$ is defined (\texttt{main:1246}) as the minimal
+$\delta\le\mathbf A\times\mathbf A$ with $\delta\supsetneq\sigma$ and $\delta$
+stable under $\sigma$. Nothing in that makes it transitive.
+
+\emph{Rendering.} $\cover\sigma$ is a reflexive symmetric subalgebra of
+$\mathbf A^{2}$ and \emph{not} a congruence. Three facts need one line each and
+none is in the source: the family of such $\delta$ is closed under
+intersection unless the intersection is $\sigma$, which is exactly what
+irreducibility forbids, so a least element exists; $(\cover\sigma)^{-1}$ is
+another such relation, so symmetry follows by minimality --- used silently at
+\texttt{SS:1538} (``switching $x_{1}$ and $x_{2}$''); and reflexivity is
+$\sigma\subseteq\cover\sigma$.
+
+\emph{The internal evidence.} That $\cover\sigma$ is a congruence is item (2)
+of the definition of a linear congruence (\texttt{main:1371}) and conclusion
+(1) of \texttt{LEMNontrivialReflexiveBridgeImplies} --- i.e.\ it is a property
+of linear congruences, proved, not a property of irreducible ones. Typing it as
+a congruence would make item (2) vacuous and collapse the linear/PC
+distinction. Proof paper: \pkey{prop:cover}, \pkey{rem:cover-not-cong},
+\pkey{haz:irreducible}.
+
+\subsection{The empty set}\label{sec:leg-empty}
+
+Read syntactically, $\varnothing$ is a subuniverse of every idempotent algebra,
+is vacuously absorbing ($t(\varnothing,\dots,A,\dots,\varnothing)\subseteq
+\varnothing$ holds because the left side is empty) and vacuously central (the
+clause quantifies over $a\in A\setminus C$ against $\Sg(\varnothing)=
+\varnothing$).
+
+\emph{Rendering.} Follow \texttt{main:1629} --- \emph{``we do not allow empty
+subuniverses''} --- and make $\lll$, $\subt{T}$, $\subte{T}$ relations between
+\emph{nonempty} sets, with dotted variants for the empty case. Three statements
+must then be restated, because they are true in the source only under the
+vacuous reading; they are the first three rows of \S\ref{sec:restated}.
+
+\subsection{The empty family is allowed}\label{sec:leg-emptyfamily}
+
+Is $\sigma=A^{2}$ irreducible? The source gives two formulations of
+irreducibility (\texttt{main:1237}), and \emph{they agree only under the
+empty-family reading}, which settles the question.
+
+\begin{itemize}\tightlist
+\item Formulation 1: $\sigma$ is not an intersection of \emph{other} stable
+  subalgebras of $\mathbf A^{2}$. The empty intersection is $A^{2}$, so
+  $\sigma=A^{2}$ is reducible.
+\item Formulation 2: there are no $S_{1},\dots,S_{k}\le\mathbf A/\sigma\times
+  \mathbf A/\sigma$ with $0_{\mathbf A/\sigma}=\bigcap_{i}S_{i}$ and
+  $S_{i}\neq0_{\mathbf A/\sigma}$. With $k=0$ this says
+  $0_{\mathbf A/\sigma}\neq(A/\sigma)^{2}$, i.e.\ $\sigma\neq A^{2}$.
+\end{itemize}
+
+Forbid the empty family and formulation~2 no longer excludes $\sigma=A^{2}$
+while formulation~1 still does.
+
+\emph{Rendering.} Allow $k=0$. Then an irreducible congruence is automatically
+proper, $\cover\sigma$ exists, and \cite{ZhukJACM}'s word ``proper'' --- which
+\cite{ZhukSimplified} drops --- is recovered as a consequence rather than
+reinstated by hand. Proof paper: \pkey{def:irreducible},
+\pkey{prop:cover}(a).
+
+\subsection{$\lll$ carries its chain}\label{sec:leg-chain}
+
+$C\lll^{A}B$ is defined (\texttt{main:1588}) as the \emph{existence} of a chain
+$C=B_{m}\subt{T_{m}}\dots\subt{T_{1}}B_{0}=B$; several \S5 proofs then speak of
+\emph{``the dividing congruences coming from $C\lll^{A}B$''}
+(\texttt{main:1600}), which is a function of the chain, not of the pair.
+
+The sharpest instance is the $\TD\times\TD$ case of
+\texttt{LEMTwoStableIntersection} (\texttt{SS:1840}). The step works only if
+the chain witnessing $C_{2}\lll\mathbf A$ is the chain witnessing
+$B_{2}\lll\mathbf A$ extended by the single step $C_{2}\subt{\TD(\sigma_{2})}
+B_{2}$ --- that is what makes the dividing congruences of $C_{2}\lll\mathbf A$
+equal to those of $B_{2}\lll\mathbf A$ together with $\sigma_{2}$, which is the
+whole content of the appeal. The same case also applies the clause to $C_{2}$
+rather than to $B_{2}$; against $B_{2}$ it does not follow, since both
+alternatives are consistent with the hypotheses and the ``moreover'' clause
+then says nothing.
+
+\emph{Rendering.} $\lll$ carries its witness: a list of pairs (subset, typed
+step with its congruence). Statements that mention ``the congruences coming
+from $C\lll B$'' take the chain as an argument, extension of a chain by one
+step is an operation on the data, and the propositional $\lll$ is its
+truncation, used only where no congruence is named. Proof paper:
+\pkey{def:lll}, \pkey{haz:lll-chain}.
+
+\subsection{``Dimension'': free}\label{sec:leg-dimension}
+
+$\prod_{i}\mathbb Z_{q_{i}}$ with distinct primes is not a vector space over
+anything, so it has no dimension. Use the composition length of the finite
+abelian group, which for $\mathbb Z_{p}^{n}$ is $n$ and agrees with the source
+wherever the source is meaningful, and prove additivity along short exact
+sequences. Nothing in \S5 uses the notion; it is confined to the codimension-one
+argument, where the correct statement is that such a group splits as a product
+over primes of $\mathbb F_{q}$-vector spaces. Proof paper:
+\pkey{haz:step2-linear-algebra}.
+
+\subsection{``Linked instance'': free}\label{sec:leg-linked}
+
+Two inequivalent definitions coexist: global connectivity of the value graph,
+in the informal claim, and the per-variable condition in \S3.1. The second does
+not imply the first, because a fragmented instance is per-variable linked in
+each component.
+
+\emph{Rendering.} Use the \S3.1 definition and carry non-fragmentation as a
+separate hypothesis wherever the informal reading was doing that work. This is
+not cosmetic: the retracted recursion-depth claim (\S\ref{sec:refuted-depth})
+turned on exactly this pair of conditions at the \textsc{SolveNonlinked} call
+site. Proof paper: \pkey{def:instance-linked}, \pkey{haz:linked}.
+
+\subsection{Quotients of subsets}\label{sec:leg-quotient}
+
+$B/\sigma$ denotes the \emph{image} $\{b/\sigma:b\in B\}$ in $\mathbf A/\sigma$,
+for $B$ any subset of $A$ and $\sigma$ a congruence on $\mathbf A$ --- not the
+quotient of $B$ by a congruence of $\mathbf B$. Consequently
+$(C_{1}\cap\dots\cap C_{t})/\delta\subseteq\bigcap_{i}C_{i}/\delta$ always,
+with equality \emph{false} in general.
+
+\emph{Rendering.} Define the image operation once, prove only the inclusion,
+and flag every site that needs the reverse. The reverse inclusion is
+established on the fly inside clause (fm) of Propagation --- correctly, from
+the saturation identity $\delta\cap B^{2}\subseteq\sigma_{i}\cap B^{2}$ --- and
+must be extracted as a standalone lemma with its hypothesis visible. Proof
+paper: \pkey{haz:quotient-rel}, and the (fm) clause of
+\pkey{lem:propagation}.
+
+This is the item the invalid repair of $\mathrm D17$ walked into
+(\S\ref{sec:D17}). It is worth restating what that costs: cataloguing a trap is
+not the same as being immune to it, and the only defence that worked was
+someone else reading the argument.
+
+\subsection{Sentences beginning ``Notice that''}\label{sec:leg-notice}
+
+Four items, three of them from the source's own ``Notice that'' sentences, all
+used later as lemmas.
+
+\begin{enumerate}\alphlabels\tightlist
+\item \texttt{main:1378}: the relation $S$ from item (3) of the definition of a
+  linear congruence is a bridge from $\sigma$ to $\sigma$ with
+  $\bcol S=\proj_{1,2}(S)=\proj_{3,4}(S)=\cover\sigma$. \textbf{Checked,
+  true.} Clause (4) is $x_{1}-x_{2}=0\iff x_{3}-x_{4}=0$ inside each block;
+  clause (3) holds because some block has $m\ge1$, else $\cover\sigma=\sigma$;
+  and $\bcol S=\cover\sigma$ because $x-x=y-y$ always. Consumed at
+  \texttt{SS:1360}. Proof paper: \pkey{lem:linear-bridge}.
+\item \texttt{main:1386}: $\sigma$ is irreducible, PC or linear iff
+  $0_{\mathbf A/\sigma}$ is. Needed to justify the ``factorize by $\sigma$ and
+  assume $\sigma=0$'' opening used in three \S5.4 proofs. Proof paper:
+  \pkey{lem:irred-quotient}.
+\item \texttt{main:1550}: the two formulations of $\TS$-freeness agree.
+  Trivial on unfolding $\subt{\TS}$ (\texttt{main:1522}), but it must be
+  written, since $\TS$-freeness is a hypothesis of clause (m) of propagation
+  modulo a congruence. Proof paper: \pkey{lem:sfree-equiv}.
+\item Two assertions about rectangularity belong to the same list: that the
+  parallelogram property implies rectangularity (``as it follows from the
+  definitions''), and that the rectangular closure exists (asserted by the
+  definite article in ``\emph{the} minimal rectangular relation''). Note also
+  that ``$R$ is rectangular'' unqualified --- the form used in ``rectangular
+  closure'' --- is never defined in the source; it means that every variable is
+  rectangular. Proof paper: \pkey{lem:rect-basics}.
+\end{enumerate}
+
+\subsection{What legislating cost}\label{sec:leg-cost}
+
+Six of the ten (\S\S\ref{sec:leg-cover}, \ref{sec:leg-empty},
+\ref{sec:leg-emptyfamily}, \ref{sec:leg-chain}, \ref{sec:leg-quotient},
+\ref{sec:leg-notice}) are decided by internal evidence. Two
+(\S\S\ref{sec:leg-dimension}, \ref{sec:leg-linked}) are free choices where the
+source is simply ambiguous and either reading can be made to work. Two
+(\S\ref{sec:leg-Zp}, \S\ref{sec:C10}) are not conventions at all and have been
+proved.

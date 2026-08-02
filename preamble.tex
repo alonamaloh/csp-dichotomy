@@ -1,8 +1,14 @@
-% Shared preamble for the CSP dichotomy blueprint.
+% Shared preamble for the three CSP dichotomy documents: the proof paper
+% (csp-proof.tex), the source audit (csp-audit.tex), and the formalization
+% blueprint (csp-blueprint.tex).
+%
 % House style follows the earlier `zhuk_centers` blueprint: numbered theorem
 % environments shared across a single counter, a `longtheorem` upright variant
 % for statements with many numbered hypotheses, and explicit `convention`
 % environments for standing hypotheses.
+%
+% Each main file may set \hazardheading and \docheading before \input-ing this
+% file; the defaults below apply otherwise.
 \usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
@@ -27,7 +33,9 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{convention}[theorem]{Convention}
-\newtheorem{hazard}[theorem]{Formalization note}
+\providecommand{\hazardheading}{Formalization note}
+\newtheorem{hazard}[theorem]{\hazardheading}
+\newtheorem{entry}[theorem]{Entry}
 
 \setlength{\parindent}{1.25em}\setlength{\parskip}{0pt}\setlength{\emergencystretch}{2em}
 \newcommand{\alphlabels}{\renewcommand{\labelenumi}{\textup{(\alph{enumi})}}%
@@ -38,8 +46,18 @@
 \numberwithin{equation}{section}
 \setcounter{tocdepth}{2}\setcounter{secnumdepth}{3}
 \pagestyle{fancy}\fancyhf{}
-\fancyhead[L]{\small CSP dichotomy}\fancyhead[R]{\small\nouppercase{\leftmark}}
+\providecommand{\docheading}{CSP dichotomy}
+\fancyhead[L]{\small\docheading}\fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0.3pt}
+
+% ------------------------------------------------------- cross-document keys
+% The three documents are compiled separately, so a reference from one to a
+% statement of another cannot be a \ref.  It is the statement's *label*, set in
+% typewriter, which is stable and mechanically checkable.
+\newcommand{\pkey}[1]{\texttt{#1}}
+% A zero-width break opportunity, for the source's very long statement names.
+\newcommand{\brk}{\discretionary{}{}{}}
+\newcommand{\inproof}[1]{the proof paper, \pkey{#1}}
 
 % ---------------------------------------------------------------- operators
 \DeclareMathOperator{\Sg}{Sg}

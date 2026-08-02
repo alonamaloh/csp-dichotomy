@@ -1,0 +1,249 @@
+%!TeX root=csp-blueprint.tex
+\section{The Lean development}\label{sec:formalization}
+
+\subsection{What is reused}\label{sec:reuse}
+
+The predecessor development \texttt{ZhukLean} is a complete, \texttt{sorry}-free
+Lean~4 formalization of Zhuk's centre theorem, built on
+\texttt{Mathlib.ModelTheory}. It is consumed here as a \texttt{lake} dependency,
+not copied. It supplies:
+
+\begin{itemize}\tightlist
+\item products of structures (\texttt{piStructure}, \texttt{prodStructure},
+  coordinatewise realization, reindexing and evaluation homomorphisms) --- the
+  one part of the universal-algebra vocabulary Mathlib lacks;
+\item absorption in the tuple form (\texttt{Witnesses}, \texttt{Absorbs},
+  \texttt{BinAbsorbs}), Taylor terms (\texttt{IsTaylorOn}), and central
+  absorption (\texttt{CentrallyAbsorbs});
+\item the relational description of absorption by essential relations
+  (Barto--Kazda), which is what converts absorption at some arity into
+  absorption at arity~$3$;
+\item Zhuk's centre theorem itself (\texttt{zhuk\_center}) and the ternary
+  collapse (\texttt{exists\_ternary\_\brk witnesses}) --- which is precisely
+  \inproof{lem:central-ternary}, cited without proof in \cite{ZhukSimplified}.
+\end{itemize}
+
+Those also discharge, in advance, every ingredient of \cite[Lem.~6.11]{ZhukStrong},
+which the proof paper's stable-intersection theorem needs in its type-$\TC$
+case: essentiality, the Barto--Kazda criterion, and ``central implies ternary
+absorbing''.
+
+\subsection{What is built here}\label{sec:built}
+
+\begin{center}
+\begin{tabular}{@{}llr@{}}
+\hline
+Module & Contents & Status \\
+\hline
+\texttt{CSP/Product} & products of structures & complete \\
+\texttt{CSP/Congruence} & \texttt{Congruence L M}, order, \texttt{sInf}, quotient & complete \\
+\texttt{CSP/Irreducible} & irreducibility, existence and uniqueness of $\cover\sigma$ & complete \\
+\texttt{CSP/Bridge} & bridges, collapse, composition, linear/PC & 2 imports open \\
+\texttt{CSP/Types} & the six types, multi-types, $\lll$ & complete \\
+\texttt{CSP/Instance} & instances, reductions, consistency, cruciality & complete \\
+\texttt{CSP/Main} & the main statements & targets \\
+\hline
+\end{tabular}
+\end{center}
+
+Everything below \texttt{CSP/Main} is \texttt{sorry}-free. The two open items in
+\texttt{CSP/Bridge} are \inproof{lem:bridge-comp} and its collapse identity,
+both imported from \cite{ZhukJACM}. These are claims about a repository, not
+about the mathematics; they should be read against a commit hash, and they are
+deliberately kept out of the proof paper for that reason.
+
+\subsection{Design decisions}\label{sec:design}
+
+\begin{description}
+\item[Build on \texttt{Mathlib.ModelTheory}, keep the language generic.]
+  A bespoke ``finite algebra with one WNU operation'' type would bundle the
+  standing hypotheses as fields and avoid threading them, which is a real cost
+  in the predecessor development. But it would discard
+  \texttt{Substructures.lean} --- 985 lines of exactly the $\Sg$ API needed,
+  including \texttt{mem\_closure\_iff\_exists\_term} with the variable type
+  equal to the generating set, an interface no hand-rolled clone matches --- and
+  it would discard the predecessor's 1600 lines wholesale. Congruences and
+  quotients are also \emph{cheaper} in \texttt{ModelTheory}, not dearer.
+  Instantiating to $\Vn$ is a thin layer on top. Carry the standing hypotheses
+  as typeclass instances on the structure rather than as ambient hypotheses, so
+  that the audit of which result consumes which hypothesis is mechanical.
+
+\item[Terms and term operations are different types.]
+  \cite{ZhukSimplified} writes $t\in\Clo(\mathbf A)$ and treats $t$ as both a
+  syntactic term and the operation it induces. Every statement of the proof
+  paper that quantifies over $\Clo(\mathbf A)$ is about \emph{operations}, so
+  the syntactic layer may be quotiented away --- but it cannot be skipped,
+  because $\Sg$ is characterised through terms and because the arity
+  bookkeeping in the absorption arguments is syntactic.
+
+\item[$\lll$ is a witnessed chain, not \texttt{Relation.ReflTransGen}.]
+  An earlier draft of this section said the opposite, and it was wrong: the
+  proof paper's ``the congruences coming from $C\lll^{A}B$'' is a function of
+  the chain and not of the pair, and two arguments turn on \emph{which} chain
+  is chosen. So the primary notion is an inductive family carrying, at each
+  step, the intermediate set, its type, and its witnessing congruence, with
+  extension by one step as an operation on that data;
+  \texttt{Relation.ReflTransGen} is its propositional truncation and may be
+  used only where no congruence is named. Both are needed: the truncation
+  supplies the induction principle most consumers want.
+
+\item[Dotted relations are defined as disjunctions.]
+  \texttt{DotLll C B := C = }$\varnothing$\texttt{ }$\vee$\texttt{ Lll C B}, so
+  the case split is forced at every use site rather than resolved by the
+  reader. Conflating $\lll$ with $\dlll$ is the commonest way to misread the
+  type theory of the proof paper's \S3.
+
+\item[Absorption is stated over coordinatewise-constrained tuples.]
+  That is: for every $\bar a\in A^{k}$ with $a_{j}\in B$ for all $j\neq i$, one
+  has $t(\bar a)\in B$. \emph{Not} as ``for all
+  $b_{1},\dots,b_{k}\in B$ and $a\in A$, $t(b_{1},\dots,a,\dots,b_{k})\in B$''.
+  The two agree, but the second phrasing
+  invites the variant in which $b_{i}$ is quantified and then discarded, which
+  is vacuously true when $B=\varnothing$ and at $k=1$ where the intended
+  content is not vacuous. This was an actual defect in the predecessor
+  blueprint.
+
+\item[The bridge criterion is the definition of linearity.]
+  Zhuk defines a linear congruence by a per-block isomorphism to
+  $\mathbb Z_{p}^{m}$ and derives the bridge criterion. We reverse this: the
+  criterion is first-order over finite data and is what every consumer uses;
+  the block description becomes a structure theorem. See
+  \inproof{haz:linear-def}.
+
+\item[$\cover\sigma$ is data attached to irreducibility.]
+  \texttt{Irreducible.exists\_isCover} produces it; there is no standalone
+  function, because there is no cover without irreducibility. A pleasant
+  by-product: with the definition taken literally, irreducibility \emph{implies}
+  $\sigma\neq A^{2}$, since the empty family intersects to the universe.
+
+\item[$\ConOne$ gets a neutral name until it is a congruence.]
+  The raw relation is always reflexive and symmetric but not transitive; the
+  notation invites the reader to assume congruence-hood. Reserve $\ConOne$ for
+  the case where subdirectness and rectangularity make it one. Note also that
+  it depends on the \emph{position} in the scope, not on the variable, so it is
+  ill-defined if a variable occurs twice.
+
+\item[Instances are lists; scopes are tuples; the variable type is a parameter.]
+  Proofs delete a constraint and reason about $\mathcal I\setminus\{C\}$, and
+  the same relation may occur twice on the same tuple inside an expanded
+  covering, so \texttt{List} with membership by index is the safe choice.
+  Repeated variables in a scope are allowed and occur.
+
+\item[Coverings are built by coproduct of variable types, not by renaming.]
+  \cite{ZhukSimplified} writes ``we rename the variables so that the only
+  common variable of $\Upsilon_{x}$ and $\mathcal J$ is $x$''. With a concrete
+  variable type this means a fresh-name supply, a renaming operation, and a
+  lemma that renaming preserves each of $1$-consistency, cycle-consistency,
+  cruciality, and being a covering --- eight lemmas the paper does not state.
+  Making the variable type a parameter and gluing over $V_{1}\oplus V_{2}$
+  quotiented by the shared variable turns all eight into transport along an
+  equivalence. This is the single most important representation decision below
+  the algebra, and it should be made before anything about coverings is
+  written.
+
+\item[Nothing is stubbed with \texttt{sorry} at the level of a definition.]
+  \texttt{IsConnectedInstance} and \texttt{IsExpandedCovering} are
+  \emph{absent} rather than defined as \texttt{sorry}, because a
+  \texttt{def~:~Prop~:=~sorry} is a junk constant that downstream proofs can
+  silently lean on. Absence forces the design decision; a stub hides it.
+\end{description}
+
+\subsection{What Mathlib is missing}\label{sec:mathlib-gaps}
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.32\textwidth}p{0.60\textwidth}@{}}
+\hline
+\textbf{Layer} & \textbf{Status} \\
+\hline
+Products of first-order structures &
+  Absent from Mathlib; supplied by \texttt{ZhukLean} (\S\ref{sec:reuse}). \\
+Congruences of a structure, quotients &
+  \texttt{ModelTheory} has substructures but not congruences; built here in
+  \texttt{CSP/Congruence}. \\
+Absorption, central subuniverses &
+  Absent; supplied by \texttt{ZhukLean}. \\
+Mixed-prime ``dimension'' &
+  A subgroup of $\prod_{i}\mathbb Z_{q_{i}}$ with distinct $q_{i}$ is not a
+  vector space. \texttt{ZMod} and \texttt{Module (ZMod p)} exist; the primary
+  decomposition into $\mathbb F_{q}$-vector spaces and the codimension-one
+  characterisation must be built. Needed by the proof paper's codimension-one
+  theorem. \\
+The Pol--Inv Galois connection &
+  Absent. Roughly four printed pages, of independent value, and the single
+  largest item in the \textup{(H0)} budget. \\
+Complexity classes, $\le_{p}$, \textup{NP} &
+  Absent; see \S\ref{sec:complexity-layer}. Built separately in $\approx 850$
+  lines. \\
+Polynomial completeness, Istinger--Kaiser &
+  Absent. Needed only for \inproof{lem:pc-on-top}, which nothing else consumes;
+  a staged development should treat ``PC congruence'' as ``irreducible and not
+  linear'' throughout and prove that lemma last or not at all. \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Order of attack}\label{sec:order}
+
+\begin{enumerate}\tightlist
+\item \inproof{lem:ba-center-implies}. Small, self-contained, used everywhere,
+  and adjacent to what is already formalized. Its statement needs both
+  hypotheses the source drops --- subdirectness, and a common binary term ---
+  and the common term should be carried in the type, as \cite{ZhukStrong}
+  writes $\le_{\TBA(t)}$.
+\item The mixed-prime linear algebra of \S\ref{sec:mathlib-gaps}. Independent
+  of everything else; can be done in parallel.
+\item \inproof{lem:bridge-comp}. Twelve source lines of relational algebra;
+  closes the two open items in \texttt{CSP/Bridge}.
+\item The coproduct design for coverings, then the basic properties of expanded
+  coverings.
+\item \inproof{thm:stable-intersection}. The one hard statement in the
+  interface, and the sole source of bridges.
+\item \inproof{lem:bridge-from-instance}. Eight hypotheses, ten pages.
+\item \inproof{thm:main-inductive}. Last.
+\end{enumerate}
+
+\subsection{Scope, and what governs the schedule}\label{sec:scope}
+
+The calibration point is that the predecessor formalized about $3.5$ printed
+pages in about $1670$ lines of Lean --- roughly $480$ lines per page. Excluding
+\S\ref{sec:complexity-layer} and \cite{ZhukSimplified}'s \S4, which is an
+independent second result and not needed for the dichotomy, the transitive
+closure of what must be proved is on the order of $100$--$130$ printed pages,
+so $35\,000$--$60\,000$ lines of Lean.
+
+Line count is not the binding constraint, and it should not be converted into
+person-time here: any such figure would be a claim about a development process
+rather than about this mathematics, and it is not evidence a reader of this
+document can check.
+
+What binds is the \emph{critical path}: the depth of the serial chain, and the
+number of places where the source is wrong and new mathematics is needed. The
+serial chain is
+\begin{center}\small
+\pkey{thm:stable-intersection}\\[2pt]
+$\longrightarrow$\ \pkey{lem:bridge-from-instance}\\[2pt]
+$\longrightarrow$\ \pkey{thm:main-inductive}
+\end{center}
+each a single large proof that cannot be split across workers --- stable
+intersection is the sole source of bridges, bridge-from-instance is the only
+consumer that turns them into instance-level structure, and the main induction
+consumes that.
+
+The new mathematics is a much shorter list than an earlier draft of this
+section claimed, and the items on it are not the ones it named. Of the audit
+document's register, thirteen defects are repaired with no new mathematics.
+What remains open, and gates the formalization of \S5 of
+\cite{ZhukSimplified}, is:
+
+\begin{itemize}\tightlist
+\item \inproof{lem:maximal-mult} --- the maximal multi-type extension. Its
+  Case~1 is unproved and the published repair is invalid; see the audit
+  document. Nothing downstream of it should be attempted first.
+\item The reflexivisation of a bridge, used twice without a lemma behind it.
+\item The expansion of \inproof{lem:intersection-good} from case structure to a
+  full proof, and of \inproof{lem:multiply-all-linear}, which is not yet a
+  proof.
+\end{itemize}
+
+Those are not throughput-limited. Schedule around them, not around the line
+count.

@@ -1,0 +1,43 @@
+\documentclass[11pt]{article}
+\def\hazardheading{Formalization note}
+\def\docheading{CSP dichotomy --- blueprint}
+\input{preamble.tex}
+
+\hypersetup{pdftitle={The CSP Dichotomy Theorem: a formalization blueprint},
+  pdfsubject={Lean representations, missing Mathlib layers, order of attack},
+  pdfauthor={}}
+
+\title{The CSP Dichotomy Theorem\\[2pt]
+  \large A formalization blueprint}
+\author{}\date{}
+
+\begin{document}
+\maketitle\vspace{-2.2em}
+\begin{abstract}
+This is the formalization companion to \emph{The CSP Dichotomy Theorem}, a
+corrected exposition of Zhuk's simplified proof \cite{ZhukSimplified}. It
+carries the material that is about a Lean~4 development rather than about the
+mathematics: which of the five statements a formalization would be proving and
+what each costs (\S\ref{sec:bp-targets}--\S\ref{sec:complexity-layer}), the
+representation decisions and their reasons (\S\ref{sec:design}), the layers
+Mathlib does not supply (\S\ref{sec:mathlib-gaps}), the order in which the
+theorems should be attacked (\S\ref{sec:order}), and what governs the schedule
+(\S\ref{sec:scope}).
+
+References of the form \texttt{lem:\dots} are labels of statements in the proof
+paper, which is compiled separately; the two documents share no cross-reference
+machinery on purpose, so that neither can be read as evidence for the other.
+Claims here about the state of a repository are claims about a repository, and
+should be checked against a commit hash rather than believed.
+\end{abstract}
+
+\tableofcontents\clearpage
+
+\input{bp1-complexity.tex}
+\clearpage
+\input{bp2-lean.tex}
+
+\clearpage
+\input{bibliography.tex}
+
+\end{document}

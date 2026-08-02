@@ -1,0 +1,189 @@
+%!TeX root=csp-blueprint.tex
+\section{What a formalization can claim}\label{sec:bp-targets}
+
+The dichotomy theorem, as stated in the proof paper, is conditional on a model
+of computation: ``solvable in polynomial time'' quantifies over an encoding of
+instances as strings, a machine, and a polynomial bound on its step count, and
+``\textup{NP}-complete'' additionally quantifies over all problems in
+\textup{NP} and over polynomial-time many-one reductions. Mathlib supplies
+Turing machines (\texttt{Mathlib/Computability/TuringMachine/}) and a notion of
+computability, but it has \emph{no} complexity class, no polynomial-time
+predicate, and no notion of polynomial-time reduction. So a formalization must
+say which of the statements it is proving, and the proof paper's five layers
+are the answer.
+
+\subsection{Where the work actually is}\label{sec:program-axis}
+
+An earlier draft of this section concluded from that gap that the
+complexity-theoretic half should be deferred because building it would dominate
+the project. That inference was wrong, and it is worth recording why, because
+the corrected version is what organises the rest of this document.
+
+The complexity vocabulary itself --- languages, a cost model, $\mathrm P$,
+$\mathrm{NP}$ by verifiers, $\le_{p}$, \textup{NP}-hardness,
+\textup{NP}-completeness, and a generic \textup{NP}-hard problem --- has since
+been built, in about $850$ lines. That is consistent with the two existing
+Cook--Levin formalizations, whose class layers are $702$ lines (Isabelle) and
+$992$ lines (Coq) against totals of $56\,514$ and $\approx 16\,500$. Defining
+the classes is cheap in every development that has done it.
+
+What is expensive is not complexity theory. It is any statement that requires
+one to \emph{exhibit a program}. In a formalization, ``$f$ is computable in
+polynomial time'' is not a property one observes of a mathematical function; it
+is an existential over programs, discharged only by writing one and proving a
+bound on its step count. The dividing line runs along that axis, and it cuts
+across the algebra/complexity split rather than agreeing with it:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\hline
+Target & Exhibit a program? & Cost \\
+\hline
+\textup{(T0)} the algebraic core & no & the mathematics \\
+\textup{(T1)} $\textsc{Solve}$ is correct & no (but see Formalization note~\ref{haz:t1-computable}) & moderate \\
+\textup{(T2)} $\textsc{Solve}$ is polynomial & \textbf{yes --- the largest one here} & \textbf{large} \\
+\textup{(H0)} $\Gamma$ pp-interprets \textsc{Nae} & no & the mathematics \\
+\textup{(H1)} pp-interpretation $\Rightarrow\le_{p}$ & yes, a syntactic substitution & small \\
+\hline
+\end{tabular}
+\end{center}
+
+The blueprint is written for \textup{(T0)}, \textup{(T1)} and \textup{(H0)}.
+\textup{(H1)} is a small addition on top; \textup{(T2)} is neither small nor
+mathematics, but it is not \emph{unrelated} to the dichotomy either --- it is
+the assertion that the algorithm one has just proved correct is also fast, and
+it is the second-largest component of the project.
+
+\begin{hazard}[\textup{(T1)} is vacuous unless $\textsc{Solve}$ computes]
+\label{haz:t1-computable}
+``$\textsc{Solve}$ written as a total function'' hides a requirement that no
+cost model would catch. If $\textsc{Solve}$ is defined using classical choice
+--- for instance by deciding ``does $D_{x}$ have a nonempty proper binary
+absorbing subuniverse?'' with \texttt{Classical.dec} --- then
+$\textsc{Solve}(\mathcal I)=\texttt{true}\iff\mathcal I$ has a solution is a
+true theorem that says nothing algorithmic, because $\textsc{Solve}$ does not
+reduce. To mean what it appears to mean, \textup{(T1)} needs every predicate
+the algorithm branches on to carry a genuine decision procedure.
+
+That is a real obligation with a locatable cost. Absorption is defined by an
+existential over \emph{terms} --- an infinite type --- so ``$C$ is a binary
+absorbing subuniverse of $B$'' is not decidable on its face. It becomes
+decidable through a bound on the arity of a sufficient witness, which is a
+theorem and not a definition. For the types actually used here the bound is
+cheap and should be taken that way rather than from a general absorption-arity
+theorem: $\TBA$ has a binary witness by definition, and central absorption has
+a ternary witness by \inproof{lem:central-ternary}. Only finitely many binary
+and ternary operations then need be checked, together with finitely many
+congruences and subsets. The same remark applies to the searches inside
+$\textsc{SolveLinear}$.
+\end{hazard}
+
+\begin{hazard}[\textup{(T2)} is not a wrapper]\label{haz:t2-is-not-small}
+Two things make \textup{(T2)} much larger than the phrase ``complexity
+wrapper'' suggests.
+
+\emph{The program is enormous.} \textup{(T2)} requires $\textsc{Solve}$ ---
+\textsc{ForceConsistency}, the search for a strong subuniverse,
+\textsc{SolveLinear}, and the mutual recursion between them --- to be expressed
+in a cost model, with a proved polynomial bound. Every existing measurement
+says this kind of work dominates: it is the $50\,000$ lines of Turing-machine
+engineering in the Isabelle Cook--Levin development, against $702$ for the
+classes themselves.
+
+\emph{The statement is non-uniform.} Because $\Gamma$ is fixed, the polynomial
+may depend on $\Gamma$, and the searches over subsets of $A$, over congruences
+on $A$, and over term operations of bounded arity are all constant-time. But
+``constant'' here means the search is compiled away into a program whose
+\emph{size} depends on $|A|$. So $\textsc{Solve}$ is not one program: it is a
+family $\textsc{Solve}_{\Gamma}$ with a polynomial $p_{\Gamma}$ for each
+$\Gamma$, and \textup{(T2)} must be stated in that form. Attempting a bound
+uniform in $\Gamma$ would be proving something else, and something false.
+\end{hazard}
+
+\begin{hazard}[From pseudocode to a Lean function]
+\label{haz:algorithm-formalization}
+\begin{enumerate}\alphlabels\tightlist
+\item \emph{Termination is not structural.} $\textsc{Solve}$ recurses on
+  strictly smaller domains, and $\textsc{SolveLinear}$ loops on a strictly
+  decreasing dimension. Neither is a structural recursion; both need an
+  explicit well-founded measure, and the two interleave ---
+  $\textsc{SolveLinear}$ calls $\textsc{Solve}$ on a smaller domain, which
+  calls $\textsc{SolveLinear}$ again. The measure is lexicographic:
+  $\bigl(\sum_{x}|D_{x}|,\ \dim\phi\bigr)$.
+\item \emph{Several steps quantify over objects that are only finitely many by
+  accident.} ``If some $D_{x}$ has a strong subset $B$'' quantifies over
+  subsets of $D_{x}$, over congruences on $D_{x}$, and --- through absorption
+  --- over \emph{term operations}, of which there are infinitely many. See
+  Formalization note~\ref{haz:t1-computable} for the route to decidability that does not
+  depend on an uncited general arity bound.
+\item \emph{Polynomial time is a different subject.} The bound in
+  \cite{ZhukJACM} counts calls and bounds the recursion depth by $|A|$; making
+  that formal needs a cost model. See \S\ref{sec:complexity-layer}.
+\end{enumerate}
+\end{hazard}
+
+\section{The complexity layer}\label{sec:complexity-layer}
+
+Targets \textup{(T2)} and \textup{(H1)} are stated here and not proved. The
+point of stating them is to be precise about what is \emph{not} being claimed.
+
+\begin{definition}[What a cost model would have to supply]\label{def:cost-model}
+To state \textup{(T2)} one needs: an encoding of instances of $\CSP(\Gamma)$ as
+strings; a machine model with a step count; a predicate ``$f$ is computed in
+time bounded by a polynomial in the input length''; and closure of that
+predicate under composition. To state \textup{(H1)} one needs, in addition, a
+polynomial-time many-one reduction relation $\le_{p}$ and the class
+\textup{NP}.
+\end{definition}
+
+Mathlib supplies the machine (\texttt{Turing.TM2}), an encoding
+(\texttt{Computability.Encoding}), and a time-bounded computation predicate
+(\texttt{Turing.TM2ComputableInPolyTime}). It does not supply a complexity
+\emph{class}, \textup{P}, \textup{NP}, \textup{NP}-completeness, $\le_{p}$, or
+\textsc{Sat}; and the composition lemma
+\texttt{TM2ComputableInPolyTime.comp} is an open \texttt{proof\_wanted} in
+Mathlib itself. Moreover \texttt{TM2ComputableInPolyTime} applies to total
+functions $\alpha\to\beta$, never to languages, so even the existing predicate
+would need reshaping.
+
+\begin{remark}[This layer now exists, and it was cheap]\label{rem:complexity-scope}
+An earlier draft of this remark said that building the complexity layer was
+``a substantial project --- comparable in size to the algebraic core'' and that
+attempting it as part of this project ``would be a scoping error''. That was
+wrong, and it has been tested rather than argued: the vocabulary --- words, a
+cost model, $\mathrm P$, $\mathrm{NP}$ by verifiers, $\le_{p}$,
+\textup{NP}-hardness, \textup{NP}-completeness, and a generic
+\textup{NP}-hard problem --- is about $850$ lines of Lean, \texttt{sorry}-free.
+
+So the reason to keep \textup{(T2)} out of scope is \emph{not} that complexity
+theory is unavailable. It is Formalization note~\ref{haz:t2-is-not-small}: \textup{(T2)}
+requires exhibiting $\textsc{Solve}$ as a program with a proved step bound, and
+that is the largest program-construction task in the project. \textup{(H1)},
+by contrast, needs only a syntactic substitution and should be built.
+\end{remark}
+
+\begin{remark}[What the exercise cost, and what it caught]
+\label{rem:complexity-defects}
+Two defects surfaced in those $850$ lines, both in \emph{statements} rather
+than proofs, and neither of a kind a type-checker reports. The generic problem
+was first defined with a single budget bounding both the certificate length and
+the running time, which makes the theorem false --- the two directions pull the
+bound opposite ways. And the language was first given only the tests ``register
+is empty'' and ``register's first bit is $1$'', with which no loop that
+consumes its input can be written at all; that was found by trying to write the
+first program.
+
+The ratio is worth noting for the rest of this project. Two statement-level
+errors in $850$ lines, against fourteen found in Zhuk's fifty pages by readers
+who did not formalize. The defect list of the audit document should be expected
+to grow under formalization, not to be complete.
+\end{remark}
+
+\begin{remark}[\textup{NP} membership]\label{rem:np-membership}
+The proof paper's hard half concludes \textup{NP}-hardness. Recovering
+\textup{NP}-completeness needs the standard theorem that every fixed
+finite-template CSP lies in \textup{NP} under the chosen encoding: a solution
+is a certificate of size linear in the number of variables, and checking it
+means evaluating each constraint, which for fixed $\Gamma$ is a table lookup.
+It is small, it needs the cost model, and it belongs with \textup{(H1)}.
+\end{remark}

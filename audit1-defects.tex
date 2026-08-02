@@ -1,0 +1,741 @@
+%!TeX root=csp-audit.tex
+\section{The register}\label{sec:register}
+
+Fifteen places where \cite{ZhukSimplified} is wrong, incomplete, or states less
+than its own proof gives. Fourteen are repaired and none of those repairs needs
+new mathematics; the fifteenth, $\mathrm{D}17$, is open.
+
+\begin{center}\footnotesize
+\begin{longtable}{@{}llp{0.38\textwidth}p{0.26\textwidth}@{}}
+\hline
+\textbf{Tag} & \textbf{Where} & \textbf{What} & \textbf{Proof paper} \\
+\hline\endhead
+$\mathrm D1$ & \S2.3 & Lemma~19 restates a corollary of \cite{ZhukStrong}
+  dropping two hypotheses; false as printed & \pkey{lem:ba-center-implies} \\
+$\mathrm D2$ & \texttt{main:1682} & Propagation modulo a congruence: stated,
+  used five times, never proved & \pkey{lem:propagation} \\
+$\mathrm D4$ & \texttt{SS:2594} & $n=2$ for type $\TC$ in stable intersection
+  is argued only for $\TPC$ & \pkey{thm:stable-intersection} \\
+$\mathrm D6$ & \S3.2 & Bridges-from-relations applied without its third
+  hypothesis, which can fail & \pkey{lem:connected} \\
+$\mathrm D7$ & \S3.3 & Two gaps in the main induction: \emph{connected} proved
+  where \emph{linked} is demanded, and (1c) derived for the wrong reduction &
+  \pkey{thm:main-inductive} \\
+$\mathrm D8$ & \texttt{main:3526} & Minimal-containing-a-point is used where
+  minimal-outright is required; the bridging lemma was deleted &
+  \pkey{lem:minimal-consistent} \\
+$\mathrm D{11}$ & \texttt{SS:1154} & The symmetrisation formula defines a
+  relation that is never a bridge & \pkey{lem:symmetrise} \\
+$\mathrm D{12}$ & \texttt{SS:1103} & Bridges and abelian groups: \emph{false as
+  stated}, with a three-element counterexample &
+  \pkey{lem:nice-bridge-abelian} \\
+$\mathrm D{13}$ & \texttt{SS:1273} & Linkedness asserted from an inclusion that
+  bears on a different hypothesis & \pkey{lem:nontrivial-bridge} \\
+$\mathrm D{14}$ & \texttt{SS:1394} & The box form of
+  absorption-preserves-linkedness cited for a restriction that is not a box &
+  \pkey{lem:absorb-linked-sub} \\
+$\mathrm D{15}$ & \texttt{SS:2208} & Existence of an irreducible congruence
+  factors by the wrong congruence, hiding an unsupported properness step &
+  \pkey{lem:main-existence} \\
+$\mathrm D{16}$ & \texttt{SS:2743} & Linear congruences on top: the conclusion
+  is asserted & \pkey{lem:linear-on-top} \\
+$\mathrm D{17}$ & \texttt{SS:3113} & Maximal multi-type extension concludes
+  that two sets meet because each meets a third. \textbf{Open} &
+  \pkey{lem:maximal-mult} \\
+$\mathrm C{10}$ & \texttt{SS:208} & The central-relation citation drops the
+  third alternative of the theorem it cites &
+  \pkey{lem:central-relation} \\
+$\mathrm F$ & \texttt{SS:545, 837, 921} & A full fibre inferred from a
+  surjective projection, at three sites & \pkey{lem:full-fibre} \\
+\hline
+\end{longtable}
+\end{center}
+
+Two patterns recur rather than occurring once, and are worth naming because a
+reader checking the proof paper will meet them repeatedly. The first is a
+\emph{proper} containment asserted where the cited lemma gives only
+$\subseteq$, usually after factoring by a congruence, which can close the gap;
+it appears at least five times and is repaired the same way each time, by
+producing the witness the source has already displayed two lines earlier. The
+second is an upgrade from ``the image has size one'' to ``the image is
+\emph{this} block''; it appears four times and the proof paper makes it a named
+step.
+
+\subsection{$\mathrm D1$ --- two hypotheses dropped, and the statement becomes false}
+\label{sec:D1}
+
+\cite[Lem.~19]{ZhukSimplified} restates \cite[Cor.~6.1.2, 6.9.2]{ZhukStrong}.
+The source it cites reads ``Suppose $R\le A_{1}\times\dots\times A_{n}$,
+$\proj_{1}(R)=A_{1}$, $B_{i}\le_{\TBA(t)}A_{i}$ for every $i$''. The
+restatement drops the subdirectness $\proj_{1}(R)=A_{1}$, and drops --- in the
+$\TBA$ case --- that the $B_{i}$ absorb with a \emph{common} term $t$, which is
+the reason \cite{ZhukStrong} carries $t$ in the notation.
+
+\emph{Without the first the statement is false.} Take
+$R=\{(0,0)\}\le\mathbf Z_{p}\times\mathbf Z_{p}$, a subuniverse by
+idempotence, and $C_{i}=A_{i}$, which is allowed because $\subte{T}$ admits
+equality. Then $R\cap(C_{1}\times C_{2})=R$ and $\proj_{1}(R)=\{0\}$, which is
+neither empty nor all of $\mathbf Z_{p}$; the conclusion therefore asserts
+$\{0\}\subt{\TBA}\mathbf Z_{p}$, contradicting the paper's own Lemma~29.
+
+\emph{Repair.} Restore both hypotheses. The proof paper states them in
+\pkey{lem:ba-center-implies}. The common-term condition is not free at the
+call site: \pkey{thm:main-inductive}(2) records only that every coordinate
+reduction has type $\TBA$, and applies the lemma to the relation computing
+$E_{2}$ from $E_{1}$. Either a lemma synthesising one common binary term from a
+finite family of coordinate absorptions is needed, or the reduction data must
+carry a common witness from the start. This is recorded as an obligation on the
+proof paper, not as a defect of the source, since the source's own version of
+the lemma carries the hypothesis.
+
+\subsection{$\mathrm D2$ --- propagation modulo a congruence is never proved}
+\label{sec:D2}
+
+Stated at \texttt{main:1682}; used at \texttt{SS:2506, 2514, 2588, 3110} and
+\texttt{main:2999}. Never proved, and not attributed to any external source.
+
+The paper's own convention (\texttt{main:1058}) is \emph{``we always duplicate
+statements if the proof appears in a later section''}, implemented by
+\texttt{\textbackslash newtheorem*} duplicates. Checking all thirteen
+statements of \S2.3 against that convention leaves exactly two not restated in
+\S5: this corollary, and \texttt{LEMBACenterImplies}, which is declared an
+external import and so is absent by design.
+
+\emph{Repair.} It is Propagation specialised to the canonical surjection
+$\pi\colon\mathbf A\twoheadrightarrow\mathbf A/\delta$, whose clauses (f),
+(ft), (fs), (fm) are its four clauses. The identification is literal rather
+than approximate: $X/\delta$ is \emph{defined} as the image
+$\{x/\delta:x\in X\}$, which is $\pi(X)$; in particular the corollary's
+hypothesis ``$B/\delta$ is $\TS$-free'' and Propagation's ``$f(B)$ is
+$\TS$-free'' are the same condition. Proof paper: \pkey{cor:prop-quotient},
+derived from \pkey{lem:propagation}.
+
+A mechanical audit of all $81$ labelled statements of the source
+(\S\ref{sec:machine-checks}) shows this is the \emph{only} statement that is
+cited while being neither proved nor attributed. That matters beyond this
+entry: the audit covers \S5.6 and \S5.7, so whatever else is wrong there, it is
+not another statement asserted from nowhere.
+
+\subsection{$\mathrm D4$ --- $n=2$ for type $\TC$ is unargued}\label{sec:D4}
+
+The stable-intersection theorem concludes, in its case (c), that $n=2$ and
+$T_{1}=T_{2}=\TC$. The proof at \texttt{SS:2594}\,ff.\ reduces general $n$ to a
+pair, obtains $T_{1}=T_{2}$, and then:
+
+\begin{quote}\small
+``If $T_{1}=\TPC$ then $\sigma_{1}\circ\sigma_{2}=\sigma_{1}=\sigma_{2}$ \dots
+Additionally, this implies that $n$ cannot be greater than 2 for
+$T_{1}=\TPC$, as in this case the intersection $C_{1}\cap C_{2}$ must be
+empty.''
+\end{quote}
+
+That argument is specific to $\TPC$: equal congruences make $C_{1}$ and $C_{2}$
+distinct blocks, hence \emph{pairwise} disjoint, which contradicts hypothesis
+(3) once $n\ge3$. For type $\TC$ there is no congruence and no analogue, and
+the proof offers nothing; hypothesis (2) gives only
+$C_{1}\cap\dots\cap C_{n}=\varnothing$, never $C_{1}\cap C_{2}=\varnothing$.
+The same gap is visible at \texttt{SS:2650}, where the $\TPC$ argument needs
+one further unstated step --- the two $\sigma$-blocks are distinct because
+$B_{1}\cap C_{2}'\neq\varnothing$ would otherwise put a point in
+$C_{1}\cap C_{2}'$ --- which again has no type-$\TC$ analogue.
+
+\emph{Repair.} The missing argument is \cite[Thm.~3.7]{ZhukStrong}, which is
+the same statement for subuniverses of a \emph{single} algebra, resting on
+\cite[Lem.~6.11]{ZhukStrong}: for $n\ge3$ and $C_{i}$ central in $A_{i}$, no
+$(C_{1},\dots,C_{n})$-essential relation $R\le A_{1}\times\dots\times A_{n}$
+exists. The 2024 setting is not literally that of Theorem~3.7 --- there the
+$B_{i}$ are subuniverses of one algebra, whereas here $C_{i}$ is central in
+$B_{i}$ and the $B_{i}$ differ --- so a reduction is needed first: put
+$D=\bigcap_{i}B_{i}$ and $E_{i}=C_{i}\cap D$; then $D$ is a nonempty
+subuniverse, each $E_{i}$ is properly central in $D$, $\bigcap_{i}E_{i}
+=\varnothing$ and $\bigcap_{i\neq j}E_{i}\neq\varnothing$ for every $j$. The
+diagonal of $D^{n}$ is then $(E_{1},\dots,E_{n})$-essential. Proof paper:
+inside \pkey{thm:stable-intersection}.
+
+\emph{Cost of the repair.} \cite[Lem.~6.11]{ZhukStrong} has a printed proof
+that cites \emph{itself} three times where it means the preceding lemma, so a
+self-contained rendering must supply both. Both citations were re-read verbatim
+(Lemma~6.11 at 2005.00593 p.~37, Theorem~3.7 at p.~46).
+
+\subsection{$\mathrm D6$ --- a hypothesis that can fail, and cruciality supplies it}
+\label{sec:D6}
+
+\texttt{LEMBridgeFromRelation} requires, besides subdirectness and
+rectangularity of the first and last variables, that there exist
+$(b_{1},\bar a,a_{n})$ and $(a_{1},\bar a,b_{n})$ in $R$ with
+$(a_{1},\bar a,a_{n})\notin R$. The proof of \texttt{LEMConnectedProperties}(a)
+invokes it for every constraint along a path and never discharges that
+hypothesis.
+
+\emph{It can fail.} Machine-checked witness:
+$R=\{(x,z,y)\in\mathbb Z_{4}\times\mathbb Z_{2}\times\mathbb Z_{4}:
+x\equiv z\equiv y\ (\mathrm{mod}\ 2)\}$ is subdirect, $\ConOne(R,1)$ is
+congruence mod $2$ and coordinate $1$ is rectangular, and the third hypothesis
+is unsatisfiable. The construction then yields
+$\delta(x_{1},x_{2},y_{1},y_{2})=\exists z\,R(x_{1},z,y_{1})\wedge
+R(x_{2},z,y_{2})$, whose projection onto the first two coordinates
+\emph{equals} $\ConOne(R,1)$ rather than properly containing it --- so $\delta$
+is not a bridge, clause (c) failing. The lemma is genuinely inapplicable and
+genuinely necessary.
+
+\emph{Repair.} Cruciality supplies the hypothesis. If the third hypothesis
+fails at coordinates $1$ and $n$ then $R$ is the conjunction of its two
+projections,
+\[
+  R=\{(x,\bar a,y):(x,\bar a)\in\proj_{[n-1]}(R)\ \text{and}\
+     (\bar a,y)\in\proj_{[n]\setminus\{1\}}(R)\},
+\]
+the inclusion $\supseteq$ being exactly the failure of the hypothesis. A
+constraint that is crucial in a reduction therefore satisfies the hypothesis at
+every pair of its coordinates: otherwise weakening it replaces it by
+constraints whose conjunction defines the same relation, so the weakened
+instance has the same solution set and in particular still has no solution in
+the reduction, contradicting cruciality. On the witness above,
+$\proj_{1,2}(R)$ and $\proj_{2,3}(R)$ do conjoin to $R$ --- exactly the
+degenerate shape the corollary rules out.
+
+Proof paper: \pkey{lem:connected} is stated for crucial instances. This is a
+notion \cite{ZhukSimplified} inherits from \texttt{LEMCrucialMeansIrreducible}
+and then stops using.
+
+\subsection{$\mathrm D7$ --- two gaps in the main induction}\label{sec:D7}
+
+\paragraph{(i) The endgame proves \emph{connected}; (1c) demands \emph{linked}.}
+Both endgames of Case~2 finish with ``\dots which means that $\mathcal I$ is
+connected and satisfies (1b) if its solution set is subdirect or (1c)
+otherwise''. But (1c) requires a \emph{linked} connected subinstance, and only
+connectedness was established.
+
+\emph{Repair, via irreducibility.} Suppose $\mathcal I$ is connected with
+non-subdirect solution set. Take $\mathcal J=\Upsilon=\mathcal I$, legitimate
+since an instance is a weakening, hence an expanded covering, of itself. It
+remains to see $\mathcal I$ is linked. If it were not, $\mathcal I$ would
+witness the failure of its own irreducibility: its variables are among its own,
+each constraint is the projection of itself onto all its variables, it is not
+fragmented (connectedness of the constraint-adjacency graph forces constraints
+to share variables), it is not linked, and its solution set is not subdirect
+--- precisely conditions (i)--(v) of the definition. Since $\mathcal I$ is
+irreducible by standing hypothesis, it is linked. Two lines, and they explain
+why irreducibility is a hypothesis of the theorem at all.
+
+\paragraph{(ii) Case~1 derives (1c) for the wrong reduction.}
+Case~1 obtains a $1$-consistent $D^{(2)}\subte{T}D^{(1)}$, shows $\mathcal I$
+is crucial in $D^{(2)}$, and closes with ``applying the inductive assumption to
+$D^{(2)}$ we derive the required conditions''. Conditions (1a) and (1b) mention
+no reduction and transfer verbatim. (1c) does not: it asserts an expanded
+covering \emph{crucial in the ambient reduction}. The inductive hypothesis
+delivers $\mathcal K$ crucial in $D^{(2)}$; the goal needs a covering crucial
+in $D^{(1)}$, and the containment runs the wrong way --- an instance with no
+solution in the smaller $D^{(2)}$ may have one in $D^{(1)}$.
+
+\emph{First, the induction structure, which is load-bearing and unstated.} The
+proof opens ``We prove the claim by induction on the size of $D^{(1)}$.
+\emph{Let us prove (2) first.}'' That ordering is not stylistic. Part~(2) at a
+given measure uses (1) only at strictly smaller measure, whereas part~(1) at
+that measure uses \textbf{(2) at the same measure} --- Case~1 does exactly this
+at \texttt{main:3507}. So the induction is: strong induction on
+$k=\mu(D^{(1)})$; at each level establish (2) for \emph{all} instances, then
+(1) for all instances. That is acyclic: $(2)_{k}\leftarrow(1)_{<k}$,
+$(1)_{k}\leftarrow(2)_{k},(1)_{<k}$.
+
+\emph{Why that alone does not close the gap.} One would like to apply (2) to
+$\mathcal K$ and conclude contrapositively that $\mathcal K^{(1)}$ has no
+solution. But $\mathcal K$ is an expanded \emph{covering}, so it has more
+variables than $\mathcal I$, and under $\mu=\sum_{x}|D^{(1)}_{x}|$ its measure
+is \emph{larger}, not equal. The device that works for a weakening does not
+work for a covering.
+
+\emph{The repair, which avoids re-entering the induction.} Put
+$\mathcal L=\mathcal K\wedge\mathcal I$. It is an expanded covering of
+$\mathcal I$, since $\mathcal K$ is one, $\mathcal I$ is a weakening of itself
+hence one, and the union of two expanded coverings is one. $\mathcal L^{(1)}$
+has no solution, since $\mathcal L$ contains every constraint of $\mathcal I$
+and $\mathcal I$ is crucial in $D^{(1)}$. So $\mathcal L$ may be weakened to an
+instance $\mathcal L'$ crucial in $D^{(1)}$. Every constraint of $\mathcal K$
+survives that weakening: each is crucial in $D^{(2)}$, so weakening it yields a
+solution in $D^{(2)}\subseteq D^{(1)}$, and weakening it inside any weaker
+instance yields only more solutions; so each is already crucial in $D^{(1)}$ at
+every stage, and the process only weakens constraints that are not. Therefore
+$\Upsilon\subseteq\mathcal K\subseteq\mathcal L'$, its properties being
+intrinsic to $\Upsilon$ and untouched, and $\mathcal L'$ is an expanded
+covering of $\mathcal I$ crucial in $D^{(1)}$. No appeal to the induction at a
+larger measure, so the measure survives intact.
+
+Proof paper: \pkey{thm:main-inductive} and \pkey{haz:case1c}.
+
+\begin{entry}[A caveat on the measure]\label{ent:measure}
+The measure $\mu(D)=\sum_{x}|D_{x}|$ is well founded for the appeals the repair
+above uses, all of which are at a strictly smaller reduction on the
+\emph{same} variable set. It is \emph{not} well founded across expanded
+coverings, where the variable set grows and $\mu$ grows with it. The proof
+paper does not yet resolve that, and it is not a defect of the source alone;
+it is recorded here so that the two questions are not confused. A repair must
+make the measure insensitive to duplicated covering variables --- either by
+formulating the theorem for an instance equipped with a map to a fixed base
+instance and measuring on the base variables, or by carrying a parent-domain
+profile and ordering those. Putting the quantifier over instances inside the
+induction, which is necessary for other reasons, does not by itself solve it.
+\end{entry}
+
+\subsection{$\mathrm D8$ --- minimal-containing-a-point versus minimal-outright}
+\label{sec:D8}
+
+At \texttt{main:3526} the main induction picks, for each variable, ``the
+minimal $D^{(2)}_{x}\le_{\MT T}D^{(1)}$ containing $s(x)$'', and two lines later
+invokes a lemma whose hypothesis (5) requires $D^{(2)}_{x}$ to be \emph{a
+minimal $\MT T$ subuniverse} --- minimal outright. Those are not the same
+condition. The lemma bridging them has been deleted, along with its citation:
+
+\begin{quote}\footnotesize\ttfamily
+3526\quad For every variable x choose the minimal D\^{}(2)\_x <=\_\{MT\} D\^{}(1) containing s(x).\\
+3527\quad \%By Lemma \textbackslash ref\{LEMMinimalContainingIsMinimal\}\\
+3528\quad \%\$D\^{}\{(2)\}\_\{x\}\$ is a minimal \textbackslash mathcal\{M\}T subuniverse.\\
+3529\quad By Lemma \textbackslash ref\{LEMMultiTypeStillStable\}
+\end{quote}
+
+The deleted statement (\texttt{main:1864}) was: if $C$ is inclusion-minimal with
+$b\in C$ and $C\le_{\MT T}B$, then no $C'\subsetneq C$ has $C'\le_{\MT T}B$.
+
+\emph{Repair.} Fix $T\in\{\TL,\TPC,\TD\}$ and $B\lll A$, let $\Sigma$ be the
+finite set of congruences that are $T$-dividing for $B$, and for $b\in B$ put
+$M(b)=B\cap\bigcap_{\sigma\in\Sigma}[b]_{\sigma}$, discarding any $\sigma$ with
+$B\cap[b]_{\sigma}=B$. Then $M(b)$ is the least $\MT T$ subuniverse of $B$
+containing $b$; and if $c\in M(b)$ then $[c]_{\sigma}=[b]_{\sigma}$ for every
+$\sigma\in\Sigma$, so $M(c)=M(b)$. Consequently an inclusion-minimal $\MT T$
+set containing $b$ equals $M(b)$ and admits no proper $\MT T$ subset: any such
+$C'$ is nonempty, and any $c\in C'$ has $M(c)=M(b)\subseteq C'$.
+
+The content is the second sentence: $b\mapsto M(b)$ is a closure whose image
+consists of pairwise disjoint minimal sets, because membership in $M(b)$ is
+decided blockwise and blocks of an equivalence relation either coincide or are
+disjoint. Proof paper: \pkey{lem:minimal-consistent} and
+\pkey{haz:minimality}.
+
+\subsection{$\mathrm D{11}$--$\mathrm D{13}$ --- three defects, one missing hypothesis}
+\label{sec:D11}
+
+\S5.4 of \cite{ZhukSimplified} is the only part of \S5 that manipulates bridges
+as objects in their own right rather than consuming them, and all three of its
+defects are about which auxiliary property survives a construction. All three
+are cured by one hypothesis, which the source already has in its vocabulary:
+\texttt{LEMPCCongruencePropertyInductiveStep} (\texttt{SS:1379}) carries, as
+hypothesis (2), exactly \emph{pair-reflexivity} --- $(a,b,a,b),(b,a,b,a)\in
+\delta$ for every $(a,b)\in\proj_{1,2}(\delta)$.
+
+\paragraph{$\mathrm D{11}$: the symmetrisation formula.}
+The proof of \texttt{LEMBlockOf\brk GoodBridge\brk DoesNotHaveBAC} opens by symmetrising $\delta$:
+\begin{quote}\footnotesize\ttfamily
+1154\quad \textbackslash sigma(x\_1,x\_2,x\_3,x\_4) = \textbackslash exists x\_5 \textbackslash exists x\_6\\
+1155\quad \textbackslash delta(x\_1,x\_2,x\_5,x\_5)\\
+1157\quad \textbackslash wedge \textbackslash delta(x\_3,x\_4,x\_5,x\_6).
+\end{quote}
+Clause (d) of the bridge definition (\texttt{main:1258}) is
+``$(a_{1},a_{2},a_{3},a_{4})\in\delta$ implies
+$(a_{1},a_{2})\in\sigma_{1}\iff(a_{3},a_{4})\in\sigma_{2}$''. The first
+conjunct has $x_{5}$ in both of the last two places, so $(x_{5},x_{5})\in 0_{A}$
+forces $x_{1}=x_{2}$. Hence $\proj_{1,2}(\sigma)\subseteq 0_{A}$, while clause
+(c) demands $\proj_{1,2}(\sigma)\supsetneq\sigma_{1}=0_{A}$: \emph{the relation
+defined is never a bridge}, for any $\sigma_{1}$, and every later line of the
+proof is false of it.
+
+It is a one-character slip. The intended relation is $\delta\ast\delta^{-1}$,
+and the source writes exactly that, correctly, $210$ lines later at
+\texttt{SS:1365--1367}, for the same purpose.
+
+\paragraph{$\mathrm D{12}$: bridges and abelian groups, false as stated.}
+\texttt{LEMNiceBridgeGivesAbelianGroup} (\texttt{SS:1103}): for $\sigma$ a
+congruence and $\delta$ a bridge from $\sigma$ to $\sigma$ with
+$\proj_{1,2}(\delta)=\bcol\delta=A^{2}$ and $\delta$ symmetric, there is an
+abelian group $G$ with $(A/\sigma;\delta/\sigma)\cong(G;x_{1}-x_{2}=x_{3}-x_{4})$.
+
+\emph{Counterexample.} $\mathbf A=\mathbf Z_{3}$ with
+$w(x_{1},\dots,x_{4})=x_{1}+x_{2}+x_{3}+x_{4}\bmod 3$ --- idempotent since
+$4\equiv 1$, and a special WNU, so $\mathbf A\in\mathcal V_{4}$. Take
+$\sigma=0_{\mathbf A}$ and
+$\delta=\{(x_{1},x_{2},x_{3},x_{4})\in\mathbb Z_{3}^{4}:
+x_{1}-x_{2}+x_{3}-x_{4}=0\}$. Verified by exhaustion: $\delta$ is a subuniverse
+of $A^{4}$; clause (d) holds; $\proj_{1,2}(\delta)=\bcol\delta=A^{2}$; $\delta$
+is symmetric; and none of the six bijections $\mathbb Z_{3}\to\mathbb Z_{3}$
+carries $\delta$ to $\{x_{1}-x_{2}=x_{3}-x_{4}\}$. Since every abelian group of
+order $3$ is $\mathbb Z_{3}$, no $G$ works.
+
+\emph{What is true.} $\delta$ contains all $(a,a,b,b)$, so it is the preimage
+of some $K\le G\times G$ under $(x_{1},x_{2},x_{3},x_{4})\mapsto
+(x_{1}-x_{2},x_{3}-x_{4})$. Clause (d) makes $K$ meet $G\times 0$ and
+$0\times G$ only at the origin, and subdirectness makes it a graph, so
+$\delta=\{\varphi(x_{1}-x_{2})=x_{3}-x_{4}\}$ for an automorphism $\varphi$.
+Symmetry says $\varphi^{2}=\mathrm{id}$; Zhuk's conclusion is the case
+$\varphi=\mathrm{id}$, and the counterexample is $\varphi=-\mathrm{id}$, which
+is why it needs $p$ odd. The step that breaks is ``composing the bridge
+$\delta$ with itself we get a bridge $\delta_{0}\supseteq\delta$'':
+$\delta\ast\delta=\{\varphi^{2}(x_{1}-x_{2})=x_{3}-x_{4}\}$, which for
+$\varphi=-\mathrm{id}$ does not contain $\delta$, and the closing count
+$|\delta|=|\delta_{0}|=|A|^{3}$ needs the containment it does not have.
+
+\paragraph{$\mathrm D{13}$: linkedness is asserted, not shown.}
+\texttt{SS:1273} puts $\delta'=\delta\cap B^{4}\cap(\cover\sigma\times
+\cover\sigma)$ for $B$ a block of $\operatorname{LeftLinked}(\cover\sigma)$ and
+says ``Since $\bcol\delta\supseteq\cover\sigma$, $\delta'$ satisfies all the
+conditions of Lemma \texttt{LEMBlockOfGoodBridgeDoesNotHaveBAC}''. Two of those
+conditions are that $\proj_{1,2}(\delta')$ properly contains $0_{B}$ and is
+\emph{linked}. What $\bcol\delta\supseteq\cover\sigma$ gives is the third
+condition. Nothing offered bears on linkedness --- and it does not follow: the
+witness $(x_{3},x_{4})$ supplied by minimality of $\cover\sigma$ lies in
+$\cover\sigma$ but in no particular block, and if it lands outside $B$ for
+every choice then $\proj_{1,2}(\delta')$ collapses to $0_{B}$ and $\delta'$ is
+not even a bridge. The same gap recurs at \texttt{SS:1290}.
+
+\paragraph{The single cure, and why it costs nothing.}
+Pair-reflexivity kills all three. $\mathrm D{13}$: $\cover\sigma\subseteq
+\proj_{1,2}(\delta)$ by minimality of $\cover\sigma$, since $\proj_{1,2}(\delta)$
+is a subalgebra of $A^{2}$, stable under $\sigma$ by clause (a) and properly
+containing $\sigma$ by clause (c); so pair-reflexivity puts
+$(x_{1},x_{2},x_{1},x_{2})$ in $\delta'$ for every
+$(x_{1},x_{2})\in\cover\sigma\cap B^{2}$, giving $\proj_{1,2}(\delta')=
+\cover\sigma\cap B^{2}$ exactly --- which is linked precisely because $B$ is a
+block. $\mathrm D{12}$: pair-reflexivity \emph{is} $\varphi=\mathrm{id}$, and it
+also repairs the proof directly, since $\delta\subseteq\delta\ast\delta$ by
+taking $(x_{1},x_{2})$ itself as the intermediate pair. $\mathrm D{11}$:
+$\delta\ast\delta^{-1}$ is pair-reflexive by construction, so the corrected
+formula delivers what the lemma needs.
+
+And it costs nothing, because the two lemmas that need the hypothesis are each
+invoked exactly once in the whole paper --- \texttt{LEMNontrivialReflexive\-Bridge\-Implies}
+at \texttt{SS:1368}, on a $\delta\ast\delta^{-1}$, and
+\texttt{LEMNiceBridgeGivesAbelianGroup} from inside that call.
+
+Proof paper: \pkey{def:pair-reflexive}, \pkey{lem:symmetrise},
+\pkey{lem:nice-bridge-abelian}, \pkey{lem:nontrivial-bridge},
+\pkey{rem:phi-twist}.
+
+\subsection{$\mathrm D{14}$ --- the box form cannot reach the subrelation}
+\label{sec:D14}
+
+\texttt{SS:1394}, inside Case~1 of
+\texttt{LEMPCCongruencePropertyInductiveStep}: with $B\subt{T}A$, $|B|>1$ and
+$\delta'=\delta\cap B^{4}$,
+
+\begin{quote}\small
+``By Lemma \texttt{LEMBACenterLinkedness}
+$\operatorname{RightLinked}(\proj_{1,2,3}(\delta'))=B^{2}$.''
+\end{quote}
+
+\texttt{LEMBACenterLinkedness} (\cite[Prop.~2.15(i)]{BartoKozik}) restricts a
+binary relation by a \emph{box} $B_{1}\times B_{2}$. Applied with
+$W=\proj_{1,2,3}(\delta)$, $B_{1}=P\cap B^{2}$, $B_{2}=B$ it yields linkedness
+of $\proj_{1,2,3}(\delta)\cap B^{3}$, which contains
+$\proj_{1,2,3}(\delta\cap B^{4})$ and can be strictly larger: a tuple of
+$\delta$ whose first three coordinates lie in $B$ need not have its fourth
+there. The two really do differ --- for the meet-semilattice on $\{0,1,2\}$
+with $B=\{0,1\}$, the subalgebra $K=\{(0,0),(1,2)\}$ of $A^{2}$ has
+$\proj_{1}(K)\cap B=\{0,1\}$ but $\proj_{1}(K\cap B^{2})=\{0\}$. Getting
+$\delta\cap B^{4}$ out of the box form instead would need linkedness of
+$\delta$ in the split $(1,2)\mid(3,4)$ or $(1,2,3)\mid(4)$, and hypothesis (3)
+gives neither: a path in the coarser bipartite graph does not lift, because
+consecutive edges through a third coordinate may use different fourth
+coordinates. The lemma's own hypothesis $R\cap(B_{1}\times B_{2})\sdle
+B_{1}\times B_{2}$ is also never discharged.
+
+\emph{The assertion is true; the citation is to the wrong form of the
+principle.} What closes it is the \emph{subrelation} form: if
+$W\sdle\mathbf P\times\mathbf A$ is linked and $\varnothing\neq W'\subte{T}W$
+with $T\in\{\TBA,\TC\}$, then $W'$ is linked over its own projections. That
+follows from tools already present in \S5 --- pp-propagation, intersection, and
+factoring --- together with one elementary fact the paper never states:
+$0_{\mathbf C}$ is not an absorbing subuniverse of $\mathbf C^{2}$ when
+$|C|\ge2$, because absorption at position $i$ forces the term not to depend on
+argument $i$, at every $i$, hence to be constant, and idempotence then forces
+$|C|=1$.
+
+The subrelation form also discharges, for free, the subdirectness hypothesis
+the box form needed. Proof paper: \pkey{lem:no-absorbing-diagonal},
+\pkey{lem:absorb-linked-sub}, \pkey{haz:box-vs-sub}.
+
+\emph{Contrast.} The analogous step in \texttt{LEMPCBridgesAreTrivial} Case~2
+\emph{is} justified by the source --- by first proving the closure property
+$\xi\cap(A^{2}\times B\times A)\subseteq B^{4}$ (\texttt{SS:1548--1554}), which
+makes $\proj_{1,2,3}(\xi\cap B^{4})=\proj_{1,2,3}(\xi)\cap(A^{2}\times B)$.
+Here $B$ is a strong subuniverse rather than a linkedness block, no closure
+property is available, and absorption has to do the work instead.
+
+\subsection{$\mathrm D{15}$ --- read $\delta$ for $\sigma$, and restore stability}
+\label{sec:D15}
+
+\texttt{SS:2208--2224}. A congruence $\delta\supseteq\sigma$ is chosen maximal
+with $|B/\delta|>1$, and $B/\delta$ is shown BA and centre free. To show
+$\delta$ irreducible the proof supposes $\delta=S_{1}\cap\dots\cap S_{k}$ with
+$S_{i}\supsetneq\delta$, finds an $i$ with $B^{2}\not\subseteq S_{i}$, and then:
+
+\begin{quote}\small
+``By Lemma \texttt{LEMLeftLinkedStayFull}
+$\operatorname{LeftLinked}(S_{i}\cap(B\times B))/\sigma=(B/\sigma)^{2}$. Hence
+$(S_{i}\cap(B\times B))/\sigma$ is a linked relation, which by Lemma
+\texttt{LEMLinkedImpliesBACenter} implies the existence of a BA or central
+subuniverse on $B/\delta$.''
+\end{quote}
+
+Two things are wrong, and they are the same thing twice. The relation is
+factored by $\sigma$ while the conclusion is about $B/\delta$; those do not
+match, since $(S_{i}\cap B^{2})/\sigma$ lives on $B/\sigma$. And properness is
+not established: \texttt{LEMLinkedImpliesBACenter} needs a \emph{proper}
+subdirect relation, $B^{2}\not\subseteq S_{i}$ gives only
+$S_{i}\cap B^{2}\subsetneq B^{2}$, and factoring can close that gap.
+
+\emph{Repair.} Read $\delta$ for $\sigma$ throughout the last four lines, which
+is plainly what was meant --- $B/\delta$ was shown BA and centre free two lines
+earlier for exactly this use, and the stated conclusion already says
+$B/\delta$. Properness then follows, but only from a clause the proof drops
+when it introduces the $S_{i}$: the definition of irreducible
+(\texttt{main:1237}) requires the $S_{i}$ to be \textbf{stable under $\delta$}.
+Stability makes $S_{i}$ a union of products of $\delta$-blocks, so
+$(S_{i}\cap B^{2})/\delta=(B/\delta)^{2}$ would force $B^{2}\subseteq S_{i}$.
+That clause is the only part of the definition of irreducibility doing work
+here. Proof paper: \pkey{lem:main-existence}, \pkey{haz:main-existence}.
+
+This propagates: \texttt{LEMUbiquity} rests on this lemma, so $\mathrm D{15}$
+reaches one of the headline properties.
+
+\subsection{$\mathrm D{16}$ --- the conclusion is the whole lemma, and is asserted}
+\label{sec:D16}
+
+\texttt{SS:2743}: $\sigma$ linear on $\mathbf A\in\Vn$ with
+$\cover\sigma=A^{2}$ implies $\mathbf A/\sigma\cong\mathbf Z_{p}$. The proof
+produces the perfect-linear witness $\zeta\le\mathbf A\times\mathbf A\times
+\mathbf Z_{p}$ with $\proj_{1,2}(\zeta)=A^{2}$, sets $\xi(x,z)=\zeta(x,a,z)$,
+and then says in full: ``Then $\xi$ is a bijective relation giving an
+isomorphism $\mathbf A/\sigma\cong\mathbf Z_{p}$.'' That is the entire content
+of the lemma. What $\zeta$ gives directly is only $\xi^{-1}(0)=[a]_{\sigma}$.
+
+\emph{Repair, by a different route.} The lemma follows from a statement already
+repaired here. A bridge $\delta$ from $\sigma$ to $\sigma$ with
+$\bcol\delta\supsetneq\sigma$ exists by the linear criterion; replace it by
+$\delta\ast\delta^{-1}$, symmetric and pair-reflexive
+(\S\ref{sec:D11}). Then \texttt{LEMNontrivialReflexiveBridgeImplies}(3)
+applies, and $\cover\sigma=A^{2}$ is a congruence with the single block $A$, so
+$\mathbf A/\sigma\cong\mathbb Z_{p}^{m}$ as a group. Now $m=0$ gives
+$\sigma=A^{2}$, impossible because an irreducible congruence is proper
+(\S\ref{sec:leg-emptyfamily}); and $m\ge2$ contradicts irreducibility, because
+$\mathbf A/\sigma$ is affine, so the coordinate congruences
+$\theta_{i}=\{(x,y):x_{i}=y_{i}\}$ are linear subspaces of
+$(\mathbb Z_{p}^{m})^{2}$, hence subuniverses of $(\mathbf A/\sigma)^{2}$, each
+properly above $0_{\mathbf A/\sigma}$ with $\bigcap_{i}\theta_{i}=
+0_{\mathbf A/\sigma}$. Hence $m=1$. That the group isomorphism is an
+isomorphism \emph{of algebras} is the proposition of
+\S\ref{sec:leg-Zp}, and without it the statement does not typecheck against
+$\mathbf Z_{p}\in\Vn$.
+
+This route uses only in-paper material, where the source's route imports
+\cite[Cor.~8.17.1]{ZhukJACM} --- so the repair is \textbf{one fewer external
+dependency} than the source. Proof paper: \pkey{lem:linear-on-top},
+\pkey{haz:on-top}.
+
+\begin{entry}[Salvage: the source's $\zeta$ really is a function]\label{ent:zeta}
+Worth keeping, because it repairs half of the original argument and is needed
+if the perfect-linear machinery is used elsewhere. Put
+$t(x,y,z)=w(x,y,\dots,y,z)$ with $n-2$ copies of $y$; on $\mathbb Z_{p}$ this
+is $x-y+z$, because $p\mid n-1$. Applying $t$ to three tuples of $\zeta$ over
+the same $(a_{1},a_{2})$ gives, by idempotence, that the fibre is closed under
+$x-y+z$, hence is a coset of a subgroup of $\mathbb Z_{p}$: empty, a singleton,
+or all of $\mathbb Z_{p}$. It is not all of $\mathbb Z_{p}$, since that fibre
+would contain $0$ and a nonzero element, making $(a_{1},a_{2})$ both
+$\sigma$-related and not; and it is nonempty on $\cover\sigma$ since
+$\proj_{1,2}(\zeta)=\cover\sigma$. So $\zeta$ is the graph of a homomorphism
+$G\colon\mathbf A^{2}\to\mathbf Z_{p}$ with $G^{-1}(0)=\sigma$.
+\end{entry}
+
+\subsection{$\mathrm D{17}$ --- maximal multi-type extension. \textbf{Open}}
+\label{sec:D17}
+
+\texttt{SS:3113}. $\sigma$ is maximal with $(C_{1}\circ\sigma)\cap
+B_{2}=\varnothing$; Case~1 supposes $E\subt{\TS}B_{1}/\sigma$ and argues:
+
+\begin{quote}\small
+``By Theorem \texttt{THMMainStableIntersection} $E\cap B_{2}/\sigma\neq
+\varnothing$ and $E\cap C_{1}/\sigma\neq\varnothing$, hence
+$C_{1}/\sigma\cap B_{2}/\sigma\neq\varnothing$, which contradicts our
+assumptions.''
+\end{quote}
+
+The two nonemptinesses are fine --- though they come from the intersection
+property applied to the BA-and-central $D\subseteq E$, not from the theorem
+cited. \textbf{But ``hence'' does not follow}: two sets each meeting $E$ need
+not meet each other. The maximality of $\sigma$, which would be the natural
+extra ingredient, is not used anywhere in Case~1.
+
+\paragraph{Why the source's Case~1 cannot be patched in place.}
+The configuration \emph{reproduces itself} on $D$: one has $D\lll\bar A$,
+$\bar C_{1}\cap D\lll D$, $\bar B_{2}\cap D\lll D$, still disjoint, with
+$D\cap\bar B_{2}\neq\varnothing$. Every consequence of the two facts survives
+the descent, so no iteration of them closes the case. The descent is not
+useless --- $C_{1}\cap D\le_{\MT T}^{A}D$ properly, so the hypotheses are
+inherited and an induction on $|B_{1}|$ is available --- but it shrinks the
+ambient, while the conclusion's congruence family is indexed by the ambient
+($\cover\omega\supseteq B_{1}^{2}$) and the single call site
+(\texttt{main:2685}) consumes the original $B_{1}$ in one of its two branches.
+
+\paragraph{The published repair, and why it fails.}
+An earlier draft of this document passed to a \emph{minimal} subfamily
+$F\subseteq\{\bar C_{1}^{1},\dots,\bar C_{1}^{t}\}$ with $\bigcap F\cap
+\bar B_{2}=\varnothing$, ``which exists because the whole family works'', and
+then used the stable-intersection theorem --- whose leave-one-out hypothesis is
+exactly minimality, and whose four conclusions have no room for $\TS$ --- to
+show no member of $F$ is $\TS$-typed, so that the case evaporates rather than
+being contradicted.
+
+The first line is wrong, and an external review found it. What the hypothesis
+gives is $\bigl(\bigcap_{j}C_{1}^{j}\bigr)/\sigma\cap\bar B_{2}=\varnothing$,
+whereas $\bigl(\bigcap_{j}C_{1}^{j}\bigr)/\sigma\subseteq
+\bigcap_{j}\bigl(C_{1}^{j}/\sigma\bigr)$ with the inclusion generally strict.
+So $\bigcap F$ can acquire $\sigma$-classes that meet $\bar B_{2}$, and the
+subfamily need not exist. This is precisely the image-versus-intersection
+failure that \S\ref{sec:leg-quotient} is about --- catalogued in this document
+and then walked into. The lesson is recorded rather than tidied away.
+
+\paragraph{Where it stands.}
+The saturation identity $\delta\cap B^{2}\subseteq\sigma_{j}\cap B^{2}$ that
+makes images commute with intersection is the ``moreover'' clause of the
+factorisation lemma, and it is available for a factor precisely when that
+factor lands in the type-$T$ alternative --- not when it lands in $\subt{\TS}$.
+So the $\TS$ factors are the obstruction both to clause (m) of propagation and
+to the minimal-subfamily argument, and the argument is circular as written.
+
+One fragment survives, and it points at the target. A factor with
+$\bar C_{1}^{j}\subt{\TS}\bar B_{1}$ contains a BA-and-central $\bar D$ of
+$\bar B_{1}$, which meets $\bar B_{1}\cap\bar B_{2}$ by the strong-nonemptiness
+lemma; so $\bar C_{1}^{j}\cap\bar B_{2}\neq\varnothing$ --- \emph{the $\TS$
+factors never help cut $\bar B_{2}$ out}. What is missing is that the type-$T$
+factors alone already cut it out. If that is proved, saturation applies to
+them, the intersection of their images is the image of their intersection, and
+the rest of the argument runs with the ambient still $\bar B_{1}$.
+
+Proof paper: \pkey{lem:maximal-mult}, marked \emph{open} in its status table.
+Nothing downstream of that lemma should be written until this is settled.
+
+\subsection{$\mathrm C{10}$ --- a citation that drops a case}\label{sec:C10}
+
+\texttt{SS:208} states:
+
+\begin{quote}\small
+``Suppose $R\sdle\mathbf A\times\mathbf B$, $C=\{c\in A\mid\forall b\in B:
+(c,b)\in R\}$. Then one of the following holds: (1) $C$ is a central
+subuniverse of $\mathbf A$; (2) $\mathbf B$ has a nontrivial binary absorbing
+subuniverse.''
+\end{quote}
+
+\cite[Thm.~6.15]{ZhukStrong} (p.~38) is verbatim this, except for a third item:
+``3. $\mathbf B$ has a nontrivial \emph{projective} subuniverse.'' The word
+``projective'' does not occur anywhere in the 2024 source ---
+\texttt{grep -i projective} over all four of its \TeX{} files returns nothing
+--- so the notion was removed from the paper, not merely from this citation.
+
+\emph{The two-case statement is true, and the elimination is an argument Zhuk
+himself runs elsewhere without ever connecting it to Theorem~6.15.} The
+standing hypothesis (\texttt{main:1123}, restated at \texttt{main:1641}
+precisely for the statements \S5 proves) makes $\mathbf B$ Taylor. By
+\cite[Lem.~3.4]{ZhukStrong}, a nontrivial projective subuniverse that is not
+binary absorbing produces an essentially unary $\mathbf U\in\mathrm{HS}(\mathbf
+B)$ of size $\ge2$ --- which a WNU forbids. Zhuk runs this same move on this
+same trichotomy in the proof of his Theorem~4.15, step (4)$\Rightarrow$(5):
+``In case (5) Lemma 3.4 gives us a nontrivial binary absorbing subuniverse,
+which is a strong subuniverse, or an essentially unary algebra $U\in HS(A)$,
+which contradicts condition (4).''
+
+The elimination should be stated as a lemma with a proof rather than smuggled
+into a citation, and the proof paper does that, with a direct two-line argument
+for ``a WNU forbids an essentially unary quotient'' in place of the source's
+route through WNU-blockers.
+
+\emph{But the two-case form is true only because $\varnothing$ counts as
+central.} Under our reading (\S\ref{sec:leg-empty}) it is false:
+$\mathbf A=\mathbf B=\mathbf Z_{p}$ with $R$ the graph of $x\mapsto x+1$ is
+subdirect, has $C=\varnothing$, and $\mathbf Z_{p}$ has no nontrivial binary
+absorbing subuniverse at all. So a third alternative $C=\varnothing$ must be
+added. It is harmless: each of the nine call sites exhibits an element of $C$
+first.
+
+Proof paper: \pkey{lem:no-unary-quotient}, \pkey{lem:central-relation},
+\pkey{haz:central-relation}.
+
+\begin{entry}[Two obligations at each of the eight contrapositive call sites]
+\label{ent:c10-sites}
+The call sites are \texttt{SS:268, 551, 606, 843, 928, 1008, 2024, 2079}. Eight
+run the lemma contrapositively against a \emph{BA and center free} algebra,
+defined at \texttt{main:1363} as having ``no proper nonempty binary absorbing
+subuniverse or proper nonempty central subuniverse''. Two obligations are
+therefore live at each and discharged at none explicitly.
+
+\emph{Properness of the centre.} Nonempty central is not enough; $C\neq A$ must
+be shown. It is available at every site, and at three of them the witness is
+printed two lines earlier --- the non-containments at \texttt{SS:533, 824, 903}
+--- but never connected to the appeal. Sites \texttt{606, 1008, 2079} instead
+\emph{use} the improper case, concluding that $R$ is full; there the split is
+explicit.
+
+\emph{Power to base.} Alternative (2) yields a binary absorbing subuniverse of
+a \emph{power}; the sites assert one on the base. That is
+\texttt{LEMBACenterSOnPowerImplies}, cited at \texttt{SS:2024} and omitted at
+\texttt{551, 843, 928}.
+\end{entry}
+
+\subsection{$\mathrm F$ --- a full fibre from a surjective projection}\label{sec:F}
+
+Subsubcases 1B3 (\texttt{SS:545}), 2A3 (\texttt{SS:837}) and 2B3
+(\texttt{SS:921}) each contain, verbatim modulo names:
+
+\begin{quote}\small
+``Since $\proj_{1,2,\dots,|A|}(R')=(B/\delta)^{|A|}$, there exists
+$d\in B_{m-1}/\sigma_{m}$ such that $(B/\delta)^{|A|}\times\{d\}\subseteq R'$.''
+\end{quote}
+
+Surjectivity of a projection does not produce a full fibre, and as stated this
+is a non sequitur.
+
+\emph{It is nevertheless true, for a reason that explains the arity.} Each such
+$R'$ is cut out by a conjunction of unary and binary conditions on its first
+$|A|$ entries together with a condition relating each entry to the last
+coordinate --- at \texttt{SS:837}, $\forall i,j:(a_{i},a_{j})\in\sigma\cap
+\omega$, $\forall i:a_{i}\in B_{m-1}$, and $(a_{i},b)\in\sigma_{m}$ --- and any
+such condition survives substituting entries for one another. And
+$|B/\delta|\le|A|$ because $B\subseteq A$. So the tuple enumerating $B/\delta$
+with repetition already lies in $(B/\delta)^{|A|}$, its witness $d$ serves, and
+every other tuple is a coordinate-substitution instance of it.
+
+\textbf{The exponent $|A|$ is load-bearing}: it must be at least the number of
+blocks, so that one tuple can enumerate them. A rendering that normalises the
+arity away breaks all three proofs. Proof paper: \pkey{lem:full-fibre},
+\pkey{haz:full-fibre}.
+
+\section{Statements restated}\label{sec:restated}
+
+Five statements of the source are restated in the proof paper, not because they
+are wrong but because our conventions make the printed form say something else
+--- or because the source's own proof gives more than its statement.
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}p{0.24\textwidth}p{0.32\textwidth}p{0.34\textwidth}@{}}
+\hline
+\textbf{Statement} & \textbf{Why} & \textbf{Restatement} \\
+\hline
+\texttt{LEMCentral\brk RelationImplies} (\texttt{SS:208}) &
+  True in the source only because $\varnothing$ counts as central, and the
+  projective alternative is dropped (\S\ref{sec:C10}) &
+  ``$C=\varnothing$, or $C$ is central in $\mathbf A$, or $\mathbf B$ has a
+  proper nonempty binary absorbing subuniverse'' \\
+\texttt{LEMLinked\brk ImpliesBACenter} (\texttt{SS:222}) &
+  ``There exists a BA or central subuniverse'' is vacuous: every algebra is a
+  binary absorbing subuniverse of itself &
+  Insert \emph{proper nonempty}; that is how it is used at \texttt{SS:1282} \\
+The $\subt{\TS}$ clause (\texttt{main:1522}) &
+  Vacuously true for $D=\varnothing$ &
+  Require the witness $D$ nonempty \\
+\texttt{LEMIntersectALL}(i) &
+  Its proof (\texttt{SS:2356}) establishes $B\cap D\dlll^{A}D$ and then weakens
+  it; three later proofs use the stronger form while citing (i) &
+  State (i) as $B\cap D\dlll^{A}D$ and derive $B\cap D\dlll A$ as a corollary \\
+\texttt{CORReverseHomomorphism} &
+  Its type list is $\{\TBA,\TC,\TS,\TL,\TD\}$ where the stable-intersection
+  theorem uses $\{\TBA,\TC,\TS,\TL,\TPC\}$ &
+  Fix one convention; harmless, since $\TD$ subsumes $\TL$ and $\TPC$ \\
+\hline
+\end{tabular}
+\end{center}

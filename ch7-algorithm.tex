@@ -1,10 +1,9 @@
-%!TeX root=csp.tex
+%!TeX root=csp-proof.tex
 \section{The algorithm}\label{sec:algorithm}
 
-\cite{ZhukSimplified} proves the correctness statements but does not contain the
-algorithm; that is in \cite{ZhukJACM}. This section states it, because target
-\textup{(T1)} of \S\ref{sec:target} is a proposition \emph{about} it and cannot
-be written down otherwise.
+The algorithm is \cite{ZhukJACM}'s. It is stated here because target
+\textup{(T1)} of \S\ref{sec:target} is a proposition \emph{about} it and
+cannot be written down otherwise.
 
 \subsection{\textsc{Solve}}
 
@@ -43,8 +42,10 @@ do that, but it can do four things:
 \item[\textup{(p0)}] decide $\bar a\in\phi^{-1}(\mathcal I)$, by reducing each
   domain to the corresponding block and recursing on a smaller domain;
 \item[\textup{(p1)}] decide $\phi^{-1}(\mathcal I)=\mathbb Z_{p_{1}}\times\dots
-  \times\mathbb Z_{p_{k}}$, by testing $\bar 0$ and the $k$ unit vectors with
-  \textup{(p0)} --- correct because $\phi^{-1}(\mathcal I)$ is a subgroup;
+  \times\mathbb Z_{p_{k}}$, by testing $\bar 0$ first and then the $k$ unit
+  vectors with \textup{(p0)}. The set $\phi^{-1}(\mathcal I)$ is in general an
+  affine \emph{coset}, not a subgroup; testing $\bar 0$ first is what makes it
+  one, after which membership of the coordinate generators implies fullness;
 \item[\textup{(p2)}] compute $\phi^{-1}(\mathcal I)$ when $\mathcal I$ is not
   linked, by splitting into linked pieces, recursing, and taking the union;
 \item[\textup{(p3)}] compute $\phi^{-1}(\mathcal I)$ when it is empty or of
@@ -52,7 +53,10 @@ do that, but it can do four things:
   $i$ a $b_{i}$ with $\bar a[i\mapsto b_{i}]\in\phi^{-1}(\mathcal I)$ if one
   exists, and reading off the equation
   $\sum_{i\in J}(y_{i}-a_{i})/(b_{i}-a_{i})=1$ over the $i$ for which $b_{i}$
-  exists.
+  exists. The displayed quotient is meaningful only within one prime: the
+  codimension-one equation has a single target prime $p$, and only coordinates
+  over $\mathbb F_{p}$ can carry a nonzero coefficient, so the computation is
+  organised prime by prime (Caveat~\ref{haz:step2-linear-algebra}).
 \end{description}
 
 \begin{verbatim}
@@ -61,7 +65,7 @@ function SolveLinear(I):
     phi := a bijective linear map Z_{p_1}x...xZ_{p_m} -> that product
     while phi^-1(I) != Z_{p_1}x...xZ_{p_m}:              // (p1)
         I' := I
-        for C in I':                                // drop what can be dropped
+        for C in I':                            // drop what can be dropped
             if phi^-1(I' \ {C}) != Z_{p_1}x...xZ_{p_m}:   // (p1)
                 I' := I' \ {C}
         F := phi^-1(I')                                // (p2) or (p3)
@@ -78,44 +82,67 @@ one, and \textup{(p3)} computes it; or $\mathcal I'$ is not linked and
 the image of $\phi$ shrinks while still containing all solutions. The dimension
 strictly decreases, so the loop terminates.
 
-\subsection{What is honestly formalizable}
+\subsection{What \textup{(T1)} has to say}
 
-\begin{hazard}[Three obstacles between the pseudocode and a Lean function]
-\label{haz:algorithm-formalization}
+\begin{hazard}[Two obstacles between the pseudocode and a function]
+\label{haz:algorithm-obstacles}
 \begin{enumerate}\alphlabels\tightlist
 \item \emph{Termination is not structural.} \textsc{Solve} recurses through
-  \textup{(p0)} on strictly smaller domains, and \textsc{SolveLinear} loops on a
-  strictly decreasing dimension. Neither is a structural recursion; both need an
-  explicit well-founded measure, and the two interleave --- \textsc{SolveLinear}
-  calls \textsc{Solve} on a smaller domain, which calls \textsc{SolveLinear}
-  again. The measure is lexicographic:
+  \textup{(p0)} on strictly smaller domains, and \textsc{SolveLinear} loops on
+  a strictly decreasing dimension. Neither is a structural recursion; both need
+  an explicit well-founded measure, and the two interleave ---
+  \textsc{SolveLinear} calls \textsc{Solve} on a smaller domain, which calls
+  \textsc{SolveLinear} again. The measure is lexicographic:
   $\bigl(\sum_{x}|D_{x}|,\ \dim\phi\bigr)$.
 \item \emph{Several steps quantify over objects that are only finitely many by
   accident.} ``If some $D_{x}$ has a strong subset $B$'' quantifies over subsets
   of $D_{x}$, over congruences on $D_{x}$, and --- through absorption --- over
-  \emph{term operations}, of which there are infinitely many. Decidability comes
-  from the fact that on a finite set there are finitely many operations of each
-  arity and finitely many subsets, so "$B$ absorbs $A$ with some term'' is
-  decidable by exhaustive search over $\Clo_{k}$ for $k\le|A|^{|A|}$; but that
-  bound is a theorem, not a definition, and it is the only reason the algorithm
-  is an algorithm.
-\item \emph{Polynomial time is a different subject.} The bound in
-  \cite{ZhukJACM} counts calls and bounds the recursion depth by $|A|$; making
-  that formal needs a cost model. See \S\ref{sec:complexity-layer}.
+  \emph{term operations}, of which there are infinitely many. For the types the
+  algorithm actually searches for, the search is finite for a reason that needs
+  no general arity bound: $\TBA$ has a binary witness by definition, and a
+  central subuniverse has a ternary one by Lemma~\ref{lem:central-ternary}.
 \end{enumerate}
 \end{hazard}
 
 \begin{theorem}[Target \textup{(T1)}]\label{thm:t1}
-There is a function $\textsc{Solve}$ from instances of $\CSP(\Gamma)$ to
-Booleans such that for every instance $\mathcal I$,
+Let $\textsc{Solve}$ be the function defined by the two displays above,
+recursing on the lexicographic measure of
+Caveat~\ref{haz:algorithm-obstacles}(a). Then for every instance
+$\mathcal I$ of $\CSP(\Gamma)$,
 \[
   \textsc{Solve}(\mathcal I)=\texttt{true}
   \iff \mathcal I\ \text{has a solution}.
 \]
 \end{theorem}
 
-Theorem~\ref{thm:t1} mentions no machine, is provable from
-\S\ref{sec:main-statements}, and is the honest formal content of ``the algorithm
-works''. It is strictly stronger than decidability of $\CSP(\Gamma)$, which is
-trivial for a finite template: it says that \emph{this} algorithm --- the one
-whose existence is the dichotomy --- is correct.
+\begin{hazard}[The statement must name the function]\label{haz:t1-names-solve}
+Theorem~\ref{thm:t1} is about \emph{this} $\textsc{Solve}$, and that is the
+whole of its content. The weaker reading --- ``there exists a Boolean-valued
+function deciding satisfiability'' --- follows for a fixed finite template by
+exhaustive search and says nothing. Turning the two pseudocode displays into a
+function with a proved well-founded recursion, so that the theorem above has a
+subject, is work this document has not yet done; see \S\ref{sec:status}.
+\end{hazard}
+
+Given that, Theorem~\ref{thm:t1} mentions no machine, is provable from
+\S\ref{sec:main-statements}, and is the honest content of ``the algorithm
+works'': that one particular, highly non-obvious algorithm --- the one whose
+existence is the dichotomy --- is correct.
+
+\begin{theorem}[Target \textup{(T2)}; stated, not proved]\label{thm:t2}
+For each finite $\Gamma$ there are a program computing $\textsc{Solve}$ and a
+polynomial $p_{\Gamma}$ bounding its running time on instances of
+$\CSP(\Gamma)$ in the size of the instance.
+\end{theorem}
+
+\begin{hazard}[\textup{(T2)} is not a wrapper]\label{haz:t2-scope}
+Theorem~\ref{thm:t2} is the only statement of the tractable half that needs a
+cost model, and it is not a corollary of Theorem~\ref{thm:t1}: it requires
+$\textsc{Solve}$ to be exhibited as a program with a proved step bound. Note
+also that the statement is non-uniform. Because $\Gamma$ is fixed, the searches
+over subsets of $A$, over congruences on $A$, and over term operations of
+bounded arity are constant-time --- but ``constant'' means compiled away into a
+program whose \emph{size} depends on $|A|$. So $\textsc{Solve}$ is a family
+$\textsc{Solve}_{\Gamma}$ with a polynomial for each $\Gamma$, and a bound
+uniform in $\Gamma$ would be a different statement, and a false one.
+\end{hazard}

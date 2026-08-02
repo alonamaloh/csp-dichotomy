@@ -1,0 +1,130 @@
+\documentclass[11pt]{article}
+\def\hazardheading{Caveat}
+\def\docheading{CSP dichotomy}
+\input{preamble.tex}
+
+\hypersetup{pdftitle={The CSP Dichotomy Theorem},
+  pdfsubject={A corrected exposition of Zhuk's simplified proof},
+  pdfauthor={}}
+
+\title{The CSP Dichotomy Theorem}
+\author{}\date{}
+
+\begin{document}
+\maketitle\vspace{-2.2em}
+\begin{abstract}
+The Constraint Satisfaction Problem over a finite constraint language is
+solvable in polynomial time if the language admits a weak near-unanimity
+polymorphism, and is \textup{NP}-complete otherwise. This document is an
+exposition of the proof, following Zhuk's simplified argument
+\cite{ZhukSimplified} and supplying the prerequisites it imports.
+
+It states what is being proved and separates the parts that mention a model of
+computation from the parts that do not (\S\ref{sec:target}); fixes the
+vocabulary (\S\S\ref{sec:conventions}--\ref{sec:instances}); states the theory
+of strong subuniverses and proves it
+(\S\S\ref{sec:properties}--\ref{sec:strongproofs}); states the main induction
+and the three theorems the algorithm consumes (\S\ref{sec:main-statements});
+and states the algorithm and the hard half
+(\S\S\ref{sec:algorithm}--\ref{sec:hardness}).
+
+\S\ref{sec:status} says, for every statement here, whether it is proved,
+imported with an exact citation, outlined, stated only, or open, and lists the
+six items that block the rest. It should be read before any part of this
+document is relied on: the theory of \S\ref{sec:strongproofs} is largely
+complete, and \S\ref{sec:main-statements} is not.
+\end{abstract}
+
+\tableofcontents\clearpage
+
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+The dichotomy conjecture of Feder and Vardi \cite{FederVardi} was settled
+independently by Bulatov \cite{Bulatov} and Zhuk \cite{ZhukJACM} in 2017. Both
+proofs are long. Zhuk's, in the form published in 2020, is seventy-eight
+journal pages, and its central induction alternates between global and local
+information in a way its author later described as forcing ``a very complicated
+induction to prove most of the claims''.
+
+In 2024 Zhuk published a simplified proof \cite{ZhukSimplified}, and it is the
+argument followed here. The simplification is a redesign of the theory of
+strong subalgebras so that \emph{every reduction is either strong or global}:
+for each domain $D_{x}$ one can build a chain
+$D_{x}\supsetneq D_{x}^{(1)}\supsetneq\dots\supsetneq\{a\}$ in which every step
+is either a strong subset or the intersection with a block of an equivalence
+relation with very strong properties. The types of the intermediate sets need
+not be tracked --- only that such a chain exists, written $C\lll B$. That is
+what makes the argument tractable, and it is what this exposition is organised
+around.
+
+\medskip
+
+\noindent\textbf{What is written out, and what is not.} This is a corrected
+exposition and not a survey: where the argument as usually presented is wrong,
+incomplete, or ambiguous, the corrected statement is given here and proved,
+without marginal notes about what other presentations have. A companion audit
+document records those departures, with the source's text quoted and the reason
+for each change, so that the corrections can be checked rather than taken on
+trust.
+
+It is also not complete. \S\ref{sec:status} is where the incompleteness is
+recorded: one statement is \emph{open}, several are proved only in outline, and
+the spine of \S\ref{sec:main-statements} --- the lemma that produces bridges
+from an instance --- is stated without proof. Read that table before relying on
+anything here.
+
+\medskip
+
+\noindent\textbf{Route and sources.} \cite{ZhukSimplified} is the spine.
+Several prerequisites are imported rather than proved, chiefly the Absorption
+Theorem in Brady's form \cite{BradyNotes} and the strong-subalgebra calculus of
+\cite{ZhukStrong}; \S\ref{sec:imports-ledger} lists all of them with their
+exact hypotheses. \cite{ZhukJACM} supplies the algorithm itself, which
+\cite{ZhukSimplified} does not contain. Section 4 of \cite{ZhukSimplified}, on
+XY-symmetric operations, is an independent second result and is not needed for
+the dichotomy; it is omitted.
+
+\medskip
+
+\noindent\textbf{Caveats.} Marked environments throughout record places where
+the informal argument has latitude that a careful one does not: a suppressed
+side condition, a quantifier whose scope is ambiguous, an object asserted to
+exist without an argument, or a step whose well-foundedness is left to the
+reader. They are part of the mathematics rather than commentary on it ---
+several of the corrections below were found by writing one down. A sample of
+what they turn up: that $\mathbf Z_{p}$ lies in $\Vn$ only when $p\mid n-1$
+(Caveat~\ref{haz:Zp}); that $\cover\sigma$ need not be a congruence
+(Caveat~\ref{haz:irreducible}); that images do not commute with intersection,
+and that one proof needs them to (Caveat~\ref{haz:quotient-rel}); that ``we
+cannot weaken forever'' needs a measure that is not the obvious one, and that
+the obvious one points the wrong way (Caveat~\ref{haz:weakening}); and that the
+main induction quantifies over the instance \emph{inside}
+(Caveat~\ref{haz:the-induction}).
+
+\clearpage
+\input{ch0-target.tex}
+\clearpage
+\input{ch1-conventions.tex}
+\input{ch2-vocabulary.tex}
+\clearpage
+\input{ch3-types.tex}
+\clearpage
+\input{ch4-instances.tex}
+\clearpage
+\input{ch5-properties.tex}
+
+\input{ch5b-strongproofs.tex}
+\clearpage
+\input{ch6-main.tex}
+\clearpage
+\input{ch7-algorithm.tex}
+\clearpage
+\input{ch8-hardness.tex}
+\clearpage
+\input{ch11-status.tex}
+
+\clearpage
+\input{bibliography.tex}
+
+\end{document}
