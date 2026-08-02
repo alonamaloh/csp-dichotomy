@@ -392,6 +392,65 @@ $(C''\cap D)/\sigma\subt{\TBA}C''/\sigma$, contradicting the requirement in
 Definition~\ref{def:types} that $C''/\sigma$ be BA and centre free.
 \end{proof}
 
+\begin{lemma}[No critical central family of size $\ge3$]\label{lem:no-central-critical}
+Let $n\ge3$ and $C_{i}\subt[A]{\TC}B_{i}\lll A$ for $i\in[n]$. Then
+$\bigcap_{i}C_{i}=\varnothing$ and $B_{j}\cap\bigcap_{i\neq j}C_{i}\neq
+\varnothing$ for every $j$ cannot both hold.
+\end{lemma}
+
+\begin{proof}
+Suppose they do. Put $D=\bigcap_{i}B_{i}$ and $E_{i}=C_{i}\cap D$. Then $D$ is
+a nonempty subuniverse, containing $B_{1}\cap C_{2}\cap\dots\cap C_{n}$; each
+$E_{i}\subte{\TC}D$ by Lemma~\ref{lem:ba-center-intersect}, and properly, since
+$E_{j}=D$ would give $\bigcap_{i}E_{i}=\bigcap_{i\neq j}E_{i}\neq\varnothing$.
+Moreover $\bigcap_{i}E_{i}=\varnothing$ and, because $C_{i}\subseteq B_{i}$,
+\[
+  \textstyle\bigcap_{i\neq j}E_{i}=D\cap\bigcap_{i\neq j}C_{i}
+  =B_{j}\cap\bigcap_{i\neq j}C_{i}\neq\varnothing .
+\]
+Now the diagonal $R=\{(a,\dots,a):a\in D\}\le D^{n}$ is a subuniverse by
+idempotence, and the two displays say exactly that $R$ is
+$(E_{1},\dots,E_{n})$-essential. By \cite[Lem.~6.11]{ZhukStrong} no such
+relation exists for $n\ge3$ when the $E_{i}$ are proper nonempty central
+subuniverses.
+\end{proof}
+
+\begin{corollary}[Relational form]\label{cor:no-central-critical}
+Let $R\sdle\mathbf A_{1}\times\dots\times\mathbf A_{n}$ with $n\ge3$ and
+$C_{i}\subt[A_{i}]{\TC}B_{i}\lll A_{i}$. If
+$R\cap(C_{1}\times\dots\times B_{j}\times\dots\times C_{n})\neq\varnothing$
+for every $j$, then $R\cap(C_{1}\times\dots\times C_{n})\neq\varnothing$.
+\end{corollary}
+
+\begin{proof}
+Pull back along the projections $f_{i}\colon\mathbf R\to\mathbf A_{i}$ using
+Lemma~\ref{lem:reverse-hom}(b),(bt), giving
+$f_{i}^{-1}(C_{i})\subt[R]{\TC}f_{i}^{-1}(B_{i})\lll\mathbf R$, and apply
+Lemma~\ref{lem:no-central-critical} inside $\mathbf R$: the hypotheses there
+are exactly the two displayed conditions, read through the $f_{i}$.
+\end{proof}
+
+\begin{hazard}[Why this is a separate statement]\label{haz:central-critical-split}
+Lemma~\ref{lem:no-central-critical} is the type-$\TC$ half of case (c) of
+Theorem~\ref{thm:stable-intersection}, and it is stated on its own because
+Lemma~\ref{lem:block-good-bridge} needs \emph{only} this half. Citing the whole
+theorem there would make the bridge theory rest on the bridge classification,
+which rests back on it:
+\[
+  \text{\ref{cor:stable-intersection}}\to
+  \text{\ref{thm:stable-intersection}}\to
+  \text{\ref{lem:bridge-to-pc}}\to\text{\ref{lem:no-cross-bridge}}\to
+  \text{\ref{lem:linear-equiv}}\to\text{\ref{lem:nontrivial-bridge}}\to
+  \text{\ref{lem:block-good-bridge}}\to\text{\ref{cor:stable-intersection}} .
+\]
+Every edge of that is a real citation, and the loop is broken only by observing
+that the appeal at the last step uses no bridge at all: it is $n=3$ with all
+types $\TC$, and the argument for that case runs through
+\cite[Lem.~6.11]{ZhukStrong} and nothing else in this section. Splitting the
+statement is what makes the observation checkable rather than a matter of
+trust.
+\end{hazard}
+
 \begin{lemma}[{\cite[Lem.~6.25]{ZhukStrong}}]\label{lem:possible-intersections}
 If $B\subt{T_{1}}\mathbf A$, $C\subt{T_{2}}\mathbf A$, $B\cap C=\varnothing$
 and $T_{1},T_{2}\in\{\TBA,\TC,\TS\}$, then $T_{1}=T_{2}\in\{\TBA,\TC\}$.
@@ -792,15 +851,15 @@ $(a,a,b,b)$ witness
   \sigma\cap(\{a\}\times C\times C\times A),\quad
   \sigma\cap(\{a\}\times C\times A\times B)\;\neq\;\varnothing ,
 \]
-which is hypothesis (4) of Corollary~\ref{cor:stable-intersection} for the
-ternary relation $\{(x_{2},x_{3},x_{4}):\sigma(a,x_{2},x_{3},x_{4})\}$ with
-$n=3$, all types $\TC$ and all ambients $A$ --- legitimate because $\lll$ is
-reflexive. \emph{The three tight boxes of these witnesses --- $\{a\}\times B\times C\times
+which is the leave-one-out hypothesis of
+Corollary~\ref{cor:no-central-critical} for the ternary relation
+$\{(x_{2},x_{3},x_{4}):\sigma(a,x_{2},x_{3},x_{4})\}$ with $n=3$, all types
+$\TC$ and all ambients $A$ --- legitimate because $\lll$ is reflexive.
+\emph{The three tight boxes of these witnesses --- $\{a\}\times B\times C\times
 B$, $\{a\}\times C\times C\times C$, $\{a\}\times C\times B\times B$ --- are
 subsets of the displayed ones and do not match the corollary's shape; the
-widening is what makes the appeal legitimate.} Since
-$n=3$ and all types are $\TC$, every alternative of the corollary fails, so
-hypothesis (3) must fail:
+widening is what makes the appeal legitimate.} The corollary's conclusion is
+therefore available:
 $\sigma\cap(\{a\}\times C\times C\times B)\neq\varnothing$. Put
 $C'=\proj_{2}$ of that set, nonempty because the set is. Then
 $C'\subte{\TC}A$ by Lemma~\ref{lem:pp-propagation}, using
@@ -1050,6 +1109,149 @@ bridge --- and the case must be inlined: clause (d) then puts both pairs of
 every tuple in $\sigma$, and linkedness on a $B$ that is not a $\sigma$-block
 produces $(x_{1},x_{1},x_{3},x_{3})\in\xi$ with $(x_{1},x_{3})\notin\sigma$
 directly.} The third case is the mirror image, using $\proj_{1,2,4}$.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:no-cross-bridge}]
+Let $\sigma_{1},\sigma_{2}$ be congruences on $\mathbf A_{1},\mathbf A_{2}$.
+Replace $\delta$ by $\delta\cap(\cover{\sigma_{1}}\times\cover{\sigma_{2}})$,
+which is again a bridge with the same collapse, and assume $\bcol\delta$
+rectangular (Caveat~\ref{haz:rectangularise}).
+
+\emph{The easy case.} Suppose $\RightLinked(\bcol\delta)\supsetneq\sigma_{2}$.
+The composite $\delta^{-1}\ast\delta$ is a bridge from $\sigma_{2}$ to
+$\sigma_{2}$ by Lemma~\ref{lem:bridge-comp} --- both congruences are
+irreducible --- with collapse $\bcol\delta^{-1}\circ\bcol\delta$. Iterating,
+the $k$-fold composite has collapse $(\bcol\delta^{-1}\circ\bcol\delta)^{k}$,
+and for $k$ large this is $\RightLinked(\bcol\delta)\supsetneq\sigma_{2}$. So
+Lemma~\ref{lem:linear-equiv} makes $\sigma_{2}$ linear.
+
+So assume $\RightLinked(\bcol\delta)=\sigma_{2}$. Then
+$\LeftLinked(\bcol\delta)\supseteq\cover{\sigma_{1}}$: otherwise minimality of
+$\cover{\sigma_{1}}$ forces $\LeftLinked(\bcol\delta)=\sigma_{1}$, and
+$\bcol\delta$ then induces a bijection
+$\mathbf A_{1}/\sigma_{1}\cong\mathbf A_{2}/\sigma_{2}$ carrying
+$\cover{\sigma_{1}}/\sigma_{1}$ to $\cover{\sigma_{2}}/\sigma_{2}$, so
+$\sigma_{2}$ is linear because $\sigma_{1}$ is.
+
+\emph{Normalising the first and third coordinates.} Put
+$\delta'(x_{1},x_{2},x_{3},x_{4})=\delta(x_{1},x_{2},x_{3},x_{4})\wedge
+\bcol\delta(x_{1},x_{3})$.
+
+If $\delta'$ is a bridge, it has $\proj_{1,3}(\delta')=\bcol{\delta'}$ by
+construction, and we take $\omega=\delta'$.
+
+If $\delta'$ is not a bridge, then --- clauses (a), (b), (d) being inherited ---
+clause (c) fails, so there is no $(a,b,c,d)\in\delta$ with
+$(a,b)\notin\sigma_{1}$ and $(a,c)\in\bcol\delta$. Put
+\[
+  \delta''(x_{1},x_{2},x_{3},x_{4})=\exists z\;
+    \bcol\delta(x_{1},x_{3})\wedge\delta(x_{2},z,x_{3},x_{4}).
+\]
+This is a bridge. For clause (d) in one direction: if
+$(x_{1},x_{2})\in\sigma_{1}$ then $(x_{2},x_{3})\in\bcol\delta$, so the
+failure above applied to $(x_{2},z,x_{3},x_{4})\in\delta$ forces
+$(x_{2},z)\in\sigma_{1}$ and hence $(x_{3},x_{4})\in\sigma_{2}$. In the other
+direction, if $(x_{3},x_{4})\in\sigma_{2}$ then $(x_{2},z)\in\sigma_{1}$ and
+$(x_{2},x_{3})\in\bcol\delta$, whence $(x_{1},x_{2})\in\sigma_{1}$. For
+clause (c): since $\delta'\neq\delta$ there is $(a,b,c,d)\in\delta$ with
+$(a,c)\notin\bcol\delta$; choosing $e$ with $(e,c)\in\bcol\delta$ ---
+possible because $\proj_{1}(\bcol\delta)$ meets the block of $c$ --- gives
+$(e,a,c,d)\in\delta''$ with $(e,a)\notin\sigma_{1}$. Take $\omega=\delta''$.
+
+Either way we have a bridge $\omega$ from $\sigma_{1}$ to $\sigma_{2}$ with
+$\proj_{1,3}(\omega)=\bcol\omega=\bcol\delta$.
+
+\emph{The contradiction.} Suppose $\sigma_{2}$ is \emph{not} linear, so it is
+PC. Put
+\[
+  \xi_{1}(x_{1},x_{2},x_{3},x_{4})=\exists x_{5}\exists x_{6}\;
+    \omega(x_{5},x_{6},x_{1},x_{2})\wedge\omega(x_{5},x_{6},x_{3},x_{4}),
+\]
+a bridge from $\sigma_{2}$ to $\sigma_{2}$; by
+Lemma~\ref{lem:pc-bridges-trivial} it is
+$\sigma_{2}(x_{1},x_{3})\wedge\sigma_{2}(x_{2},x_{4})$ --- the other
+alternative is excluded by symmetry of $\xi_{1}$ in its two pairs. Put
+\[
+  \xi_{2}(x_{1},x_{2},x_{3},x_{4})=\exists x_{5}\exists x_{6}\;
+    \omega(x_{5},x_{6},x_{1},x_{2})\wedge\omega(x_{6},x_{5},x_{3},x_{4}).
+\]
+Here $(x_{5},x_{1}),(x_{6},x_{3})\in\bcol\omega$ and
+$(x_{5},x_{6})\in\cover{\sigma_{1}}\subseteq\LeftLinked(\bcol\omega)$, which
+gives $(x_{1},x_{3})\in\sigma_{2}$; so $\xi_{2}$ too is
+$\sigma_{2}(x_{1},x_{3})\wedge\sigma_{2}(x_{2},x_{4})$ by
+Lemma~\ref{lem:pc-bridges-trivial}. Comparing the two,
+$(b,a,c,d)\in\omega$ whenever $(a,b,c,d)\in\omega$.
+
+Now put
+\[
+  \zeta(x_{1},x_{2},x_{3},x_{4})=\exists y_{1}\exists y_{2}\exists y_{3}\;
+    \omega(y_{1},y_{2},x_{1},x_{2})\wedge\omega(y_{1},y_{3},x_{1},x_{3})
+    \wedge\omega(y_{2},y_{3},x_{1},x_{4}).
+\]
+If $x_{1}=x_{2}$ then $y_{1}=y_{2}$ by the shape of $\xi_{1}$, and then
+$x_{3}=x_{4}$. Take any $(c,d)\in\cover{\sigma_{2}}$; since
+$\proj_{3,4}(\omega)=\cover{\sigma_{2}}$ there is
+$(a,b)\in\cover{\sigma_{1}}$ with $(a,b,c,d)\in\omega$, and since
+$(a,b)\in\cover{\sigma_{1}}\subseteq\LeftLinked(\bcol\omega)$ and
+$(a,c)\in\bcol\omega$ we get $(a,a,c,c),(b,b,c,c)\in\omega$. Sending
+$(x_{1},x_{2},x_{3},x_{4})\mapsto(c,d,c,d)$ with $(y_{1},y_{2},y_{3})=(a,b,a)$
+witnesses $(c,d,c,d)\in\zeta$; sending it to $(c,c,d,d)$ with
+$(y_{1},y_{2},y_{3})=(a,a,b)$ witnesses $(c,c,d,d)\in\zeta$. So
+$\zeta(x_{1},x_{2},x_{3},x_{4})\wedge\zeta(x_{3},x_{4},x_{1},x_{2})$ is a
+bridge from $\sigma_{2}$ to $\sigma_{2}$ whose collapse contains
+$\cover{\sigma_{2}}\supsetneq\sigma_{2}$, so $\sigma_{2}$ is linear by
+Lemma~\ref{lem:linear-equiv} --- contradicting the supposition.
+\end{proof}
+
+\begin{hazard}[Two normalisations that are asserted]\label{haz:rectangularise}
+The proof opens with ``we may assume $\bcol\delta$ is rectangular, as
+otherwise compose it with itself many times''. That is a stabilisation claim
+of the same shape as the reflexivisation of Caveat~\ref{haz:reflexivise}, and
+like it, nothing here establishes that the stabilised composite is still a
+bridge with the properties the rest of the proof uses. It is used only to make
+$\proj_{1,3}$ behave, and the case split on $\delta'$ immediately afterwards
+does much the same work, so it may well be removable; that has not been
+checked.
+
+The step ``choosing $e$ with $(e,c)\in\bcol\delta$'' also needs
+$\proj_{2}(\bcol\delta)$ to meet the relevant block, which holds after the
+restriction to $\cover{\sigma_{1}}\times\cover{\sigma_{2}}$ but is not
+argued.
+
+Until both are settled, Lemma~\ref{lem:no-cross-bridge} and everything
+downstream of it --- including the $\TPC$ case of
+Theorem~\ref{thm:stable-intersection} --- rest on them. See
+\S\ref{sec:status}.
+\end{hazard}
+
+\begin{proof}[Proof of Lemma~\ref{lem:bridge-to-pc}]
+(a) is Lemma~\ref{lem:no-cross-bridge} contrapositively: if $\sigma_{2}$ were
+linear then so would $\sigma_{1}$ be, via $\delta^{-1}$.
+
+For (b) and (c), $\delta^{-1}\ast\delta$ is a bridge from $\sigma_{1}$ to
+$\sigma_{1}$, and $\sigma_{1}$ is PC, so by
+Lemma~\ref{lem:pc-bridges-trivial} it is trivial:
+$\sigma_{1}(x_{1},x_{3})\wedge\sigma_{1}(x_{2},x_{4})$ or
+$\sigma_{1}(x_{1},x_{4})\wedge\sigma_{1}(x_{2},x_{3})$. Its collapse is
+$\bcol\delta\circ\bcol\delta^{-1}$, which is therefore $\sigma_{1}$; so the
+relation $\{(a/\sigma_{1},b/\sigma_{2}):(a,b)\in\bcol\delta\}$ has
+left-neighbourhoods that are pairwise disjoint. Running the same argument on
+$\delta\ast\delta^{-1}$ makes the right-neighbourhoods pairwise disjoint. Both
+sides are covered, since $\proj_{1,2}(\delta)=\cover{\sigma_{1}}$ and
+$\proj_{3,4}(\delta)=\cover{\sigma_{2}}$, so the induced relation is a
+bijection, which is (c), and it is an isomorphism of algebras because
+$\bcol\delta$ is a subuniverse --- that is (b).
+
+For (d), put
+\[
+  \xi(x_{1},x_{2},x_{5},x_{6})=\exists x_{3}\exists x_{4}\;
+    \delta(x_{1},x_{2},x_{3},x_{4})\wedge\bcol\delta(x_{5},x_{3})\wedge
+    \bcol\delta(x_{6},x_{4}),
+\]
+a bridge from $\sigma_{1}$ to $\sigma_{1}$ by (c). Lemma~\ref{lem:pc-bridges-trivial}
+gives $\xi=\sigma_{1}(x_{1},x_{5})\wedge\sigma_{1}(x_{2},x_{6})$ or
+$\sigma_{1}(x_{1},x_{6})\wedge\sigma_{1}(x_{2},x_{5})$, and transporting each
+alternative through the bijection of (c) gives the two alternatives of (d).
 \end{proof}
 
 \begin{hazard}[The third case]\label{haz:pc-bridges-hedges}
@@ -1415,7 +1617,7 @@ of images to commute with intersections (\S\ref{sec:legislation}, item
 $\delta\cap B^{2}\subseteq\sigma_{i}\cap B^{2}$ is precisely what buys it.
 \end{proof}
 
-\begin{longtheorem}[Stable intersection, restated from Theorem~\ref{thm:stable-intersection}]
+\begin{longtheorem}[Stable intersection, restated]
 Let $C_{i}\subt[A]{T_{i}(\sigma_{i})}B_{i}\lll A$ with
 $T_{i}\in\{\TBA,\TC,\TS,\TL,\TPC\}$ for $i\in[n]$, $n\ge2$, and suppose
 $\bigcap_{i}C_{i}=\varnothing$ while $B_{j}\cap\bigcap_{i\neq j}C_{i}\neq
@@ -1425,7 +1627,7 @@ with $\bcol\delta=\sigma_{k}\circ\sigma_{\ell}$; or $n=2$ and
 $T_{1}=T_{2}=\TC$; or $n=2$, $T_{1}=T_{2}=\TPC$ and $\sigma_{1}=\sigma_{2}$.
 \end{longtheorem}
 
-\begin{proof}
+\begin{proof}[Proof of Theorem~\ref{thm:stable-intersection}]
 For $n=2$ combine Lemmas~\ref{lem:two-stable} and \ref{lem:no-cross-bridge}.
 For general $n$ put $B_{2}'=B_{2}\cap C_{3}\cap\dots\cap C_{n}$ and
 $C_{2}'=C_{2}\cap B_{2}'$; then $C_{2}'\subt{T_{2}(\sigma_{2})}B_{2}'\lll A$ by
@@ -1447,22 +1649,10 @@ $C_{1},C_{2}$ are \emph{distinct} --- equal blocks would put the point of
 $B_{1}\cap C_{2}'$ in $C_{1}\cap C_{2}'$ --- so $C_{1}\cap C_{2}=\varnothing$;
 applying this to every pair and then the hypothesis at $j=3$ forces $n=2$.
 
-For $T_{1}=\TC$ the argument just given has no analogue: there is no congruence
-and no pair of blocks. Suppose $n\ge3$, put $D=\bigcap_{i}B_{i}$ and
-$E_{i}=C_{i}\cap D$.
-Then $D$ is a nonempty subuniverse, containing $B_{1}\cap C_{2}\cap\dots\cap
-C_{n}$; each $E_{i}\subte{\TC}D$ by Lemma~\ref{lem:ba-center-intersect}, and
-properly, since $E_{j}=D$ would give $\bigcap_{i}E_{i}=\bigcap_{i\neq j}E_{i}
-\neq\varnothing$. Moreover $\bigcap_{i}E_{i}=\varnothing$ and, because
-$C_{i}\subseteq B_{i}$,
-\[
-  \textstyle\bigcap_{i\neq j}E_{i}=D\cap\bigcap_{i\neq j}C_{i}
-  =B_{j}\cap\bigcap_{i\neq j}C_{i}\neq\varnothing .
-\]
-Now the diagonal $R=\{(a,\dots,a):a\in D\}\le D^{n}$ is a subuniverse by
-idempotence, and the two displays say exactly that $R$ is
-$(E_{1},\dots,E_{n})$-essential. By \cite[Lem.~6.11]{ZhukStrong} no such
-relation exists for $n\ge3$ when the $E_{i}$ are central. Hence $n=2$.
+For $T_{1}=\TC$ the argument just given has no analogue --- there is no
+congruence and no pair of blocks --- and $n=2$ is instead
+Lemma~\ref{lem:no-central-critical}, whose two hypotheses are exactly (ii) and
+(iii) here.
 \end{proof}
 
 \begin{hazard}[What the type-$\TC$ case costs]\label{haz:d4}

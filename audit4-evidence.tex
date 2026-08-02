@@ -169,6 +169,40 @@ which is the opposite of the direction this document usually runs. Second, this
 is the third time the same tool has settled a question in minutes that prose
 inspection had not settled at all.
 
+\medskip
+
+Fixing the first cycle exposed a second, and this one the review had predicted.
+It wrote: ``There is also a possible dependency-cycle danger:
+\texttt{block-good-bridge} invokes stable intersection; stable intersection
+invokes \texttt{no-cross-bridge}; and the most natural proof of no-cross
+appears to route through the linear bridge characterization and the block-good
+machinery. An explicit acyclic dependency graph is needed.'' That is exactly
+right, and once the two bridge-classification lemmas were written out the
+parser closed the loop:
+\begin{center}\footnotesize
+\pkey{cor:stable-intersection} $\to$ \pkey{thm:stable-intersection} $\to$
+\pkey{lem:bridge-to-pc} $\to$ \pkey{lem:no-cross-bridge} $\to$\\[2pt]
+\pkey{lem:linear-equiv} $\to$ \pkey{lem:nontrivial-bridge} $\to$
+\pkey{lem:block-good-bridge} $\to$ \pkey{cor:stable-intersection}
+\end{center}
+It is not vicious. \texttt{LEMBlockOfGoodBridgeDoesNotHaveBAC} appeals to
+stable intersection at $n=3$ with all types $\TC$, and that case rests on
+\cite[Lem.~6.11]{ZhukStrong} and on nothing in the bridge theory. The proof
+paper therefore states that case as its own lemma, proved before the bridges,
+and both consumers cite it.
+
+The source avoids the loop by not citing: its
+\texttt{LEMPCBridgesAreTrivial} contradicts PC-ness without naming
+\texttt{LEMLinearEquivalentConditions}, so the edge that closes our cycle is
+absent from its graph. The dependency is nevertheless there in the mathematics
+--- ``$\sigma$ is PC, so no bridge from $\sigma$ to $\sigma$ has
+$\bcol\delta\supsetneq\sigma$'' \emph{is} that lemma --- which is worth
+recording, because it means the earlier acyclicity verdict on the source
+(\S\ref{sec:refuted-cycle}) is a statement about its citations and not about
+its logical dependencies. The claim refuted there was a specific named cycle,
+and that refutation stands; the stronger reading, that no cycle of any kind is
+latent in \S5, was never established and is now known to be delicate.
+
 \section{The machine checks}\label{sec:machine-checks}
 
 Everything reducible to a finite check has had one. Each entry gives the scope,

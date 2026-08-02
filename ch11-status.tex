@@ -30,9 +30,10 @@ both are written so that a reader can check them in a few lines by hand.
 
 One structural property \emph{is} checked mechanically: the proof-dependency
 graph of this document --- an edge from each statement to every statement its
-proof cites --- is acyclic, over $97$ statements, $52$ of which carry proofs,
-and $125$ edges. That is a check on the arrangement, not on the mathematics,
-and it caught one real cycle: see Caveat~\ref{haz:reverse-hom-split}.
+proof cites --- is acyclic, over $99$ statements, $57$ of which carry proofs,
+and $134$ edges. That is a check on the arrangement, not on the mathematics,
+and it has caught two real cycles: Caveats~\ref{haz:reverse-hom-split} and
+\ref{haz:central-critical-split}.
 
 \subsection{The table}\label{sec:status-table}
 
@@ -53,8 +54,9 @@ and it caught one real cycle: see Caveat~\ref{haz:reverse-hom-split}.
 \pkey{lem:sfree-equiv}, \pkey{lem:linear-bridge} & \textsc{proved} & \\
 \pkey{lem:linear-equiv} & \textsc{outlined} & $(b)\Rightarrow(a)$ needs the
   reflexivisation of Caveat~\ref{haz:reflexivise} \\
-\pkey{lem:no-cross-bridge}, \pkey{lem:bridge-to-pc} & \textsc{stated} &
-  consumed by \pkey{thm:stable-intersection} and \pkey{lem:factor-by-delta} \\
+\pkey{lem:no-cross-bridge}, \pkey{lem:bridge-to-pc} & \textsc{outlined} &
+  written out in \S\ref{sec:bridge-proofs}; both rest on the two
+  normalisations of Caveat~\ref{haz:rectangularise} \\
 \pkey{lem:pc-bridges-trivial} & \textsc{proved} & third case not written out \\
 \pkey{lem:linear-on-top} & \textsc{outlined} & same reflexivisation \\
 \pkey{lem:pc-on-top} & \textsc{stated} & consumed by nothing, and now
@@ -88,6 +90,7 @@ and it caught one real cycle: see Caveat~\ref{haz:reverse-hom-split}.
 \pkey{lem:special-wnu} & \textsc{imported} & \cite[Lem.~4.7]{MarotiMcKenzie} \\
 \pkey{lem:building-perfect} & \textsc{imported} & \cite[Cor.~8.17.1]{ZhukJACM} \\
 \pkey{lem:reverse-hom}, \pkey{lem:bacon-left},
+  \pkey{lem:no-central-critical}, \pkey{cor:no-central-critical},
   \pkey{lem:bridge-abelian}, \pkey{lem:ba-center-intersect},
   \pkey{lem:no-absorbing-diagonal}, \pkey{lem:absorb-linked-sub},
   \pkey{lem:no-unary-quotient}, \pkey{lem:central-relation},
@@ -168,8 +171,9 @@ Six items block the rest, and they are the honest reading of the table.
 \item The expansion of \pkey{lem:intersection-good}, on which much of
   \S\ref{sec:bridge-proofs} onwards rests, and the rewrite of
   \pkey{lem:multiply-all-linear}.
-\item \pkey{lem:no-cross-bridge} and \pkey{lem:bridge-to-pc}, which
-  \pkey{thm:stable-intersection} consumes.
+\item The two normalisations of Caveat~\ref{haz:rectangularise}, on which
+  \pkey{lem:no-cross-bridge} and \pkey{lem:bridge-to-pc} rest, and through
+  them the $\TPC$ case of \pkey{thm:stable-intersection}.
 \item The induction measure across expanded coverings
   (Caveat~\ref{haz:the-induction}(c)) and the termination of weakening
   (Caveat~\ref{haz:weakening}).
