@@ -5,7 +5,7 @@
 %%  csp-audit.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision 9c66cf7 on 2026-08-02.
+%%  Generated from revision 3434607 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-audit.tex
@@ -152,7 +152,8 @@ it, says why it cannot be transcribed, gives the repair, and names the
 statement of the proof paper that carries it.
 
 Sixteen substantive defects, of which fifteen are repaired with no new
-mathematics and one --- the maximal multi-type extension --- is open. Ten
+mathematics and one --- the maximal multi-type extension --- is reduced to a
+single stated hypothesis that remains unproved. Ten
 readings legislated, two of which turn out to be theorems rather than choices.
 Two claims raised and refuted, one declared moot. Four hedges in \S5 of the
 source, all four honest.
@@ -248,8 +249,15 @@ Hedges in \S5 of the source, all discharged & 4 \\
 The single open item is $\mathrm{D}17$ (\S\ref{sec:D17}), the maximal
 multi-type extension. It was declared solved in an earlier draft; an external
 review found the repair invalid at its first line, and the finding is correct.
-It is recorded here as open rather than quietly weakened, and the proof paper
-marks the corresponding statement as open in its status table.
+It is recorded here as open rather than quietly weakened.
+
+Its status has since been sharpened rather than resolved. The proof paper now
+proves the lemma from an \emph{explicitly stated} extra hypothesis --- that
+the type-$T$ factors alone already cut $B_{2}$ out --- and shows that among
+those factors the image-versus-intersection failure does not occur, so the
+whole difficulty is now localised in one displayed sentence rather than spread
+through a proof. The hypothesis itself is unproved and is a debt at the single
+call site.
 \clearpage
 %% ---------------------------------------------------------------- audit1-defects.tex
 \section{The register}\label{sec:register}
@@ -848,6 +856,28 @@ failure that \S\ref{sec:leg-quotient} is about --- catalogued in this document
 and then walked into. The lesson is recorded rather than tidied away.
 
 \paragraph{Where it stands.}
+\emph{Two things have changed since the repair was withdrawn.}
+
+First, the image-versus-intersection failure is now known \emph{not} to occur
+among the type-$T$ factors. If $\bar C_{1}^{j}\subt{T}\bar B_{1}$ then the
+``moreover'' clause of \texttt{LEMFactorByDelta} gives
+$\sigma\cap B_{1}^{2}\subseteq\sigma_{j}\cap B_{1}^{2}$, and a two-line
+argument then shows
+$\bigcap_{j\in F}\bar C_{1}^{j}=\bigl(\bigcap_{j\in F}C_{1}^{j}\bigr)/\sigma$
+for $F$ the set of such $j$. So the trap that killed the published repair is
+confined to the $\subt{\TS}$ and $=\bar B_{1}$ factors.
+
+Second, given that, everything else in the argument runs: the proof paper
+proves \pkey{lem:maximal-mult} in full from the single extra hypothesis
+$(P\circ\sigma)\cap B_{2}=\varnothing$, where
+$P=\bigcap_{j\in F}C_{1}^{j}$. No minimal subfamily, no $\TS$-freeness split,
+and the ambient stays $\bar B_{1}$, which is what the conclusion needs.
+
+So the whole of $\mathrm D17$ is now one sentence: \emph{the type-$T$ factors
+alone already cut $B_{2}$ out}. That is strictly stronger than what the other
+hypotheses give, since $C_{1}\subseteq P$.
+
+
 The saturation identity $\delta\cap B^{2}\subseteq\sigma_{j}\cap B^{2}$ that
 makes images commute with intersection is the ``moreover'' clause of the
 factorisation lemma, and it is available for a factor precisely when that
@@ -1925,7 +1955,15 @@ findings, and what was done with each.
   a subalgebra, which a union is not; use $(\omega\circ\omega^{-1})\cap D^{2}$
   (\S\ref{sec:exp-54}).
 \item ``Which we may take reflexive'' is used twice with no lemma behind it.
-  \textbf{Open}; see \S\ref{sec:risk}.
+  Accepted as a gap in our exposition, but the gap is not where either of us
+  thought: there is nothing to normalise. Every consumer hypothesises
+  $\bcol\delta\supsetneq\sigma$, which contains $\sigma\subseteq\bcol\delta$,
+  and $(a,a)\in\sigma\subseteq\bcol\delta$ \emph{is} $(a,a,a,a)\in\delta$. So
+  the bridge is reflexive already, and the proof paper says so in one line
+  (\pkey{lem:bridge-reflexive}). A genuine normalisation of the same
+  \emph{shape} does survive elsewhere --- ``we may assume $\bcol\delta$
+  rectangular, as otherwise compose it with itself many times'', in
+  \texttt{LEMNoBridgeBetweenDifferentTypes} --- and that one is open.
 \item The abelian-bridge characterisation needs $|A|>1$, and ``composing enough
   times'' needs an explicit stabilised power.
 \item The reason given for reflexivity in \pkey{lem:perfect-from-linked} is
@@ -1999,10 +2037,13 @@ rather than inferred from the uses.
 What is least well tested, stated so that a later reader knows where to push.
 
 \begin{description}\tightlist
-\item[Open mathematics.] $\mathrm D17$ (\S\ref{sec:D17}); the reflexivisation
-  of a bridge, used twice with nothing behind it; the induction measure across
-  expanded coverings (Entry~\ref{ent:measure}). These gate the statements that
-  depend on them and are marked \emph{open} in the proof paper's status table.
+\item[Open mathematics.] $\mathrm D17$ (\S\ref{sec:D17}); the
+  rectangularity normalisation in
+  \texttt{LEMNoBridge\brk Between\brk DifferentTypes}; the induction
+  measure across expanded coverings (Entry~\ref{ent:measure}). These gate the
+  statements that depend on them and are marked \emph{open} in the proof
+  paper's status table. The reflexivisation, listed here in an earlier draft,
+  turned out to need no argument at all.
 
 \item[Least-tested repairs.] $\mathrm D7$(ii)'s reweakening and $\mathrm D6$'s
   cruciality corollary each touch the CSP-instance machinery rather than the

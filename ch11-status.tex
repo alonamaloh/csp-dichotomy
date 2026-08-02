@@ -19,8 +19,11 @@ are made.
   statement should not be relied on.
 \item[\textsc{stated}] The statement appears and nothing is offered towards it.
   These are gaps in the logical chain, not imports.
-\item[\textsc{open}] Confirmed to need an argument that is not available. There
-  is one.
+\item[\textsc{open}] Confirmed to need an argument that is not available.
+  There are none left in the table; what remains of that kind is
+  Hypothesis~\ref{hyp:maximal-mult}, which is written into a statement rather
+  than left implicit, and the normalisation of
+  Caveat~\ref{haz:rectangularise}.
 \end{description}
 
 Nothing below is marked \textsc{proved} on the strength of a machine search.
@@ -30,8 +33,8 @@ both are written so that a reader can check them in a few lines by hand.
 
 One structural property \emph{is} checked mechanically: the proof-dependency
 graph of this document --- an edge from each statement to every statement its
-proof cites --- is acyclic, over $99$ statements, $57$ of which carry proofs,
-and $134$ edges. That is a check on the arrangement, not on the mathematics,
+proof cites --- is acyclic, over $100$ statements, $59$ of which carry proofs,
+and $141$ edges. That is a check on the arrangement, not on the mathematics,
 and it has caught two real cycles: Caveats~\ref{haz:reverse-hom-split} and
 \ref{haz:central-critical-split}.
 
@@ -52,13 +55,12 @@ and it has caught two real cycles: Caveats~\ref{haz:reverse-hom-split} and
   unfolding, so no irreducibility hypothesis is borrowed \\
 \pkey{lem:central-ternary} & \textsc{imported} & \cite[Cor.~6.11.1]{ZhukStrong} \\
 \pkey{lem:sfree-equiv}, \pkey{lem:linear-bridge} & \textsc{proved} & \\
-\pkey{lem:linear-equiv} & \textsc{outlined} & $(b)\Rightarrow(a)$ needs the
-  reflexivisation of Caveat~\ref{haz:reflexivise} \\
+\pkey{lem:linear-equiv}, \pkey{lem:bridge-reflexive} & \textsc{proved} & \\
 \pkey{lem:no-cross-bridge}, \pkey{lem:bridge-to-pc} & \textsc{outlined} &
   written out in \S\ref{sec:bridge-proofs}; both rest on the two
   normalisations of Caveat~\ref{haz:rectangularise} \\
 \pkey{lem:pc-bridges-trivial} & \textsc{proved} & third case not written out \\
-\pkey{lem:linear-on-top} & \textsc{outlined} & same reflexivisation \\
+\pkey{lem:linear-on-top} & \textsc{proved} & \\
 \pkey{lem:pc-on-top} & \textsc{stated} & consumed by nothing, and now
   carrying the BA-and-centre-free hypothesis its proof needs;
   Caveat~\ref{haz:on-top} \\
@@ -117,7 +119,10 @@ and it has caught two real cycles: Caveats~\ref{haz:reverse-hom-split} and
   Caveat~\ref{haz:multiply-citation} \\
 \pkey{cor:prop-from-factor}, \pkey{cor:prop-times-cong},
   \pkey{cor:prop-relations}, \pkey{lem:preserve-linked} & \textsc{stated} & \\
-\pkey{lem:maximal-mult} & \textsc{open} & Caveat~\ref{haz:maximal-mult} \\
+\pkey{lem:maximal-mult} & \textsc{proved} & \emph{under the added
+  Hypothesis~\ref{hyp:maximal-mult}}, which is a debt at the one call site in
+  the CSP argument and is not discharged here;
+  Caveats~\ref{haz:maximal-mult-hyp} and \ref{haz:maximal-mult} \\
 \hline
 \multicolumn{3}{@{}l}{\textit{\S\ref{sec:main-statements}: the main statements}}\\
 \pkey{thm:main-inductive}(2) & \textsc{proved} & modulo the common-term
@@ -162,25 +167,26 @@ exact citations, seven are outlined, four are stated only, and one is open.
 Lemma~\ref{lem:connected} --- is stated without proof, and part (1) of the main
 induction is an outline whose measure is not yet well founded.
 
-Six items block the rest, and they are the honest reading of the table.
+Five items block the rest, and they are the honest reading of the table.
 
 \begin{enumerate}\tightlist
-\item \pkey{lem:maximal-mult} (Caveat~\ref{haz:maximal-mult}). \textsc{open}.
-\item The reflexivisation of a bridge, Caveat~\ref{haz:reflexivise}, which is
-  used by both \pkey{lem:linear-equiv} and \pkey{lem:linear-on-top}.
+\item Hypothesis~\ref{hyp:maximal-mult} of \pkey{lem:maximal-mult}: that the
+  type-$T$ factors alone cut $B_{2}$ out. The lemma is proved from it; the
+  hypothesis itself is not, and three routes to it have failed
+  (Caveat~\ref{haz:maximal-mult}).
+\item The rectangularity normalisation of Caveat~\ref{haz:rectangularise},
+  on which \pkey{lem:no-cross-bridge} and \pkey{lem:bridge-to-pc} rest, and
+  through them the $\TPC$ case of \pkey{thm:stable-intersection}.
 \item The expansion of \pkey{lem:intersection-good}, on which much of
   \S\ref{sec:bridge-proofs} onwards rests, and the rewrite of
   \pkey{lem:multiply-all-linear}.
-\item The two normalisations of Caveat~\ref{haz:rectangularise}, on which
-  \pkey{lem:no-cross-bridge} and \pkey{lem:bridge-to-pc} rest, and through
-  them the $\TPC$ case of \pkey{thm:stable-intersection}.
-\item The induction measure across expanded coverings
-  (Caveat~\ref{haz:the-induction}(c)) and the termination of weakening
-  (Caveat~\ref{haz:weakening}).
 \item The linear algebra of \pkey{thm:codim-one}
   (Caveat~\ref{haz:step2-linear-algebra}), and the common binary absorption
   witness at the call site of \pkey{lem:ba-center-implies}
   (Caveat~\ref{haz:ba-center-implies}).
+\item The induction measure across expanded coverings
+  (Caveat~\ref{haz:the-induction}(c)) and the termination of weakening
+  (Caveat~\ref{haz:weakening}).
 \end{enumerate}
 
 The dependency order among the three large statements is

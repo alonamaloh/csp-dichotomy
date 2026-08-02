@@ -41,10 +41,16 @@ statements are not: the lemma that produces bridges from an instance is stated w
 proof, and part (1) of the main induction is an outline whose measure is not yet well
 founded across expanded coverings.
 
-Six items block the rest:
+Five items block the rest:
 
-1. **`lem:maximal-mult`** — open. The maximal multi-type extension.
-2. The **reflexivisation of a bridge**, used twice with no lemma behind it.
+1. **`lem:maximal-mult`** — proved, but only from an explicitly stated extra
+   hypothesis: *the type-`T` factors alone already cut `B₂` out*. Strictly
+   stronger than what the other hypotheses give, and unproved. Three routes to
+   it have failed; the audit records all three.
+2. The **rectangularity normalisation** in the no-cross-bridge proof — "compose
+   it with itself many times". (The *reflexivisation*, listed here earlier and
+   flagged by the review, turned out to need no argument: the hypothesis
+   `δ̃ ⊋ σ` already forces it.)
 3. The expansion of **`lem:intersection-good`**, on which much of the bridge theory
    rests, and the rewrite of `lem:multiply-all-linear`.
 4. **`lem:no-cross-bridge`** and **`lem:bridge-to-pc`**, consumed by stable intersection.

@@ -296,15 +296,39 @@ rectangular closure of $R$, and suppose $R\cap(B_{1}\times B_{2})\neq
 $R\cap(C_{1}\times C_{2})\neq\varnothing$.
 \end{lemma}
 
-\begin{lemma}[Maximal multi-type extension]\label{lem:maximal-mult}
+\begin{longlemma}[Maximal multi-type extension]\label{lem:maximal-mult}
 Let $C_{1}\subt[A]{\MT T}B_{1}\lll A$, $B_{2}\lll A$,
 $C_{1}\cap B_{2}=\varnothing$, $B_{1}\cap B_{2}\neq\varnothing$, and let
 $\sigma$ be a maximal congruence on $\mathbf A$ with
-$(C_{1}\circ\sigma)\cap B_{2}=\varnothing$. Then
-$\sigma=\omega_{1}\cap\dots\cap\omega_{s}$ where each $\omega_{i}$ is a
+$(C_{1}\circ\sigma)\cap B_{2}=\varnothing$. Write
+$C_{1}=\bigcap_{j\le t}C_{1}^{j}$ with $C_{1}^{j}\subt[A]{T(\sigma_{j})}B_{1}$
+and put
+\[
+  F=\{\,j\le t\;:\;C_{1}^{j}/\sigma\subt[A/\sigma]{T}B_{1}/\sigma\,\},
+  \qquad P=\bigcap_{j\in F}C_{1}^{j},
+\]
+the factors that survive as type $T$ modulo $\sigma$. Suppose in addition
+\begin{enumerate}\romanlabels\tightlist
+\item\label{hyp:maximal-mult} $(P\circ\sigma)\cap B_{2}=\varnothing$ ---
+  \emph{the type-$T$ factors alone already cut $B_{2}$ out}.
+\end{enumerate}
+Then $\sigma=\omega_{1}\cap\dots\cap\omega_{s}$ where each $\omega_{i}$ is a
 congruence of type $T$ on $\mathbf A$ with $\cover{\omega_{i}}\supseteq
 B_{1}^{2}$.
-\end{lemma}
+\end{longlemma}
+
+\begin{hazard}[Hypothesis~\ref{hyp:maximal-mult} is an obligation, not a
+  convenience]\label{haz:maximal-mult-hyp}
+Hypothesis~\ref{hyp:maximal-mult} does not appear in
+\cite{ZhukSimplified}, and it is not free: what the other hypotheses give is
+$(C_{1}\circ\sigma)\cap B_{2}=\varnothing$ with $C_{1}\subseteq P$, and that
+is the \emph{weaker} statement. Every attempt to remove it recorded so far has
+failed; the companion audit sets out three of them and why each fails.
+Lemma~\ref{lem:maximal-mult} is not used anywhere in this document, so adding
+the hypothesis costs nothing here --- but it is a genuine debt at the one place
+the lemma is consumed in the CSP argument, and it is recorded as such in
+\S\ref{sec:status}.
+\end{hazard}
 
 \subsection{Auxiliary imports}
 

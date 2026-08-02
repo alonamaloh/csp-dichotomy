@@ -468,6 +468,33 @@ $\delta(x_{1},x_{2},x_{3},x_{4})\iff\delta(x_{3},x_{4},x_{1},x_{2})$, and
 Write $\delta^{-1}(x_{1},x_{2},x_{3},x_{4})=\delta(x_{3},x_{4},x_{1},x_{2})$.
 \end{definition}
 
+\begin{lemma}[Reflexivity is free]\label{lem:bridge-reflexive}
+Let $\delta$ be a bridge from $\sigma$ to $\sigma$ on $\mathbf D$ with
+$\bcol\delta\supseteq\sigma$. Then $\delta$ is reflexive.
+\end{lemma}
+
+\begin{proof}
+$\sigma$ is a congruence, hence reflexive, so $(a,a)\in\sigma\subseteq
+\bcol\delta$ for every $a\in D$; and $(a,a)\in\bcol\delta$ says
+$(a,a,a,a)\in\delta$, which is reflexivity.
+\end{proof}
+
+\begin{hazard}[There is no reflexivisation problem]\label{haz:reflexivise}
+Every consumer of a bridge below hypothesises $\bcol\delta\supsetneq\sigma$
+--- that is what makes the bridge \emph{nontrivial} and is the whole content of
+Lemma~\ref{lem:linear-equiv}(b) --- and that hypothesis contains
+$\bcol\delta\supseteq\sigma$. So Lemma~\ref{lem:bridge-reflexive} applies at
+every such site and the reflexivity Lemma~\ref{lem:symmetrise} needs is
+already there.
+
+This is worth stating because it is easy to miss, and missing it is expensive:
+an earlier draft of this document, and an external review of it, both treated
+``which we may take reflexive'' as an unproved normalisation requiring a
+reflexivisation lemma. There is nothing to prove. The step is not a
+normalisation at all --- one does not \emph{replace} $\delta$ by anything ---
+it is an observation about the hypothesis one already has.
+\end{hazard}
+
 \begin{lemma}[Symmetrisation]\label{lem:symmetrise}
 Let $\delta$ be a reflexive bridge from $\sigma$ to $\sigma$ on $\mathbf D$ and
 put $\delta^{\circ}=\delta\ast\delta^{-1}$, that is

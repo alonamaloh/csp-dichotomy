@@ -595,6 +595,28 @@ failure that \S\ref{sec:leg-quotient} is about --- catalogued in this document
 and then walked into. The lesson is recorded rather than tidied away.
 
 \paragraph{Where it stands.}
+\emph{Two things have changed since the repair was withdrawn.}
+
+First, the image-versus-intersection failure is now known \emph{not} to occur
+among the type-$T$ factors. If $\bar C_{1}^{j}\subt{T}\bar B_{1}$ then the
+``moreover'' clause of \texttt{LEMFactorByDelta} gives
+$\sigma\cap B_{1}^{2}\subseteq\sigma_{j}\cap B_{1}^{2}$, and a two-line
+argument then shows
+$\bigcap_{j\in F}\bar C_{1}^{j}=\bigl(\bigcap_{j\in F}C_{1}^{j}\bigr)/\sigma$
+for $F$ the set of such $j$. So the trap that killed the published repair is
+confined to the $\subt{\TS}$ and $=\bar B_{1}$ factors.
+
+Second, given that, everything else in the argument runs: the proof paper
+proves \pkey{lem:maximal-mult} in full from the single extra hypothesis
+$(P\circ\sigma)\cap B_{2}=\varnothing$, where
+$P=\bigcap_{j\in F}C_{1}^{j}$. No minimal subfamily, no $\TS$-freeness split,
+and the ambient stays $\bar B_{1}$, which is what the conclusion needs.
+
+So the whole of $\mathrm D17$ is now one sentence: \emph{the type-$T$ factors
+alone already cut $B_{2}$ out}. That is strictly stronger than what the other
+hypotheses give, since $C_{1}\subseteq P$.
+
+
 The saturation identity $\delta\cap B^{2}\subseteq\sigma_{j}\cap B^{2}$ that
 makes images commute with intersection is the ``moreover'' clause of the
 factorisation lemma, and it is available for a factor precisely when that

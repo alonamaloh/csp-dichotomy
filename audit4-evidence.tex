@@ -275,7 +275,15 @@ findings, and what was done with each.
   a subalgebra, which a union is not; use $(\omega\circ\omega^{-1})\cap D^{2}$
   (\S\ref{sec:exp-54}).
 \item ``Which we may take reflexive'' is used twice with no lemma behind it.
-  \textbf{Open}; see \S\ref{sec:risk}.
+  Accepted as a gap in our exposition, but the gap is not where either of us
+  thought: there is nothing to normalise. Every consumer hypothesises
+  $\bcol\delta\supsetneq\sigma$, which contains $\sigma\subseteq\bcol\delta$,
+  and $(a,a)\in\sigma\subseteq\bcol\delta$ \emph{is} $(a,a,a,a)\in\delta$. So
+  the bridge is reflexive already, and the proof paper says so in one line
+  (\pkey{lem:bridge-reflexive}). A genuine normalisation of the same
+  \emph{shape} does survive elsewhere --- ``we may assume $\bcol\delta$
+  rectangular, as otherwise compose it with itself many times'', in
+  \texttt{LEMNoBridgeBetweenDifferentTypes} --- and that one is open.
 \item The abelian-bridge characterisation needs $|A|>1$, and ``composing enough
   times'' needs an explicit stabilised power.
 \item The reason given for reflexivity in \pkey{lem:perfect-from-linked} is
@@ -349,10 +357,13 @@ rather than inferred from the uses.
 What is least well tested, stated so that a later reader knows where to push.
 
 \begin{description}\tightlist
-\item[Open mathematics.] $\mathrm D17$ (\S\ref{sec:D17}); the reflexivisation
-  of a bridge, used twice with nothing behind it; the induction measure across
-  expanded coverings (Entry~\ref{ent:measure}). These gate the statements that
-  depend on them and are marked \emph{open} in the proof paper's status table.
+\item[Open mathematics.] $\mathrm D17$ (\S\ref{sec:D17}); the
+  rectangularity normalisation in
+  \texttt{LEMNoBridge\brk Between\brk DifferentTypes}; the induction
+  measure across expanded coverings (Entry~\ref{ent:measure}). These gate the
+  statements that depend on them and are marked \emph{open} in the proof
+  paper's status table. The reflexivisation, listed here in an earlier draft,
+  turned out to need no argument at all.
 
 \item[Least-tested repairs.] $\mathrm D7$(ii)'s reweakening and $\mathrm D6$'s
   cruciality corollary each touch the CSP-instance machinery rather than the

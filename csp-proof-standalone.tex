@@ -5,7 +5,7 @@
 %%  csp-proof.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision 9c66cf7 on 2026-08-02.
+%%  Generated from revision 3434607 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-proof.tex
@@ -1054,6 +1054,33 @@ $\delta(x_{1},x_{2},x_{3},x_{4})\iff\delta(x_{3},x_{4},x_{1},x_{2})$, and
 \]
 Write $\delta^{-1}(x_{1},x_{2},x_{3},x_{4})=\delta(x_{3},x_{4},x_{1},x_{2})$.
 \end{definition}
+
+\begin{lemma}[Reflexivity is free]\label{lem:bridge-reflexive}
+Let $\delta$ be a bridge from $\sigma$ to $\sigma$ on $\mathbf D$ with
+$\bcol\delta\supseteq\sigma$. Then $\delta$ is reflexive.
+\end{lemma}
+
+\begin{proof}
+$\sigma$ is a congruence, hence reflexive, so $(a,a)\in\sigma\subseteq
+\bcol\delta$ for every $a\in D$; and $(a,a)\in\bcol\delta$ says
+$(a,a,a,a)\in\delta$, which is reflexivity.
+\end{proof}
+
+\begin{hazard}[There is no reflexivisation problem]\label{haz:reflexivise}
+Every consumer of a bridge below hypothesises $\bcol\delta\supsetneq\sigma$
+--- that is what makes the bridge \emph{nontrivial} and is the whole content of
+Lemma~\ref{lem:linear-equiv}(b) --- and that hypothesis contains
+$\bcol\delta\supseteq\sigma$. So Lemma~\ref{lem:bridge-reflexive} applies at
+every such site and the reflexivity Lemma~\ref{lem:symmetrise} needs is
+already there.
+
+This is worth stating because it is easy to miss, and missing it is expensive:
+an earlier draft of this document, and an external review of it, both treated
+``which we may take reflexive'' as an unproved normalisation requiring a
+reflexivisation lemma. There is nothing to prove. The step is not a
+normalisation at all --- one does not \emph{replace} $\delta$ by anything ---
+it is an observation about the hypothesis one already has.
+\end{hazard}
 
 \begin{lemma}[Symmetrisation]\label{lem:symmetrise}
 Let $\delta$ be a reflexive bridge from $\sigma$ to $\sigma$ on $\mathbf D$ and
@@ -2123,15 +2150,39 @@ rectangular closure of $R$, and suppose $R\cap(B_{1}\times B_{2})\neq
 $R\cap(C_{1}\times C_{2})\neq\varnothing$.
 \end{lemma}
 
-\begin{lemma}[Maximal multi-type extension]\label{lem:maximal-mult}
+\begin{longlemma}[Maximal multi-type extension]\label{lem:maximal-mult}
 Let $C_{1}\subt[A]{\MT T}B_{1}\lll A$, $B_{2}\lll A$,
 $C_{1}\cap B_{2}=\varnothing$, $B_{1}\cap B_{2}\neq\varnothing$, and let
 $\sigma$ be a maximal congruence on $\mathbf A$ with
-$(C_{1}\circ\sigma)\cap B_{2}=\varnothing$. Then
-$\sigma=\omega_{1}\cap\dots\cap\omega_{s}$ where each $\omega_{i}$ is a
+$(C_{1}\circ\sigma)\cap B_{2}=\varnothing$. Write
+$C_{1}=\bigcap_{j\le t}C_{1}^{j}$ with $C_{1}^{j}\subt[A]{T(\sigma_{j})}B_{1}$
+and put
+\[
+  F=\{\,j\le t\;:\;C_{1}^{j}/\sigma\subt[A/\sigma]{T}B_{1}/\sigma\,\},
+  \qquad P=\bigcap_{j\in F}C_{1}^{j},
+\]
+the factors that survive as type $T$ modulo $\sigma$. Suppose in addition
+\begin{enumerate}\romanlabels\tightlist
+\item\label{hyp:maximal-mult} $(P\circ\sigma)\cap B_{2}=\varnothing$ ---
+  \emph{the type-$T$ factors alone already cut $B_{2}$ out}.
+\end{enumerate}
+Then $\sigma=\omega_{1}\cap\dots\cap\omega_{s}$ where each $\omega_{i}$ is a
 congruence of type $T$ on $\mathbf A$ with $\cover{\omega_{i}}\supseteq
 B_{1}^{2}$.
-\end{lemma}
+\end{longlemma}
+
+\begin{hazard}[Hypothesis~\ref{hyp:maximal-mult} is an obligation, not a
+  convenience]\label{haz:maximal-mult-hyp}
+Hypothesis~\ref{hyp:maximal-mult} does not appear in
+\cite{ZhukSimplified}, and it is not free: what the other hypotheses give is
+$(C_{1}\circ\sigma)\cap B_{2}=\varnothing$ with $C_{1}\subseteq P$, and that
+is the \emph{weaker} statement. Every attempt to remove it recorded so far has
+failed; the companion audit sets out three of them and why each fails.
+Lemma~\ref{lem:maximal-mult} is not used anywhere in this document, so adding
+the hypothesis costs nothing here --- but it is a genuine debt at the one place
+the lemma is consumed in the CSP argument, and it is recorded as such in
+\S\ref{sec:status}.
+\end{hazard}
 
 \subsection{Auxiliary imports}
 
@@ -3155,8 +3206,10 @@ $(a)\Rightarrow(b)$: take $\delta=S$ of Definition~\ref{def:linear-congruence},
 which by Lemma~\ref{lem:linear-bridge} is a bridge with
 $\bcol S=\cover\sigma\supsetneq\sigma$.
 
-$(b)\Rightarrow(a)$: given a \emph{reflexive} bridge $\delta$ with
-$\bcol\delta\supsetneq\sigma$, form $\delta^{\circ}$ of
+$(b)\Rightarrow(a)$: given a bridge $\delta$ with
+$\bcol\delta\supsetneq\sigma$ --- reflexive by
+Lemma~\ref{lem:bridge-reflexive}, since the hypothesis contains
+$\bcol\delta\supseteq\sigma$ --- form $\delta^{\circ}$ of
 Lemma~\ref{lem:symmetrise}; it is symmetric and pair-reflexive, and
 $\bcol{\delta^{\circ}}\supseteq\bcol\delta\supsetneq\sigma$. Now
 Lemma~\ref{lem:nontrivial-bridge} gives items (b) and (c) of
@@ -3164,26 +3217,7 @@ Definition~\ref{def:linear-congruence}, with the witness
 $S=\delta^{\circ}\cap(\cover\sigma\times\cover\sigma)$.
 \end{proof}
 
-\begin{hazard}[The reflexivisation is an open obligation]\label{haz:reflexivise}
-The direction $(b)\Rightarrow(a)$ as just proved consumes a \emph{reflexive}
-bridge, because Lemma~\ref{lem:symmetrise} needs reflexivity of its input for
-two of its conclusions: that $\delta^{\circ}$ is reflexive, and ---
-what is actually used here --- that
-$\bcol{\delta^{\circ}}=\bcol\delta\circ\bcol\delta^{-1}$ contains
-$\bcol\delta$. Lemma~\ref{lem:linear-equiv}(b) as stated supplies only a
-bridge.
 
-Two routes close the gap and neither is taken here. Either prove a
-reflexivisation lemma --- that a bridge $\delta$ from $\sigma$ to $\sigma$ with
-$\bcol\delta\supsetneq\sigma$ may be replaced by a reflexive one with the
-same property --- or restate (b) as ``there is a \emph{reflexive} bridge
-$\delta$ from $\sigma$ to $\sigma$ with $\bcol\delta\supsetneq\sigma$'', which
-is what $(a)\Rightarrow(b)$ produces, since the witness of
-Lemma~\ref{lem:linear-bridge} \emph{is} reflexive, and then check the two call
-sites. Until one is done, $(b)\Rightarrow(a)$ and the proof of
-Lemma~\ref{lem:linear-on-top}, which makes the same move, are incomplete. See
-\S\ref{sec:status}.
-\end{hazard}
 
 \begin{longlemma}\label{lem:pc-inductive-step}
 Let $\sigma$ be a congruence on $\mathbf A$ and $\delta$ a reflexive bridge
@@ -3409,13 +3443,14 @@ Lemma~\ref{lem:linear-equiv} --- contradicting the supposition.
 
 \begin{hazard}[Two normalisations that are asserted]\label{haz:rectangularise}
 The proof opens with ``we may assume $\bcol\delta$ is rectangular, as
-otherwise compose it with itself many times''. That is a stabilisation claim
-of the same shape as the reflexivisation of Caveat~\ref{haz:reflexivise}, and
-like it, nothing here establishes that the stabilised composite is still a
-bridge with the properties the rest of the proof uses. It is used only to make
-$\proj_{1,3}$ behave, and the case split on $\delta'$ immediately afterwards
-does much the same work, so it may well be removable; that has not been
-checked.
+otherwise compose it with itself many times''. Nothing here establishes that
+the stabilised composite is still a bridge with the properties the rest of the
+proof uses. Note that this is \emph{not} the same situation as the reflexivity
+of Caveat~\ref{haz:reflexivise}, which turned out to be free: rectangularity of
+$\bcol\delta$ does not follow from any hypothesis in sight, and a genuine
+replacement of $\delta$ is being made. It is used only to make $\proj_{1,3}$
+behave, and the case split on $\delta'$ immediately afterwards does much the
+same work, so it may well be removable; that has not been checked.
 
 The step ``choosing $e$ with $(e,c)\in\bcol\delta$'' also needs
 $\proj_{2}(\bcol\delta)$ to meet the relevant block, which holds after the
@@ -3891,9 +3926,9 @@ $D_{j}\lll A$ from part (i); collapsing the equalities gives the chain.
 
 \begin{proof}[Proof of Lemma~\ref{lem:linear-on-top}]
 By Lemma~\ref{lem:linear-equiv} there is a bridge $\delta$ from $\sigma$ to
-$\sigma$ with $\bcol\delta\supsetneq\sigma$; take it reflexive
-(Caveat~\ref{haz:reflexivise}) and replace it by $\delta^{\circ}$, symmetric
-and pair-reflexive.
+$\sigma$ with $\bcol\delta\supsetneq\sigma$, reflexive by
+Lemma~\ref{lem:bridge-reflexive}; replace it by $\delta^{\circ}$, symmetric and
+pair-reflexive.
 Lemma~\ref{lem:nontrivial-bridge}(c) applies, and $\cover\sigma=A^{2}$ is a
 congruence with the single block $A$, so $A/\sigma\cong\mathbb Z_{p}^{m}$ as a
 group. Now $m=0$ gives $\sigma=A^{2}$, impossible for an irreducible congruence
@@ -3947,43 +3982,115 @@ hypothesis, so either it is empty at $A$ or there is a first step where it
 becomes so.
 \end{hazard}
 
-\begin{hazard}[Lemma~\ref{lem:maximal-mult} is open]\label{haz:maximal-mult}
-\textbf{Lemma~\ref{lem:maximal-mult} is stated above and is not proved.} It is
-the one statement of \S\ref{sec:properties} in that position, and nothing in
-this document may be built on it until it is settled. What is known:
+\begin{proof}[Proof of Lemma~\ref{lem:maximal-mult}]
+Write $\bar X$ for $X/\sigma$ and $\bar{\mathbf A}=\mathbf A/\sigma$. Note
+first that for any $X\subseteq A$, $(X\circ\sigma)\cap B_{2}=\varnothing$ says
+exactly that no $\sigma$-class meets both $X$ and $B_{2}$, i.e.\ that
+$\bar X\cap\bar B_{2}=\varnothing$. So the hypotheses read
+$\bar C_{1}\cap\bar B_{2}=\varnothing$ and, by
+\ref{hyp:maximal-mult}, $\bar P\cap\bar B_{2}=\varnothing$; and
+$\bar B_{1}\cap\bar B_{2}\neq\varnothing$ because
+$B_{1}\cap B_{2}\neq\varnothing$.
 
-Write $\bar X$ for $X/\sigma$ and $C_{1}=\bigcap_{j\le t}C_{1}^{j}$ with
-$C_{1}^{j}\subt[A]{T(\sigma_{j})}B_{1}$. By Lemma~\ref{lem:propagation}(ft)
-each $\bar C_{1}^{j}$ is $\bar B_{1}$, or $\subt{\TS}\bar B_{1}$, or
-$\subt{T}\bar B_{1}$. The target is to show that the type-$T$ factors alone
-already cut $\bar B_{2}$ out; given that, the saturation clause of
-Lemma~\ref{lem:factor-by-delta} applies to them, the intersection of their
-images is the image of their intersection, and
-Lemma~\ref{lem:multiply-all-linear} finishes with the ambient still
-$\bar B_{1}$, which is what the conclusion's congruence family
-$\cover{\omega_{i}}\supseteq B_{1}^{2}$ requires.
+\emph{Step 1: images commute with intersection on $F$.} For $j\in F$ the factor
+$\bar C_{1}^{j}$ lands in the type-$T$ alternative of
+Lemma~\ref{lem:propagation}(ft), so the ``moreover'' clause of
+Lemma~\ref{lem:factor-by-delta} gives
+$\sigma\cap B_{1}^{2}\subseteq\sigma_{j}\cap B_{1}^{2}$. Hence
+\[
+  \bigcap_{j\in F}\bar C_{1}^{j}\;=\;\bar P .
+\]
+Indeed $\subseteq$ is the only direction needing an argument. Let
+$[a]\in\bigcap_{j\in F}\bar C_{1}^{j}$; since each
+$\bar C_{1}^{j}\subseteq\bar B_{1}$ we may pick $a\in B_{1}$. For each
+$j\in F$ there is $a_{j}\in C_{1}^{j}$ with $(a,a_{j})\in\sigma$; as
+$a,a_{j}\in B_{1}$ this puts $(a,a_{j})\in\sigma\cap B_{1}^{2}\subseteq
+\sigma_{j}$, so $a$ lies in the same $\sigma_{j}$-block as $a_{j}$, and
+$C_{1}^{j}=B_{1}\cap E_{j}$ for that block gives $a\in C_{1}^{j}$. So
+$a\in P$.
 
-Two things are established. First, the $\subt{\TS}$ factors never help: a
-factor with $\bar C_{1}^{j}\subt{\TS}\bar B_{1}$ contains a subuniverse
-$\bar D$ of $\bar B_{1}$ that is simultaneously binary absorbing and central,
-and Lemma~\ref{lem:strong-nonempty} makes $\bar D$ meet
-$\bar B_{1}\cap\bar B_{2}$, so $\bar C_{1}^{j}\cap\bar B_{2}\neq\varnothing$.
-Second, one cannot simply pass to a minimal subfamily $F$ of the
-$\bar C_{1}^{j}$ with $\bigcap F\cap\bar B_{2}=\varnothing$ and read off the
-types from Theorem~\ref{thm:stable-intersection}: the hypothesis gives
+\emph{This is what \S\ref{sec:legislation}, item \ref{leg:quotient} warns
+about, and it is exactly where the warning does not bite}: among the type-$T$
+factors, and only among them, the saturation identity holds and the image of
+the intersection is the intersection of the images.
+
+\emph{Step 2: a proper multi-type reduction modulo $\sigma$.} Each
+$\bar C_{1}^{j}\subt[\bar A]{T}\bar B_{1}$ for $j\in F$, and $\bar P$ is
+nonempty because $P\supseteq C_{1}\neq\varnothing$. So by Step 1
+\[
+  \bar P\subte[\bar A]{\MT T}\bar B_{1},
+\]
+and the containment is \emph{proper}, since
+$\bar P\cap\bar B_{2}=\varnothing$ while
+$\bar B_{1}\cap\bar B_{2}\neq\varnothing$. Also $\bar B_{1}\lll\bar A$ and
+$\bar B_{2}\lll\bar A$ by Corollary~\ref{cor:prop-quotient}(f).
+
+\emph{Step 3: multiply by all type-$T$ congruences.} Apply
+Lemma~\ref{lem:multiply-all-linear} inside $\bar{\mathbf A}$ to
+$\bar P\subt[\bar A]{\MT T}\bar B_{1}\lll\bar A$ and
+$\bar B_{2}\lll\bar A$: it returns the congruences
+$\delta_{1},\dots,\delta_{s}$ of type $T$ on $\bar{\mathbf A}$ with
+$\cover{\delta_{i}}\supseteq\bar B_{1}^{2}$, and
+$\bigl(\bar P\circ\bigcap_{i}\delta_{i}\bigr)\cap\bar B_{2}=\varnothing$.
+Note the ambient here is still $\bar B_{1}$, which is what the conclusion's
+condition $\cover{\omega_{i}}\supseteq B_{1}^{2}$ requires.
+
+\emph{Step 4: back to $\mathbf A$.} Let $\omega_{i}$ be the preimage of
+$\delta_{i}$ under $\mathbf A\twoheadrightarrow\bar{\mathbf A}$, so
+$\omega_{i}\supseteq\sigma$. By Lemma~\ref{lem:irred-quotient} the
+correspondence $\omega\mapsto\omega/\sigma$ preserves irreducibility,
+linearity and PC-ness and carries covers to covers, so each $\omega_{i}$ is of
+type $T$ with $\cover{\omega_{i}}\supseteq B_{1}^{2}$. Pulling Step 3 back,
+$\bigl(P\circ\bigcap_{i}\omega_{i}\bigr)\cap B_{2}=\varnothing$, and
+$C_{1}\subseteq P$ gives
+$\bigl(C_{1}\circ\bigcap_{i}\omega_{i}\bigr)\cap B_{2}=\varnothing$.
+
+Finally $\bigcap_{i}\omega_{i}\supseteq\sigma$, and it has the property that
+$\sigma$ was chosen maximal for; so $\sigma=\bigcap_{i}\omega_{i}$.
+\end{proof}
+
+\begin{hazard}[What Hypothesis~\ref{hyp:maximal-mult} costs, and three failed
+  routes]\label{haz:maximal-mult}
+What the other hypotheses give is
+$\bar C_{1}\cap\bar B_{2}=\varnothing$, and $C_{1}\subseteq P$, so
+$\bar C_{1}\subseteq\bar P$: Hypothesis~\ref{hyp:maximal-mult} asks for
+emptiness of the \emph{larger} set, and is therefore strictly stronger. Three
+routes to it have been tried and none works.
+
+\emph{Drop the non-type-$T$ factors one at a time.} If $j_{0}\notin F$ and
+$C_{1}'=\bigcap_{j\neq j_{0}}C_{1}^{j}$, one would like
+$\bar C_{1}'\cap\bar B_{2}=\varnothing$ and then induct. But recovering that
+from $\bar C_{1}\cap\bar B_{2}=\varnothing$ needs
+$\bar C_{1}=\bar C_{1}'\cap\bar C_{1}^{j_{0}}$, which is the
+image-versus-intersection identity again --- available for type-$T$ factors by
+Step~1 of the proof above and \emph{not} for the others, since the saturation
+clause of Lemma~\ref{lem:factor-by-delta} is exactly what the $\subt{\TS}$
+alternative withholds.
+
+\emph{Pass to a minimal subfamily.} Choosing $F'$ minimal with
+$\bigcap_{j\in F'}\bar C_{1}^{j}\cap\bar B_{2}=\varnothing$ would make
+minimality supply the leave-one-out hypothesis of
+Theorem~\ref{thm:stable-intersection}, whose four conclusions have no room for
+$\TS$ --- so no member of $F'$ would be $\TS$-typed. But no such $F'$ need
+exist: the whole family gives
 $\bigl(\bigcap_{j}C_{1}^{j}\bigr)/\sigma\cap\bar B_{2}=\varnothing$, whereas
 $\bigl(\bigcap_{j}C_{1}^{j}\bigr)/\sigma\subseteq\bigcap_{j}\bar C_{1}^{j}$
 with the inclusion generally strict (\S\ref{sec:legislation}, item
-\ref{leg:quotient}), so no such $F$ need exist. The saturation identity that
-would close that gap is available for a factor precisely when the factor lands
-in the type-$T$ alternative, which is what was to be proved.
+\ref{leg:quotient}). This is the route an earlier draft of this document took,
+and it is invalid.
 
-Nor can the configuration be attacked by descent. Passing to a
-BA-and-central $\bar D$ reproduces it: $\bar D\lll\bar A$,
+\emph{Descend into a strong subuniverse.} The $\subt{\TS}$ factors do at least
+never help: a factor with $\bar C_{1}^{j}\subt{\TS}\bar B_{1}$ contains a
+subuniverse $\bar D$ of $\bar B_{1}$ that is simultaneously binary absorbing
+and central, and Lemma~\ref{lem:strong-nonempty} makes $\bar D$ meet
+$\bar B_{1}\cap\bar B_{2}$, so $\bar C_{1}^{j}\cap\bar B_{2}\neq\varnothing$.
+But the configuration reproduces itself on $\bar D$ --- $\bar D\lll\bar A$,
 $\bar C_{1}\cap\bar D\lll\bar D$, $\bar B_{2}\cap\bar D\lll\bar D$, still
-disjoint, with $\bar D\cap\bar B_{2}\neq\varnothing$. And the descent shrinks
-the ambient, while the conclusion's congruence family is indexed by the
-ambient. See \S\ref{sec:status}.
+disjoint, with $\bar D\cap\bar B_{2}\neq\varnothing$ --- so no iteration of
+that fact closes anything, and the descent shrinks the ambient while the
+conclusion's congruence family is indexed by the ambient.
+
+So the hypothesis stays, and the debt is recorded in \S\ref{sec:status}.
 \end{hazard}
 \clearpage
 %% ---------------------------------------------------------------- ch6-main.tex
@@ -4727,8 +4834,11 @@ are made.
   statement should not be relied on.
 \item[\textsc{stated}] The statement appears and nothing is offered towards it.
   These are gaps in the logical chain, not imports.
-\item[\textsc{open}] Confirmed to need an argument that is not available. There
-  is one.
+\item[\textsc{open}] Confirmed to need an argument that is not available.
+  There are none left in the table; what remains of that kind is
+  Hypothesis~\ref{hyp:maximal-mult}, which is written into a statement rather
+  than left implicit, and the normalisation of
+  Caveat~\ref{haz:rectangularise}.
 \end{description}
 
 Nothing below is marked \textsc{proved} on the strength of a machine search.
@@ -4738,8 +4848,8 @@ both are written so that a reader can check them in a few lines by hand.
 
 One structural property \emph{is} checked mechanically: the proof-dependency
 graph of this document --- an edge from each statement to every statement its
-proof cites --- is acyclic, over $99$ statements, $57$ of which carry proofs,
-and $134$ edges. That is a check on the arrangement, not on the mathematics,
+proof cites --- is acyclic, over $100$ statements, $59$ of which carry proofs,
+and $141$ edges. That is a check on the arrangement, not on the mathematics,
 and it has caught two real cycles: Caveats~\ref{haz:reverse-hom-split} and
 \ref{haz:central-critical-split}.
 
@@ -4760,13 +4870,12 @@ and it has caught two real cycles: Caveats~\ref{haz:reverse-hom-split} and
   unfolding, so no irreducibility hypothesis is borrowed \\
 \pkey{lem:central-ternary} & \textsc{imported} & \cite[Cor.~6.11.1]{ZhukStrong} \\
 \pkey{lem:sfree-equiv}, \pkey{lem:linear-bridge} & \textsc{proved} & \\
-\pkey{lem:linear-equiv} & \textsc{outlined} & $(b)\Rightarrow(a)$ needs the
-  reflexivisation of Caveat~\ref{haz:reflexivise} \\
+\pkey{lem:linear-equiv}, \pkey{lem:bridge-reflexive} & \textsc{proved} & \\
 \pkey{lem:no-cross-bridge}, \pkey{lem:bridge-to-pc} & \textsc{outlined} &
   written out in \S\ref{sec:bridge-proofs}; both rest on the two
   normalisations of Caveat~\ref{haz:rectangularise} \\
 \pkey{lem:pc-bridges-trivial} & \textsc{proved} & third case not written out \\
-\pkey{lem:linear-on-top} & \textsc{outlined} & same reflexivisation \\
+\pkey{lem:linear-on-top} & \textsc{proved} & \\
 \pkey{lem:pc-on-top} & \textsc{stated} & consumed by nothing, and now
   carrying the BA-and-centre-free hypothesis its proof needs;
   Caveat~\ref{haz:on-top} \\
@@ -4825,7 +4934,10 @@ and it has caught two real cycles: Caveats~\ref{haz:reverse-hom-split} and
   Caveat~\ref{haz:multiply-citation} \\
 \pkey{cor:prop-from-factor}, \pkey{cor:prop-times-cong},
   \pkey{cor:prop-relations}, \pkey{lem:preserve-linked} & \textsc{stated} & \\
-\pkey{lem:maximal-mult} & \textsc{open} & Caveat~\ref{haz:maximal-mult} \\
+\pkey{lem:maximal-mult} & \textsc{proved} & \emph{under the added
+  Hypothesis~\ref{hyp:maximal-mult}}, which is a debt at the one call site in
+  the CSP argument and is not discharged here;
+  Caveats~\ref{haz:maximal-mult-hyp} and \ref{haz:maximal-mult} \\
 \hline
 \multicolumn{3}{@{}l}{\textit{\S\ref{sec:main-statements}: the main statements}}\\
 \pkey{thm:main-inductive}(2) & \textsc{proved} & modulo the common-term
@@ -4870,25 +4982,26 @@ exact citations, seven are outlined, four are stated only, and one is open.
 Lemma~\ref{lem:connected} --- is stated without proof, and part (1) of the main
 induction is an outline whose measure is not yet well founded.
 
-Six items block the rest, and they are the honest reading of the table.
+Five items block the rest, and they are the honest reading of the table.
 
 \begin{enumerate}\tightlist
-\item \pkey{lem:maximal-mult} (Caveat~\ref{haz:maximal-mult}). \textsc{open}.
-\item The reflexivisation of a bridge, Caveat~\ref{haz:reflexivise}, which is
-  used by both \pkey{lem:linear-equiv} and \pkey{lem:linear-on-top}.
+\item Hypothesis~\ref{hyp:maximal-mult} of \pkey{lem:maximal-mult}: that the
+  type-$T$ factors alone cut $B_{2}$ out. The lemma is proved from it; the
+  hypothesis itself is not, and three routes to it have failed
+  (Caveat~\ref{haz:maximal-mult}).
+\item The rectangularity normalisation of Caveat~\ref{haz:rectangularise},
+  on which \pkey{lem:no-cross-bridge} and \pkey{lem:bridge-to-pc} rest, and
+  through them the $\TPC$ case of \pkey{thm:stable-intersection}.
 \item The expansion of \pkey{lem:intersection-good}, on which much of
   \S\ref{sec:bridge-proofs} onwards rests, and the rewrite of
   \pkey{lem:multiply-all-linear}.
-\item The two normalisations of Caveat~\ref{haz:rectangularise}, on which
-  \pkey{lem:no-cross-bridge} and \pkey{lem:bridge-to-pc} rest, and through
-  them the $\TPC$ case of \pkey{thm:stable-intersection}.
-\item The induction measure across expanded coverings
-  (Caveat~\ref{haz:the-induction}(c)) and the termination of weakening
-  (Caveat~\ref{haz:weakening}).
 \item The linear algebra of \pkey{thm:codim-one}
   (Caveat~\ref{haz:step2-linear-algebra}), and the common binary absorption
   witness at the call site of \pkey{lem:ba-center-implies}
   (Caveat~\ref{haz:ba-center-implies}).
+\item The induction measure across expanded coverings
+  (Caveat~\ref{haz:the-induction}(c)) and the termination of weakening
+  (Caveat~\ref{haz:weakening}).
 \end{enumerate}
 
 The dependency order among the three large statements is
