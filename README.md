@@ -61,8 +61,10 @@ Five items block the rest:
 3. The rewrite of **`lem:multiply-all-linear`**, which is not yet a proof.
    `lem:intersection-good` and `lem:self-intersection-pc` are both now written
    out in full, so this is what is left of that layer.
-4. The **induction measure** across expanded coverings, and the **termination of
-   weakening** — whose obvious measure points the wrong way.
+4. The **induction measure** across expanded coverings. (The *termination of
+   weakening*, listed here before, is now proved: the measure counts assignments
+   *excluded*, not tuples admitted, and cruciality quantifies over single weaker
+   constraints. What remains is the set-valued iteration behind Ω.)
 5. The **linear algebra** of the codimension-one theorem; and, for the **common
    binary absorption witness**, the check that every producer of a type-`BA`
    reduction produces a *uniform* one, now that `thm:main-inductive`(2)

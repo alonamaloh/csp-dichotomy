@@ -75,7 +75,9 @@ that cites it, and the steps are now written out.
 \pkey{def:constraint-relation} & --- & the repeated-variable policy; every
   variable-named operation below is taken on $R^{C}$,
   Caveat~\ref{haz:diagonal} \\
-\pkey{rem:get-crucial} & \textsc{stated} & termination is
+\pkey{def:violation}, \pkey{lem:weakening-\brk terminates},
+  \pkey{rem:get-crucial} & \textsc{proved} & the measure counts \emph{excluded}
+  assignments, and cruciality quantifies over \emph{single} weaker constraints;
   Caveat~\ref{haz:weakening} \\
 \hline
 \multicolumn{3}{@{}l}{\textit{\S\ref{sec:properties}--\S\ref{sec:strongproofs}: strong subuniverses}}\\
@@ -228,8 +230,11 @@ Five items block the rest, and they are the honest reading of the table.
   hypothesises it (Caveats~\ref{haz:uniform-witness} and
   \ref{haz:witness-moved}).
 \item The induction measure across expanded coverings
-  (Caveat~\ref{haz:the-induction}(c)) and the termination of weakening
-  (Caveat~\ref{haz:weakening}).
+  (Caveat~\ref{haz:the-induction}(c)). The termination of weakening, listed
+  here until now, is \pkey{lem:weakening-terminates}; what remains of it is the
+  \emph{set}-valued iteration of Construction~\ref{constr:omega}, whose
+  condition 3 still replaces a member by all weaker instances
+  (Caveat~\ref{haz:omega}).
 \end{enumerate}
 
 The dependency order among the three large statements is

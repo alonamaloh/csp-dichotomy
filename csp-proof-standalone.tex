@@ -5,7 +5,7 @@
 %%  csp-proof.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision 3b55ded on 2026-08-02.
+%%  Generated from revision f3274b2 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-proof.tex
@@ -85,6 +85,7 @@
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Con}{Con}
 \DeclareMathOperator{\Sol}{Sol}
+\DeclareMathOperator{\Viol}{Viol}
 \DeclareMathOperator{\Expanded}{Exp}
 \DeclareMathOperator{\CSP}{CSP}
 \DeclareMathOperator{\GenSAT}{SAT}
@@ -1811,40 +1812,82 @@ A constraint $C_{1}$ is \emph{weaker or equivalent to} a constraint $C_{2}$ if
 $\Var(C_{1})\subseteq\Var(C_{2})$ and
 $\proj_{\Var(C_{1})}(R^{C_{2}})\subseteq R^{C_{1}}$ --- that is, every
 assignment satisfying $C_{2}$ restricts to one satisfying $C_{1}$. It is
-\emph{weaker} if the containment is proper or the variable set is. \emph{Weakening} a constraint
-$C$ in $\mathcal I$ means replacing $C$ by all constraints weaker than it. An
+\emph{weaker} if the containment is proper or the variable set is. An
 instance $\mathcal I'$ is a \emph{weakening} of $\mathcal I$ if
 $\Var(\mathcal I')\subseteq\Var(\mathcal I)$ and every constraint of
-$\mathcal I'$ is weaker or equivalent to a constraint of $\mathcal I$.
+$\mathcal I'$ is weaker or equivalent to a constraint of $\mathcal I$. A
+\emph{single weakening step} on $\mathcal I$ replaces one constraint $C$ by one
+constraint $C'$ weaker than $C$; we write $\mathcal I[C\mapsto C']$ for the
+result. Constraint relations are subuniverses
+(Definition~\ref{def:constraint-relation}), so $C'$ ranges over a finite set.
 \end{definition}
 
-\begin{hazard}[``Replace by all weaker constraints'', and its termination]
-\label{haz:weakening}
-The operation is finite but enormous: there are $2^{|D|^{t}}$ relations weaker
-than a given one on a given scope, and one must also range over all sub-scopes.
-No algorithm performs it --- it appears only inside proofs, as a device for
-reaching a crucial instance (Remark~\ref{rem:get-crucial}). Weakening is
-therefore defined above as a \emph{relation between instances}, not as a
-function producing one.
+\begin{definition}[The violation set]\label{def:violation}
+For a constraint $C$ of $\mathcal I$ put
+$\Viol(C)=\{f\in\prod_{x\in\Var(\mathcal I)}D_{x}:
+f|_{\Var(C)}\notin R^{C}\}$, the assignments it rules out.
+\end{definition}
 
-The termination of Remark~\ref{rem:get-crucial} is a genuine obligation and is
-\emph{not} discharged here. Two things make it delicate, and both must be
-faced before ``we cannot weaken forever'' --- which is used three times in
-\S\ref{sec:main-statements} --- can be relied on.
+\begin{lemma}[Weakening terminates]\label{lem:weakening-terminates}
+Put $\mu(\mathcal I)=\bigl(\sum_{C}|\Viol(C)|,\ \sum_{C}|\Var(C)|\bigr)$,
+ordered lexicographically. Then
+\begin{enumerate}\alphlabels\tightlist
+\item every single weakening step strictly decreases $\mu$;
+\item consequently there is no infinite sequence of single weakening steps, and
+  any maximal such sequence starting from $\mathcal I$ ends after finitely many
+  steps.
+\end{enumerate}
+\end{lemma}
 
-\emph{The obvious measure points the wrong way.} A properly weaker constraint
-admits \emph{more} tuples, so the total number of tuples in all constraint
-relations \emph{increases}. A measure with the right orientation would be a
-rank in the finite implication order on constraints, or the number of
-assignments forbidden by the instance.
+\begin{proof}
+Let $C'$ be weaker than $C$. If $f$ satisfies $C$ then
+$f|_{\Var(C')}=\proj_{\Var(C')}\bigl(f|_{\Var(C)}\bigr)\in
+\proj_{\Var(C')}(R^{C})\subseteq R^{C'}$, so $f$ satisfies $C'$; contrapositive,
+$\Viol(C')\subseteq\Viol(C)$. Since no other constraint changes, the first
+component of $\mu$ does not increase, and $\Var(C')\subseteq\Var(C)$ makes the
+second component not increase either.
 
-\emph{Replacing a constraint by \emph{all} its strict weakenings need not make
-progress.} The conjunction of all strict weakenings of a relation can be the
-relation itself --- intersecting all one-tuple extensions of $R$ recovers $R$.
-So the construction must choose one proper weakening, or a finite antichain
-with a proved rank decrease, and the choice must be part of the statement.
+It remains to see that one of the two strictly decreases. If
+$\Viol(C')\subsetneq\Viol(C)$ the first does. Otherwise
+$\Viol(C')=\Viol(C)$, and we show $\Var(C')\subsetneq\Var(C)$. Were the
+variable sets equal, $\Viol(C')=\Viol(C)$ would force $R^{C'}=R^{C}$ --- every
+domain is nonempty, so a tuple on $\Var(C)$ extends to some $f$, and membership
+in $R^{C}$ is exactly non-membership of $f$ in $\Viol(C)$ --- contradicting
+that $C'$ is \emph{weaker}, which then requires proper containment of the
+relations. So the variable sets differ, and $\Var(C')\subseteq\Var(C)$ makes
+the inclusion proper.
 
-See \S\ref{sec:status}.
+For (b), $\mu$ takes values in $\mathbb N^{2}$ with the lexicographic order,
+which is well founded.
+\end{proof}
+
+\begin{hazard}[Why the step is single, and the measure counts
+  exclusions]\label{haz:weakening}
+Two readings of ``weaken the constraint'' have to be rejected before
+Proposition~\ref{rem:get-crucial} is available, and both are tempting.
+
+\emph{Not ``replace $C$ by all constraints weaker than it''.} That operation is
+finite but enormous --- there are $2^{|D|^{t}}$ relations weaker than a given
+one on a given scope, before ranging over sub-scopes --- and, worse, it need
+not make progress: the conjunction of all strict weakenings of a relation can
+be the relation itself, since intersecting all the one-tuple extensions of $R$
+recovers $R$. An instance in which every constraint is like that would have no
+crucial constraint under that reading and the process would not start. So
+cruciality is defined by a universal quantifier over \emph{single} weaker
+constraints, and the construction takes one step at a time.
+
+\emph{Not ``count tuples''.} A properly weaker constraint admits \emph{more}
+tuples, so the total size of the constraint relations \emph{increases} along
+the process and any measure built from it points the wrong way. What decreases
+is the number of assignments \emph{excluded}, which is what
+Definition~\ref{def:violation} counts; the second component of $\mu$ is there
+only for the dummy-variable steps, which leave the violation set unchanged by
+construction.
+
+No algorithm performs weakening --- it appears only inside proofs, as the
+device for reaching a crucial instance --- which is why
+Definition~\ref{def:weakening} makes it a relation between instances and gives
+the single step a separate name.
 \end{hazard}
 
 \begin{definition}[Crucial]\label{def:crucial}
@@ -1852,19 +1895,34 @@ Let $D^{(\top)}$ be a reduction for $\mathcal I$. A variable $y_{i}$ of a
 constraint $R(y_{1},\dots,y_{t})$ is \emph{dummy} if $R$ does not depend on its
 $i$-th coordinate. A constraint $C\in\mathcal I$ is \emph{crucial in
 $D^{(\top)}$} if it has no dummy variables, $\mathcal I^{(\top)}$ has no
-solution, and weakening $C$ in $\mathcal I$ yields an instance with a solution
-in $D^{(\top)}$. The instance $\mathcal I$ is \emph{crucial in $D^{(\top)}$} if
+solution, and $\mathcal I[C\mapsto C']^{(\top)}$ has a solution for
+\emph{every} constraint $C'$ weaker than $C$. The instance $\mathcal I$ is \emph{crucial in $D^{(\top)}$} if
 it has at least one constraint and all of its constraints are crucial in
 $D^{(\top)}$.
 \end{definition}
 
-\begin{remark}[Reaching a crucial instance]\label{rem:get-crucial}
-If $\mathcal I^{(\top)}$ has no solution, then iteratively weakening
-constraints that are not crucial, dropping dummy variables as they appear,
-terminates in an instance crucial in $D^{(\top)}$. Every relation so introduced
-is still a subuniverse of the corresponding product of domains. The termination
-is Caveat~\ref{haz:weakening} and is not proved here.
-\end{remark}
+\begin{proposition}[Reaching a crucial instance]\label{rem:get-crucial}
+Let $D^{(\top)}$ be a reduction with $\mathcal I^{(\top)}$ unsolvable. Then
+finitely many single weakening steps, each preserving unsolvability in
+$D^{(\top)}$, lead from $\mathcal I$ to an instance crucial in $D^{(\top)}$.
+\end{proposition}
+
+\begin{proof}
+Repeat the following while some constraint $C$ of the current instance
+$\mathcal J$ fails to be crucial in $D^{(\top)}$. Unsolvability of
+$\mathcal J^{(\top)}$ is an invariant, so the failure is of one of the other
+two clauses. If $C$ has a dummy variable $y$, replace $C$ by its projection off
+$y$; that projection is weaker, and since $R^{C}$ does not depend on the
+$y$-coordinate the two constraints have the same violation set, so
+unsolvability is preserved. Otherwise there is a $C'$ weaker than $C$ with
+$\mathcal J[C\mapsto C']^{(\top)}$ unsolvable; take that step.
+
+Each step is a single weakening step, so by
+Lemma~\ref{lem:weakening-terminates} the process halts, and it can halt only
+at an instance all of whose constraints are crucial. Every relation introduced
+is a projection of a subuniverse or a constraint relation, hence a subuniverse
+of the corresponding product of domains.
+\end{proof}
 
 \subsection{Coverings}\label{sec:coverings}
 
@@ -5081,9 +5139,13 @@ forever''. Condition 4 is then \emph{derived} from condition 3.
 
 This is the single most demanding step in \S\ref{sec:main-statements}, for
 three reasons. (i) The iteration weakens a \emph{set} of instances, so the
-termination measure is a measure on finite sets of instances, not on instances
---- and Caveat~\ref{haz:weakening} shows that even the single-instance measure
-is not settled. (ii) The
+termination measure is a measure on finite sets of instances, not on instances.
+Lemma~\ref{lem:weakening-terminates} settles the single-instance case, and the
+multiset extension of a well-founded order is well founded, so the shape of the
+argument is available; but condition 3 replaces a member by \emph{all} weaker
+instances, which is the operation Caveat~\ref{haz:weakening} rejects, and it
+has to be recast as a single step before that extension can be applied.
+(ii) The
 derivation of condition 4 from condition 3 is a two-line argument that
 instantiates condition 3 at
 $\Omega\cup\{\mathcal J_{C}:C\in\mathcal J\}\setminus\{\mathcal J\}$ and reads
@@ -5156,16 +5218,18 @@ Suppose
 \item $\mathcal I$ is a linked cycle-consistent irreducible instance with
   $\Var(\mathcal I)=\{x_{1},\dots,x_{m}\}$;
 \item $\mathbf D_{x_{i}}$ is $\TS$-free for every $i$;
-\item weakening all constraints of $\mathcal I$ gives an instance with
-  subdirect solution set;
+\item replacing every constraint of $\mathcal I$ by any one constraint weaker
+  than it gives an instance with subdirect solution set;
 \item $\sigma_{x_{i}}$ is the intersection of all linear congruences $\sigma$
   on $\mathbf D_{x_{i}}$ with $\cover{\sigma}=D_{x_{i}}^{2}$;
 \item $L_{x_{i}}=\mathbf D_{x_{i}}/\sigma_{x_{i}}$;
 \item $\phi\colon\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}\to
   L_{x_{1}}\times\dots\times L_{x_{m}}$ is a homomorphism, $q_{i}$ prime;
-\item weakening any one constraint of $\mathcal I$ gives an instance with a
-  solution in $\phi(\bar a)$ for every
-  $\bar a\in\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}$.
+\item $\mathcal I[C\mapsto C']$ has a solution in $\phi(\bar a)$ for every
+  constraint $C$ of $\mathcal I$, every $C'$ weaker than $C$, and every
+  $\bar a\in\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}$ --- that is,
+  $\mathcal I$ is crucial in every $\phi(\bar a)$
+  (Definition~\ref{def:crucial}).
 \end{enumerate}
 Then
 $\Delta=\{\bar a:\mathcal I\text{ has a solution in }\phi(\bar a)\}$ is empty,
@@ -5350,8 +5414,8 @@ Suppose
 \item if $T=\TPC$ then $\mathcal T\in\{\TPC,\TL\}$;
 \item $\mathcal I^{(1)}$ has a solution;
 \item $\mathcal I^{(1)}$ has no solution with $z\in B$;
-\item weakening $C$ in $\mathcal I$ gives an instance with a solution in
-  $D^{(1)}$ having $z\in B$.
+\item $\mathcal I[C\mapsto C']$ has a solution in $D^{(1)}$ with $z\in B$, for
+  every constraint $C'$ weaker than $C$.
 \end{enumerate}
 Then $\mathcal T=T$, and for every variable $x$ of $C$ there is a bridge
 $\delta$ from $\xi$ to $\ConOne(C,x)$ with
@@ -5860,7 +5924,9 @@ that cites it, and the steps are now written out.
 \pkey{def:constraint-relation} & --- & the repeated-variable policy; every
   variable-named operation below is taken on $R^{C}$,
   Caveat~\ref{haz:diagonal} \\
-\pkey{rem:get-crucial} & \textsc{stated} & termination is
+\pkey{def:violation}, \pkey{lem:weakening-\brk terminates},
+  \pkey{rem:get-crucial} & \textsc{proved} & the measure counts \emph{excluded}
+  assignments, and cruciality quantifies over \emph{single} weaker constraints;
   Caveat~\ref{haz:weakening} \\
 \hline
 \multicolumn{3}{@{}l}{\textit{\S\ref{sec:properties}--\S\ref{sec:strongproofs}: strong subuniverses}}\\
@@ -6013,8 +6079,11 @@ Five items block the rest, and they are the honest reading of the table.
   hypothesises it (Caveats~\ref{haz:uniform-witness} and
   \ref{haz:witness-moved}).
 \item The induction measure across expanded coverings
-  (Caveat~\ref{haz:the-induction}(c)) and the termination of weakening
-  (Caveat~\ref{haz:weakening}).
+  (Caveat~\ref{haz:the-induction}(c)). The termination of weakening, listed
+  here until now, is \pkey{lem:weakening-terminates}; what remains of it is the
+  \emph{set}-valued iteration of Construction~\ref{constr:omega}, whose
+  condition 3 still replaces a member by all weaker instances
+  (Caveat~\ref{haz:omega}).
 \end{enumerate}
 
 The dependency order among the three large statements is

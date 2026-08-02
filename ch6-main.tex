@@ -216,9 +216,13 @@ forever''. Condition 4 is then \emph{derived} from condition 3.
 
 This is the single most demanding step in \S\ref{sec:main-statements}, for
 three reasons. (i) The iteration weakens a \emph{set} of instances, so the
-termination measure is a measure on finite sets of instances, not on instances
---- and Caveat~\ref{haz:weakening} shows that even the single-instance measure
-is not settled. (ii) The
+termination measure is a measure on finite sets of instances, not on instances.
+Lemma~\ref{lem:weakening-terminates} settles the single-instance case, and the
+multiset extension of a well-founded order is well founded, so the shape of the
+argument is available; but condition 3 replaces a member by \emph{all} weaker
+instances, which is the operation Caveat~\ref{haz:weakening} rejects, and it
+has to be recast as a single step before that extension can be applied.
+(ii) The
 derivation of condition 4 from condition 3 is a two-line argument that
 instantiates condition 3 at
 $\Omega\cup\{\mathcal J_{C}:C\in\mathcal J\}\setminus\{\mathcal J\}$ and reads
@@ -291,16 +295,18 @@ Suppose
 \item $\mathcal I$ is a linked cycle-consistent irreducible instance with
   $\Var(\mathcal I)=\{x_{1},\dots,x_{m}\}$;
 \item $\mathbf D_{x_{i}}$ is $\TS$-free for every $i$;
-\item weakening all constraints of $\mathcal I$ gives an instance with
-  subdirect solution set;
+\item replacing every constraint of $\mathcal I$ by any one constraint weaker
+  than it gives an instance with subdirect solution set;
 \item $\sigma_{x_{i}}$ is the intersection of all linear congruences $\sigma$
   on $\mathbf D_{x_{i}}$ with $\cover{\sigma}=D_{x_{i}}^{2}$;
 \item $L_{x_{i}}=\mathbf D_{x_{i}}/\sigma_{x_{i}}$;
 \item $\phi\colon\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}\to
   L_{x_{1}}\times\dots\times L_{x_{m}}$ is a homomorphism, $q_{i}$ prime;
-\item weakening any one constraint of $\mathcal I$ gives an instance with a
-  solution in $\phi(\bar a)$ for every
-  $\bar a\in\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}$.
+\item $\mathcal I[C\mapsto C']$ has a solution in $\phi(\bar a)$ for every
+  constraint $C$ of $\mathcal I$, every $C'$ weaker than $C$, and every
+  $\bar a\in\mathbf Z_{q_{1}}\times\dots\times\mathbf Z_{q_{k}}$ --- that is,
+  $\mathcal I$ is crucial in every $\phi(\bar a)$
+  (Definition~\ref{def:crucial}).
 \end{enumerate}
 Then
 $\Delta=\{\bar a:\mathcal I\text{ has a solution in }\phi(\bar a)\}$ is empty,
@@ -485,8 +491,8 @@ Suppose
 \item if $T=\TPC$ then $\mathcal T\in\{\TPC,\TL\}$;
 \item $\mathcal I^{(1)}$ has a solution;
 \item $\mathcal I^{(1)}$ has no solution with $z\in B$;
-\item weakening $C$ in $\mathcal I$ gives an instance with a solution in
-  $D^{(1)}$ having $z\in B$.
+\item $\mathcal I[C\mapsto C']$ has a solution in $D^{(1)}$ with $z\in B$, for
+  every constraint $C'$ weaker than $C$.
 \end{enumerate}
 Then $\mathcal T=T$, and for every variable $x$ of $C$ there is a bridge
 $\delta$ from $\xi$ to $\ConOne(C,x)$ with
