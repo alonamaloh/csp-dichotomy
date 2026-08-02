@@ -169,7 +169,9 @@ founded as displayed; **the reflexivisation of a bridge is closed and was never 
 consumer hypothesises `δ̃ ⊋ σ`, which contains `σ ⊆ δ̃`, and `(a,a) ∈ σ ⊆ δ̃` *is*
 `(a,a,a,a) ∈ δ`, so the bridge is reflexive already (`lem:bridge-reflexive`). The genuine
 normalisation of that shape is elsewhere: "assume `δ̃` rectangular, as otherwise compose it
-with itself many times", in `LEMNoBridgeBetweenDifferentTypes`.
+with itself many times", in `LEMNoBridgeBetweenDifferentTypes` — **also closed, 2026-08-02**:
+the composite's collapse is `LeftLinked(δ̃) ∘ δ̃`, a union of full boxes that disturbs neither
+linking equivalence (`lem:rectangularise`), and it is spent exactly once in that proof.
 
 The smaller question — **does `LEMIntersectionPCLinearIsGood` use the minimality of its chains
 `k, ℓ`?** — is now **settled: no**, see item 5 of the §5.3 list above.

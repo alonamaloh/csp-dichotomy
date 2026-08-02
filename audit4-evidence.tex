@@ -281,9 +281,16 @@ findings, and what was done with each.
   and $(a,a)\in\sigma\subseteq\bcol\delta$ \emph{is} $(a,a,a,a)\in\delta$. So
   the bridge is reflexive already, and the proof paper says so in one line
   (\pkey{lem:bridge-reflexive}). A genuine normalisation of the same
-  \emph{shape} does survive elsewhere --- ``we may assume $\bcol\delta$
+  \emph{shape} does occur elsewhere --- ``we may assume $\bcol\delta$
   rectangular, as otherwise compose it with itself many times'', in
-  \texttt{LEMNoBridgeBetweenDifferentTypes} --- and that one is open.
+  \texttt{LEMNoBridge\brk Between\brk DifferentTypes} --- and that one is a
+  genuine replacement of $\delta$ rather than an observation. It is now
+  \pkey{lem:rectangularise}: the composite's collapse is
+  $\LeftLinked(\bcol\delta)\circ\bcol\delta$, a union of full boxes, and it
+  disturbs neither linking equivalence. The same proof spends rectangularity
+  exactly once, and the projection step beside it named the wrong
+  projection --- $\proj_{1}(\bcol\delta)$ for $\proj_{2}(\bcol\delta)$ --- which
+  is what made it look like a second gap.
 \item The abelian-bridge characterisation needs $|A|>1$, and ``composing enough
   times'' needs an explicit stabilised power.
 \item The reason given for reflexivity in \pkey{lem:perfect-from-linked} is
@@ -366,14 +373,13 @@ rather than inferred from the uses.
 What is least well tested, stated so that a later reader knows where to push.
 
 \begin{description}\tightlist
-\item[Open mathematics.] $\mathrm D17$ (\S\ref{sec:D17}); the
-  rectangularity normalisation in
-  \texttt{LEMNoBridge\brk Between\brk DifferentTypes}; and the step
-  \pkey{cl:multiply-step} inside \pkey{lem:multiply-all-linear}.
-  These gate the statements that depend on them. Two items listed here in earlier drafts have since come off: the
-  reflexivisation, which needs no argument at all, and the induction measure
-  across expanded coverings (Entry~\ref{ent:measure}), which was never in
-  difficulty.
+\item[Open mathematics.] $\mathrm D17$ (\S\ref{sec:D17}) and the step
+  \pkey{cl:multiply-step} inside \pkey{lem:multiply-\brk all-linear}.
+  These two gate the statements that depend on them. Three items listed here in earlier drafts
+  have since come off: the reflexivisation, which needs no argument at all; the
+  rectangularity normalisation, which is \pkey{lem:rectangularise}; and the
+  induction measure across expanded coverings (Entry~\ref{ent:measure}), which
+  was never in difficulty.
 
 \item[Least-tested repairs.] $\mathrm D7$(ii)'s reweakening and $\mathrm D6$'s
   cruciality corollary each touch the CSP-instance machinery rather than the

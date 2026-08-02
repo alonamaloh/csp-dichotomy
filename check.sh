@@ -71,7 +71,7 @@ check_one() {
     psrc=$(printf '%s\n' "csp-proof.tex"; sed -n 's/^ *\\input{\([^}]*\)}.*/\1/p' csp-proof.tex)
     pdef=$(grep -rho '\\label{[^}]*}' $psrc 2>/dev/null | sed 's/\\label{\(.*\)}/\1/' | sort -u)
     pused=$(grep -rho '\\\(pkey\|inproof\){[^}]*}' $SRC 2>/dev/null \
-            | sed 's/.*{\(.*\)}/\1/' | sed 's/\\brk//g' | grep ':' | sort -u)
+            | sed 's/.*{\(.*\)}/\1/' | sed 's/\\brk *//g' | grep ':' | sort -u)
     dangling=$(printf '%s\n' "$pused" | while read -r k; do
                  [ -n "$k" ] || continue
                  printf '%s\n' "$pdef" | grep -qxF "$k" || echo "$k"
