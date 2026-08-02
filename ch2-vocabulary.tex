@@ -97,13 +97,87 @@ Let $R\subseteq A_{1}\times\dots\times A_{m}$.
   (b,c)\in\delta_{2}\}$, and $\delta^{-1}=\{(b,a):(a,b)\in\delta\}$.
 \item For $B\subseteq A_{1}$ and $\delta\subseteq A_{1}\times A_{2}$:
   $B\circ\delta=\{c:\exists b\in B\;(b,c)\in\delta\}$.
-\item A subdirect $\delta\subseteq A\times B$ is \emph{linked} if the bipartite
-  graph on $A\sqcup B$ with edge set $\delta$ is connected. It is
-  \emph{bijective} if $|\delta|=|A|=|B|$.
 \item For binary $\sigma$ and $m\ge 2$,
   $\sigma^{[m]}=\{(a_{1},\dots,a_{m}):(a_{i},a_{j})\in\sigma\ \forall i,j\}$.
+\item $R\subseteq A\times B$ is \emph{bijective} if $|R|=|A|=|B|$.
 \end{enumerate}
 \end{definition}
+
+\subsection{Linkedness}\label{sec:linkedness}
+
+Two operators run through \S\ref{sec:strongproofs} and are worth pinning down
+before anything uses them. They split a relation at its \emph{first} coordinate
+and at its \emph{last}, and which of the two is meant is load-bearing.
+
+\begin{definition}[The linking equivalences]\label{def:linked}
+Let $R\le\mathbf A_{1}\times\dots\times\mathbf A_{m}$ with $m\ge2$.
+$\LeftLinked(R)$ is the least equivalence relation on $\proj_{1}(R)$ such that
+\[
+  (a_{1},a_{2},\dots,a_{m})\in R\ \text{and}\ (b_{1},a_{2},\dots,a_{m})\in R
+  \;\Longrightarrow\;(a_{1},b_{1})\in\LeftLinked(R),
+\]
+and $\RightLinked(R)$ is the least equivalence relation on $\proj_{m}(R)$ such
+that
+\[
+  (a_{1},\dots,a_{m-1},a_{m})\in R\ \text{and}\
+  (a_{1},\dots,a_{m-1},b_{m})\in R
+  \;\Longrightarrow\;(a_{m},b_{m})\in\RightLinked(R).
+\]
+Equivalently: view $R$ as a binary relation
+$\hat R\subseteq A_{1}\times(A_{2}\times\dots\times A_{m})$; then
+$\LeftLinked(R)$ is the transitive closure of $\hat R\circ\hat R^{-1}$, and
+$\RightLinked(R)$ is the transitive closure of $\check R^{-1}\circ\check R$
+for the corresponding split at the last coordinate.
+
+$R$ is \emph{linked} if $\LeftLinked(R)=\proj_{1}(R)^{2}$.
+\end{definition}
+
+\begin{lemma}[Basic properties]\label{lem:linked-basics}
+Let $R\le\mathbf A_{1}\times\dots\times\mathbf A_{m}$ and write
+$P=\proj_{1}(R)$, $Q=\proj_{m}(R)$.
+\begin{enumerate}\alphlabels\tightlist
+\item $\LeftLinked(R)$ is a congruence of $\mathbf P$, and $\RightLinked(R)$
+  one of $\mathbf Q$.
+\item $\hat R\circ\hat R^{-1}\subseteq\LeftLinked(R)$, and if $R$ is
+  reflexive as a binary relation on $A$ then $R\subseteq\LeftLinked(R)$.
+\item For $m=2$ and $R\sdle\mathbf A_{1}\times\mathbf A_{2}$: $R$ is linked
+  $\iff\LeftLinked(R)=A_{1}^{2}\iff\RightLinked(R)=A_{2}^{2}\iff$ the
+  bipartite graph on $A_{1}\sqcup A_{2}$ with edge set $R$ is connected.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) $\hat R\circ\hat R^{-1}$ is pp-definable from $R$, hence a subuniverse of
+$\mathbf A_{1}^{2}$; it is symmetric, and reflexive on $P$. Its powers
+increase and so stabilise, and each power is again a subuniverse, so the
+transitive closure is a subuniverse of $\mathbf A_{1}^{2}$ contained in
+$P^{2}$ --- that is, a congruence of $\mathbf P$. It satisfies the closure
+condition of Definition~\ref{def:linked} and any equivalence satisfying that
+condition contains $\hat R\circ\hat R^{-1}$ and hence its transitive closure,
+so it is the least one. Symmetrically for $\RightLinked$.
+
+(b) The first is immediate from (a). For the second, if $(a,b)\in R$ then
+$(a,b),(b,b)\in R$, so $(a,b)\in\hat R\circ\hat R^{-1}$.
+
+(c) A path in the bipartite graph from $a$ to $a'$ alternates between the two
+sides, and consecutive $A_{1}$-vertices on it share an $A_{2}$-neighbour, so
+they are $\LeftLinked(R)$-related; hence connectedness gives
+$\LeftLinked(R)=A_{1}^{2}$, using subdirectness for $\proj_{1}(R)=A_{1}$.
+Conversely $\LeftLinked(R)=A_{1}^{2}$ joins any two $A_{1}$-vertices by a path,
+and subdirectness gives every $A_{2}$-vertex an $A_{1}$-neighbour, so the graph
+is connected. The same argument on the other side gives the third equivalence.
+\end{proof}
+
+\begin{hazard}[Which coordinate is split]\label{haz:linked-split}
+For $m>2$ the two operators are not symmetric variants of one notion: they
+split $R$ at opposite ends, and the intermediate coordinates go with the
+\emph{other} side. So $\RightLinked(\proj_{1,2,3}(\delta))$ concerns the split
+$(1,2)\mid(3)$, and is a relation on $\proj_{3}(\delta)$ --- not on pairs. A
+linkedness statement for the coarser split $(1,2)\mid(3,4)$ does not follow
+from it and is not implied by it: a path in the coarser bipartite graph need
+not lift, because consecutive edges through a common third coordinate may use
+different fourth coordinates. Caveat~\ref{haz:box-vs-sub} is where that bites.
+\end{hazard}
 
 \begin{hazard}[Composition is diagrammatic]\label{haz:comp-order}
 $\delta_{1}\circ\delta_{2}$ applies $\delta_{1}$ \emph{first}, the opposite

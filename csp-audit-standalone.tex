@@ -5,7 +5,7 @@
 %%  csp-audit.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision 27ba1c9 on 2026-08-02.
+%%  Generated from revision e0e8446 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-audit.tex
@@ -87,6 +87,8 @@
 \DeclareMathOperator{\GenSAT}{SAT}
 \DeclareMathOperator*{\proj}{pr}
 \newcommand{\ConOne}{\operatorname{Con}_1}
+\DeclareMathOperator{\LeftLinked}{LeftLinked}
+\DeclareMathOperator{\RightLinked}{RightLinked}
 
 % ---------------------------------------------------------------- algebras
 \newcommand{\bA}{\mathbf A}
@@ -149,7 +151,7 @@ is the record of those departures. For each it says what the source has, quotes
 it, says why it cannot be transcribed, gives the repair, and names the
 statement of the proof paper that carries it.
 
-Fifteen substantive defects, of which fourteen are repaired with no new
+Sixteen substantive defects, of which fifteen are repaired with no new
 mathematics and one --- the maximal multi-type extension --- is open. Ten
 readings legislated, two of which turn out to be theorems rather than choices.
 Two claims raised and refuted, one declared moot. Four hedges in \S5 of the
@@ -182,7 +184,7 @@ None of this is a criticism of \cite{ZhukSimplified}, which is unusually careful
 prose --- across nine thousand lines of \TeX{} it says ``obvious'' three times
 and ``clearly'' never, and a mechanical sweep of \S5 turns up four hedges in
 thirteen printed pages, all four of which turn out to be honest
-(\S\ref{sec:hedges}). Fifteen substantive defects in fifty pages is roughly
+(\S\ref{sec:hedges}). Sixteen substantive defects in fifty pages is roughly
 the rate one should expect of any informal exposition of a proof this size, and
 finding them is the point of reading it this way.
 
@@ -229,9 +231,9 @@ in \S\ref{sec:refuted}.
 \hline
 \textbf{} & \textbf{Count} \\
 \hline
-Defects confirmed and repaired, needing no new mathematics & 14 \\
+Defects confirmed and repaired, needing no new mathematics & 15 \\
 \quad of which: a citation the later paper dropped & 3 \\
-\quad a typographical slip & 1 \\
+\quad a typographical or typing slip & 2 \\
 \quad a statement that is false as printed & 2 \\
 \quad omitted steps and dropped hypotheses & 8 \\
 Defects confirmed and \textbf{open} & 1 \\
@@ -252,9 +254,9 @@ marks the corresponding statement as open in its status table.
 %% ---------------------------------------------------------------- audit1-defects.tex
 \section{The register}\label{sec:register}
 
-Fifteen places where \cite{ZhukSimplified} is wrong, incomplete, or states less
-than its own proof gives. Fourteen are repaired and none of those repairs needs
-new mathematics; the fifteenth, $\mathrm{D}17$, is open.
+Sixteen places where \cite{ZhukSimplified} is wrong, incomplete, or states less
+than its own proof gives. Fifteen are repaired and none of those repairs needs
+new mathematics; the sixteenth, $\mathrm{D}17$, is open.
 
 \begin{center}\footnotesize
 \begin{longtable}{@{}llp{0.38\textwidth}p{0.26\textwidth}@{}}
@@ -298,6 +300,9 @@ $\mathrm C{10}$ & \texttt{SS:208} & The central-relation citation drops the
   \pkey{lem:central-relation} \\
 $\mathrm F$ & \texttt{SS:545, 837, 921} & A full fibre inferred from a
   surjective projection, at three sites & \pkey{lem:full-fibre} \\
+$\mathrm D{18}$ & \texttt{main:1373} & The definition of a linear congruence
+  is ill-typed: it intersects a relation on elements with a set of tuples of
+  classes & \pkey{def:linear-congruence} \\
 \hline
 \end{longtable}
 \end{center}
@@ -955,6 +960,43 @@ every other tuple is a coordinate-substitution instance of it.
 blocks, so that one tuple can enumerate them. A rendering that normalises the
 arity away breaks all three proofs. Proof paper: \pkey{lem:full-fibre},
 \pkey{haz:full-fibre}.
+
+\subsection{$\mathrm D{18}$ --- the definition of a linear congruence is ill-typed}
+\label{sec:D18}
+
+\texttt{main:1373}, clause (3) of the definition of a linear congruence, reads
+verbatim:
+
+\begin{quote}\small
+``there exist prime $p$ and $S\le(\sigma^{*})^{[4]}$ such that for any block
+$B$ of $\sigma^{*}$ there exists $n\ge0$ with
+$(B/\sigma;S\cap(B/\sigma)^{4})\cong(\mathbb Z_{p}^{n};x_{1}-x_{2}=x_{3}-x_{4})$.''
+\end{quote}
+
+$S$ is a relation on \emph{elements} of $A$ --- it is a subalgebra of
+$(\sigma^{*})^{[4]}\subseteq A^{4}$ --- while $(B/\sigma)^{4}$ is a set of
+$4$-tuples of \emph{$\sigma$-classes}. The two do not intersect: they are sets
+of different things, and $S\cap(B/\sigma)^{4}$ is empty on inspection, or
+meaningless, depending on how literally one reads it.
+
+\emph{Repair.} Cut down inside $A$ and then take the image:
+$(S\cap B^{4})/\sigma$. That is well formed for any $S$, and it is plainly what
+is meant, since the isomorphism is with a relation on $\mathbb Z_{p}^{n}\cong
+B/\sigma$.
+
+The alternative repair --- restrict the image relation $S/\sigma$ to
+$(B/\sigma)^{4}$ --- gives the same relation, because $S$ is stable under
+$\sigma$ in each variable and its tuples meet no other block. But that
+stability is a \emph{consequence} of clause (3) (it is what makes $S$ a bridge,
+the source's own following remark), so it is not available while clause (3) is
+being read, and a definition may not lean on its own consequences. Proof paper:
+\pkey{def:linear-congruence}, \pkey{haz:linear-typing}, and the propagation
+into \pkey{lem:linear-bridge}.
+
+Note that the corresponding clause of \texttt{LEMNontrivialReflexiveBridgeImplies}
+is typed \emph{correctly} in the source --- it writes
+$(B/\sigma;(\delta\cap B^{4})/\sigma)$ --- so the slip is local to the
+definition.
 
 \section{Statements restated}\label{sec:restated}
 
@@ -1838,6 +1880,38 @@ weakening's termination order, the common binary absorption witness
 (\S\ref{sec:D1}), the mixed-prime linear algebra, and the definition of
 $\textsc{Solve}$. They are scheduled work rather than audit entries, and they
 are listed in the proof paper's status table.
+
+\subsection{Accepted, with a correction}\label{sec:review-corrected}
+
+The reviewer wrote that $\LeftLinked$ and $\RightLinked$ ``are used throughout
+the strong-subalgebra proofs \dots but no definition is given in the
+manuscript, and Brady's notes do not use those exact names''. Both halves are
+true of \emph{our} draft and of \cite{BradyNotes}. But
+\cite{ZhukSimplified} \textbf{does} define them, at \texttt{SS:52--66}, and in
+the general $n$-ary form:
+
+\begin{quote}\small
+``For a relation $R\le\mathbf A_{1}\times\dots\mathbf A_{n}$ by
+$\LeftLinked(R)$ we denote the minimal equivalence relation on $\proj_{1}(R)$
+such that $(a_{1},a_{2},\dots,a_{n}),(b_{1},a_{2},\dots,a_{n})\in R$ implies
+$(a_{1},b_{1})\in\LeftLinked(R)$. Similarly, $\RightLinked(R)$ is the minimal
+equivalence relation on $\proj_{n}(R)$ such that
+$(a_{1},\dots,a_{n-1},a_{n}),(a_{1},\dots,a_{n-1},b_{n})\in R$ implies
+$(a_{n},b_{n})\in\RightLinked(R)$.''
+\end{quote}
+
+So this is not a defect of the source but an omission of ours: we reproduced
+the uses without the definition. It is now
+\pkey{def:linked} and \pkey{lem:linked-basics}, with the equivalence to
+connectedness of the bipartite graph proved for subdirect binary relations.
+
+The $n$-ary form settles a question that matters elsewhere. $\LeftLinked$
+splits $R$ at its \emph{first} coordinate and $\RightLinked$ at its
+\emph{last}, with all intermediate coordinates going to the other side --- so
+$\RightLinked(\proj_{1,2,3}(\delta))$ concerns the split $(1,2)\mid(3)$ and is
+a relation on the third coordinate. That is exactly the reading $\mathrm D14$
+(\S\ref{sec:D14}) turns on, and it is now confirmed against the definition
+rather than inferred from the uses.
 
 \subsection{Rejected, with reasons}\label{sec:review-rejected}
 

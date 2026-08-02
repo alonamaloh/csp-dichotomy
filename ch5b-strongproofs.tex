@@ -193,7 +193,7 @@ is subdirect, $W\circ W^{-1}$ is reflexive and symmetric on $P$, so for
 $k\ge|P|$ the formula $\Phi_{k}$ interpreted in $W$ defines the transitive
 closure of $W\circ W^{-1}$, which is $P^{2}$ since $W$ is linked. Interpreted
 in $W'$ and for the same $k\ge|P|\ge|P'|$ it defines
-$\lambda:=\operatorname{LeftLinked}(W')$. By Lemma~\ref{lem:pp-propagation},
+$\lambda:=\LeftLinked(W')$. By Lemma~\ref{lem:pp-propagation},
 replacing every occurrence of $W$ by $W'$ gives $\lambda\subte{T}P^{2}$. Since
 $\lambda\subseteq (P')^{2}\le P^{2}$, Lemma~\ref{lem:ba-center-intersect} gives
 $\lambda\subte{T}(P')^{2}$.
@@ -276,7 +276,7 @@ of a \emph{power} must be moved down by Lemma~\ref{lem:power-to-base}.
 
 \begin{lemma}\label{lem:bacon-left}
 Let $R\sdle\mathbf A\times\mathbf B$ with $\mathbf A$ BA and centre free,
-$\operatorname{LeftLinked}(R)=A^{2}$, and
+$\LeftLinked(R)=A^{2}$, and
 $C=\{c\in B:A\times\{c\}\subseteq R\}$. Then $C\neq\varnothing$ and
 $C\subte{\TBA,\TC}\mathbf B$.
 \end{lemma}
@@ -285,8 +285,8 @@ $C\subte{\TBA,\TC}\mathbf B$.
 For $k\ge2$ put $W_{k}=\{(a_{1},\dots,a_{k}):\exists b\,\forall i\,
 R(a_{i},b)\}$. If $W_{|A|}=A^{|A|}$ then $C\neq\varnothing$, since a witness
 $b$ for the tuple listing all of $A$ lies in $C$. Otherwise choose $k$ minimal
-with $W_{k}\neq A^{k}$. Since $\operatorname{LeftLinked}(R)=A^{2}$ we get
-$\operatorname{LeftLinked}(W_{k})=A^{2}$, and viewing $W_{k}$ as a binary
+with $W_{k}\neq A^{k}$. Since $\LeftLinked(R)=A^{2}$ we get
+$\LeftLinked(W_{k})=A^{2}$, and viewing $W_{k}$ as a binary
 relation in $\mathbf A\times\mathbf A^{k-1}$ --- subdirect by minimality of $k$
 --- Corollary~\ref{lem:linked-implies-abs} and Lemma~\ref{lem:power-to-base}
 produce a proper nonempty binary absorbing or central subuniverse of
@@ -763,7 +763,7 @@ and stable under it, minimality gives $\cover\sigma\subseteq\bcol\delta$; the
 same argument applied to $\proj_{1,2}(\delta)$, which properly contains $\sigma$
 by clause (c), gives $\cover\sigma\subseteq\proj_{1,2}(\delta)$.
 
-Let $B$ be a block of $\operatorname{LeftLinked}(\cover\sigma)$ with $|B|>1$ and
+Let $B$ be a block of $\LeftLinked(\cover\sigma)$ with $|B|>1$ and
 put $\delta'=\delta\cap B^{4}\cap(\cover\sigma\times\cover\sigma)$. Then
 $\proj_{1,2}(\delta')=\cover\sigma\cap B^{2}$: for
 $(x_{1},x_{2})\in\cover\sigma\cap B^{2}$ pair-reflexivity puts
@@ -777,7 +777,7 @@ so Lemma~\ref{lem:block-good-bridge} makes $B$ BA and centre free. Then
 $\cover\sigma\cap B^{2}$, being linked and subdirect on $B$, must be all of
 $B^{2}$ by Corollary~\ref{lem:linked-implies-abs}. Blocks of size $1$ satisfy
 $B^{2}\subseteq\cover\sigma$ trivially, so
-$\cover\sigma=\operatorname{LeftLinked}(\cover\sigma)$ is an equivalence
+$\cover\sigma=\LeftLinked(\cover\sigma)$ is an equivalence
 relation and hence a congruence, giving (a); and (b) follows, one-element
 algebras being vacuously BA and centre free.
 
@@ -855,7 +855,7 @@ from $\sigma$ to $\sigma$ with
 \begin{enumerate}\romanlabels\tightlist
 \item $\delta(x_{1},x_{2},x_{3},x_{4})=\delta(x_{3},x_{4},x_{1},x_{2})$;
 \item $(a,b,a,b),(b,a,b,a)\in\delta$ for every $(a,b)\in\proj_{1,2}(\delta)$;
-\item $\operatorname{RightLinked}(\proj_{1,2,3}(\delta))=A^{2}$.
+\item $\RightLinked(\proj_{1,2,3}(\delta))=A^{2}$.
 \end{enumerate}
 Then $(a,a,b,b)\in\delta$ for some $a\neq b$.
 \end{longlemma}
@@ -913,8 +913,8 @@ $\omega\subt{\TBA}\sigma$, then $\omega\cap 0_{\mathbf A}\neq\varnothing$.
 
 \begin{proof}[Proof of Lemma~\ref{lem:pc-bridges-trivial}]
 Put $\xi=\delta\ast\delta^{-1}$, which is symmetric and pair-reflexive. Each of
-$\operatorname{RightLinked}(\proj_{1,2,3}(\xi))$ and
-$\operatorname{RightLinked}(\proj_{1,2,4}(\xi))$ is a congruence containing
+$\RightLinked(\proj_{1,2,3}(\xi))$ and
+$\RightLinked(\proj_{1,2,4}(\xi))$ is a congruence containing
 $\sigma$, so by minimality of $\cover\sigma$ each is $\sigma$ or contains
 $\cover\sigma$; this gives three cases.
 
@@ -965,7 +965,7 @@ $\proj_{1,2}(\delta)=\cover\sigma\supsetneq\sigma$, and likewise for
 $\proj_{1,4}=\proj_{2,4}$. The two surviving combinations are the conclusion,
 the reverse inclusion following from stability under $\sigma$.
 
-If $\operatorname{RightLinked}(\proj_{1,2,3}(\xi))\supseteq\cover\sigma$, choose
+If $\RightLinked(\proj_{1,2,3}(\xi))\supseteq\cover\sigma$, choose
 a block $B$ of it that is not a $\sigma$-block. Then $a,b,d\in B$ whenever
 $c\in B$ and $(a,b,c,d)\in\xi$, so $\xi\cap(A^{2}\times B\times A)\subseteq
 B^{4}$ and therefore $\proj_{1,2,3}(\xi\cap B^{4})=\proj_{1,2,3}(\xi)\cap
@@ -981,7 +981,7 @@ directly.} The third case is the mirror image, using $\proj_{1,2,4}$.
 
 \begin{hazard}[The third case]\label{haz:pc-bridges-hedges}
 The third case is genuinely the mirror of the second: $(a,b,a,b)\in\xi$ places
-$b$ in the block, and $\cover\sigma\subseteq\operatorname{RightLinked}$ places
+$b$ in the block, and $\cover\sigma\subseteq\RightLinked$ places
 $a$ and $c$. Writing it out is mechanical, and it is not written out here.
 \end{hazard}
 
@@ -1115,8 +1115,8 @@ $S$ is a central relation, and Lemmas~\ref{lem:central-relation} and
 
 \begin{lemma}\label{lem:leftlinked-stay-full}
 Under the hypotheses of Lemma~\ref{lem:center-pushed-in}, if
-$(\operatorname{LeftLinked}(R)\cap B_{1}^{2})/\sigma=(B_{1}/\sigma)^{2}$ then
-$\operatorname{LeftLinked}\bigl(R\cap(B_{1}\times B_{2})\bigr)/\sigma=
+$(\LeftLinked(R)\cap B_{1}^{2})/\sigma=(B_{1}/\sigma)^{2}$ then
+$\LeftLinked\bigl(R\cap(B_{1}\times B_{2})\bigr)/\sigma=
 (B_{1}/\sigma)^{2}$.
 \end{lemma}
 
@@ -1160,9 +1160,9 @@ $\sigma\supseteq\delta\cap\omega$.
 (1) follows, since $\delta\cap B^{2}\subseteq\delta\cap\omega\subseteq\sigma$.
 
 (4). Put $\delta'=\delta\vee(\sigma\cap\omega)$, which is
-$\operatorname{LeftLinked}(\delta\circ(\sigma\cap\omega))$. If
+$\LeftLinked(\delta\circ(\sigma\cap\omega))$. If
 $(\delta'\cap B^{2})/\sigma$ were full then Lemma~\ref{lem:leftlinked-stay-full}
-would make $\operatorname{LeftLinked}$ of the restricted relation full, so some
+would make $\LeftLinked$ of the restricted relation full, so some
 single linking step would cross $\sigma$-classes: there would be
 $a_{1},a_{2},c\in B$ and $b_{1},b_{2}\in A$ with $(a_{i},b_{i})\in\delta$,
 $(b_{i},c)\in\sigma\cap\omega$ and $(a_{1},a_{2})\notin\sigma$. But
@@ -1191,12 +1191,12 @@ It remains to see that $\delta$ is irreducible. Suppose
 $\delta=S_{1}\cap\dots\cap S_{k}$ with each $S_{i}\supsetneq\delta$ a
 subuniverse of $\mathbf A^{2}$ \emph{stable under $\delta$}. Some $S_{i}$ has
 $B^{2}\not\subseteq S_{i}$, else $B^{2}\subseteq\delta$. Now
-$\operatorname{LeftLinked}(S_{i})$ is a congruence containing
+$\LeftLinked(S_{i})$ is a congruence containing
 $S_{i}\supsetneq\delta\supseteq\sigma$, so maximality of $\delta$ forces
-$B^{2}\subseteq\operatorname{LeftLinked}(S_{i})$, i.e.\
-$(\operatorname{LeftLinked}(S_{i})\cap B^{2})/\delta=(B/\delta)^{2}$. By
+$B^{2}\subseteq\LeftLinked(S_{i})$, i.e.\
+$(\LeftLinked(S_{i})\cap B^{2})/\delta=(B/\delta)^{2}$. By
 Lemma~\ref{lem:leftlinked-stay-full}, applied \emph{with the congruence
-$\delta$}, $\operatorname{LeftLinked}(S_{i}\cap B^{2})/\delta=(B/\delta)^{2}$,
+$\delta$}, $\LeftLinked(S_{i}\cap B^{2})/\delta=(B/\delta)^{2}$,
 so $(S_{i}\cap B^{2})/\delta$ is linked. It is also \emph{proper}: stability
 under $\delta$ makes $S_{i}$ a union of products of $\delta$-blocks, so
 $(S_{i}\cap B^{2})/\delta=(B/\delta)^{2}$ would give $B^{2}\subseteq S_{i}$.
@@ -1226,7 +1226,7 @@ $\delta\cap B^{2}\subseteq\sigma\cap B^{2}$.
 \begin{proof}[Proof outline]
 Put $R=\{(a/\sigma,a/\delta):a\in B\}$ and note
 $R\circ R^{-1}=(\delta\cap B^{2})/\sigma$, so
-$\operatorname{LeftLinked}(R)=(B/\sigma)^{2}$ exactly when
+$\LeftLinked(R)=(B/\sigma)^{2}$ exactly when
 $(\delta\cap B^{2})/\sigma=B^{2}/\sigma$. In that case
 Lemma~\ref{lem:bacon-left} yields $U\subte{\TBA,\TC}B/\delta$ with
 $(B/\sigma)\times U\subseteq R$, and $U\subseteq C/\delta$, giving the first two

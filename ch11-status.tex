@@ -38,7 +38,8 @@ both are written so that a reader can check them in a few lines by hand.
 \multicolumn{3}{@{}l}{\textit{\S\ref{sec:conventions}--\S\ref{sec:types}: vocabulary}}\\
 \pkey{prop:p-divides}, \pkey{cor:Zp-in-Vn} & \textsc{proved} & \\
 \pkey{lem:sg-terms} & \textsc{imported} & standard; \cite{Bergman} \\
-\pkey{lem:rect-basics}, \pkey{prop:cover}, \pkey{lem:irred-quotient} & \textsc{proved} & \\
+\pkey{lem:rect-basics}, \pkey{prop:cover}, \pkey{lem:irred-quotient},
+  \pkey{lem:linked-basics} & \textsc{proved} & \\
 \pkey{lem:bridge-comp} & \textsc{imported} & \cite[Lem.~6.3]{ZhukJACM} \\
 \pkey{lem:symmetrise} & \textsc{outlined} & the collapse identity is taken
   from \pkey{lem:bridge-comp}, whose irreducibility hypothesis this lemma does
@@ -51,12 +52,16 @@ both are written so that a reader can check them in a few lines by hand.
   consumed by \pkey{thm:stable-intersection} and \pkey{lem:factor-by-delta} \\
 \pkey{lem:pc-bridges-trivial} & \textsc{proved} & third case not written out \\
 \pkey{lem:linear-on-top} & \textsc{outlined} & same reflexivisation \\
-\pkey{lem:pc-on-top} & \textsc{stated} & consumed by nothing;
+\pkey{lem:pc-on-top} & \textsc{stated} & consumed by nothing, and now
+  carrying the BA-and-centre-free hypothesis its proof needs;
   Caveat~\ref{haz:on-top} \\
 \hline
 \multicolumn{3}{@{}l}{\textit{\S\ref{sec:instances}: instances}}\\
 \pkey{prop:covering-basics}, \pkey{lem:conone-basics} & \textsc{stated} &
   routine, but not written \\
+\pkey{def:constraint-relation} & --- & the repeated-variable policy; every
+  variable-named operation below is taken on $R^{C}$,
+  Caveat~\ref{haz:diagonal} \\
 \pkey{rem:get-crucial} & \textsc{stated} & termination is
   Caveat~\ref{haz:weakening} \\
 \hline
@@ -160,7 +165,9 @@ Six items block the rest, and they are the honest reading of the table.
   used by both \pkey{lem:linear-equiv} and \pkey{lem:linear-on-top}.
 \item The expansion of \pkey{lem:intersection-good}, on which much of
   \S\ref{sec:bridge-proofs} onwards rests, and the rewrite of
-  \pkey{lem:multiply-all-linear}.
+  \pkey{lem:multiply-all-linear}; and, smaller,
+  \pkey{lem:symmetrise}'s collapse identity and the call sites of
+  \pkey{lem:pp-propagation}.
 \item \pkey{lem:no-cross-bridge} and \pkey{lem:bridge-to-pc}, which
   \pkey{thm:stable-intersection} consumes.
 \item The induction measure across expanded coverings

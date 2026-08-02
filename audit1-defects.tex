@@ -1,9 +1,9 @@
 %!TeX root=csp-audit.tex
 \section{The register}\label{sec:register}
 
-Fifteen places where \cite{ZhukSimplified} is wrong, incomplete, or states less
-than its own proof gives. Fourteen are repaired and none of those repairs needs
-new mathematics; the fifteenth, $\mathrm{D}17$, is open.
+Sixteen places where \cite{ZhukSimplified} is wrong, incomplete, or states less
+than its own proof gives. Fifteen are repaired and none of those repairs needs
+new mathematics; the sixteenth, $\mathrm{D}17$, is open.
 
 \begin{center}\footnotesize
 \begin{longtable}{@{}llp{0.38\textwidth}p{0.26\textwidth}@{}}
@@ -47,6 +47,9 @@ $\mathrm C{10}$ & \texttt{SS:208} & The central-relation citation drops the
   \pkey{lem:central-relation} \\
 $\mathrm F$ & \texttt{SS:545, 837, 921} & A full fibre inferred from a
   surjective projection, at three sites & \pkey{lem:full-fibre} \\
+$\mathrm D{18}$ & \texttt{main:1373} & The definition of a linear congruence
+  is ill-typed: it intersects a relation on elements with a set of tuples of
+  classes & \pkey{def:linear-congruence} \\
 \hline
 \end{longtable}
 \end{center}
@@ -704,6 +707,43 @@ every other tuple is a coordinate-substitution instance of it.
 blocks, so that one tuple can enumerate them. A rendering that normalises the
 arity away breaks all three proofs. Proof paper: \pkey{lem:full-fibre},
 \pkey{haz:full-fibre}.
+
+\subsection{$\mathrm D{18}$ --- the definition of a linear congruence is ill-typed}
+\label{sec:D18}
+
+\texttt{main:1373}, clause (3) of the definition of a linear congruence, reads
+verbatim:
+
+\begin{quote}\small
+``there exist prime $p$ and $S\le(\sigma^{*})^{[4]}$ such that for any block
+$B$ of $\sigma^{*}$ there exists $n\ge0$ with
+$(B/\sigma;S\cap(B/\sigma)^{4})\cong(\mathbb Z_{p}^{n};x_{1}-x_{2}=x_{3}-x_{4})$.''
+\end{quote}
+
+$S$ is a relation on \emph{elements} of $A$ --- it is a subalgebra of
+$(\sigma^{*})^{[4]}\subseteq A^{4}$ --- while $(B/\sigma)^{4}$ is a set of
+$4$-tuples of \emph{$\sigma$-classes}. The two do not intersect: they are sets
+of different things, and $S\cap(B/\sigma)^{4}$ is empty on inspection, or
+meaningless, depending on how literally one reads it.
+
+\emph{Repair.} Cut down inside $A$ and then take the image:
+$(S\cap B^{4})/\sigma$. That is well formed for any $S$, and it is plainly what
+is meant, since the isomorphism is with a relation on $\mathbb Z_{p}^{n}\cong
+B/\sigma$.
+
+The alternative repair --- restrict the image relation $S/\sigma$ to
+$(B/\sigma)^{4}$ --- gives the same relation, because $S$ is stable under
+$\sigma$ in each variable and its tuples meet no other block. But that
+stability is a \emph{consequence} of clause (3) (it is what makes $S$ a bridge,
+the source's own following remark), so it is not available while clause (3) is
+being read, and a definition may not lean on its own consequences. Proof paper:
+\pkey{def:linear-congruence}, \pkey{haz:linear-typing}, and the propagation
+into \pkey{lem:linear-bridge}.
+
+Note that the corresponding clause of \texttt{LEMNontrivialReflexiveBridgeImplies}
+is typed \emph{correctly} in the source --- it writes
+$(B/\sigma;(\delta\cap B^{4})/\sigma)$ --- so the slip is local to the
+definition.
 
 \section{Statements restated}\label{sec:restated}
 

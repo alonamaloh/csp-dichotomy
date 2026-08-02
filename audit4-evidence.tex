@@ -231,6 +231,38 @@ weakening's termination order, the common binary absorption witness
 $\textsc{Solve}$. They are scheduled work rather than audit entries, and they
 are listed in the proof paper's status table.
 
+\subsection{Accepted, with a correction}\label{sec:review-corrected}
+
+The reviewer wrote that $\LeftLinked$ and $\RightLinked$ ``are used throughout
+the strong-subalgebra proofs \dots but no definition is given in the
+manuscript, and Brady's notes do not use those exact names''. Both halves are
+true of \emph{our} draft and of \cite{BradyNotes}. But
+\cite{ZhukSimplified} \textbf{does} define them, at \texttt{SS:52--66}, and in
+the general $n$-ary form:
+
+\begin{quote}\small
+``For a relation $R\le\mathbf A_{1}\times\dots\mathbf A_{n}$ by
+$\LeftLinked(R)$ we denote the minimal equivalence relation on $\proj_{1}(R)$
+such that $(a_{1},a_{2},\dots,a_{n}),(b_{1},a_{2},\dots,a_{n})\in R$ implies
+$(a_{1},b_{1})\in\LeftLinked(R)$. Similarly, $\RightLinked(R)$ is the minimal
+equivalence relation on $\proj_{n}(R)$ such that
+$(a_{1},\dots,a_{n-1},a_{n}),(a_{1},\dots,a_{n-1},b_{n})\in R$ implies
+$(a_{n},b_{n})\in\RightLinked(R)$.''
+\end{quote}
+
+So this is not a defect of the source but an omission of ours: we reproduced
+the uses without the definition. It is now
+\pkey{def:linked} and \pkey{lem:linked-basics}, with the equivalence to
+connectedness of the bipartite graph proved for subdirect binary relations.
+
+The $n$-ary form settles a question that matters elsewhere. $\LeftLinked$
+splits $R$ at its \emph{first} coordinate and $\RightLinked$ at its
+\emph{last}, with all intermediate coordinates going to the other side --- so
+$\RightLinked(\proj_{1,2,3}(\delta))$ concerns the split $(1,2)\mid(3)$ and is
+a relation on the third coordinate. That is exactly the reading $\mathrm D14$
+(\S\ref{sec:D14}) turns on, and it is now confirmed against the definition
+rather than inferred from the uses.
+
 \subsection{Rejected, with reasons}\label{sec:review-rejected}
 
 \begin{itemize}\tightlist

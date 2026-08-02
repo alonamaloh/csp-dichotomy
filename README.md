@@ -65,10 +65,10 @@ runs in the reverse direction.
 
 ## The audit
 
-Fifteen substantive defects in the source, of which fourteen are repaired and none of
-those repairs needs new mathematics: three needed a citation the later paper dropped, one
-was a typographical slip, two were statements false as printed, and the rest were omitted
-steps. Ten readings are legislated, two of which turn out to be theorems rather than
+Sixteen substantive defects in the source, of which fifteen are repaired and none of
+those repairs needs new mathematics: three needed a citation the later paper dropped, two
+were typographical or typing slips, two were statements false as printed, and the rest
+were omitted steps. Ten readings are legislated, two of which turn out to be theorems rather than
 choices. Four hedges in §5 of the source, all four honest.
 
 Three claims raised here have been published, reviewed, and turned out to be wrong: a

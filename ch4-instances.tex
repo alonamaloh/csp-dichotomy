@@ -41,15 +41,49 @@ $R(x,x,\dots,x)$ appears explicitly in Definition~\ref{def:expanded}. So
 $\Var(C)$ is the image of the scope, and $|{\Var(C)}|$ may be smaller than the
 arity.
 
-Once repeated variables are allowed, every semantic operation below that names
-a \emph{variable} rather than a \emph{position} --- $\proj_{z}(C)$ in
-$1$-consistency, $\proj_{z_{i},z_{i+1}}(C)$ along a path, $\ConOne(C,x)$,
-adjacency at a common variable, weakening by a set of variable names, and the
-projections in Definition~\ref{def:instance-linked}(ii) --- must be read as
-pulled back along the equal-variable diagonal first. Otherwise a constraint
-$R(x,x)$ has a full first-coordinate projection even when $R$ contains no
-diagonal tuple and the constraint admits no value for $x$. Fixing this notation
-uniformly is work this document has not yet done; see \S\ref{sec:status}.
+Once repeated variables are allowed, every semantic operation that names a
+\emph{variable} rather than a \emph{position} must be pulled back along the
+equal-variable diagonal first. Definition~\ref{def:constraint-relation} does
+that once, for all of them.
+\end{hazard}
+
+\begin{definition}[The relation of a constraint]\label{def:constraint-relation}
+Let $C=(\bar x,R)$ be a constraint with $\bar x=(x_{1},\dots,x_{m})$ and
+$\Var(C)=\{x_{1},\dots,x_{m}\}$ as a \emph{set}. The \emph{relation of $C$} is
+\[
+  R^{C}=\Bigl\{\bar a\in\prod_{z\in\Var(C)}D_{z}\;:\;
+    (a_{x_{1}},\dots,a_{x_{m}})\in R\Bigr\}
+  \;\le\;\prod_{z\in\Var(C)}\mathbf D_{z},
+\]
+the pullback of $R$ along the map $\prod_{z\in\Var(C)}D_{z}\to
+\prod_{i\in[m]}D_{x_{i}}$ that repeats entries. It is indexed by
+\emph{variables}, not by positions (Convention~\ref{conv:relations}), and it is
+a subuniverse because the repeating map is a homomorphism.
+
+\textbf{Every semantic operation below that names a variable is taken on
+$R^{C}$, never on $R$}: the projections $\proj_{z}(C)$ and
+$\proj_{z,z'}(C)$, the induced congruences $\ConOne(C,z)$, adjacency at a
+common variable, weakening by a set of variable names, and clause (ii) of
+Definition~\ref{def:instance-linked}. If the entries of $\bar x$ are pairwise
+distinct then $R^{C}=R$ up to reindexing, and the distinction is invisible.
+\end{definition}
+
+\begin{hazard}[Why the pullback, and not the raw projection]\label{haz:diagonal}
+Repeated variables in a scope are allowed and they occur
+(Caveat~\ref{haz:instance-list}), and once they do, a projection of $R$ at a
+\emph{position} is not a statement about the \emph{variable}. Take
+$C=R(x,x)$ with $R=\{(0,1),(1,0)\}$. Then $\proj_{1}(R)=\{0,1\}$ is full,
+while $R^{C}=\varnothing$: the constraint admits no value for $x$ at all. Read
+positionally, $C$ is $1$-consistent; read correctly, it is unsatisfiable. The
+same collapse affects paths, adjacency and instance irreducibility, each of
+which would otherwise quantify over positions where it means variables.
+
+One notion genuinely depends on the position and cannot be repaired this way:
+$\ConOne(R,i)$ of Definition~\ref{def:conone} is defined for a relation and an
+index. For constraints we therefore use $\ConOne(C,z)=\ConOne(R^{C},z)$, which
+changes \emph{all} occurrences of $z$ at once --- the right notion for ``the
+congruence $C$ induces on the variable $z$'' --- and which is defined for every
+$z\in\Var(C)$ whether or not it repeats.
 \end{hazard}
 
 \begin{definition}[Relations defined by an instance]\label{def:instance-relation}
@@ -89,14 +123,14 @@ be different objects.
 A \emph{path} in $\mathcal I$ is an alternating sequence
 $z_{1}-C_{1}-z_{2}-\dots-C_{l-1}-z_{l}$ with $z_{i},z_{i+1}\in\Var(C_{i})$.
 It \emph{connects $b$ and $c$} if there are $a_{i}\in D_{z_{i}}$ with
-$a_{1}=b$, $a_{l}=c$, and $(a_{i},a_{i+1})\in\proj_{z_{i},z_{i+1}}(C_{i})$ for
-every $i$.
+$a_{1}=b$, $a_{l}=c$, and $(a_{i},a_{i+1})\in\proj_{z_{i},z_{i+1}}(R^{C_{i}})$
+for every $i$; if $z_{i}=z_{i+1}$ this reads $a_{i}=a_{i+1}$.
 $\mathcal I$ is a \emph{tree-instance} if it has no path with $l\ge 3$,
 $z_{1}=z_{l}$ and $C_{1},\dots,C_{l-1}$ pairwise distinct.
 \end{definition}
 
 \begin{definition}[Consistency]\label{def:consistency}
-$\mathcal I$ is \emph{$1$-consistent} if $\proj_{z}(C)=D_{z}$ for every
+$\mathcal I$ is \emph{$1$-consistent} if $\proj_{z}(R^{C})=D_{z}$ for every
 constraint $C$ and every $z\in\Var(C)$. A reduction $D^{(\top)}$ is
 $1$-consistent for $\mathcal I$ if $\mathcal I^{(\top)}$ is $1$-consistent.
 $\mathcal I$ is \emph{cycle-consistent} if it is $1$-consistent and every path
@@ -113,8 +147,9 @@ $\Var(C)\subseteq X_{2}$ for every $C$.
 $\mathcal I$ is \emph{irreducible} if there is no instance $\mathcal I'$ with
 \begin{enumerate}\romanlabels\tightlist
 \item $\Var(\mathcal I')\subseteq\Var(\mathcal I)$;
-\item every constraint of $\mathcal I'$ is a projection of a constraint of
-  $\mathcal I$ onto some of its variables;
+\item every constraint of $\mathcal I'$ is $\proj_{Y}(R^{C})$ on the scope $Y$,
+  for some constraint $C$ of $\mathcal I$ and some $\varnothing\neq Y\subseteq
+  \Var(C)$;
 \item $\mathcal I'$ is not fragmented;
 \item $\mathcal I'$ is not linked;
 \item the solution set of $\mathcal I'$ is not subdirect.
@@ -134,10 +169,11 @@ Lemma~\ref{lem:crucial-irreducible} and \emph{never} through the definition.
 \subsection{Weakening and cruciality}
 
 \begin{definition}[Weakening]\label{def:weakening}
-A constraint $R_{1}(y_{1},\dots,y_{t})$ is \emph{weaker or equivalent to}
-$R_{2}(z_{1},\dots,z_{s})$ if $\{y_{i}\}\subseteq\{z_{j}\}$ and
-$R_{2}(\bar z)$ implies $R_{1}(\bar y)$; it is \emph{weaker} if in addition
-$R_{1}(\bar y)$ does not imply $R_{2}(\bar z)$. \emph{Weakening} a constraint
+A constraint $C_{1}$ is \emph{weaker or equivalent to} a constraint $C_{2}$ if
+$\Var(C_{1})\subseteq\Var(C_{2})$ and
+$\proj_{\Var(C_{1})}(R^{C_{2}})\subseteq R^{C_{1}}$ --- that is, every
+assignment satisfying $C_{2}$ restricts to one satisfying $C_{1}$. It is
+\emph{weaker} if the containment is proper or the variable set is. \emph{Weakening} a constraint
 $C$ in $\mathcal I$ means replacing $C$ by all constraints weaker than it. An
 instance $\mathcal I'$ is a \emph{weakening} of $\mathcal I$ if
 $\Var(\mathcal I')\subseteq\Var(\mathcal I)$ and every constraint of
@@ -247,9 +283,11 @@ For $R$ of arity $m$ and $i\in[m]$, $\ConOne(R,i)$ is the binary relation
 \[
   \{(y,y')\;:\;\exists\,\bar x\ \ R(\bar x[i\mapsto y])\wedge R(\bar x[i\mapsto y'])\}.
 \]
-For a constraint $C=R(x_{1},\dots,x_{m})$ we write $\ConOne(C,x_{i})$ for
-$\ConOne(R,i)$. For an instance, $\Con(\mathcal I,x)=\{\ConOne(C,x):C\in
-\mathcal I\}$ and $\Con(\mathcal I)=\bigcup_{x}\Con(\mathcal I,x)$.
+For a constraint $C$ and $z\in\Var(C)$ we write $\ConOne(C,z)$ for
+$\ConOne(R^{C},z)$, the index set of $R^{C}$ being $\Var(C)$
+(Definition~\ref{def:constraint-relation}). For an instance,
+$\Con(\mathcal I,x)=\{\ConOne(C,x):C\in\mathcal I,\ x\in\Var(C)\}$ and
+$\Con(\mathcal I)=\bigcup_{x}\Con(\mathcal I,x)$.
 \end{definition}
 
 \begin{lemma}\label{lem:conone-basics}
@@ -263,23 +301,21 @@ $\ConOne(R,i)$ is always reflexive and symmetric but is \emph{not} transitive
 in general, hence not always a congruence; Lemma~\ref{lem:conone-basics} is
 what makes it one, and its hypotheses (subdirect \emph{and} rectangular at $i$)
 are both needed. The notation invites the reader to assume congruence-hood, and
-every use below must check the hypotheses. Note also that
-$\ConOne(C,x_{i})$ depends on the \emph{position} $i$, not on the variable, so
-it is ill-defined if $x$ occurs twice in the scope
-(Caveat~\ref{haz:instance-list}).
+every use below must check the hypotheses.
 \end{hazard}
 
 \begin{definition}[Types of relations and instances]\label{def:rel-type}
 $R$ is \emph{of PC type} (resp.\ \emph{linear type}) if $R$ is rectangular and
-every $\ConOne(R,i)$ is a PC (resp.\ linear) congruence. An instance is of PC
-or linear type if all its constraints are.
+every $\ConOne(R,i)$ is a PC (resp.\ linear) congruence. A constraint $C$ is of
+PC or linear type if $R^{C}$ is; an instance is if all its constraints are.
 \end{definition}
 
 \begin{definition}[Adjacency, connectedness]\label{def:connected}
 Two congruences $\sigma_{1},\sigma_{2}$ on $\mathbf D_{x}$ are \emph{adjacent}
 if there is a reflexive bridge from $\sigma_{1}$ to $\sigma_{2}$. Two
-rectangular constraints $C_{1},C_{2}$ are \emph{adjacent in a common variable
-$x$} if $\ConOne(C_{1},x)$ and $\ConOne(C_{2},x)$ are adjacent. An instance
+constraints $C_{1},C_{2}$ with $R^{C_{1}},R^{C_{2}}$ rectangular are
+\emph{adjacent in a common variable $x\in\Var(C_{1})\cap\Var(C_{2})$} if
+$\ConOne(C_{1},x)$ and $\ConOne(C_{2},x)$ are adjacent. An instance
 $\mathcal I$ is \emph{connected} if all its constraints are rectangular, all
 congruences in $\Con(\mathcal I)$ are irreducible, and the graph on the
 constraints with edges the adjacent pairs is connected.

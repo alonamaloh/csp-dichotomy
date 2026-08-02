@@ -5,7 +5,7 @@
 %%  csp-proof.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision 27ba1c9 on 2026-08-02.
+%%  Generated from revision e0e8446 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-proof.tex
@@ -87,6 +87,8 @@
 \DeclareMathOperator{\GenSAT}{SAT}
 \DeclareMathOperator*{\proj}{pr}
 \newcommand{\ConOne}{\operatorname{Con}_1}
+\DeclareMathOperator{\LeftLinked}{LeftLinked}
+\DeclareMathOperator{\RightLinked}{RightLinked}
 
 % ---------------------------------------------------------------- algebras
 \newcommand{\bA}{\mathbf A}
@@ -682,13 +684,87 @@ Let $R\subseteq A_{1}\times\dots\times A_{m}$.
   (b,c)\in\delta_{2}\}$, and $\delta^{-1}=\{(b,a):(a,b)\in\delta\}$.
 \item For $B\subseteq A_{1}$ and $\delta\subseteq A_{1}\times A_{2}$:
   $B\circ\delta=\{c:\exists b\in B\;(b,c)\in\delta\}$.
-\item A subdirect $\delta\subseteq A\times B$ is \emph{linked} if the bipartite
-  graph on $A\sqcup B$ with edge set $\delta$ is connected. It is
-  \emph{bijective} if $|\delta|=|A|=|B|$.
 \item For binary $\sigma$ and $m\ge 2$,
   $\sigma^{[m]}=\{(a_{1},\dots,a_{m}):(a_{i},a_{j})\in\sigma\ \forall i,j\}$.
+\item $R\subseteq A\times B$ is \emph{bijective} if $|R|=|A|=|B|$.
 \end{enumerate}
 \end{definition}
+
+\subsection{Linkedness}\label{sec:linkedness}
+
+Two operators run through \S\ref{sec:strongproofs} and are worth pinning down
+before anything uses them. They split a relation at its \emph{first} coordinate
+and at its \emph{last}, and which of the two is meant is load-bearing.
+
+\begin{definition}[The linking equivalences]\label{def:linked}
+Let $R\le\mathbf A_{1}\times\dots\times\mathbf A_{m}$ with $m\ge2$.
+$\LeftLinked(R)$ is the least equivalence relation on $\proj_{1}(R)$ such that
+\[
+  (a_{1},a_{2},\dots,a_{m})\in R\ \text{and}\ (b_{1},a_{2},\dots,a_{m})\in R
+  \;\Longrightarrow\;(a_{1},b_{1})\in\LeftLinked(R),
+\]
+and $\RightLinked(R)$ is the least equivalence relation on $\proj_{m}(R)$ such
+that
+\[
+  (a_{1},\dots,a_{m-1},a_{m})\in R\ \text{and}\
+  (a_{1},\dots,a_{m-1},b_{m})\in R
+  \;\Longrightarrow\;(a_{m},b_{m})\in\RightLinked(R).
+\]
+Equivalently: view $R$ as a binary relation
+$\hat R\subseteq A_{1}\times(A_{2}\times\dots\times A_{m})$; then
+$\LeftLinked(R)$ is the transitive closure of $\hat R\circ\hat R^{-1}$, and
+$\RightLinked(R)$ is the transitive closure of $\check R^{-1}\circ\check R$
+for the corresponding split at the last coordinate.
+
+$R$ is \emph{linked} if $\LeftLinked(R)=\proj_{1}(R)^{2}$.
+\end{definition}
+
+\begin{lemma}[Basic properties]\label{lem:linked-basics}
+Let $R\le\mathbf A_{1}\times\dots\times\mathbf A_{m}$ and write
+$P=\proj_{1}(R)$, $Q=\proj_{m}(R)$.
+\begin{enumerate}\alphlabels\tightlist
+\item $\LeftLinked(R)$ is a congruence of $\mathbf P$, and $\RightLinked(R)$
+  one of $\mathbf Q$.
+\item $\hat R\circ\hat R^{-1}\subseteq\LeftLinked(R)$, and if $R$ is
+  reflexive as a binary relation on $A$ then $R\subseteq\LeftLinked(R)$.
+\item For $m=2$ and $R\sdle\mathbf A_{1}\times\mathbf A_{2}$: $R$ is linked
+  $\iff\LeftLinked(R)=A_{1}^{2}\iff\RightLinked(R)=A_{2}^{2}\iff$ the
+  bipartite graph on $A_{1}\sqcup A_{2}$ with edge set $R$ is connected.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) $\hat R\circ\hat R^{-1}$ is pp-definable from $R$, hence a subuniverse of
+$\mathbf A_{1}^{2}$; it is symmetric, and reflexive on $P$. Its powers
+increase and so stabilise, and each power is again a subuniverse, so the
+transitive closure is a subuniverse of $\mathbf A_{1}^{2}$ contained in
+$P^{2}$ --- that is, a congruence of $\mathbf P$. It satisfies the closure
+condition of Definition~\ref{def:linked} and any equivalence satisfying that
+condition contains $\hat R\circ\hat R^{-1}$ and hence its transitive closure,
+so it is the least one. Symmetrically for $\RightLinked$.
+
+(b) The first is immediate from (a). For the second, if $(a,b)\in R$ then
+$(a,b),(b,b)\in R$, so $(a,b)\in\hat R\circ\hat R^{-1}$.
+
+(c) A path in the bipartite graph from $a$ to $a'$ alternates between the two
+sides, and consecutive $A_{1}$-vertices on it share an $A_{2}$-neighbour, so
+they are $\LeftLinked(R)$-related; hence connectedness gives
+$\LeftLinked(R)=A_{1}^{2}$, using subdirectness for $\proj_{1}(R)=A_{1}$.
+Conversely $\LeftLinked(R)=A_{1}^{2}$ joins any two $A_{1}$-vertices by a path,
+and subdirectness gives every $A_{2}$-vertex an $A_{1}$-neighbour, so the graph
+is connected. The same argument on the other side gives the third equivalence.
+\end{proof}
+
+\begin{hazard}[Which coordinate is split]\label{haz:linked-split}
+For $m>2$ the two operators are not symmetric variants of one notion: they
+split $R$ at opposite ends, and the intermediate coordinates go with the
+\emph{other} side. So $\RightLinked(\proj_{1,2,3}(\delta))$ concerns the split
+$(1,2)\mid(3)$, and is a relation on $\proj_{3}(\delta)$ --- not on pairs. A
+linkedness statement for the coarser split $(1,2)\mid(3,4)$ does not follow
+from it and is not implied by it: a path in the coarser bipartite graph need
+not lift, because consecutive edges through a common third coordinate may use
+different fourth coordinates. Caveat~\ref{haz:box-vs-sub} is where that bites.
+\end{hazard}
 
 \begin{hazard}[Composition is diagrammatic]\label{haz:comp-order}
 $\delta_{1}\circ\delta_{2}$ applies $\delta_{1}$ \emph{first}, the opposite
@@ -1157,12 +1233,27 @@ A congruence $\sigma$ on $\mathbf A$ is \emph{linear} if
 \item there are a prime $p$ and $S\le(\cover{\sigma})^{[4]}$ such that for
   every block $B$ of $\cover{\sigma}$ there is $m\ge 0$ with
   \[
-    \bigl(B/\sigma;\;S\cap(B/\sigma)^{4}\bigr)\;\cong\;
+    \bigl(B/\sigma;\;(S\cap B^{4})/\sigma\bigr)\;\cong\;
     \bigl(\mathbb Z_{p}^{m};\;x_{1}-x_{2}=x_{3}-x_{4}\bigr).
   \]
 \end{enumerate}
 An irreducible congruence that is not linear is a \emph{PC congruence}.
 \end{definition}
+
+\begin{hazard}[Cutting down before imaging, not after]\label{haz:linear-typing}
+Clause (c) must read $(S\cap B^{4})/\sigma$ and not $S\cap(B/\sigma)^{4}$. $S$
+is a relation on elements of $A$, while $(B/\sigma)^{4}$ is a set of
+$4$-tuples of $\sigma$-classes; the two do not intersect, because they are sets
+of different things. The operation intended is: cut $S$ down to the block, then
+take the image (\S\ref{sec:legislation}, item \ref{leg:quotient}).
+
+The alternative repair --- restrict the image relation $S/\sigma$ to
+$(B/\sigma)^{4}$ --- gives the same relation here, because $S$ turns out to be
+stable under $\sigma$ in each variable (Lemma~\ref{lem:linear-bridge}) and
+tuples of $S$ meet no other block. But that is a consequence of (c), not
+something available while (c) is being read, so the definition uses the image,
+which is well formed for any $S$.
+\end{hazard}
 
 Here $(\cover{\sigma})^{[4]}$ denotes the set of $4$-tuples whose entries lie in
 a single block of $\cover{\sigma}$, which is meaningful because (b) makes
@@ -1178,8 +1269,9 @@ $\bcol{S}=\proj_{1,2}(S)=\proj_{3,4}(S)=\cover{\sigma}$.
 
 \begin{proof}
 Work inside a block $B$ of $\cover{\sigma}$ and identify $B/\sigma$ with
-$\mathbb Z_{p}^{m}$ so that $S\cap(B/\sigma)^{4}$ becomes
-$x_{1}-x_{2}=x_{3}-x_{4}$; tuples of $S$ meet no other block. Each variable is
+$\mathbb Z_{p}^{m}$ so that $(S\cap B^{4})/\sigma$ becomes
+$x_{1}-x_{2}=x_{3}-x_{4}$; tuples of $S$ meet no other block, since
+$S\le(\cover\sigma)^{[4]}$. Each variable is
 stable under $\sigma$, since the defining equation is an equation between
 $\sigma$-classes. Clause (d) of Definition~\ref{def:bridge} holds because
 $x_{1}-x_{2}=0$ if and only if $x_{3}-x_{4}=0$, which says
@@ -1260,8 +1352,9 @@ $p$.
 \end{lemma}
 
 \begin{lemma}\label{lem:pc-on-top}
-If $\sigma$ is a PC congruence on $\mathbf A$ with $\cover{\sigma}=A^{2}$, then
-$\mathbf A/\sigma$ is polynomially complete.
+If $\sigma$ is a PC congruence on $\mathbf A$ with $\cover{\sigma}=A^{2}$ and
+$\mathbf A/\sigma$ is BA and centre free, then $\mathbf A/\sigma$ is
+polynomially complete.
 \end{lemma}
 
 \begin{hazard}[What the two statements on top rest on]\label{haz:on-top}
@@ -1273,15 +1366,16 @@ forces $m=1$. That the resulting bijection is an isomorphism of \emph{algebras}
 rather than of groups is Proposition~\ref{prop:p-divides}, without which the
 statement does not typecheck against $\mathbf Z_{p}\in\Vn$.
 
-Lemma~\ref{lem:pc-on-top} is \emph{stated only}. Its proof needs two things
-this document does not establish: that an idempotent algebra is polynomially
+Lemma~\ref{lem:pc-on-top} is \emph{stated only}. Its proof needs one thing
+this document does not establish --- that an idempotent algebra is polynomially
 complete exactly when every \emph{reflexive} subuniverse of a power is a
-conjunction of equalities --- those being precisely the invariants of the clone
-generated by the basic operations together with all constants --- and that
-$\mathbf A/\sigma$ is BA and centre free, without which the step
-$\{a_{i}\}\subt{\TPC}\mathbf A/\sigma$ is not licensed by
-Definition~\ref{def:types}. Nothing below consumes it; it is retained only to
-connect the vocabulary with \cite{ZhukJACM}.
+conjunction of equalities, those being precisely the invariants of the clone
+generated by the basic operations together with all constants --- and one thing
+that is now a hypothesis: that $\mathbf A/\sigma$ is BA and centre free,
+without which the step $\{a_{i}\}\subt{\TPC}\mathbf A/\sigma$ is not licensed
+by Definition~\ref{def:types}. Nothing below consumes the lemma; it is
+retained only to connect the vocabulary with \cite{ZhukJACM}, and the extra
+hypothesis therefore costs nothing.
 \end{hazard}
 
 \begin{hazard}[Polynomial completeness]\label{haz:pc-algebra}
@@ -1432,15 +1526,49 @@ $R(x,x,\dots,x)$ appears explicitly in Definition~\ref{def:expanded}. So
 $\Var(C)$ is the image of the scope, and $|{\Var(C)}|$ may be smaller than the
 arity.
 
-Once repeated variables are allowed, every semantic operation below that names
-a \emph{variable} rather than a \emph{position} --- $\proj_{z}(C)$ in
-$1$-consistency, $\proj_{z_{i},z_{i+1}}(C)$ along a path, $\ConOne(C,x)$,
-adjacency at a common variable, weakening by a set of variable names, and the
-projections in Definition~\ref{def:instance-linked}(ii) --- must be read as
-pulled back along the equal-variable diagonal first. Otherwise a constraint
-$R(x,x)$ has a full first-coordinate projection even when $R$ contains no
-diagonal tuple and the constraint admits no value for $x$. Fixing this notation
-uniformly is work this document has not yet done; see \S\ref{sec:status}.
+Once repeated variables are allowed, every semantic operation that names a
+\emph{variable} rather than a \emph{position} must be pulled back along the
+equal-variable diagonal first. Definition~\ref{def:constraint-relation} does
+that once, for all of them.
+\end{hazard}
+
+\begin{definition}[The relation of a constraint]\label{def:constraint-relation}
+Let $C=(\bar x,R)$ be a constraint with $\bar x=(x_{1},\dots,x_{m})$ and
+$\Var(C)=\{x_{1},\dots,x_{m}\}$ as a \emph{set}. The \emph{relation of $C$} is
+\[
+  R^{C}=\Bigl\{\bar a\in\prod_{z\in\Var(C)}D_{z}\;:\;
+    (a_{x_{1}},\dots,a_{x_{m}})\in R\Bigr\}
+  \;\le\;\prod_{z\in\Var(C)}\mathbf D_{z},
+\]
+the pullback of $R$ along the map $\prod_{z\in\Var(C)}D_{z}\to
+\prod_{i\in[m]}D_{x_{i}}$ that repeats entries. It is indexed by
+\emph{variables}, not by positions (Convention~\ref{conv:relations}), and it is
+a subuniverse because the repeating map is a homomorphism.
+
+\textbf{Every semantic operation below that names a variable is taken on
+$R^{C}$, never on $R$}: the projections $\proj_{z}(C)$ and
+$\proj_{z,z'}(C)$, the induced congruences $\ConOne(C,z)$, adjacency at a
+common variable, weakening by a set of variable names, and clause (ii) of
+Definition~\ref{def:instance-linked}. If the entries of $\bar x$ are pairwise
+distinct then $R^{C}=R$ up to reindexing, and the distinction is invisible.
+\end{definition}
+
+\begin{hazard}[Why the pullback, and not the raw projection]\label{haz:diagonal}
+Repeated variables in a scope are allowed and they occur
+(Caveat~\ref{haz:instance-list}), and once they do, a projection of $R$ at a
+\emph{position} is not a statement about the \emph{variable}. Take
+$C=R(x,x)$ with $R=\{(0,1),(1,0)\}$. Then $\proj_{1}(R)=\{0,1\}$ is full,
+while $R^{C}=\varnothing$: the constraint admits no value for $x$ at all. Read
+positionally, $C$ is $1$-consistent; read correctly, it is unsatisfiable. The
+same collapse affects paths, adjacency and instance irreducibility, each of
+which would otherwise quantify over positions where it means variables.
+
+One notion genuinely depends on the position and cannot be repaired this way:
+$\ConOne(R,i)$ of Definition~\ref{def:conone} is defined for a relation and an
+index. For constraints we therefore use $\ConOne(C,z)=\ConOne(R^{C},z)$, which
+changes \emph{all} occurrences of $z$ at once --- the right notion for ``the
+congruence $C$ induces on the variable $z$'' --- and which is defined for every
+$z\in\Var(C)$ whether or not it repeats.
 \end{hazard}
 
 \begin{definition}[Relations defined by an instance]\label{def:instance-relation}
@@ -1480,14 +1608,14 @@ be different objects.
 A \emph{path} in $\mathcal I$ is an alternating sequence
 $z_{1}-C_{1}-z_{2}-\dots-C_{l-1}-z_{l}$ with $z_{i},z_{i+1}\in\Var(C_{i})$.
 It \emph{connects $b$ and $c$} if there are $a_{i}\in D_{z_{i}}$ with
-$a_{1}=b$, $a_{l}=c$, and $(a_{i},a_{i+1})\in\proj_{z_{i},z_{i+1}}(C_{i})$ for
-every $i$.
+$a_{1}=b$, $a_{l}=c$, and $(a_{i},a_{i+1})\in\proj_{z_{i},z_{i+1}}(R^{C_{i}})$
+for every $i$; if $z_{i}=z_{i+1}$ this reads $a_{i}=a_{i+1}$.
 $\mathcal I$ is a \emph{tree-instance} if it has no path with $l\ge 3$,
 $z_{1}=z_{l}$ and $C_{1},\dots,C_{l-1}$ pairwise distinct.
 \end{definition}
 
 \begin{definition}[Consistency]\label{def:consistency}
-$\mathcal I$ is \emph{$1$-consistent} if $\proj_{z}(C)=D_{z}$ for every
+$\mathcal I$ is \emph{$1$-consistent} if $\proj_{z}(R^{C})=D_{z}$ for every
 constraint $C$ and every $z\in\Var(C)$. A reduction $D^{(\top)}$ is
 $1$-consistent for $\mathcal I$ if $\mathcal I^{(\top)}$ is $1$-consistent.
 $\mathcal I$ is \emph{cycle-consistent} if it is $1$-consistent and every path
@@ -1504,8 +1632,9 @@ $\Var(C)\subseteq X_{2}$ for every $C$.
 $\mathcal I$ is \emph{irreducible} if there is no instance $\mathcal I'$ with
 \begin{enumerate}\romanlabels\tightlist
 \item $\Var(\mathcal I')\subseteq\Var(\mathcal I)$;
-\item every constraint of $\mathcal I'$ is a projection of a constraint of
-  $\mathcal I$ onto some of its variables;
+\item every constraint of $\mathcal I'$ is $\proj_{Y}(R^{C})$ on the scope $Y$,
+  for some constraint $C$ of $\mathcal I$ and some $\varnothing\neq Y\subseteq
+  \Var(C)$;
 \item $\mathcal I'$ is not fragmented;
 \item $\mathcal I'$ is not linked;
 \item the solution set of $\mathcal I'$ is not subdirect.
@@ -1525,10 +1654,11 @@ Lemma~\ref{lem:crucial-irreducible} and \emph{never} through the definition.
 \subsection{Weakening and cruciality}
 
 \begin{definition}[Weakening]\label{def:weakening}
-A constraint $R_{1}(y_{1},\dots,y_{t})$ is \emph{weaker or equivalent to}
-$R_{2}(z_{1},\dots,z_{s})$ if $\{y_{i}\}\subseteq\{z_{j}\}$ and
-$R_{2}(\bar z)$ implies $R_{1}(\bar y)$; it is \emph{weaker} if in addition
-$R_{1}(\bar y)$ does not imply $R_{2}(\bar z)$. \emph{Weakening} a constraint
+A constraint $C_{1}$ is \emph{weaker or equivalent to} a constraint $C_{2}$ if
+$\Var(C_{1})\subseteq\Var(C_{2})$ and
+$\proj_{\Var(C_{1})}(R^{C_{2}})\subseteq R^{C_{1}}$ --- that is, every
+assignment satisfying $C_{2}$ restricts to one satisfying $C_{1}$. It is
+\emph{weaker} if the containment is proper or the variable set is. \emph{Weakening} a constraint
 $C$ in $\mathcal I$ means replacing $C$ by all constraints weaker than it. An
 instance $\mathcal I'$ is a \emph{weakening} of $\mathcal I$ if
 $\Var(\mathcal I')\subseteq\Var(\mathcal I)$ and every constraint of
@@ -1638,9 +1768,11 @@ For $R$ of arity $m$ and $i\in[m]$, $\ConOne(R,i)$ is the binary relation
 \[
   \{(y,y')\;:\;\exists\,\bar x\ \ R(\bar x[i\mapsto y])\wedge R(\bar x[i\mapsto y'])\}.
 \]
-For a constraint $C=R(x_{1},\dots,x_{m})$ we write $\ConOne(C,x_{i})$ for
-$\ConOne(R,i)$. For an instance, $\Con(\mathcal I,x)=\{\ConOne(C,x):C\in
-\mathcal I\}$ and $\Con(\mathcal I)=\bigcup_{x}\Con(\mathcal I,x)$.
+For a constraint $C$ and $z\in\Var(C)$ we write $\ConOne(C,z)$ for
+$\ConOne(R^{C},z)$, the index set of $R^{C}$ being $\Var(C)$
+(Definition~\ref{def:constraint-relation}). For an instance,
+$\Con(\mathcal I,x)=\{\ConOne(C,x):C\in\mathcal I,\ x\in\Var(C)\}$ and
+$\Con(\mathcal I)=\bigcup_{x}\Con(\mathcal I,x)$.
 \end{definition}
 
 \begin{lemma}\label{lem:conone-basics}
@@ -1654,23 +1786,21 @@ $\ConOne(R,i)$ is always reflexive and symmetric but is \emph{not} transitive
 in general, hence not always a congruence; Lemma~\ref{lem:conone-basics} is
 what makes it one, and its hypotheses (subdirect \emph{and} rectangular at $i$)
 are both needed. The notation invites the reader to assume congruence-hood, and
-every use below must check the hypotheses. Note also that
-$\ConOne(C,x_{i})$ depends on the \emph{position} $i$, not on the variable, so
-it is ill-defined if $x$ occurs twice in the scope
-(Caveat~\ref{haz:instance-list}).
+every use below must check the hypotheses.
 \end{hazard}
 
 \begin{definition}[Types of relations and instances]\label{def:rel-type}
 $R$ is \emph{of PC type} (resp.\ \emph{linear type}) if $R$ is rectangular and
-every $\ConOne(R,i)$ is a PC (resp.\ linear) congruence. An instance is of PC
-or linear type if all its constraints are.
+every $\ConOne(R,i)$ is a PC (resp.\ linear) congruence. A constraint $C$ is of
+PC or linear type if $R^{C}$ is; an instance is if all its constraints are.
 \end{definition}
 
 \begin{definition}[Adjacency, connectedness]\label{def:connected}
 Two congruences $\sigma_{1},\sigma_{2}$ on $\mathbf D_{x}$ are \emph{adjacent}
 if there is a reflexive bridge from $\sigma_{1}$ to $\sigma_{2}$. Two
-rectangular constraints $C_{1},C_{2}$ are \emph{adjacent in a common variable
-$x$} if $\ConOne(C_{1},x)$ and $\ConOne(C_{2},x)$ are adjacent. An instance
+constraints $C_{1},C_{2}$ with $R^{C_{1}},R^{C_{2}}$ rectangular are
+\emph{adjacent in a common variable $x\in\Var(C_{1})\cap\Var(C_{2})$} if
+$\ConOne(C_{1},x)$ and $\ConOne(C_{2},x)$ are adjacent. An instance
 $\mathcal I$ is \emph{connected} if all its constraints are rectangular, all
 congruences in $\Con(\mathcal I)$ are irreducible, and the graph on the
 constraints with edges the adjacent pairs is connected.
@@ -1930,8 +2060,10 @@ proper $\MT T$ subset.
 \subsection{Multi-types}
 
 \begin{lemma}\label{lem:multitype-chain}
-If $C\subte[A]{\MT T}B$ then $C\subt[A]{T}\dots\subt[A]{T}B$ and
-$C\lll^{A}B$.
+If $C\subte[A]{\MT T}B$ then there are $s\ge 0$ and
+$C=E_{s}\subt[A]{T}\dots\subt[A]{T}E_{0}=B$, and $C\lll^{A}B$. The chain may
+be \emph{empty}: $s=0$ is the case $C=B$, which $\subte{\MT T}$ admits and
+which no strict chain covers.
 \end{lemma}
 
 That is: an intersection of type-$T$ subsets, though not itself obtained by a
@@ -2221,7 +2353,7 @@ is subdirect, $W\circ W^{-1}$ is reflexive and symmetric on $P$, so for
 $k\ge|P|$ the formula $\Phi_{k}$ interpreted in $W$ defines the transitive
 closure of $W\circ W^{-1}$, which is $P^{2}$ since $W$ is linked. Interpreted
 in $W'$ and for the same $k\ge|P|\ge|P'|$ it defines
-$\lambda:=\operatorname{LeftLinked}(W')$. By Lemma~\ref{lem:pp-propagation},
+$\lambda:=\LeftLinked(W')$. By Lemma~\ref{lem:pp-propagation},
 replacing every occurrence of $W$ by $W'$ gives $\lambda\subte{T}P^{2}$. Since
 $\lambda\subseteq (P')^{2}\le P^{2}$, Lemma~\ref{lem:ba-center-intersect} gives
 $\lambda\subte{T}(P')^{2}$.
@@ -2304,7 +2436,7 @@ of a \emph{power} must be moved down by Lemma~\ref{lem:power-to-base}.
 
 \begin{lemma}\label{lem:bacon-left}
 Let $R\sdle\mathbf A\times\mathbf B$ with $\mathbf A$ BA and centre free,
-$\operatorname{LeftLinked}(R)=A^{2}$, and
+$\LeftLinked(R)=A^{2}$, and
 $C=\{c\in B:A\times\{c\}\subseteq R\}$. Then $C\neq\varnothing$ and
 $C\subte{\TBA,\TC}\mathbf B$.
 \end{lemma}
@@ -2313,8 +2445,8 @@ $C\subte{\TBA,\TC}\mathbf B$.
 For $k\ge2$ put $W_{k}=\{(a_{1},\dots,a_{k}):\exists b\,\forall i\,
 R(a_{i},b)\}$. If $W_{|A|}=A^{|A|}$ then $C\neq\varnothing$, since a witness
 $b$ for the tuple listing all of $A$ lies in $C$. Otherwise choose $k$ minimal
-with $W_{k}\neq A^{k}$. Since $\operatorname{LeftLinked}(R)=A^{2}$ we get
-$\operatorname{LeftLinked}(W_{k})=A^{2}$, and viewing $W_{k}$ as a binary
+with $W_{k}\neq A^{k}$. Since $\LeftLinked(R)=A^{2}$ we get
+$\LeftLinked(W_{k})=A^{2}$, and viewing $W_{k}$ as a binary
 relation in $\mathbf A\times\mathbf A^{k-1}$ --- subdirect by minimality of $k$
 --- Corollary~\ref{lem:linked-implies-abs} and Lemma~\ref{lem:power-to-base}
 produce a proper nonempty binary absorbing or central subuniverse of
@@ -2791,7 +2923,7 @@ and stable under it, minimality gives $\cover\sigma\subseteq\bcol\delta$; the
 same argument applied to $\proj_{1,2}(\delta)$, which properly contains $\sigma$
 by clause (c), gives $\cover\sigma\subseteq\proj_{1,2}(\delta)$.
 
-Let $B$ be a block of $\operatorname{LeftLinked}(\cover\sigma)$ with $|B|>1$ and
+Let $B$ be a block of $\LeftLinked(\cover\sigma)$ with $|B|>1$ and
 put $\delta'=\delta\cap B^{4}\cap(\cover\sigma\times\cover\sigma)$. Then
 $\proj_{1,2}(\delta')=\cover\sigma\cap B^{2}$: for
 $(x_{1},x_{2})\in\cover\sigma\cap B^{2}$ pair-reflexivity puts
@@ -2805,7 +2937,7 @@ so Lemma~\ref{lem:block-good-bridge} makes $B$ BA and centre free. Then
 $\cover\sigma\cap B^{2}$, being linked and subdirect on $B$, must be all of
 $B^{2}$ by Corollary~\ref{lem:linked-implies-abs}. Blocks of size $1$ satisfy
 $B^{2}\subseteq\cover\sigma$ trivially, so
-$\cover\sigma=\operatorname{LeftLinked}(\cover\sigma)$ is an equivalence
+$\cover\sigma=\LeftLinked(\cover\sigma)$ is an equivalence
 relation and hence a congruence, giving (a); and (b) follows, one-element
 algebras being vacuously BA and centre free.
 
@@ -2883,7 +3015,7 @@ from $\sigma$ to $\sigma$ with
 \begin{enumerate}\romanlabels\tightlist
 \item $\delta(x_{1},x_{2},x_{3},x_{4})=\delta(x_{3},x_{4},x_{1},x_{2})$;
 \item $(a,b,a,b),(b,a,b,a)\in\delta$ for every $(a,b)\in\proj_{1,2}(\delta)$;
-\item $\operatorname{RightLinked}(\proj_{1,2,3}(\delta))=A^{2}$.
+\item $\RightLinked(\proj_{1,2,3}(\delta))=A^{2}$.
 \end{enumerate}
 Then $(a,a,b,b)\in\delta$ for some $a\neq b$.
 \end{longlemma}
@@ -2941,8 +3073,8 @@ $\omega\subt{\TBA}\sigma$, then $\omega\cap 0_{\mathbf A}\neq\varnothing$.
 
 \begin{proof}[Proof of Lemma~\ref{lem:pc-bridges-trivial}]
 Put $\xi=\delta\ast\delta^{-1}$, which is symmetric and pair-reflexive. Each of
-$\operatorname{RightLinked}(\proj_{1,2,3}(\xi))$ and
-$\operatorname{RightLinked}(\proj_{1,2,4}(\xi))$ is a congruence containing
+$\RightLinked(\proj_{1,2,3}(\xi))$ and
+$\RightLinked(\proj_{1,2,4}(\xi))$ is a congruence containing
 $\sigma$, so by minimality of $\cover\sigma$ each is $\sigma$ or contains
 $\cover\sigma$; this gives three cases.
 
@@ -2993,7 +3125,7 @@ $\proj_{1,2}(\delta)=\cover\sigma\supsetneq\sigma$, and likewise for
 $\proj_{1,4}=\proj_{2,4}$. The two surviving combinations are the conclusion,
 the reverse inclusion following from stability under $\sigma$.
 
-If $\operatorname{RightLinked}(\proj_{1,2,3}(\xi))\supseteq\cover\sigma$, choose
+If $\RightLinked(\proj_{1,2,3}(\xi))\supseteq\cover\sigma$, choose
 a block $B$ of it that is not a $\sigma$-block. Then $a,b,d\in B$ whenever
 $c\in B$ and $(a,b,c,d)\in\xi$, so $\xi\cap(A^{2}\times B\times A)\subseteq
 B^{4}$ and therefore $\proj_{1,2,3}(\xi\cap B^{4})=\proj_{1,2,3}(\xi)\cap
@@ -3009,7 +3141,7 @@ directly.} The third case is the mirror image, using $\proj_{1,2,4}$.
 
 \begin{hazard}[The third case]\label{haz:pc-bridges-hedges}
 The third case is genuinely the mirror of the second: $(a,b,a,b)\in\xi$ places
-$b$ in the block, and $\cover\sigma\subseteq\operatorname{RightLinked}$ places
+$b$ in the block, and $\cover\sigma\subseteq\RightLinked$ places
 $a$ and $c$. Writing it out is mechanical, and it is not written out here.
 \end{hazard}
 
@@ -3143,8 +3275,8 @@ $S$ is a central relation, and Lemmas~\ref{lem:central-relation} and
 
 \begin{lemma}\label{lem:leftlinked-stay-full}
 Under the hypotheses of Lemma~\ref{lem:center-pushed-in}, if
-$(\operatorname{LeftLinked}(R)\cap B_{1}^{2})/\sigma=(B_{1}/\sigma)^{2}$ then
-$\operatorname{LeftLinked}\bigl(R\cap(B_{1}\times B_{2})\bigr)/\sigma=
+$(\LeftLinked(R)\cap B_{1}^{2})/\sigma=(B_{1}/\sigma)^{2}$ then
+$\LeftLinked\bigl(R\cap(B_{1}\times B_{2})\bigr)/\sigma=
 (B_{1}/\sigma)^{2}$.
 \end{lemma}
 
@@ -3188,9 +3320,9 @@ $\sigma\supseteq\delta\cap\omega$.
 (1) follows, since $\delta\cap B^{2}\subseteq\delta\cap\omega\subseteq\sigma$.
 
 (4). Put $\delta'=\delta\vee(\sigma\cap\omega)$, which is
-$\operatorname{LeftLinked}(\delta\circ(\sigma\cap\omega))$. If
+$\LeftLinked(\delta\circ(\sigma\cap\omega))$. If
 $(\delta'\cap B^{2})/\sigma$ were full then Lemma~\ref{lem:leftlinked-stay-full}
-would make $\operatorname{LeftLinked}$ of the restricted relation full, so some
+would make $\LeftLinked$ of the restricted relation full, so some
 single linking step would cross $\sigma$-classes: there would be
 $a_{1},a_{2},c\in B$ and $b_{1},b_{2}\in A$ with $(a_{i},b_{i})\in\delta$,
 $(b_{i},c)\in\sigma\cap\omega$ and $(a_{1},a_{2})\notin\sigma$. But
@@ -3219,12 +3351,12 @@ It remains to see that $\delta$ is irreducible. Suppose
 $\delta=S_{1}\cap\dots\cap S_{k}$ with each $S_{i}\supsetneq\delta$ a
 subuniverse of $\mathbf A^{2}$ \emph{stable under $\delta$}. Some $S_{i}$ has
 $B^{2}\not\subseteq S_{i}$, else $B^{2}\subseteq\delta$. Now
-$\operatorname{LeftLinked}(S_{i})$ is a congruence containing
+$\LeftLinked(S_{i})$ is a congruence containing
 $S_{i}\supsetneq\delta\supseteq\sigma$, so maximality of $\delta$ forces
-$B^{2}\subseteq\operatorname{LeftLinked}(S_{i})$, i.e.\
-$(\operatorname{LeftLinked}(S_{i})\cap B^{2})/\delta=(B/\delta)^{2}$. By
+$B^{2}\subseteq\LeftLinked(S_{i})$, i.e.\
+$(\LeftLinked(S_{i})\cap B^{2})/\delta=(B/\delta)^{2}$. By
 Lemma~\ref{lem:leftlinked-stay-full}, applied \emph{with the congruence
-$\delta$}, $\operatorname{LeftLinked}(S_{i}\cap B^{2})/\delta=(B/\delta)^{2}$,
+$\delta$}, $\LeftLinked(S_{i}\cap B^{2})/\delta=(B/\delta)^{2}$,
 so $(S_{i}\cap B^{2})/\delta$ is linked. It is also \emph{proper}: stability
 under $\delta$ makes $S_{i}$ a union of products of $\delta$-blocks, so
 $(S_{i}\cap B^{2})/\delta=(B/\delta)^{2}$ would give $B^{2}\subseteq S_{i}$.
@@ -3254,7 +3386,7 @@ $\delta\cap B^{2}\subseteq\sigma\cap B^{2}$.
 \begin{proof}[Proof outline]
 Put $R=\{(a/\sigma,a/\delta):a\in B\}$ and note
 $R\circ R^{-1}=(\delta\cap B^{2})/\sigma$, so
-$\operatorname{LeftLinked}(R)=(B/\sigma)^{2}$ exactly when
+$\LeftLinked(R)=(B/\sigma)^{2}$ exactly when
 $(\delta\cap B^{2})/\sigma=B^{2}/\sigma$. In that case
 Lemma~\ref{lem:bacon-left} yields $U\subte{\TBA,\TC}B/\delta$ with
 $(B/\sigma)\times U\subseteq R$, and $U\subseteq C/\delta$, giving the first two
@@ -4300,7 +4432,8 @@ both are written so that a reader can check them in a few lines by hand.
 \multicolumn{3}{@{}l}{\textit{\S\ref{sec:conventions}--\S\ref{sec:types}: vocabulary}}\\
 \pkey{prop:p-divides}, \pkey{cor:Zp-in-Vn} & \textsc{proved} & \\
 \pkey{lem:sg-terms} & \textsc{imported} & standard; \cite{Bergman} \\
-\pkey{lem:rect-basics}, \pkey{prop:cover}, \pkey{lem:irred-quotient} & \textsc{proved} & \\
+\pkey{lem:rect-basics}, \pkey{prop:cover}, \pkey{lem:irred-quotient},
+  \pkey{lem:linked-basics} & \textsc{proved} & \\
 \pkey{lem:bridge-comp} & \textsc{imported} & \cite[Lem.~6.3]{ZhukJACM} \\
 \pkey{lem:symmetrise} & \textsc{outlined} & the collapse identity is taken
   from \pkey{lem:bridge-comp}, whose irreducibility hypothesis this lemma does
@@ -4313,12 +4446,16 @@ both are written so that a reader can check them in a few lines by hand.
   consumed by \pkey{thm:stable-intersection} and \pkey{lem:factor-by-delta} \\
 \pkey{lem:pc-bridges-trivial} & \textsc{proved} & third case not written out \\
 \pkey{lem:linear-on-top} & \textsc{outlined} & same reflexivisation \\
-\pkey{lem:pc-on-top} & \textsc{stated} & consumed by nothing;
+\pkey{lem:pc-on-top} & \textsc{stated} & consumed by nothing, and now
+  carrying the BA-and-centre-free hypothesis its proof needs;
   Caveat~\ref{haz:on-top} \\
 \hline
 \multicolumn{3}{@{}l}{\textit{\S\ref{sec:instances}: instances}}\\
 \pkey{prop:covering-basics}, \pkey{lem:conone-basics} & \textsc{stated} &
   routine, but not written \\
+\pkey{def:constraint-relation} & --- & the repeated-variable policy; every
+  variable-named operation below is taken on $R^{C}$,
+  Caveat~\ref{haz:diagonal} \\
 \pkey{rem:get-crucial} & \textsc{stated} & termination is
   Caveat~\ref{haz:weakening} \\
 \hline
@@ -4422,7 +4559,9 @@ Six items block the rest, and they are the honest reading of the table.
   used by both \pkey{lem:linear-equiv} and \pkey{lem:linear-on-top}.
 \item The expansion of \pkey{lem:intersection-good}, on which much of
   \S\ref{sec:bridge-proofs} onwards rests, and the rewrite of
-  \pkey{lem:multiply-all-linear}.
+  \pkey{lem:multiply-all-linear}; and, smaller,
+  \pkey{lem:symmetrise}'s collapse identity and the call sites of
+  \pkey{lem:pp-propagation}.
 \item \pkey{lem:no-cross-bridge} and \pkey{lem:bridge-to-pc}, which
   \pkey{thm:stable-intersection} consumes.
 \item The induction measure across expanded coverings
