@@ -50,8 +50,19 @@ strengthening is visible.
 Let $R\le A^{n}$ be defined by a pp-formula $\Phi$ in which a relation $S$
 occurs, and let $R'$ be defined by the formula obtained from $\Phi$ by
 replacing \emph{every} occurrence of $S$ by some $S'\subt{T}S$, where
-$T\in\{\TBA,\TC\}$. Then $R'\subte{T}R$.
+$T\in\{\TBA,\TC\}$. Then $R'\dsubte{T}R$.
 \end{lemma}
+
+\begin{hazard}[The conclusion is dotted]\label{haz:pp-dotted}
+Replacing a relation by a proper strong subrelation can make the pp-defined
+result \emph{empty}, so the undotted $R'\subte{T}R$ --- which under
+Convention~\ref{conv:empty} entails $R'\neq\varnothing$ --- is not what the
+lemma gives. Most uses below already reason in dotted form and establish
+nonemptiness separately where they need it; the two that matter are inside
+Lemmas~\ref{lem:bacon-left} and \ref{lem:absorb-linked-sub}, and
+Lemma~\ref{lem:bacon-left} does not yet discharge it
+(\S\ref{sec:status}). A full audit of the call sites has not been made.
+\end{hazard}
 
 \begin{lemma}[{\cite[Prop.~2.14]{DecidingAbsorption}}, {\cite[Lem.~3.2]{ZhukStrong}}]\label{lem:barto-kazda}
 For $B\le\mathbf A$ and $n\ge2$: $B$ absorbs $\mathbf A$ with an operation of
