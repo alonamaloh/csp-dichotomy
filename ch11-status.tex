@@ -22,8 +22,7 @@ are made.
 \item[\textsc{open}] Confirmed to need an argument that is not available.
   There are none left in the table; what remains of that kind is
   Hypothesis~\ref{hyp:maximal-mult} and Claim~\ref{cl:multiply-step}, both
-  written into statements rather than left implicit, and the normalisation of
-  Caveat~\ref{haz:rectangularise}.
+  written into statements rather than left implicit.
 \end{description}
 
 Nothing below is marked \textsc{proved} on the strength of a machine search.
@@ -59,10 +58,12 @@ that cites it, and the steps are now written out.
   unfolding, so no irreducibility hypothesis is borrowed \\
 \pkey{lem:central-ternary} & \textsc{imported} & \cite[Cor.~6.11.1]{ZhukStrong} \\
 \pkey{lem:sfree-equiv}, \pkey{lem:linear-bridge} & \textsc{proved} & \\
-\pkey{lem:linear-equiv}, \pkey{lem:bridge-reflexive} & \textsc{proved} & \\
-\pkey{lem:no-cross-bridge}, \pkey{lem:bridge-to-pc} & \textsc{outlined} &
-  written out in \S\ref{sec:bridge-proofs}; both rest on the two
-  normalisations of Caveat~\ref{haz:rectangularise} \\
+\pkey{lem:linear-equiv}, \pkey{lem:bridge-reflexive},
+  \pkey{lem:rectangularise} & \textsc{proved} & \\
+\pkey{lem:no-cross-bridge}, \pkey{lem:bridge-to-pc} & \textsc{proved} &
+  written out in \S\ref{sec:bridge-proofs}; the two normalisations they rested
+  on are now \pkey{lem:rectangularise} and three lines,
+  Caveat~\ref{haz:rectangularise} \\
 \pkey{lem:pc-bridges-trivial} & \textsc{proved} & third case not written out \\
 \pkey{lem:linear-on-top} & \textsc{proved} & \\
 \pkey{lem:pc-on-top} & \textsc{stated} & consumed by nothing, and now
@@ -207,16 +208,13 @@ the algorithm itself.
 Lemma~\ref{lem:connected} --- is stated without proof, and part (1) of the main
 induction is an outline whose measure is not yet well founded.
 
-Four items block the rest, and they are the honest reading of the table.
+Three items block the rest, and they are the honest reading of the table.
 
 \begin{enumerate}\tightlist
 \item Hypothesis~\ref{hyp:maximal-mult} of \pkey{lem:maximal-mult}: that the
   type-$T$ factors alone cut $B_{2}$ out. The lemma is proved from it; the
   hypothesis itself is not, and three routes to it have failed
   (Caveat~\ref{haz:maximal-mult}).
-\item The rectangularity normalisation of Caveat~\ref{haz:rectangularise},
-  on which \pkey{lem:no-cross-bridge} and \pkey{lem:bridge-to-pc} rest, and
-  through them the $\TPC$ case of \pkey{thm:stable-intersection}.
 \item The rewrite of \pkey{lem:multiply-\brk all-linear}, which is not yet a
   proof. With \pkey{lem:inter\brk section-good} and
   \pkey{lem:self-\brk intersection-pc} both written out, this is what is left
@@ -228,7 +226,9 @@ Four items block the rest, and they are the honest reading of the table.
   produces a \emph{uniform} one, now that \pkey{thm:main-inductive}(2)
   hypothesises it (Caveats~\ref{haz:uniform-witness} and
   \ref{haz:witness-moved}).
-\item[] \emph{Two entries stood here and no longer do.} The induction measure
+\item[] \emph{Three entries stood here and no longer do.} The rectangularity
+  normalisation is Lemma~\ref{lem:rectangularise}, and the second normalisation
+  beside it is three lines. The induction measure
   across expanded coverings is not an open item --- no appeal is made at a
   covering, and Caveat~\ref{haz:the-induction}(c) enumerates the seven that
   are. The set-valued iteration behind $\Omega$ is

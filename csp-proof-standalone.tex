@@ -5,7 +5,7 @@
 %%  csp-proof.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision 1d50a54 on 2026-08-02.
+%%  Generated from revision f1dde6f on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-proof.tex
@@ -1126,6 +1126,64 @@ If $\sigma_{0},\sigma_{1},\sigma_{2}$ are irreducible then
 $\delta_{1}\ast\delta_{2}$ is a bridge from $\sigma_{0}$ to $\sigma_{2}$, and
 $\bcol{\delta_{1}\ast\delta_{2}}=\bcol{\delta_{1}}\circ\bcol{\delta_{2}}$.
 \end{lemma}
+
+\begin{lemma}[Rectangularisation]\label{lem:rectangularise}
+Let $\sigma_{1},\sigma_{2}$ be irreducible congruences on
+$\mathbf A_{1},\mathbf A_{2}$ and let $\delta$ be a bridge from $\sigma_{1}$ to
+$\sigma_{2}$, with $\delta^{-1}$ the bridge
+$(x_{1},x_{2},x_{3},x_{4})\mapsto\delta(x_{3},x_{4},x_{1},x_{2})$ from
+$\sigma_{2}$ to $\sigma_{1}$. Then
+$\omega=\delta\ast(\delta^{-1}\ast\delta)^{k}$, for any $k\ge|A_{1}|$, is a
+bridge from $\sigma_{1}$ to $\sigma_{2}$ with
+\begin{enumerate}\alphlabels\tightlist
+\item $\bcol\omega=\LeftLinked(\bcol\delta)\circ\bcol\delta
+  \supseteq\bcol\delta$;
+\item $\bcol\omega=\bigcup_{L}L\times\bcol\delta(L)$, where $L$ ranges over the
+  classes of $\LeftLinked(\bcol\delta)$ and
+  $\bcol\delta(L)=\{y:(x,y)\in\bcol\delta\text{ for some }x\in L\}$. In
+  particular $\bcol\omega$ is \emph{rectangular}, and
+  $(a,c)\in\bcol\omega$ with $(a,b)\in\LeftLinked(\bcol\omega)$ forces
+  $(b,c)\in\bcol\omega$;
+\item $\LeftLinked(\bcol\omega)=\LeftLinked(\bcol\delta)$ and
+  $\RightLinked(\bcol\omega)=\RightLinked(\bcol\delta)$;
+\item $\omega\subseteq\proj_{1,2}(\delta)\times\proj_{3,4}(\delta)$; in
+  particular $\omega$ inherits any containment
+  $\delta\subseteq\cover{\sigma_{1}}\times\cover{\sigma_{2}}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Each $\ast$ composes bridges whose three congruences are drawn from
+$\{\sigma_{1},\sigma_{2}\}$, both irreducible, so
+Lemma~\ref{lem:bridge-comp} applies at every step: $\omega$ is a bridge from
+$\sigma_{1}$ to $\sigma_{2}$ and
+$\bcol\omega=\bcol\delta\circ(\bcol\delta^{-1}\circ\bcol\delta)^{k}
+=(\bcol\delta\circ\bcol\delta^{-1})^{k}\circ\bcol\delta$.
+
+The relation $\bcol\delta\circ\bcol\delta^{-1}$ is reflexive on
+$\proj_{1}(\bcol\delta)$ and symmetric, so its powers increase and stabilise at
+its transitive closure, which by Definition~\ref{def:linked} is
+$\LeftLinked(\bcol\delta)$; $k\ge|A_{1}|$ steps suffice. That is (a), and the
+containment holds because $\LeftLinked(\bcol\delta)$ is reflexive there.
+
+(b) is (a) rewritten: $(a,c)\in\LeftLinked(\bcol\delta)\circ\bcol\delta$ says
+$c\in\bcol\delta(L)$ for the class $L$ of $a$. For rectangularity, let
+$(a,c),(a,d),(b,c)\in\bcol\omega$ with $a\in L$ and $b\in L'$. Then $c$ lies in
+both $\bcol\delta(L)$ and $\bcol\delta(L')$, so some $x\in L$ and $x'\in L'$
+have $(x,c),(x',c)\in\bcol\delta$, whence $x$ and $x'$ are
+$\LeftLinked(\bcol\delta)$-equivalent and $L=L'$; now $d\in\bcol\delta(L)$ and
+$b\in L$ give $(b,d)\in\bcol\omega$. The last clause is the same computation
+with (c).
+
+(c) holds because $\bcol\delta\subseteq\bcol\omega\subseteq
+\LeftLinked(\bcol\delta)\circ\bcol\delta$, so the two relations have the same
+connected components: every edge of $\bcol\omega$ joins vertices already
+connected in $\bcol\delta$.
+
+(d) By the definition of $\ast$, the first two coordinates of a tuple of a
+composite come from the first factor and the last two from the last factor,
+and both factors here are $\delta$.
+\end{proof}
 
 \begin{hazard}\label{haz:bridge-comp}
 Both conclusions of Lemma~\ref{lem:bridge-comp} are used: the first in every
@@ -4109,10 +4167,22 @@ directly.} The third case is the mirror image, using $\proj_{1,2,4}$.
 \end{proof}
 
 \begin{proof}[Proof of Lemma~\ref{lem:no-cross-bridge}]
-Let $\sigma_{1},\sigma_{2}$ be congruences on $\mathbf A_{1},\mathbf A_{2}$.
-Replace $\delta$ by $\delta\cap(\cover{\sigma_{1}}\times\cover{\sigma_{2}})$,
-which is again a bridge with the same collapse, and assume $\bcol\delta$
-rectangular (Caveat~\ref{haz:rectangularise}).
+Let $\sigma_{1},\sigma_{2}$ be congruences on $\mathbf A_{1},\mathbf A_{2}$;
+both are irreducible, $\sigma_{1}$ because it is linear
+(Definition~\ref{def:linear-congruence}(a)). Replace $\delta$ first by
+$\delta\cap(\cover{\sigma_{1}}\times\cover{\sigma_{2}})$, which is again a
+bridge with the same collapse, and then by the $\omega$ of
+Lemma~\ref{lem:rectangularise}. By clause (d) of that lemma the containment in
+$\cover{\sigma_{1}}\times\cover{\sigma_{2}}$ survives, and by clause (c)
+neither linking equivalence changes, so the case analysis below is unaffected;
+by clause (b), $\bcol\delta$ is now rectangular. Being a bridge inside
+$\cover{\sigma_{1}}\times\cover{\sigma_{2}}$, it has
+$\proj_{3,4}(\delta)\supsetneq\sigma_{2}$ and stable under $\sigma_{2}$, so
+minimality of the cover (Proposition~\ref{prop:cover}) gives
+\begin{equation}\label{eq:ncb-proj}
+  \proj_{3,4}(\delta)=\cover{\sigma_{2}},
+\end{equation}
+and symmetrically $\proj_{1,2}(\delta)=\cover{\sigma_{1}}$.
 
 \emph{The easy case.} Suppose $\RightLinked(\bcol\delta)\supsetneq\sigma_{2}$.
 The composite $\delta^{-1}\ast\delta$ is a bridge from $\sigma_{2}$ to
@@ -4151,9 +4221,13 @@ $(x_{2},z)\in\sigma_{1}$ and hence $(x_{3},x_{4})\in\sigma_{2}$. In the other
 direction, if $(x_{3},x_{4})\in\sigma_{2}$ then $(x_{2},z)\in\sigma_{1}$ and
 $(x_{2},x_{3})\in\bcol\delta$, whence $(x_{1},x_{2})\in\sigma_{1}$. For
 clause (c): since $\delta'\neq\delta$ there is $(a,b,c,d)\in\delta$ with
-$(a,c)\notin\bcol\delta$; choosing $e$ with $(e,c)\in\bcol\delta$ ---
-possible because $\proj_{1}(\bcol\delta)$ meets the block of $c$ --- gives
-$(e,a,c,d)\in\delta''$ with $(e,a)\notin\sigma_{1}$. Take $\omega=\delta''$.
+$(a,c)\notin\bcol\delta$. Some $e$ has $(e,c)\in\bcol\delta$: by
+\eqref{eq:ncb-proj} the reflexive pair $(c,c)\in\sigma_{2}\subseteq
+\cover{\sigma_{2}}$ is $\proj_{3,4}$ of some $(e,e',c,c)\in\delta$; clause (d)
+of Definition~\ref{def:bridge} puts $(e,e')\in\sigma_{1}$, and stability of the
+first two variables under $\sigma_{1}$ --- clause (a) --- replaces $e'$ by $e$,
+giving $(e,e,c,c)\in\delta$. That $e$ gives $(e,a,c,d)\in\delta''$ with
+$(e,a)\notin\sigma_{1}$. Take $\omega=\delta''$.
 
 Either way we have a bridge $\omega$ from $\sigma_{1}$ to $\sigma_{2}$ with
 $\proj_{1,3}(\omega)=\bcol\omega=\bcol\delta$.
@@ -4188,9 +4262,13 @@ Now put
 If $x_{1}=x_{2}$ then $y_{1}=y_{2}$ by the shape of $\xi_{1}$, and then
 $x_{3}=x_{4}$. Take any $(c,d)\in\cover{\sigma_{2}}$; since
 $\proj_{3,4}(\omega)=\cover{\sigma_{2}}$ there is
-$(a,b)\in\cover{\sigma_{1}}$ with $(a,b,c,d)\in\omega$, and since
-$(a,b)\in\cover{\sigma_{1}}\subseteq\LeftLinked(\bcol\omega)$ and
-$(a,c)\in\bcol\omega$ we get $(a,a,c,c),(b,b,c,c)\in\omega$. Sending
+$(a,b)\in\cover{\sigma_{1}}$ with $(a,b,c,d)\in\omega$. Now
+$(a,c)\in\bcol\omega$ --- which \emph{is} $(a,a,c,c)\in\omega$, by the
+definition of the collapse --- and
+$(a,b)\in\cover{\sigma_{1}}\subseteq\LeftLinked(\bcol\omega)$, so
+rectangularity in the form of Lemma~\ref{lem:rectangularise}(b) gives
+$(b,c)\in\bcol\omega$, that is $(b,b,c,c)\in\omega$. \emph{This is the one
+step of the proof that consumes rectangularity.} Sending
 $(x_{1},x_{2},x_{3},x_{4})\mapsto(c,d,c,d)$ with $(y_{1},y_{2},y_{3})=(a,b,a)$
 witnesses $(c,d,c,d)\in\zeta$; sending it to $(c,c,d,d)$ with
 $(y_{1},y_{2},y_{3})=(a,a,b)$ witnesses $(c,c,d,d)\in\zeta$. So
@@ -4200,26 +4278,28 @@ $\cover{\sigma_{2}}\supsetneq\sigma_{2}$, so $\sigma_{2}$ is linear by
 Lemma~\ref{lem:linear-equiv} --- contradicting the supposition.
 \end{proof}
 
-\begin{hazard}[Two normalisations that are asserted]\label{haz:rectangularise}
-The proof opens with ``we may assume $\bcol\delta$ is rectangular, as
-otherwise compose it with itself many times''. Nothing here establishes that
-the stabilised composite is still a bridge with the properties the rest of the
-proof uses. Note that this is \emph{not} the same situation as the reflexivity
-of Caveat~\ref{haz:reflexivise}, which turned out to be free: rectangularity of
-$\bcol\delta$ does not follow from any hypothesis in sight, and a genuine
-replacement of $\delta$ is being made. It is used only to make $\proj_{1,3}$
-behave, and the case split on $\delta'$ immediately afterwards does much the
-same work, so it may well be removable; that has not been checked.
+\begin{hazard}[Where rectangularity is spent]\label{haz:rectangularise}
+The proof opens by normalising twice, and both steps were asserted in an
+earlier draft rather than argued.
 
-The step ``choosing $e$ with $(e,c)\in\bcol\delta$'' also needs
-$\proj_{2}(\bcol\delta)$ to meet the relevant block, which holds after the
-restriction to $\cover{\sigma_{1}}\times\cover{\sigma_{2}}$ but is not
-argued.
+\emph{Rectangularity of $\bcol\delta$} is now
+Lemma~\ref{lem:rectangularise}: composing $\delta$ with itself enough times
+replaces $\bcol\delta$ by $\LeftLinked(\bcol\delta)\circ\bcol\delta$, which is
+a union of full boxes, one per connected component, and leaves both linking
+equivalences and the containment in
+$\cover{\sigma_{1}}\times\cover{\sigma_{2}}$ alone. It is worth knowing that
+the normalisation is spent \emph{once}, at $(b,b,c,c)\in\omega$ in the
+construction of $\zeta$; nothing else in the proof uses it. Note also that this
+is not the situation of Caveat~\ref{haz:reflexivise}, where the property turned
+out to hold already: a genuine replacement of $\delta$ is being made here, and
+the lemma is what licenses it.
 
-Until both are settled, Lemma~\ref{lem:no-cross-bridge} and everything
-downstream of it --- including the $\TPC$ case of
-Theorem~\ref{thm:stable-intersection} --- rest on them. See
-\S\ref{sec:status}.
+\emph{Choosing $e$ with $(e,c)\in\bcol\delta$} is the second, and it is
+three lines from $\proj_{3,4}(\delta)=\cover{\sigma_{2}}$, clause (d) of
+Definition~\ref{def:bridge} and stability under $\sigma_{1}$. What made it look
+harder than it is was the earlier draft's appeal to $\proj_{1}(\bcol\delta)$,
+which is the wrong projection: what is needed is that $c$ lies in
+$\proj_{2}(\bcol\delta)$, and the reflexive pair $(c,c)$ supplies it.
 \end{hazard}
 
 \begin{proof}[Proof of Lemma~\ref{lem:bridge-to-pc}]
@@ -5948,8 +6028,7 @@ are made.
 \item[\textsc{open}] Confirmed to need an argument that is not available.
   There are none left in the table; what remains of that kind is
   Hypothesis~\ref{hyp:maximal-mult} and Claim~\ref{cl:multiply-step}, both
-  written into statements rather than left implicit, and the normalisation of
-  Caveat~\ref{haz:rectangularise}.
+  written into statements rather than left implicit.
 \end{description}
 
 Nothing below is marked \textsc{proved} on the strength of a machine search.
@@ -5985,10 +6064,12 @@ that cites it, and the steps are now written out.
   unfolding, so no irreducibility hypothesis is borrowed \\
 \pkey{lem:central-ternary} & \textsc{imported} & \cite[Cor.~6.11.1]{ZhukStrong} \\
 \pkey{lem:sfree-equiv}, \pkey{lem:linear-bridge} & \textsc{proved} & \\
-\pkey{lem:linear-equiv}, \pkey{lem:bridge-reflexive} & \textsc{proved} & \\
-\pkey{lem:no-cross-bridge}, \pkey{lem:bridge-to-pc} & \textsc{outlined} &
-  written out in \S\ref{sec:bridge-proofs}; both rest on the two
-  normalisations of Caveat~\ref{haz:rectangularise} \\
+\pkey{lem:linear-equiv}, \pkey{lem:bridge-reflexive},
+  \pkey{lem:rectangularise} & \textsc{proved} & \\
+\pkey{lem:no-cross-bridge}, \pkey{lem:bridge-to-pc} & \textsc{proved} &
+  written out in \S\ref{sec:bridge-proofs}; the two normalisations they rested
+  on are now \pkey{lem:rectangularise} and three lines,
+  Caveat~\ref{haz:rectangularise} \\
 \pkey{lem:pc-bridges-trivial} & \textsc{proved} & third case not written out \\
 \pkey{lem:linear-on-top} & \textsc{proved} & \\
 \pkey{lem:pc-on-top} & \textsc{stated} & consumed by nothing, and now
@@ -6133,16 +6214,13 @@ the algorithm itself.
 Lemma~\ref{lem:connected} --- is stated without proof, and part (1) of the main
 induction is an outline whose measure is not yet well founded.
 
-Four items block the rest, and they are the honest reading of the table.
+Three items block the rest, and they are the honest reading of the table.
 
 \begin{enumerate}\tightlist
 \item Hypothesis~\ref{hyp:maximal-mult} of \pkey{lem:maximal-mult}: that the
   type-$T$ factors alone cut $B_{2}$ out. The lemma is proved from it; the
   hypothesis itself is not, and three routes to it have failed
   (Caveat~\ref{haz:maximal-mult}).
-\item The rectangularity normalisation of Caveat~\ref{haz:rectangularise},
-  on which \pkey{lem:no-cross-bridge} and \pkey{lem:bridge-to-pc} rest, and
-  through them the $\TPC$ case of \pkey{thm:stable-intersection}.
 \item The rewrite of \pkey{lem:multiply-\brk all-linear}, which is not yet a
   proof. With \pkey{lem:inter\brk section-good} and
   \pkey{lem:self-\brk intersection-pc} both written out, this is what is left
@@ -6154,7 +6232,9 @@ Four items block the rest, and they are the honest reading of the table.
   produces a \emph{uniform} one, now that \pkey{thm:main-inductive}(2)
   hypothesises it (Caveats~\ref{haz:uniform-witness} and
   \ref{haz:witness-moved}).
-\item[] \emph{Two entries stood here and no longer do.} The induction measure
+\item[] \emph{Three entries stood here and no longer do.} The rectangularity
+  normalisation is Lemma~\ref{lem:rectangularise}, and the second normalisation
+  beside it is three lines. The induction measure
   across expanded coverings is not an open item --- no appeal is made at a
   covering, and Caveat~\ref{haz:the-induction}(c) enumerates the seven that
   are. The set-valued iteration behind $\Omega$ is

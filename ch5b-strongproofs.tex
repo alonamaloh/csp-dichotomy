@@ -1643,10 +1643,22 @@ directly.} The third case is the mirror image, using $\proj_{1,2,4}$.
 \end{proof}
 
 \begin{proof}[Proof of Lemma~\ref{lem:no-cross-bridge}]
-Let $\sigma_{1},\sigma_{2}$ be congruences on $\mathbf A_{1},\mathbf A_{2}$.
-Replace $\delta$ by $\delta\cap(\cover{\sigma_{1}}\times\cover{\sigma_{2}})$,
-which is again a bridge with the same collapse, and assume $\bcol\delta$
-rectangular (Caveat~\ref{haz:rectangularise}).
+Let $\sigma_{1},\sigma_{2}$ be congruences on $\mathbf A_{1},\mathbf A_{2}$;
+both are irreducible, $\sigma_{1}$ because it is linear
+(Definition~\ref{def:linear-congruence}(a)). Replace $\delta$ first by
+$\delta\cap(\cover{\sigma_{1}}\times\cover{\sigma_{2}})$, which is again a
+bridge with the same collapse, and then by the $\omega$ of
+Lemma~\ref{lem:rectangularise}. By clause (d) of that lemma the containment in
+$\cover{\sigma_{1}}\times\cover{\sigma_{2}}$ survives, and by clause (c)
+neither linking equivalence changes, so the case analysis below is unaffected;
+by clause (b), $\bcol\delta$ is now rectangular. Being a bridge inside
+$\cover{\sigma_{1}}\times\cover{\sigma_{2}}$, it has
+$\proj_{3,4}(\delta)\supsetneq\sigma_{2}$ and stable under $\sigma_{2}$, so
+minimality of the cover (Proposition~\ref{prop:cover}) gives
+\begin{equation}\label{eq:ncb-proj}
+  \proj_{3,4}(\delta)=\cover{\sigma_{2}},
+\end{equation}
+and symmetrically $\proj_{1,2}(\delta)=\cover{\sigma_{1}}$.
 
 \emph{The easy case.} Suppose $\RightLinked(\bcol\delta)\supsetneq\sigma_{2}$.
 The composite $\delta^{-1}\ast\delta$ is a bridge from $\sigma_{2}$ to
@@ -1685,9 +1697,13 @@ $(x_{2},z)\in\sigma_{1}$ and hence $(x_{3},x_{4})\in\sigma_{2}$. In the other
 direction, if $(x_{3},x_{4})\in\sigma_{2}$ then $(x_{2},z)\in\sigma_{1}$ and
 $(x_{2},x_{3})\in\bcol\delta$, whence $(x_{1},x_{2})\in\sigma_{1}$. For
 clause (c): since $\delta'\neq\delta$ there is $(a,b,c,d)\in\delta$ with
-$(a,c)\notin\bcol\delta$; choosing $e$ with $(e,c)\in\bcol\delta$ ---
-possible because $\proj_{1}(\bcol\delta)$ meets the block of $c$ --- gives
-$(e,a,c,d)\in\delta''$ with $(e,a)\notin\sigma_{1}$. Take $\omega=\delta''$.
+$(a,c)\notin\bcol\delta$. Some $e$ has $(e,c)\in\bcol\delta$: by
+\eqref{eq:ncb-proj} the reflexive pair $(c,c)\in\sigma_{2}\subseteq
+\cover{\sigma_{2}}$ is $\proj_{3,4}$ of some $(e,e',c,c)\in\delta$; clause (d)
+of Definition~\ref{def:bridge} puts $(e,e')\in\sigma_{1}$, and stability of the
+first two variables under $\sigma_{1}$ --- clause (a) --- replaces $e'$ by $e$,
+giving $(e,e,c,c)\in\delta$. That $e$ gives $(e,a,c,d)\in\delta''$ with
+$(e,a)\notin\sigma_{1}$. Take $\omega=\delta''$.
 
 Either way we have a bridge $\omega$ from $\sigma_{1}$ to $\sigma_{2}$ with
 $\proj_{1,3}(\omega)=\bcol\omega=\bcol\delta$.
@@ -1722,9 +1738,13 @@ Now put
 If $x_{1}=x_{2}$ then $y_{1}=y_{2}$ by the shape of $\xi_{1}$, and then
 $x_{3}=x_{4}$. Take any $(c,d)\in\cover{\sigma_{2}}$; since
 $\proj_{3,4}(\omega)=\cover{\sigma_{2}}$ there is
-$(a,b)\in\cover{\sigma_{1}}$ with $(a,b,c,d)\in\omega$, and since
-$(a,b)\in\cover{\sigma_{1}}\subseteq\LeftLinked(\bcol\omega)$ and
-$(a,c)\in\bcol\omega$ we get $(a,a,c,c),(b,b,c,c)\in\omega$. Sending
+$(a,b)\in\cover{\sigma_{1}}$ with $(a,b,c,d)\in\omega$. Now
+$(a,c)\in\bcol\omega$ --- which \emph{is} $(a,a,c,c)\in\omega$, by the
+definition of the collapse --- and
+$(a,b)\in\cover{\sigma_{1}}\subseteq\LeftLinked(\bcol\omega)$, so
+rectangularity in the form of Lemma~\ref{lem:rectangularise}(b) gives
+$(b,c)\in\bcol\omega$, that is $(b,b,c,c)\in\omega$. \emph{This is the one
+step of the proof that consumes rectangularity.} Sending
 $(x_{1},x_{2},x_{3},x_{4})\mapsto(c,d,c,d)$ with $(y_{1},y_{2},y_{3})=(a,b,a)$
 witnesses $(c,d,c,d)\in\zeta$; sending it to $(c,c,d,d)$ with
 $(y_{1},y_{2},y_{3})=(a,a,b)$ witnesses $(c,c,d,d)\in\zeta$. So
@@ -1734,26 +1754,28 @@ $\cover{\sigma_{2}}\supsetneq\sigma_{2}$, so $\sigma_{2}$ is linear by
 Lemma~\ref{lem:linear-equiv} --- contradicting the supposition.
 \end{proof}
 
-\begin{hazard}[Two normalisations that are asserted]\label{haz:rectangularise}
-The proof opens with ``we may assume $\bcol\delta$ is rectangular, as
-otherwise compose it with itself many times''. Nothing here establishes that
-the stabilised composite is still a bridge with the properties the rest of the
-proof uses. Note that this is \emph{not} the same situation as the reflexivity
-of Caveat~\ref{haz:reflexivise}, which turned out to be free: rectangularity of
-$\bcol\delta$ does not follow from any hypothesis in sight, and a genuine
-replacement of $\delta$ is being made. It is used only to make $\proj_{1,3}$
-behave, and the case split on $\delta'$ immediately afterwards does much the
-same work, so it may well be removable; that has not been checked.
+\begin{hazard}[Where rectangularity is spent]\label{haz:rectangularise}
+The proof opens by normalising twice, and both steps were asserted in an
+earlier draft rather than argued.
 
-The step ``choosing $e$ with $(e,c)\in\bcol\delta$'' also needs
-$\proj_{2}(\bcol\delta)$ to meet the relevant block, which holds after the
-restriction to $\cover{\sigma_{1}}\times\cover{\sigma_{2}}$ but is not
-argued.
+\emph{Rectangularity of $\bcol\delta$} is now
+Lemma~\ref{lem:rectangularise}: composing $\delta$ with itself enough times
+replaces $\bcol\delta$ by $\LeftLinked(\bcol\delta)\circ\bcol\delta$, which is
+a union of full boxes, one per connected component, and leaves both linking
+equivalences and the containment in
+$\cover{\sigma_{1}}\times\cover{\sigma_{2}}$ alone. It is worth knowing that
+the normalisation is spent \emph{once}, at $(b,b,c,c)\in\omega$ in the
+construction of $\zeta$; nothing else in the proof uses it. Note also that this
+is not the situation of Caveat~\ref{haz:reflexivise}, where the property turned
+out to hold already: a genuine replacement of $\delta$ is being made here, and
+the lemma is what licenses it.
 
-Until both are settled, Lemma~\ref{lem:no-cross-bridge} and everything
-downstream of it --- including the $\TPC$ case of
-Theorem~\ref{thm:stable-intersection} --- rest on them. See
-\S\ref{sec:status}.
+\emph{Choosing $e$ with $(e,c)\in\bcol\delta$} is the second, and it is
+three lines from $\proj_{3,4}(\delta)=\cover{\sigma_{2}}$, clause (d) of
+Definition~\ref{def:bridge} and stability under $\sigma_{1}$. What made it look
+harder than it is was the earlier draft's appeal to $\proj_{1}(\bcol\delta)$,
+which is the wrong projection: what is needed is that $c$ lies in
+$\proj_{2}(\bcol\delta)$, and the reflexive pair $(c,c)$ supplies it.
 \end{hazard}
 
 \begin{proof}[Proof of Lemma~\ref{lem:bridge-to-pc}]

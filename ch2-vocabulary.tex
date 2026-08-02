@@ -442,6 +442,64 @@ $\delta_{1}\ast\delta_{2}$ is a bridge from $\sigma_{0}$ to $\sigma_{2}$, and
 $\bcol{\delta_{1}\ast\delta_{2}}=\bcol{\delta_{1}}\circ\bcol{\delta_{2}}$.
 \end{lemma}
 
+\begin{lemma}[Rectangularisation]\label{lem:rectangularise}
+Let $\sigma_{1},\sigma_{2}$ be irreducible congruences on
+$\mathbf A_{1},\mathbf A_{2}$ and let $\delta$ be a bridge from $\sigma_{1}$ to
+$\sigma_{2}$, with $\delta^{-1}$ the bridge
+$(x_{1},x_{2},x_{3},x_{4})\mapsto\delta(x_{3},x_{4},x_{1},x_{2})$ from
+$\sigma_{2}$ to $\sigma_{1}$. Then
+$\omega=\delta\ast(\delta^{-1}\ast\delta)^{k}$, for any $k\ge|A_{1}|$, is a
+bridge from $\sigma_{1}$ to $\sigma_{2}$ with
+\begin{enumerate}\alphlabels\tightlist
+\item $\bcol\omega=\LeftLinked(\bcol\delta)\circ\bcol\delta
+  \supseteq\bcol\delta$;
+\item $\bcol\omega=\bigcup_{L}L\times\bcol\delta(L)$, where $L$ ranges over the
+  classes of $\LeftLinked(\bcol\delta)$ and
+  $\bcol\delta(L)=\{y:(x,y)\in\bcol\delta\text{ for some }x\in L\}$. In
+  particular $\bcol\omega$ is \emph{rectangular}, and
+  $(a,c)\in\bcol\omega$ with $(a,b)\in\LeftLinked(\bcol\omega)$ forces
+  $(b,c)\in\bcol\omega$;
+\item $\LeftLinked(\bcol\omega)=\LeftLinked(\bcol\delta)$ and
+  $\RightLinked(\bcol\omega)=\RightLinked(\bcol\delta)$;
+\item $\omega\subseteq\proj_{1,2}(\delta)\times\proj_{3,4}(\delta)$; in
+  particular $\omega$ inherits any containment
+  $\delta\subseteq\cover{\sigma_{1}}\times\cover{\sigma_{2}}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Each $\ast$ composes bridges whose three congruences are drawn from
+$\{\sigma_{1},\sigma_{2}\}$, both irreducible, so
+Lemma~\ref{lem:bridge-comp} applies at every step: $\omega$ is a bridge from
+$\sigma_{1}$ to $\sigma_{2}$ and
+$\bcol\omega=\bcol\delta\circ(\bcol\delta^{-1}\circ\bcol\delta)^{k}
+=(\bcol\delta\circ\bcol\delta^{-1})^{k}\circ\bcol\delta$.
+
+The relation $\bcol\delta\circ\bcol\delta^{-1}$ is reflexive on
+$\proj_{1}(\bcol\delta)$ and symmetric, so its powers increase and stabilise at
+its transitive closure, which by Definition~\ref{def:linked} is
+$\LeftLinked(\bcol\delta)$; $k\ge|A_{1}|$ steps suffice. That is (a), and the
+containment holds because $\LeftLinked(\bcol\delta)$ is reflexive there.
+
+(b) is (a) rewritten: $(a,c)\in\LeftLinked(\bcol\delta)\circ\bcol\delta$ says
+$c\in\bcol\delta(L)$ for the class $L$ of $a$. For rectangularity, let
+$(a,c),(a,d),(b,c)\in\bcol\omega$ with $a\in L$ and $b\in L'$. Then $c$ lies in
+both $\bcol\delta(L)$ and $\bcol\delta(L')$, so some $x\in L$ and $x'\in L'$
+have $(x,c),(x',c)\in\bcol\delta$, whence $x$ and $x'$ are
+$\LeftLinked(\bcol\delta)$-equivalent and $L=L'$; now $d\in\bcol\delta(L)$ and
+$b\in L$ give $(b,d)\in\bcol\omega$. The last clause is the same computation
+with (c).
+
+(c) holds because $\bcol\delta\subseteq\bcol\omega\subseteq
+\LeftLinked(\bcol\delta)\circ\bcol\delta$, so the two relations have the same
+connected components: every edge of $\bcol\omega$ joins vertices already
+connected in $\bcol\delta$.
+
+(d) By the definition of $\ast$, the first two coordinates of a tuple of a
+composite come from the first factor and the last two from the last factor,
+and both factors here are $\delta$.
+\end{proof}
+
 \begin{hazard}\label{haz:bridge-comp}
 Both conclusions of Lemma~\ref{lem:bridge-comp} are used: the first in every
 chain of bridges, the second --- that $\bcol{\cdot}$ commutes with composition

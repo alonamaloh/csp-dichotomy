@@ -46,30 +46,29 @@ The main statements are not: the lemma that produces bridges from an instance is
 without proof, and part (1) of the main induction is an outline whose measure is not yet
 well founded across expanded coverings.
 
-Four items block the rest:
+Three items block the rest:
 
 1. **`lem:maximal-mult`** — proved, but only from an explicitly stated extra
    hypothesis: *the type-`T` factors alone already cut `B₂` out*. Strictly
    stronger than what the other hypotheses give, and unproved. Three routes to
    it have failed; the audit records all three.
-2. The **rectangularity normalisation** in the no-cross-bridge proof — "compose
-   it with itself many times" — on which **`lem:no-cross-bridge`** and
-   **`lem:bridge-to-pc`** rest, and through them the `PC` case of stable
-   intersection. (The *reflexivisation*, listed here earlier and flagged by the
-   review, turned out to need no argument: the hypothesis `δ̃ ⊋ σ` already
-   forces it.)
-3. The rewrite of **`lem:multiply-all-linear`**, which is not yet a proof.
-   `lem:intersection-good` and `lem:self-intersection-pc` are both now written
-   out in full, so this is what is left of that layer.
-*Three items listed here before have come off.* Weakening's termination is proved (the
-measure counts assignments *excluded*, not tuples admitted); Ω's set-valued iteration is
-proved once condition 3 is stated with single weakening steps; and the induction measure
-across expanded coverings was never in difficulty, since the induction makes no appeal at a
+2. **`cl:multiply-step`** inside `lem:multiply-all-linear`: that the first step
+   down `B₁`'s chain at which the intersection dies is of multi-type `T`. Case 1
+   and the reduction of Case 2 to this claim are proved.
+3. Step 1 of the **codimension-one theorem**, which rests on `lem:connected`,
+   together with the two facts its Steps 2–4 take from the unread half; and, for
+   the **common binary absorption witness**, the check that every producer of a
+   type-`BA` reduction produces a *uniform* one, now that
+   `thm:main-inductive`(2) hypothesises it.
+
+*Five items listed here before have come off.* The rectangularity normalisation
+is now a lemma — compose the bridge with itself and the collapse becomes a union
+of full boxes — and the second normalisation beside it is three lines.
+Weakening's termination is proved (the measure counts assignments *excluded*,
+not tuples admitted); Ω's set-valued iteration is proved once condition 3 is
+stated with single weakening steps; and the induction measure across expanded
+coverings was never in difficulty, since the induction makes no appeal at a
 covering.
-5. The **linear algebra** of the codimension-one theorem; and, for the **common
-   binary absorption witness**, the check that every producer of a type-`BA`
-   reduction produces a *uniform* one, now that `thm:main-inductive`(2)
-   hypothesises it.
 
 The dependency order among the three large statements is
 
