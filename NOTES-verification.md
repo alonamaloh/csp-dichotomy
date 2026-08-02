@@ -1219,3 +1219,105 @@ producer of a uniform type-BA reduction**: the restriction is one B at copies of
 (one witnessing term) and equalities elsewhere (any term works), so `lem:ba-center-implies`'s
 common-term hypothesis is satisfiable at this producer — one instance of the
 `haz:witness-moved` check discharged, to be recorded when the lemma is written.
+
+## The anchored stable intersection: landed, and what its consumers still need
+
+**2026-08-02, later session (commit after 4583061).** `lem:anchored-intersection` is stated
+and **proved** (L3): W ⊴ 𝐀₁×𝐀₂ subdirect, C₁ ⊂_{T₁(σ₁)} B₁ ⋘ A₁, C₂ ⊆_MT(T) B₂ ⋘ A₂,
+anchors W∩(B₁×C₂) ≠ ∅ and W∩(C₁×B₂) ≠ ∅, and T₁ incompatible with the chain (T₁ ∈
+{BA,C,S}, or the two dividing classes crossed) ⟹ W∩(C₁×C₂) ≠ ∅. Proof: walk the
+multitype-chain to the first death; the death step plus C₁ is a critical pair for
+cor:stable-intersection (leave-one-out comes from the two anchors by monotonicity — the
+nested chain makes C₂ ⊆ F_j discharge one side, first-death the other); no alternative
+admits the type pair. Configuration (γ) of cl:typing-anchor is **closed** by it (bundle
+coordinates 2..n as in Step 1 of the parallelogram proof, at the split K={1}; the anchor
+W∩(C′×E_L^(1)) ≠ ∅ is tuples of R^(1), since proj₁R^(1) = D^(1)_{x₁} ⊆ C′). D19 is
+thereby *partly* repaired: the source's first application (main:2657–2666) follows for
+every 𝒯 incompatible with T; with 𝒯 = T it asserts nothing.
+
+**What the remaining consumers need, worked out but not yet written.**
+
+- `lem:find-consistent`, nonemptiness step (source main:2485–2493): members are copies of
+  ONE B <_T D^(1)_x at the children of x; anchored subdirectness of the tree-covering's
+  solution set over ∏D^(1) comes from 1-consistency plus treeness. Three type legs:
+  - T = BA: no corollary needed — binary absorption absorbs children one at a time
+    (t(α,β) fixes one child in B while keeping those already in B, since t(B,·),t(·,B) ⊆ B),
+    so the ⊤-reduction is nonempty outright. One term t throughout: this is the
+    **uniform type-BA producer** already banked below.
+  - T = C: centrality is ambient-free, so restrict to W^(1) ⊴ ∏𝐃^(1) and apply the
+    essential-relation theorem (lem:no-central-critical's engine) *inside the anchor*:
+    no (E₁,…,E_n)-essential relation with n ≥ 3 centrals ⟹ the critical set of children
+    is a pair.
+  - T = PC: blocked on **PC localization** (see next note).
+- PC ⇒ n=2 of cl:typing-anchor (source's second application, main:2693–2704): same shape —
+  members are PC blocks below the anchors D^(1)_x; needs the n-ary anchored dichotomy for
+  same-class families, i.e. pullback into R∩∏D^(1) (subdirect there), which for the PC
+  data needs localization. The i=j corner (two blocks at one coordinate) dies via the (pc)
+  payload σ̄₁=σ̄₂ plus nonemptiness of D^(2) (distinct blocks of one congruence are
+  disjoint yet both contain D^(2)_x).
+
+**PC localization (the one new brick).** For T ∈ {L,PC} members hanging below an anchor
+P ⋘ A, the pullback route needs: σ irreducible on 𝐀 with cover ⊇ P², restricted to 𝐏,
+stays irreducible of the same class with cover P². Via lem:irred-quotient this becomes: in
+𝐀′ = 𝐀/σ with 0 irreducible, cover λ ⊇ P′², the image P′ = P/σ ⋘ 𝐀′ has no intermediate
+reflexive subuniverse in (0_{P′}, P′²). For σ **linear** this is FALSE in general — an
+irreducible linear congruence can have a cover-block of rank m ≥ 2, and a rank-≥2 coset
+inside it has intermediate coset congruences — but no consumer needs the linear case. For
+σ **PC** the plan: classify ⋘-subuniverses of the quotient (BA/C/S steps are barred by
+BA-centre-freeness; D-steps need simplicity or an interval argument) and force P′ = A′,
+whence any reflexive δ′ ⊋ 0 contains λ ⊇ P′² by leastness of the cover. NOT yet proved:
+with our operational definition (PC = irreducible not linear) the quotient is not known
+simple; lem:pc-on-top (stated only) is the natural bridge and is currently consumed by
+nothing. This is the right next target for the PC legs.
+
+## `lem:preserve-linked`: the source's AUX proof has an unjustified step
+
+**Same session; boundary located, quoted, and NOT transported.** The chain is
+`LEMPreserveLinkdnessOneStepAUX` (SS:2821–2896) → `OneStep` (SS:2984) → the lemma
+(SS:3007). OneStep and the top lemma are clean (checked earlier, see above). AUX's own
+proof is not:
+
+- **Case 1 (our B1) is fine**: (LeftLinked(R′)∩(B₁′)²)/δ₁ full ⟹ stay-full ⟹
+  R′∩(C₁′×C₂′) ≠ ∅. Transports with σ₁ in place of δ₁ (our lem:leftlinked-stay-full is
+  keyed to a congruence with B₁/σ₁ BA-centre-free; the transported step
+  C₁′ ⊂_{D(σ₁)} B₁′ from cor:prop-times-cong(e) supplies exactly def:types(iii) for B₁′).
+- **Case 2 asserts, verbatim (SS:2892–2895): "Since S∩(C₁×C₂)≠∅, C₁′×C₁″ ⊆
+  LeftLinked(R′), which contradicts condition 1 of Lemma
+  [LEMCongruenceEitherCutOrDoNothing]."** No justification is given, and none is visible:
+  the S-path connects C₁ to a last-left-vertex a_N with an R-edge into C₂′, but nothing
+  places a_N (or any point of C₁″) in the same LeftLinked-class as C₁′ — R could a priori
+  split into components with the S-path in one and R∩(B₁×C₂) in another. LeftLinked(R′) ⊇
+  δ₁ (shared neighbourhoods) is true and useful but does not close it.
+
+**Reconstruction so far (bank; do not publish as a proof yet).** Assume throughout
+R∩(C₁×C₂) = ∅ for contradiction.
+1. The **critical pair applies directly**: {C₁ ⊂_{D(σ₁)} B₁, C₂ ⊂_{D(σ₂)} B₂} with the two
+   mixed hypotheses as leave-one-out. So (l) or (pc) of cor:stable-intersection holds.
+2. **(pc) dies cleanly**: bijectivity of blocks means every alternating R-path from
+   c₁ ∈ E₁ stays in blocks (E₁, φ(E₁)); the S-witness (c₁,c₂) forces c₂ ∈ φ(E₁); but
+   φ(E₁) ≠ E₂, because Q := proj₂(R′∩(C₁′×A₂)) ⋘ A₂ (prop-relations(r1)) misses C₂′
+   while meeting B₂, so intersection-good(d) pins B₂∩Q in a single σ₂-block ≠ E₂, and
+   R∩(C₁×B₂)'s endpoint lies in it. Symmetrically P := proj₁(R′∩(A₁×C₂′)) pins B₁∩P in a
+   single σ₁-block ≠ E₁.
+3. **(l) is the open case**; the source's primed machinery (δ_i-multiplication, stay-full,
+   cut-or-nothing) is clearly the intended engine. Closed corners: if
+   (LeftLinked(R′)∩B₁²)/σ₁ is full, stay-full with B₁ (unprimed) and side C₂′ gives
+   R′∩(C₁×C₂′) ≠ ∅ (uses R∩(B₁×C₂)≠∅); the mirror on the transpose (uses the OTHER mixed
+   hypothesis) likewise; so wlog both linking congruences are cut:
+   LeftLinked(R′)∩B₁² ⊆ σ₁ and RightLinked(R′)∩B₂² ⊆ σ₂ (cut-or-nothing(1), with B := B₁,
+   noting "dividing congruence for B ≤ A" needs only ∃B′ ⊂_{D(σ)} B, which C₁ supplies).
+   The doubly-cut linear endgame — presumably via the collar bridge
+   bcol = σ₁∘R∘σ₂ from (l) and the affine block structure — is NOT yet reconstructed.
+4. For **Case A** of AUX (R∩(C₁′×C₂′) ≠ ∅): walk coordinate 1's chain FIRST with
+   coordinate 2 at full A₂, then coordinate 2 with coordinate 1 at its bottom; each death
+   gives a THREE-member family (σ₁-step and chain-step at a duplicated coordinate 1, plus
+   the σ₂-member at coordinate 2 — original C₂ ⊂ B₂ in phase 1, primed C₂′ ⊂ B₂′ in
+   phase 2) whose leave-one-outs are discharged by monotonicity from the two mixed
+   hypotheses; m = 3 kills (c),(pc); (ba) is barred by the σ-members; (l) forces the chain
+   step's ξ linear, and then ξ ⊇ δ₁ makes C₁′∩E₁ = C₁′∩F₁ (every point of C₁′ is
+   δ₁ ⊆ ξ-related to C₁ ⊆ F₁, so lands in ξ's block), collapsing dead onto alive. The walk
+   order matters: interleaving reintroduces a standing mid-chain restriction that the
+   corollary's boxes cannot carry.
+
+Status: `lem:preserve-linked` stays **stated**. The residue is exactly one case (doubly-cut
+linear), and it should be attacked with the collar bridge in hand, in fresh context.
