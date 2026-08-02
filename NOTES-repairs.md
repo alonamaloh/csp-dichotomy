@@ -576,42 +576,65 @@ singleton, or all of `ℤ_p`. It is not all of `ℤ_p`, since that fibre would c
 nonzero element, making `(a₁,a₂)` both `σ`-related and not. It is not empty on `σ*`, since
 `proj_{1,2}(ζ) = σ*`. ∎
 
-## D17 — still open, but localised
+## D17 — **solved**: pass to a minimal subfamily, and the type argument does the rest
 
-Case 1 of `LEMMaximalMultExtention`. Four things are now established about it.
+Case 1 of `LEMMaximalMultExtention` cannot be closed as written — see the analysis below — but
+the citation of `THMMainStableIntersection` was pointing at the right tool. It just has to be
+applied to a different family, and the case then disappears rather than being contradicted.
 
-**1. The two facts are true, but from a different lemma.** `E <_S B₁/σ` contains some
-`D <_{BA,C} B₁/σ`, and `LEMStrongNonemptyIntersection` — *`C ⋘^A B ⋘ A` and `D <_{BA,C} B`
-imply `C ∩ D ≠ ∅`* — gives `D ∩ C̄₁ ≠ ∅` and `D ∩ B̄₂ ≠ ∅`, writing `X̄` for `X/σ`. The cited
-`THMMainStableIntersection` is not what does this.
+Write `X̄` for `X/σ`, and `C₁ = C₁¹ ∩ ⋯ ∩ C₁ᵗ` with `C₁ʲ <_{T(σⱼ)}^A B₁`.
 
-**2. The "hence" cannot be repaired by iterating those facts.** The configuration reproduces
-itself one level down. Writing `D` for the BA-and-central subuniverse: `D ⋘ Ā`;
-`C̄₁ ∩ D ⋘ D` and `B̄₂ ∩ D ⋘ D` by `LEMIntersectALL`; they are disjoint because `C̄₁ ∩ B̄₂` is;
-and `D ∩ B̄₂ ≠ ∅`. So *every* consequence of "two `⋘`-subalgebras of `B̄₁` both meet `D`"
-survives the descent, and none of them can produce `C̄₁ ∩ B̄₂ ≠ ∅`. Any repair must use
-something Case 1 currently ignores.
+**Step 1 (minimal subfamily).** By `CORPropagationModuloCongruence`(t), each `C̄₁ʲ` is `B̄₁`, or
+`<_S B̄₁`, or `<_T B̄₁`. Choose `F ⊆ {C̄₁¹,…,C̄₁ᵗ}` **minimal** with `⋂F ∩ B̄₂ = ∅`. One exists,
+since the whole family has `⋂ ∩ B̄₂ = C̄₁ ∩ B̄₂ = ∅`; and `F ≠ ∅`, since `⋂∅ = B̄₁` meets `B̄₂`.
+No member of `F` equals `B̄₁`, since such a member constrains nothing and could be dropped.
 
-**3. The only thing it ignores is the maximality of `σ`** — which is a hypothesis of the lemma
-and is used nowhere in Case 1. So the target is: *if `B₁/σ` is not S-free then some congruence
-`τ ⊋ σ` still has `(C₁ ∘ τ) ∩ B₂ = ∅`,* contradicting maximality.
+**Step 2 (walk down `B̄₂`'s chain).** `⋂F ∩ Ā = ⋂F ≠ ∅` and `⋂F ∩ B̄₂ = ∅`, so along a chain
+witnessing `B̄₂ ⋘ Ā` there is a first step `B̄₂' <_{T'(τ)} B̄₂''` with `⋂F ∩ B̄₂' = ∅` and
+`⋂F ∩ B̄₂'' ≠ ∅`.
 
-**4. A descent that works, and exactly why it does not finish.** Let `D <_{BA,C} B₁` be the
-preimage of `D`. Then `C₁ ∩ D ≤_{ℳT}^A D` by `LEMIntersectALL`(t), and *properly*: `C₁ ∩ D = D`
-would give `D ∩ B₂ ⊆ C₁ ∩ B₂ = ∅`. Also `D ⋘ A`, `(C₁ ∩ D) ∩ B₂ = ∅` and `D ∩ B₂ ≠ ∅`. So the
-**entire hypothesis set of the lemma is inherited by `D`**, with `|D| < |B₁|` — an induction on
-`|B₁|` is available, and it lands in Case 2 as soon as the S-free case is reached.
+**Step 3 (types).** Apply `THMMainStableIntersection` to the family `F ∪ {B̄₂'}`, with ambients
+`B̄₁` for the members of `F` and `B̄₂''` for `B̄₂'`. Its hypothesis (2) is the empty
+intersection, which is Step 2. Hypothesis (3), leave-one-out, holds in both shapes:
 
-What blocks it is the *conclusion*, not the hypotheses. The lemma delivers congruences with
-`ω* ⊇ B₁²`, and the inductive call delivers only `ω* ⊇ D²`, which is weaker because `D ⊆ B₁`;
-the call site (`main.tex:2685`) consumes precisely `σ* ⊇ B²`. So the missing step is either
+- omit a member `C̄₁ᵏ ∈ F`: minimality of `F` gives `⋂(F∖\{k\}) ∩ B̄₂ ≠ ∅`, and `B̄₂ ⊆ B̄₂'`,
+  and everything in sight lies in `B̄₁`;
+- omit `B̄₂'`: that is `⋂F ∩ B̄₂'' ≠ ∅`, which is Step 2.
 
-- an argument that a type-`T` congruence `ω` with `ω* ⊇ D²` and `D <_{BA,C} B₁` also has
-  `ω* ⊇ B₁²`, which would make the induction go through verbatim; or
-- the direct contradiction of item 3.
+So all the types coincide, and the theorem's four conclusions allow only `BA`, `C`, `L` or
+`PC`. **Hence no member of `F` has type `S` in `B̄₁`.**
 
-**Open.** Do not write `LEMMaximalMultExtention` until one of these is settled. Note the lemma
-has exactly one call site, so a hypothesis added to it need only be checked there.
+**Step 4 (the case evaporates).** By Step 1 each member of `F` is `B̄₁`, `<_S B̄₁` or `<_T B̄₁`;
+the first is excluded by minimality and the second by Step 3. So every member is `<_T B̄₁`, and
+
+  `⋂F <_{ℳT}^{Ā} B̄₁`,
+
+proper because `⋂F ∩ B̄₂ = ∅` while `B̄₁ ∩ B̄₂ ≠ ∅`. That is exactly what Case 2 needs, with
+`⋂F` in place of `C̄₁` — and **the ambient is still `B̄₁`**, so `LEMMultiplyByAllLinear` returns
+congruences `δᵢ` with `δᵢ* ⊇ (B̄₁)²`, and their preimages `ωᵢ ⊇ σ` satisfy `ωᵢ* ⊇ B₁²`, as the
+statement requires.
+
+**Step 5 (back to `C₁`).** Let `C₁'` be the preimage of `⋂F`, so `C₁ ⊆ C₁'`. Step 4 gives
+`(C₁' ∘ (ω₁ ∩ ⋯ ∩ ω_r)) ∩ B₂ = ∅`, hence `(C₁ ∘ (ω₁ ∩ ⋯ ∩ ω_r)) ∩ B₂ = ∅`. Since each
+`ωᵢ ⊇ σ` and `σ` is maximal with that property, `σ = ω₁ ∩ ⋯ ∩ ω_r`. ∎
+
+So the S-free split disappears: one never needs `B̄₁` to be S-free, only that a *minimal*
+subfamily cutting `B̄₂` out contains no `S`-typed member, which the stable-intersection theorem
+delivers.
+
+### Why the source's Case 1 cannot be patched in place
+
+Worth recording, because it is what forced the detour. The two facts the source derives —
+that a BA-and-central `D ≤ E <_S B̄₁` meets both `C̄₁` and `B̄₂` — are true, but come from
+`LEMStrongNonemptyIntersection`, not from the theorem cited. And they cannot yield
+`C̄₁ ∩ B̄₂ ≠ ∅`, because the whole configuration **reproduces itself** on `D`: `D ⋘ Ā`,
+`C̄₁ ∩ D ⋘ D`, `B̄₂ ∩ D ⋘ D`, still disjoint, with `D ∩ B̄₂ ≠ ∅`. Every consequence of the two
+facts survives the descent, so no iteration of them closes the case. The descent is not
+useless — `C₁ ∩ D ≤_{ℳT}^A D` properly, so the lemma's hypotheses are inherited and an
+induction on `|B₁|` is available — but it shrinks the ambient, and the conclusion's congruence
+family is indexed by the ambient (`ω* ⊇ B₁²`) while the one call site (`main.tex:2685`)
+consumes the original `B₁` in one of its two branches. Step 1 above avoids the descent
+altogether.
 
 ---
 
@@ -632,4 +655,4 @@ has exactly one call site, so a hypothesis added to it need only be checked ther
 | D14 | yes | no — the citation needed the subrelation form of absorption-preserves-linkedness |
 | D15 | yes | no — read `δ` for `σ`, and restore the stability clause |
 | D16 | yes | no — via `LEMNontrivialReflexiveBridgeImplies`(3) and irreducibility; one fewer external import than the source |
-| D17 | **unknown** | **open** |
+| D17 | yes | no — pass to a minimal subfamily; `THMMainStableIntersection` then excludes type `S` |
