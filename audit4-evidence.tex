@@ -346,6 +346,20 @@ rather than inferred from the uses.
 \subsection{Rejected, with reasons}\label{sec:review-rejected}
 
 \begin{itemize}\tightlist
+\item \textbf{``Replacing a constraint by all strict weakenings need not make
+  progress'' is true and harmless.} The reviewer's \S8 is right that the
+  conjunction of all constraints weaker than $R$ can be $R$ itself, so that
+  $\mathcal I[C\Uparrow]$ can have the same solution set as $\mathcal I$; and
+  right that a measure counting admitted tuples points the wrong way. It does
+  \emph{not} follow that the construction fails to make progress, and an
+  earlier draft of ours accepted that it did and recast cruciality with a
+  single-step quantifier. Progress is measured on the constraints: $C$ is
+  replaced by finitely many strictly weaker ones, so the multiset of
+  $\nu$-values drops whether or not the solution set moves. The single-step
+  reading also turns out to be too weak for
+  \pkey{lem:crucial-irreducible}, whose proof imposes two weaker constraints
+  \emph{together}. Proof paper: \pkey{def:crucial},
+  \pkey{lem:weakening-terminates}, \pkey{haz:weakening}.
 \item \textbf{The witness in \texttt{LEMBridgeBetweenCongruences} is correct as
   printed.} The reviewer proposed reading $z_{i}=y_{i}=x_{i}$ for
   $z_{i}=y_{i}=x_{1}$. The printed choice works: it gives
