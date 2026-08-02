@@ -2,153 +2,91 @@
 \section{Defects in the sources}\label{sec:defects}
 
 A blueprint earns its keep by finding the places where the source cannot be
-transcribed. This section collects them. They are not criticisms of
-\cite{ZhukSimplified}, which is unusually careful prose --- across nine thousand
-lines of \TeX{} it says ``obvious'' three times and ``clearly'' never. They are
-the residue that any informal exposition leaves, and each one is a decision a
-formalization has to make before it can write the corresponding statement.
+transcribed. This section is now a register rather than an argument: every item
+has been resolved, and the reasoning lives beside the statement it repairs.
+They are not criticisms of \cite{ZhukSimplified}, which is unusually careful
+prose --- across nine thousand lines of \TeX{} it says ``obvious'' three times
+and ``clearly'' never. They are the residue that any informal exposition
+leaves.
 
-Items marked \textbf{blocking} must be resolved before the affected statement
-can be written in Lean at all. Items marked \textbf{convention} are places
-where the source is consistent but leaves the reader to supply a reading.
+Ten places where the source is consistent but leaves the reader to supply a
+reading are legislated in \S\ref{sec:legislation}; two of the ten turned out to
+be theorems rather than choices. Fourteen places where it is wrong, incomplete,
+or states less than its own proof gives are listed below. All fourteen are
+repaired, and none needed new mathematics: three needed a citation the later
+paper had dropped, one was a typographical slip, one was a statement that is
+false as written, and the rest were omitted steps.
 
-\subsection{Blocking}
+\begin{center}\small
+\begin{longtable}{@{}p{0.31\textwidth}p{0.60\textwidth}@{}}
+\hline
+\textbf{Where} & \textbf{What, and where the repair is} \\
+\hline\endhead
+Propagation modulo a congruence &
+  Stated, used five times, never proved; it is
+  Lemma~\ref{lem:propagation} at the canonical surjection.
+  A mechanical audit of all $81$ labelled statements shows it is the
+  \emph{only} statement in the source that is cited while being neither proved
+  nor attributed. \\
+Stable intersection, type $\TC$ &
+  $n=2$ is argued only for $\TPC$; the argument has no analogue for $\TC$.
+  Theorem~\ref{thm:stable-intersection} and Hazard~\ref{haz:d4}. \\
+Bridges from relations &
+  Applied without its third hypothesis, which can fail; cruciality supplies it.
+  \S\ref{sec:main-statements}. \\
+Main induction, (1c) &
+  The endgame proves \emph{connected} where (1c) demands \emph{linked}, and
+  Case~1 derives (1c) for the wrong reduction. Hazard~\ref{haz:case1c}. \\
+Minimal $\MT T$ subuniverses &
+  The bridging lemma was deleted from the source along with its citation.
+  Hazard~\ref{haz:minimality}. \\
+Symmetrisation of a bridge &
+  The displayed formula defines a relation that is never a bridge.
+  Hazard~\ref{haz:bridge-repairs}(a). \\
+Bridges and abelian groups &
+  \emph{False as stated}; a three-element counterexample.
+  Hazard~\ref{haz:bridge-repairs}(b) and Remark~\ref{rem:phi-twist}. \\
+Nontrivial reflexive bridges &
+  Linkedness asserted from an inclusion bearing on another hypothesis.
+  Hazard~\ref{haz:bridge-repairs}(c). \\
+The PC inductive step &
+  Cites the box form of absorption-preserves-linkedness for a restriction that
+  is not a box. Lemma~\ref{lem:absorb-linked-sub},
+  Hazard~\ref{haz:box-vs-sub}. \\
+Existence of an irreducible congruence &
+  Factors by the wrong congruence, hiding an unsupported properness step.
+  Hazard~\ref{haz:main-existence}. \\
+Linear congruences on top &
+  The conclusion is asserted; proved here by a route that also removes an
+  external import. Hazard~\ref{haz:on-top}. \\
+Maximal multi-type extension &
+  Concludes that two sets meet because each meets a third.
+  Hazard~\ref{haz:maximal-mult}. \\
+The central-relation citation &
+  Drops a third alternative present in the source it cites, and needs an
+  ``empty'' alternative under Convention~\ref{conv:empty}.
+  Hazard~\ref{haz:central-relation}. \\
+Full fibres from surjectivity &
+  A non sequitur at three sites; true for a reason that makes the arity $|A|$
+  load-bearing. Hazard~\ref{haz:full-fibre}. \\
+\hline
+\end{longtable}
+\end{center}
 
-\begin{enumerate}\tightlist
+Two further patterns are worth naming, because they recur rather than occurring
+once. The first is a \emph{proper} containment asserted where the cited lemma
+gives only $\subseteq$, usually after factoring by a congruence, which can
+close the gap; it appears at least five times and is repaired the same way each
+time, by producing the witness that the source has already displayed two lines
+earlier. The second is an upgrade from ``the image has size one'' to ``the
+image is \emph{this} block''; it appears four times and should become a named
+lemma.
 
-\item[\textbf{D1}] \textbf{Lemma~\ref{lem:ba-center-implies} is false as
-  printed.} \cite[Lemma~19]{ZhukSimplified} drops two hypotheses present in its
-  cited source: subdirectness of $R$ in the first coordinate, and a common
-  absorbing term in the $\TBA$ case. Counterexample and repair in
-  Hazard~\ref{haz:ba-center-implies}. Used three times in \S3 and three times
-  in \S4 of the source.
-
-\item[\textbf{D2}] \textbf{Corollary~\ref{cor:prop-quotient} is never proved.}
-  It is stated in \S2.3, used four times inside \S5 and once in \S3, and
-  neither proved nor restated anywhere. It is Lemma~\ref{lem:propagation}
-  specialised to the canonical surjection $\mathbf A\to\mathbf A/\delta$, but
-  the source does not say so, and the specialisation is not quite mechanical:
-  clause (m)'s hypothesis ``$B/\delta$ is $\TS$-free'' has to be matched against
-  clause (fm)'s ``$f(B)$ is $\TS$-free''.
-
-\item[\textbf{D3}] \textbf{There is a citation cycle in \S5.} Tracing the
-  proofs: Lemma~9 $\Rightarrow$ Lemma~7 $\Rightarrow$ Lemma~86 $\Rightarrow$
-  Lemma~85 $\Rightarrow$ Corollary~22 $\Rightarrow$ Theorem~21 $\Rightarrow$
-  Lemma~8 $\Rightarrow$ Lemma~9, closed where Lemma~85's $T=\TC$ case invokes
-  Corollary~22. Nothing in \S5.4 or \S5.7 can be formalized until the cycle is
-  broken. The break appears to require a mixed essentiality lemma for three
-  distinct central subuniverses, which is not in the paper.
-
-\item[\textbf{D4}] \textbf{Theorem~\ref{thm:stable-intersection}(c) asserts
-  $m=2$ without argument.} The proof reduces to pairs and shows the types agree;
-  for $\TPC$, $\sigma_{1}=\sigma_{2}$ forces $m=2$. Nothing rules out $m\ge 3$
-  with all types $\TC$. A Lean statement copying the source is unprovable as it
-  stands. Same fix as D3.
-
-\item[\textbf{D5}] \textbf{Theorem~\ref{thm:codim-one} hypothesis (ii) is too
-  weak for its proof.} The source says ``$\mathbf D_{x_{i}}$ is $\TS$-free'';
-  the proof, and the informal claim it formalises, need ``no nontrivial binary
-  absorbing or central subuniverse on $\mathbf D_{x_{i}}$'' --- which is the
-  \emph{commented-out} gloss sitting immediately below the hypothesis in the
-  source. $\TS$-freeness is strictly weaker (Hazard~\ref{haz:S-type}).
-  Strengthen the hypothesis.
-
-\item[\textbf{D6}] \textbf{Lemma~\ref{lem:connected}(a) applies
-  Lemma~\ref{lem:bridge-from-relation} without one of its hypotheses.} The
-  missing hypothesis can fail; a witness is
-  $R=\{(x,z,y)\in\mathbb Z_{4}\times\mathbb Z_{2}\times\mathbb Z_{4}:
-  x\equiv z\equiv y \pmod 2\}$. In \cite{ZhukJACM} the needed tuples came from
-  \emph{criticality}, a notion \cite{ZhukSimplified} dropped. The fix is to add
-  ``every constraint relation is critical'' to the definition of a connected
-  instance --- available, since crucial implies critical --- at the cost of
-  reimporting about a page of the older machinery.
-
-\item[\textbf{D7}] \textbf{Two gaps in Theorem~\ref{thm:main-inductive}.}
-  In Case~1 the inductive hypothesis yields (1c) relative to $D^{(2)}$ while the
-  goal is (1c) relative to $D^{(1)}$; the source writes only ``we derive the
-  required conditions''. And both endgames conclude ``(1b) if the solution set
-  is subdirect, (1c) otherwise'', but (1c) demands a \emph{linked} connected
-  subinstance where only connectedness was established --- linkedness has to be
-  extracted from irreducibility, which needs a fragmentation descent and a
-  separate treatment of the empty-solution-set case.
-
-\item[\textbf{D8}] \textbf{A lemma the proof needs is commented out of the
-  source.} \texttt{LEMMinimalContainingIsMinimal} --- that an inclusion-minimal
-  $\MT T$-subset containing a given element is minimal among $\MT T$-subsets ---
-  is commented out along with its citation, yet is genuinely used in Case~2 of
-  Theorem~\ref{thm:main-inductive}. It is true and must be reproved.
-
-\item[\textbf{D9}] \textbf{The algorithm's pseudocode does not match the theorem
-  it invokes.} \textsc{SolveLinear} \emph{removes} constraints, whereas
-  Theorem~\ref{thm:codim-one}(vii) is about \emph{weakening} them; and
-  primitive \textup{(p2)} returns a union of affine subspaces, which the next
-  line treats as affine. \cite{ZhukSimplified} labels its pseudocode a sketch
-  and points to \cite{ZhukJACM} for the precise algorithm, so this is a defect
-  of the sketch rather than of the proof --- but target \textup{(T1)} is a
-  statement about the algorithm, so it must be repaired from \cite{ZhukJACM}
-  before \textup{(T1)} can be stated.
-
-\item[\textbf{D10}] \textbf{The arity in Lemma~\ref{lem:special-wnu} is suspect.} The
-  imported statement gives a special WNU of arity $n^{n!}$; the period of
-  $y\mapsto w(x,\dots,x,y)$ need not divide $n^{n!}$ --- take $n=3$ and an
-  element of order $5$. The remedy is to weaken the statement to ``\emph{some}
-  arity $N$'', which is all the dichotomy proof uses. The precise arity matters
-  only for \S4 of the source, which is cut.
-
-\end{enumerate}
-
-\subsection{Convention}
-
-\begin{enumerate}\tightlist
-
-\item[\textbf{C1}] $\mathbf Z_{p}\in\Vn$ requires $p\mid n-1$
-  (Hazard~\ref{haz:Zp}).
-\item[\textbf{C2}] $\cover\sigma$ is a tolerance, not a congruence
-  (Hazard~\ref{haz:irreducible}). Typing it as a congruence collapses the
-  linear/PC distinction silently.
-\item[\textbf{C3}] The empty set is a subuniverse of every idempotent algebra,
-  and is vacuously absorbing and vacuously central. Read syntactically, the
-  clause defining $\subt{\TS}$ is therefore universally true. The global
-  convention ``we do not allow empty subuniverses'' repairs it, but the clause
-  does not inherit that convention on its own
-  (Convention~\ref{conv:empty}).
-\item[\textbf{C4}] Whether $\sigma=A^{2}$ counts as irreducible is genuinely
-  ambiguous --- it turns on whether the empty intersection is allowed --- and
-  $\cover\sigma$ does not exist in that case. \cite{ZhukSimplified} drops the
-  word ``proper'' that \cite{ZhukJACM} has. Legislating that the empty family
-  \emph{is} allowed makes irreducibility imply properness, which is the
-  convenient choice and is what the Lean development adopts.
-\item[\textbf{C5}] $\lll$ is data, not merely a proposition: several \S5 proofs
-  speak of ``the congruences coming from $C\lll A$'' and of minimal chain
-  length (Hazard~\ref{haz:lll-chain}).
-\item[\textbf{C6}] ``Dimension'' of $\prod\mathbb Z_{q_{i}}$ with distinct
-  primes is never defined, and there is no field over which it is a vector
-  space. Adopt composition length and prove additivity
-  (Hazard~\ref{haz:step2-linear-algebra}).
-\item[\textbf{C7}] Two inequivalent definitions of ``linked instance'' coexist:
-  global connectivity of the value graph, in Informal Claim (IC3); and the
-  per-variable condition in \S3.1. The second does not imply the first. Use the
-  formal one and carry non-fragmentation separately
-  (Hazard~\ref{haz:linked}).
-\item[\textbf{C8}] $B/\sigma$ is the image of $B$ in $A/\sigma$, not the
-  quotient of $B$; and $(C_{1}\cap\dots\cap C_{t})/\delta=\bigcap C_{i}/\delta$
-  is false in general and is proved on the fly inside
-  Lemma~\ref{lem:propagation}(fm) (Hazard~\ref{haz:quotient-rel}).
-\item[\textbf{C9}] Three sentences beginning ``Notice that'' are used as
-  lemmas and never proved: that the relation $S$ of
-  Definition~\ref{def:linear-congruence}(c) is a bridge with
-  $\bcol S=\proj_{1,2}(S)=\proj_{3,4}(S)=\cover\sigma$; that $\sigma$ is
-  irreducible/linear/PC exactly when $0_{\mathbf A/\sigma}$ is; and that the two
-  formulations of $\TS$-freeness agree. Add
-  Lemma~\ref{lem:rect-basics} to the same list.
-\item[\textbf{C10}] One citation silently drops a case: the source's use of
-  \cite[Thm.~6.15]{ZhukStrong} omits a third alternative --- a nontrivial
-  \emph{projective} subuniverse --- present in the original. Its elimination is
-  legitimate under the standing Taylor hypothesis, but the source does not say
-  so, and a formalization must state it as a hidden import and check it against
-  what the predecessor development actually proves.
-
-\end{enumerate}
+Finally, two statements are weaker than their own proofs and should be
+restated: Lemma~\ref{lem:intersect-all}(i), whose proof gives
+$B\cap D\dlll^{A}D$ (Hazard~\ref{haz:intersect-all-strength}), and
+Lemma~\ref{lem:linked-implies-abs}, which needs the words \emph{proper
+nonempty} (Hazard~\ref{haz:linked-abs-proper}).
 
 \begin{remark}[A retracted item, and what replaced it]\label{rem:d10-retracted}
 An earlier draft of this section carried an eleventh blocking item: that the
