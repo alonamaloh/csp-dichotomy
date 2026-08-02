@@ -5,7 +5,7 @@
 %%  csp-audit.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision d3fc1d1 on 2026-08-02.
+%%  Generated from revision a3d5455 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-audit.tex
@@ -1454,6 +1454,22 @@ the finished proof still needs.
   $B\cap C\neq\varnothing$, so the empty case needs its own line at every call
   site. Proof paper: \pkey{haz:cor-intersection}.
 \end{enumerate}
+
+\texttt{LEMSelfIntersectionPC} (\texttt{SS:419}), which subsubcase 2A3
+consumes, carries a proof of the same shape and three more silent steps. (i)
+Subcase 1B displays ``$(E\cap B_{k-1})/\sigma_{k}=B_{k-1}/\sigma_{k-1}$''
+(\texttt{SS:481}); the right-hand side is an index slip for
+$B_{k-1}/\sigma_{k}$ --- $\sigma_{k-1}$ has no role in that subcase --- which
+is the typo the external review flagged. (ii) The same branch concludes
+$((B_{k}\circ\delta)\cap B_{k-1})/\sigma_{k}=B_{k-1}/\sigma_{k}$ from that
+identity, which needs $E$ to \emph{meet} $B_{k}$; it does, because the
+$\sigma_{k}$-classes the witnesses exhaust include the class of $B_{k}$, but
+nothing in the text says so. (iii) Subcase 2C proves $R$ full --- a statement
+about $B_{k-1}$ --- and then asserts the conclusion, which is about $B_{k}$.
+The transfer works because $B_{k}=B_{k-1}\cap E_{k}$ with $E_{k}$ a
+$\sigma_{k}$-class, so a $\sigma_{k}$-move inside $B_{k-1}$ cannot leave
+$B_{k}$. Proof paper: \pkey{lem:self-intersection-pc},
+\pkey{haz:self-intersection}.
 
 Three smaller lemmas in the same subsection, never opened before the final
 pass, are all sound. \texttt{LEMTotallySymmetricWithoutBACenter}

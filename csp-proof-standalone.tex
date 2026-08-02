@@ -5,7 +5,7 @@
 %%  csp-proof.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision d3fc1d1 on 2026-08-02.
+%%  Generated from revision a3d5455 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-proof.tex
@@ -2860,20 +2860,234 @@ $B_{m-1}/\sigma_{m}$ or $B_{m}/\sigma_{m}$; and in the second case
 $\sigma_{m}\supseteq\delta\cap\sigma_{1}\cap\dots\cap\sigma_{m-1}$.
 \end{longlemma}
 
-\begin{proof}[Proof outline]
-Induction on $k$, splitting on $T_{k}$ and on whether $k>m$. The absorption
-cases run through Lemmas~\ref{lem:pp-propagation} and \ref{lem:factor-type} to
-produce a strong subuniverse of $B_{k-1}/\sigma_{k}$ and contradict
-Definition~\ref{def:types}(iii). The $\TD$ cases build an auxiliary relation
-$R'$ on $(B_{k-1}/\sigma_{k})^{|A|}\times B_{m-1}/\sigma_{m}$, obtain a full
-fibre from Lemma~\ref{lem:full-fibre}, and finish with
-Lemma~\ref{lem:central-relation}, discharging at each such finish the two
-obligations of Caveat~\ref{haz:central-relation}: the centre is \emph{proper},
-the witness being the non-containment established one step earlier, and the
-binary absorbing subuniverse produced lives on a \emph{power} and is moved down
-by Lemma~\ref{lem:power-to-base}. This is an outline and not a proof; see
-\S\ref{sec:status}.
+\begin{proof}
+The induction is on $k$, and $\delta$, $m$ and the chain are all quantified
+\emph{inside} the inductive statement: subsubcase 1B3 below applies the
+hypothesis with a different congruence in the role of $\delta$, so $\delta$ must
+not be held fixed.
+
+Two conventions are in force throughout. For every $j$ with $T_{j}=\TD$ we have
+$B_{j}=B_{j-1}\cap E_{j}$ for a block $E_{j}$ of $\sigma_{j}$, so
+$B_{j}^{2}\subseteq\sigma_{j}$, $|B_{j}/\sigma_{j}|=1$, and
+$\mathbf B_{j-1}/\sigma_{j}$ is BA and centre free with
+$|B_{j-1}/\sigma_{j}|\ge2$ (Definition~\ref{def:types}(iii), and properness of
+$B_{j}$ in $B_{j-1}$); in particular $|A|\ge2$. For every other $j$,
+$\sigma_{j}=A^{2}$.
+
+\medskip\noindent\textbf{Case 1: $k=m$,} so $T_{k}=\TD$. Put
+$\tau=\delta\cap\sigma_{1}\cap\dots\cap\sigma_{k-1}$ and, for
+$0\le n\le k$,
+\[
+  Q_{n}=\bigl\{(a_{1},\dots,a_{|A|})\in B_{n}^{|A|}:
+    (a_{i},a_{j})\in\tau\ \text{for all }i,j\bigr\},
+  \qquad S_{n}=Q_{n}/\sigma_{k},
+\]
+the quotient again an image. Each $Q_{n}$ is cut out of $\mathbf A^{|A|}$ by
+unary and binary conditions, so each $S_{n}$ is a subuniverse of
+$(\mathbf A/\sigma_{k})^{|A|}$ closed under substitution of coordinates and
+hence totally symmetric and shift-closed;
+$S_{0}$, whose $Q_{0}$ ranges over $B_{0}=A$, is in addition reflexive; and
+$S_{n}\supseteq S_{n'}$ for $n\le n'$. Since $\sigma_{k}$ is a dividing
+congruence for $B_{k-1}\le A$, Lemma~\ref{lem:tot-sym-irred} applies to
+$S_{0}$.
+
+\emph{Subcase 1A: $S_{0}=\{(a/\sigma_{k},\dots,a/\sigma_{k}):a\in A\}$.} For
+$(a,b)\in\tau$ the tuple $(a,b,b,\dots,b)$ lies in $Q_{0}$, so its image is
+constant and $a/\sigma_{k}=b/\sigma_{k}$: that is
+$\sigma_{k}\supseteq\tau$, which is the additional clause. It also settles the
+main one. Every $\sigma_{\ell}$ with $\ell<k$ contains $B_{k-1}^{2}$ --- for
+$T_{\ell}=\TD$ because $B_{k-1}\subseteq B_{\ell}$ and
+$B_{\ell}^{2}\subseteq\sigma_{\ell}$, otherwise because
+$\sigma_{\ell}=A^{2}$ --- so
+\[
+  \delta\cap B_{k-1}^{2}\;\subseteq\;\tau\cap B_{k-1}^{2}\;\subseteq\;\sigma_{k}.
+\]
+Hence if $a\in B_{k-1}$ and $(a,b)\in\delta$ with $b\in B_{k}\subseteq B_{k-1}$
+then $(a,b)\in\sigma_{k}$, so $a\in E_{k}$ and therefore
+$a\in B_{k-1}\cap E_{k}=B_{k}$. Thus
+$(B_{k}\circ\delta)\cap B_{k-1}=B_{k}$ and the projection is
+$B_{k}/\sigma_{k}=B_{m}/\sigma_{m}$.
+
+\emph{Subcase 1B: $(B_{k-1}/\sigma_{k})^{|A|}\subseteq S_{0}$.} Suppose first
+that $(B_{k-1}/\sigma_{k})^{|A|}\subseteq S_{k-1}$. Since $|B_{k-1}/\sigma_{k}|
+\le|A|$, one tuple $x\in(B_{k-1}/\sigma_{k})^{|A|}$ enumerates every class of
+$B_{k-1}/\sigma_{k}$; a witness for $x$ in $Q_{k-1}$ is a family
+$a_{1},\dots,a_{|A|}\in B_{k-1}$, pairwise $\tau$-related and so in particular
+pairwise $\delta$-related, whose $\sigma_{k}$-classes exhaust
+$B_{k-1}/\sigma_{k}$. Let $E$ be the $\delta$-class containing all of them, so
+that
+\[
+  (E\cap B_{k-1})/\sigma_{k}=B_{k-1}/\sigma_{k}.
+\]
+One of those classes is the class of $B_{k}$, so some $a_{i}$ lies in
+$B_{k-1}\cap E_{k}=B_{k}$; hence $E$ meets $B_{k}$, so
+$E\subseteq B_{k}\circ\delta$, and
+$((B_{k}\circ\delta)\cap B_{k-1})/\sigma_{k}\supseteq(E\cap B_{k-1})/\sigma_{k}
+=B_{k-1}/\sigma_{k}$. That is the first alternative, and this branch is done.
+
+So assume $(B_{k-1}/\sigma_{k})^{|A|}\not\subseteq S_{k-1}$ and choose $n$
+minimal with $(B_{k-1}/\sigma_{k})^{|A|}\not\subseteq S_{n}$; then
+$1\le n\le k-1$ and $(B_{k-1}/\sigma_{k})^{|A|}\subseteq S_{n-1}$. For every
+$b\in B_{k-1}\subseteq B_{n}$ the constant tuple $(b,\dots,b)$ lies in
+$Q_{n}$, so
+\begin{equation}\label{eq:sip-nonempty}
+  \varnothing\neq S_{n}\cap(B_{k-1}/\sigma_{k})^{|A|}
+  \subsetneq(B_{k-1}/\sigma_{k})^{|A|} .
+\end{equation}
+We show each of the three types of $T_{n}$ impossible, so that this branch does
+not occur.
+
+\emph{Subsubcase 1B1: $T_{n}\in\{\TBA,\TC\}$.} The formula
+$\bigwedge_{i,j}\tau(x_{i},x_{j})\wedge\bigwedge_{i}X(x_{i})$ defines
+$Q_{n-1}$ at $X=B_{n-1}$ and $Q_{n}$ at $X=B_{n}$, so
+Lemma~\ref{lem:pp-propagation} and \eqref{eq:sip-nonempty} give
+$Q_{n}\subte{T_{n}}Q_{n-1}$; Lemma~\ref{lem:factor-type} pushes this through
+$\sigma_{k}$ and Lemma~\ref{lem:ba-center-intersect} restricts it along
+$(B_{k-1}/\sigma_{k})^{|A|}\le\mathbf S_{n-1}$, giving by
+\eqref{eq:sip-nonempty} a proper nonempty
+$\subt{T_{n}}(B_{k-1}/\sigma_{k})^{|A|}$. Lemma~\ref{lem:power-to-base} moves
+it to $B_{k-1}/\sigma_{k}$, which is BA and centre free --- a contradiction.
+
+\emph{Subsubcase 1B2: $T_{n}=\TS$.} Choose a nonempty $G\subseteq B_{n}$ with
+$G\subt{\TBA,\TC}B_{n-1}$. Lemma~\ref{lem:strong-nonempty}, applied along
+$B_{k}\lll^{A}B_{n-1}\lll A$, gives $G\cap B_{k}\neq\varnothing$, and
+$B_{k}\subseteq B_{k-1}$, so replacing $B_{n}$ by $G$ leaves the intersection
+with $(B_{k-1}/\sigma_{k})^{|A|}$ nonempty; it stays proper because
+$G\subseteq B_{n}$. Now 1B1 applies verbatim with $G$ for $B_{n}$ and
+contradicts BA-freeness of $B_{k-1}/\sigma_{k}$.
+
+\emph{Subsubcase 1B3: $T_{n}=\TD$.} Let $R'$ be the image in
+$(\mathbf A/\sigma_{k})^{|A|}\times\mathbf A/\sigma_{n}$ of
+\[
+  \bigl\{(a_{1},\dots,a_{|A|},b):b\in B_{n-1},\ \forall i\;
+    a_{i}\in B_{n-1}\cap(B_{k-1}\circ\sigma_{k}),\ \forall i,j\;
+    (a_{i},a_{j})\in\tau,\ \forall i\;(a_{i},b)\in\sigma_{n}\bigr\} .
+\]
+Because $n\le k-1$, the congruence $\sigma_{n}$ is one of those intersected in
+$\tau$, so $\tau\subseteq\sigma_{n}$. Four facts.
+
+\emph{(i) $\proj_{1,\dots,|A|}(R')=(B_{k-1}/\sigma_{k})^{|A|}$.} A tuple
+$x$ on the right lies in $S_{n-1}$ by minimality of $n$, so it has witnesses
+$a_{i}\in B_{n-1}$, pairwise $\tau$-related, with $a_{i}/\sigma_{k}=x_{i}$ and
+hence $a_{i}\in B_{k-1}\circ\sigma_{k}$; and $\tau\subseteq\sigma_{n}$ makes
+$b=a_{1}\in B_{n-1}$ a legitimate last entry.
+
+\emph{(ii) $\proj_{|A|+1}(R')=((B_{k-1}\circ\sigma_{k})\cap B_{n-1})/\sigma_{n}$.}
+A witnessing tuple has $(a_{1},b)\in\sigma_{n}$ with
+$a_{1}\in B_{n-1}\cap(B_{k-1}\circ\sigma_{k})$; conversely such a $c$ is
+witnessed by $(c,\dots,c,c)$.
+
+\emph{(iii) $(B_{k-1}/\sigma_{k})^{|A|}\times B_{n}/\sigma_{n}\not\subseteq R'$.}
+Otherwise, fixing $b_{0}\in B_{k-1}\subseteq B_{n}$, every
+$x\in(B_{k-1}/\sigma_{k})^{|A|}$ has a witness with $(a_{i},b_{0})\in
+\sigma_{n}$; then $b_{0}\in B_{n}\subseteq E_{n}$ puts each $a_{i}$ in
+$B_{n-1}\cap E_{n}=B_{n}$, so $x\in S_{n}$, contradicting the choice of $n$.
+
+\emph{(iv) $\proj_{|A|+1}(R')=B_{n-1}/\sigma_{n}$.} The inductive hypothesis at
+$k-1$ --- applied to the chain $B_{k-1}\subt[A]{T_{k-1}(\sigma_{k-1})}\dots
+\subt[A]{T_{1}(\sigma_{1})}B_{0}$, the congruence $\sigma_{k}$ in the role of
+$\delta$, and the index $n$ --- leaves $B_{n-1}/\sigma_{n}$ or
+$B_{n}/\sigma_{n}$ for the set computed in (ii). The latter is a single point,
+which with (i) would give the containment excluded by (iii).
+
+Now $R'$ is subdirect by (i) and (iv), it is closed under substitution in its
+first $|A|$ coordinates, and $|B_{k-1}/\sigma_{k}|\le|A|$, so
+Lemma~\ref{lem:full-fibre} supplies $d$ with
+$(B_{k-1}/\sigma_{k})^{|A|}\times\{d\}\subseteq R'$. The associated set
+$C^{\star}\subseteq B_{n-1}/\sigma_{n}$ is therefore nonempty, and proper by
+(iii); so Lemma~\ref{lem:central-relation} applied to $R'^{-1}$ yields either a
+proper nonempty central subuniverse of $B_{n-1}/\sigma_{n}$ or, through
+Lemma~\ref{lem:power-to-base}, a proper nonempty binary absorbing subuniverse
+of $B_{k-1}/\sigma_{k}$ --- both excluded. So subcase 1B ends at its first
+branch.
+
+\medskip\noindent\textbf{Case 2: $k>m$.} Then $B_{k}\subseteq B_{k-1}\subseteq
+B_{m}\subseteq B_{m-1}$. The inductive hypothesis at $k-1$, with the same
+$\delta$ and $m$, makes $((B_{k-1}\circ\delta)\cap B_{m-1})/\sigma_{m}$ either
+$B_{m}/\sigma_{m}$ or $B_{m-1}/\sigma_{m}$.
+
+If it is $B_{m}/\sigma_{m}$, that set is a single point, and
+$\varnothing\neq B_{k}\subseteq(B_{k}\circ\delta)\cap B_{m-1}\subseteq
+(B_{k-1}\circ\delta)\cap B_{m-1}$ forces
+$((B_{k}\circ\delta)\cap B_{m-1})/\sigma_{m}=B_{m}/\sigma_{m}$ as well; the
+additional clause is carried over unchanged from the inductive hypothesis,
+which had the same $\delta$ and the same $m$. So assume
+\begin{equation}\label{eq:sip-case2}
+  ((B_{k-1}\circ\delta)\cap B_{m-1})/\sigma_{m}=B_{m-1}/\sigma_{m},
+\end{equation}
+and split on $T_{k}$. In each subcase the answer is $B_{m-1}/\sigma_{m}$, so
+the additional clause is not triggered.
+
+\emph{Subcase 2A: $T_{k}\in\{\TBA,\TC\}$.} The formula
+$\exists y\,(X(y)\wedge\delta(x,y))\wedge B_{m-1}(x)$ defines
+$(B_{k-1}\circ\delta)\cap B_{m-1}$ at $X=B_{k-1}$ and
+$(B_{k}\circ\delta)\cap B_{m-1}$ at $X=B_{k}$, and the latter is nonempty as it
+contains $B_{k}$; so Lemmas~\ref{lem:pp-propagation} and
+\ref{lem:factor-type} give
+$((B_{k}\circ\delta)\cap B_{m-1})/\sigma_{m}\subte{T_{k}}
+((B_{k-1}\circ\delta)\cap B_{m-1})/\sigma_{m}=B_{m-1}/\sigma_{m}$. A
+\emph{proper} such containment is a proper nonempty binary absorbing or central
+subuniverse of $B_{m-1}/\sigma_{m}$, which is excluded, so it is an equality.
+
+\emph{Subcase 2B: $T_{k}=\TS$.} Choose a nonempty $G\subseteq B_{k}$ with
+$G\subt{\TBA,\TC}B_{k-1}$ and run 2A with $G$ for $B_{k}$: it gives
+$((G\circ\delta)\cap B_{m-1})/\sigma_{m}=B_{m-1}/\sigma_{m}$, and
+$G\subseteq B_{k}$ makes the left side a subset of
+$((B_{k}\circ\delta)\cap B_{m-1})/\sigma_{m}$.
+
+\emph{Subcase 2C: $T_{k}=\TD$.} Put
+\[
+  R=\bigl\{(a/\sigma_{k},b/\sigma_{m}):a\in B_{k-1},\ b\in B_{m-1},\
+    (a,b)\in\delta\bigr\}\le\mathbf B_{k-1}/\sigma_{k}\times
+    \mathbf B_{m-1}/\sigma_{m} .
+\]
+It is subdirect: $B_{k-1}\subseteq B_{m-1}$ lets $b=a$ serve for the left
+projection, and the right projection is $B_{m-1}/\sigma_{m}$ by
+\eqref{eq:sip-case2}. Moreover $B_{k-1}/\sigma_{k}\times B_{m}/\sigma_{m}
+\subseteq R$: here $k>m$ gives $B_{k-1}\subseteq B_{m}$, so for $a\in B_{k-1}$
+the pair $(a,a)$ witnesses $(a/\sigma_{k},a/\sigma_{m})\in R$ with
+$a/\sigma_{m}$ the single class of $B_{m}/\sigma_{m}$. \textbf{This is the only
+use of $k>m$ in the subcase, and without it $R$ need not have a centre at
+all.}
+
+So the set $C^{\star}=\{c\in B_{m-1}/\sigma_{m}:\{c\}\times B_{k-1}/\sigma_{k}
+\subseteq R^{-1}\}$ is nonempty. Lemma~\ref{lem:central-relation} applied to
+$R^{-1}\sdle\mathbf B_{m-1}/\sigma_{m}\times\mathbf B_{k-1}/\sigma_{k}$ leaves
+only its alternative (b), alternative (c) being excluded by BA-freeness of
+$B_{k-1}/\sigma_{k}$; and since $B_{m-1}/\sigma_{m}$ is centre free the central
+subuniverse $C^{\star}$ cannot be proper. Hence
+$C^{\star}=B_{m-1}/\sigma_{m}$ and $R$ is the full product.
+
+Finally, fullness transfers from $B_{k-1}$ to $B_{k}$. Let $a\in B_{k}$ and
+$b\in B_{m-1}$. Fullness gives $a'\in B_{k-1}$ and $b'\in B_{m-1}$ with
+$(a',b')\in\delta$, $a'/\sigma_{k}=a/\sigma_{k}$ and
+$b'/\sigma_{m}=b/\sigma_{m}$. From $a\in B_{k}\subseteq E_{k}$ and
+$a'\,\sigma_{k}\,a$ we get $a'\in E_{k}$, so $a'\in B_{k-1}\cap E_{k}=B_{k}$;
+hence $b'\in(B_{k}\circ\delta)\cap B_{m-1}$ and $b'/\sigma_{m}=b/\sigma_{m}$.
+As $b$ was arbitrary, $((B_{k}\circ\delta)\cap B_{m-1})/\sigma_{m}=
+B_{m-1}/\sigma_{m}$.
 \end{proof}
+
+\begin{hazard}[Three steps this proof supplies]\label{haz:self-intersection}
+Subcase 1B's first branch is where the projection is actually computed, and it
+needs two things beyond the displayed identity
+$(E\cap B_{k-1})/\sigma_{k}=B_{k-1}/\sigma_{k}$: that a \emph{single}
+$\delta$-class $E$ works, which comes from the witnesses for one tuple
+enumerating all of $B_{k-1}/\sigma_{k}$ and so from $|B_{k-1}/\sigma_{k}|\le
+|A|$ again; and that $E$ \emph{meets} $B_{k}$, without which $E$ has nothing to
+do with $B_{k}\circ\delta$. The second follows from the first, since the
+classes exhausted include the class of $B_{k}$.
+
+Subcase 2C ends with a transfer step: $R$ full is a statement about
+$B_{k-1}$, and the conclusion is about $B_{k}$. It goes through only because
+$B_{k}$ is cut out of $B_{k-1}$ by a $\sigma_{k}$-block, so a $\sigma_{k}$-move
+inside $B_{k-1}$ cannot leave $B_{k}$ --- the same observation that drives
+subcase 1A.
+
+The proof does not need $\delta$ to be irreducible, or comparable with any
+$\sigma_{i}$; it is an arbitrary congruence, and the additional clause is the
+only place any relation between $\delta$ and $\sigma_{m}$ is asserted.
+\end{hazard}
 
 \begin{longlemma}[The intersection property]\label{lem:intersection-good}
 Let $B\lll A$, $C\lll A$ with $B\cap C\neq\varnothing$. Then
@@ -5183,9 +5397,13 @@ both are written so that a reader can check them in a few lines by hand.
 One structural property \emph{is} checked mechanically: the proof-dependency
 graph of this document --- an edge from each statement to every statement its
 proof cites --- is acyclic, over $101$ statements, $60$ of which carry proofs,
-and $148$ edges. That is a check on the arrangement, not on the mathematics,
-and it has caught two real cycles: Caveats~\ref{haz:reverse-hom-split} and
-\ref{haz:central-critical-split}.
+and $151$ edges. That is a check on the arrangement, not on the mathematics,
+and it has caught three real cycles: Caveats~\ref{haz:reverse-hom-split} and
+\ref{haz:central-critical-split}, and a third that a first draft of
+\pkey{lem:self-intersection-pc} introduced by borrowing four steps from the
+proof of \pkey{lem:intersection-good} --- which consumes it. The borrowing was
+only rhetorical, but the parser is right that a proof may not cite a statement
+that cites it, and the steps are now written out.
 
 \subsection{The table}\label{sec:status-table}
 
@@ -5258,12 +5476,12 @@ and it has caught two real cycles: Caveats~\ref{haz:reverse-hom-split} and
   \pkey{lem:perfect-from-linked}, \pkey{lem:no-abs-in-linear},
   \pkey{lem:ba-central-meets}
   & \textsc{proved} & \\
-\pkey{lem:self-intersection-pc} & \textsc{outlined} & \textbf{consumed by
-  \pkey{lem:intersection-good}}, subsubcase 2A3 \\
+\pkey{lem:self-intersection-pc} & \textsc{proved} & consumed by
+  \pkey{lem:inter\brk section-good}, subsubcase 2A3;
+  Caveat~\ref{haz:self-intersection} \\
 \pkey{lem:intersection-good} & \textsc{proved} & both parts written out, with
   the five properness splits and the two full-fibre steps;
-  Caveat~\ref{haz:intersection-draft}. Rests on
-  \pkey{lem:self-intersection-pc}, which is still an outline \\
+  Caveat~\ref{haz:intersection-draft} \\
 \pkey{lem:block-good-bridge}, \pkey{lem:center-pushed-in},
   \pkey{lem:leftlinked-stay-full}, \pkey{lem:factor-by-delta}
   & \textsc{outlined} & \\
@@ -5312,9 +5530,9 @@ and it has caught two real cycles: Caveats~\ref{haz:reverse-hom-split} and
 
 The algebraic core of the strong-subuniverse theory
 (\S\ref{sec:properties}--\S\ref{sec:strongproofs}) is the part in the best
-shape: of its sixty statements, thirty-eight are proved here --- one of them,
+shape: of its sixty statements, thirty-nine are proved here --- one of them,
 \pkey{lem:maximal-mult}, only under Hypothesis~\ref{hyp:maximal-mult} ---
-twelve are imported with exact citations, six are outlined, and four are
+twelve are imported with exact citations, five are outlined, and four are
 stated only.
 \S\ref{sec:main-statements} is in much worse shape: its spine ---
 \pkey{lem:bridge-from-instance}, and with it most of
@@ -5331,10 +5549,10 @@ Five items block the rest, and they are the honest reading of the table.
 \item The rectangularity normalisation of Caveat~\ref{haz:rectangularise},
   on which \pkey{lem:no-cross-bridge} and \pkey{lem:bridge-to-pc} rest, and
   through them the $\TPC$ case of \pkey{thm:stable-intersection}.
-\item \pkey{lem:self-\brk intersection-pc}, now the one outline standing
-  between \pkey{lem:inter\brk section-good} --- and so much of
-  \S\ref{sec:bridge-proofs} onwards --- and a complete proof; and the rewrite
-  of \pkey{lem:multiply-all-linear}.
+\item The rewrite of \pkey{lem:multiply-\brk all-linear}, which is not yet a
+  proof. With \pkey{lem:inter\brk section-good} and
+  \pkey{lem:self-\brk intersection-pc} both written out, this is what is left
+  of the intersection-and-factorisation layer.
 \item The linear algebra of \pkey{thm:codim-one}
   (Caveat~\ref{haz:step2-linear-algebra}), and the common binary absorption
   witness at the call site of \pkey{lem:ba-center-implies}

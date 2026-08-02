@@ -36,8 +36,8 @@ statement in the proof paper is marked *proved*, *imported* (with an exact citat
 the hypotheses as the source states them), *outlined*, *stated only*, or *open*.
 
 The algebraic core of the strong-subuniverse theory is in the best shape: of its sixty
-statements, thirty-eight are proved here (one of them, `lem:maximal-mult`, only under an
-explicitly stated hypothesis), twelve are imported, six are outlined, four are stated only.
+statements, thirty-nine are proved here (one of them, `lem:maximal-mult`, only under an
+explicitly stated hypothesis), twelve are imported, five are outlined, four are stated only.
 The main statements are not: the lemma that produces bridges from an instance is stated
 without proof, and part (1) of the main induction is an outline whose measure is not yet
 well founded across expanded coverings.
@@ -54,9 +54,9 @@ Five items block the rest:
    intersection. (The *reflexivisation*, listed here earlier and flagged by the
    review, turned out to need no argument: the hypothesis `δ̃ ⊋ σ` already
    forces it.)
-3. **`lem:self-intersection-pc`**, now the only outline standing under
-   `lem:intersection-good` — which is otherwise written out in full, both parts —
-   and the rewrite of `lem:multiply-all-linear`.
+3. The rewrite of **`lem:multiply-all-linear`**, which is not yet a proof.
+   `lem:intersection-good` and `lem:self-intersection-pc` are both now written
+   out in full, so this is what is left of that layer.
 4. The **induction measure** across expanded coverings, and the **termination of
    weakening** — whose obvious measure points the wrong way.
 5. The **linear algebra** of the codimension-one theorem, and the **common binary

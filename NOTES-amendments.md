@@ -90,6 +90,21 @@ performs silently. Grouped by where they sit.
 6. `CORIntersectionPCLinearIsGood` writes `δ = f^{-1}(σ)` with `f` undefined — read `f₁` — and
    admits "empty" where the lemma requires `B ∩ C ≠ ∅`.
 
+**`LEMSelfIntersectionPC` (line 419)**, which subsubcase 2A3 consumes. *Written out in full;
+same shape, three more silent steps.*
+- Subcase 1B displays `(E ∩ B_{k-1})/σ_k = B_{k-1}/σ_{k-1}` (line 481). The right-hand side is
+  an index slip for `B_{k-1}/σ_k`; `σ_{k-1}` has no role in that subcase. This is the typo the
+  external review flagged.
+- The same branch concludes `((B_k∘δ) ∩ B_{k-1})/σ_k = B_{k-1}/σ_k` from that identity, which
+  needs `E` to **meet** `B_k`. It does — the σ_k-classes the witnesses exhaust include the
+  class of `B_k` — but nothing in the text says so.
+- Subcase 2C proves `R` full, a statement about `B_{k-1}`, then asserts a conclusion about
+  `B_k`. The transfer works because `B_k = B_{k-1} ∩ E_k` with `E_k` a σ_k-class, so a σ_k-move
+  inside `B_{k-1}` cannot leave `B_k` — the same observation that drives subcase 1A.
+- Not a defect but worth recording: `δ` is an arbitrary congruence, not assumed irreducible or
+  comparable with any `σ_i`, and the "additionally" clause is the only place any relation
+  between `δ` and `σ_m` is asserted.
+
 **§5.4, first block.**
 7. `δ̃` is reflexive, from `0_A ⊆ proj_{1,2}(δ) ⊆ δ̃`. Everything reflexive downstream needs it.
 8. `proj_{1,2}(σ ∩ E⁴) = ω ∩ E²`, which is what makes Case 1's choice of `E` the right one.

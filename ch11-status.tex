@@ -34,9 +34,13 @@ both are written so that a reader can check them in a few lines by hand.
 One structural property \emph{is} checked mechanically: the proof-dependency
 graph of this document --- an edge from each statement to every statement its
 proof cites --- is acyclic, over $101$ statements, $60$ of which carry proofs,
-and $148$ edges. That is a check on the arrangement, not on the mathematics,
-and it has caught two real cycles: Caveats~\ref{haz:reverse-hom-split} and
-\ref{haz:central-critical-split}.
+and $151$ edges. That is a check on the arrangement, not on the mathematics,
+and it has caught three real cycles: Caveats~\ref{haz:reverse-hom-split} and
+\ref{haz:central-critical-split}, and a third that a first draft of
+\pkey{lem:self-intersection-pc} introduced by borrowing four steps from the
+proof of \pkey{lem:intersection-good} --- which consumes it. The borrowing was
+only rhetorical, but the parser is right that a proof may not cite a statement
+that cites it, and the steps are now written out.
 
 \subsection{The table}\label{sec:status-table}
 
@@ -109,12 +113,12 @@ and it has caught two real cycles: Caveats~\ref{haz:reverse-hom-split} and
   \pkey{lem:perfect-from-linked}, \pkey{lem:no-abs-in-linear},
   \pkey{lem:ba-central-meets}
   & \textsc{proved} & \\
-\pkey{lem:self-intersection-pc} & \textsc{outlined} & \textbf{consumed by
-  \pkey{lem:intersection-good}}, subsubcase 2A3 \\
+\pkey{lem:self-intersection-pc} & \textsc{proved} & consumed by
+  \pkey{lem:inter\brk section-good}, subsubcase 2A3;
+  Caveat~\ref{haz:self-intersection} \\
 \pkey{lem:intersection-good} & \textsc{proved} & both parts written out, with
   the five properness splits and the two full-fibre steps;
-  Caveat~\ref{haz:intersection-draft}. Rests on
-  \pkey{lem:self-intersection-pc}, which is still an outline \\
+  Caveat~\ref{haz:intersection-draft} \\
 \pkey{lem:block-good-bridge}, \pkey{lem:center-pushed-in},
   \pkey{lem:leftlinked-stay-full}, \pkey{lem:factor-by-delta}
   & \textsc{outlined} & \\
@@ -163,9 +167,9 @@ and it has caught two real cycles: Caveats~\ref{haz:reverse-hom-split} and
 
 The algebraic core of the strong-subuniverse theory
 (\S\ref{sec:properties}--\S\ref{sec:strongproofs}) is the part in the best
-shape: of its sixty statements, thirty-eight are proved here --- one of them,
+shape: of its sixty statements, thirty-nine are proved here --- one of them,
 \pkey{lem:maximal-mult}, only under Hypothesis~\ref{hyp:maximal-mult} ---
-twelve are imported with exact citations, six are outlined, and four are
+twelve are imported with exact citations, five are outlined, and four are
 stated only.
 \S\ref{sec:main-statements} is in much worse shape: its spine ---
 \pkey{lem:bridge-from-instance}, and with it most of
@@ -182,10 +186,10 @@ Five items block the rest, and they are the honest reading of the table.
 \item The rectangularity normalisation of Caveat~\ref{haz:rectangularise},
   on which \pkey{lem:no-cross-bridge} and \pkey{lem:bridge-to-pc} rest, and
   through them the $\TPC$ case of \pkey{thm:stable-intersection}.
-\item \pkey{lem:self-\brk intersection-pc}, now the one outline standing
-  between \pkey{lem:inter\brk section-good} --- and so much of
-  \S\ref{sec:bridge-proofs} onwards --- and a complete proof; and the rewrite
-  of \pkey{lem:multiply-all-linear}.
+\item The rewrite of \pkey{lem:multiply-\brk all-linear}, which is not yet a
+  proof. With \pkey{lem:inter\brk section-good} and
+  \pkey{lem:self-\brk intersection-pc} both written out, this is what is left
+  of the intersection-and-factorisation layer.
 \item The linear algebra of \pkey{thm:codim-one}
   (Caveat~\ref{haz:step2-linear-algebra}), and the common binary absorption
   witness at the call site of \pkey{lem:ba-center-implies}
