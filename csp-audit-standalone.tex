@@ -5,7 +5,7 @@
 %%  csp-audit.tex and the per-section sources; edit those and regenerate.
 %%  Line references in a review should therefore be resolved back to the
 %%  section sources, whose names appear in the banners below.
-%%  Generated from revision 64d26b6 on 2026-08-02.
+%%  Generated from revision ccbfba7 on 2026-08-02.
 %% =====================================================================
 
 %% ---------------------------------------------------------------- csp-audit.tex
@@ -1399,7 +1399,14 @@ component.
 
 Seven items for the rendering. The proof paper now carries the expansion in
 full; \pkey{haz:intersection-draft} keeps the four of these that a reader of
-the finished proof still needs.
+the finished proof still needs. Every consumer of the lemma was re-read against
+the written-out statement afterwards --- \pkey{cor:intersection-good},
+\pkey{lem:parallelogram-D}, \pkey{lem:intersect-all}(t),
+\pkey{thm:stable-intersection} in its no-$\TS$, mixed and both-$\TD$ branches,
+and \pkey{lem:two-stable}(2) --- and none of them breaks. Two points are worth
+recording. No call site consumes minimality of the chains, which item~5 below
+drops. And \pkey{lem:intersect-all}(t) is proved \emph{from} the lemma, in both
+parts, so it may not be used inside it; the proof in the proof paper does not.
 
 \begin{enumerate}\tightlist
 \item \emph{Part (s): five properness splits, not one.} Throughout part (s) the
