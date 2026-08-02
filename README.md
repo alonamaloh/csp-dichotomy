@@ -35,11 +35,12 @@ any repair marker, any commentary on the source, and any mention of a proof assi
 statement in the proof paper is marked *proved*, *imported* (with an exact citation and
 the hypotheses as the source states them), *outlined*, *stated only*, or *open*.
 
-The algebraic core of the strong-subuniverse theory is in the best shape: thirty
-statements proved, eleven imported, seven outlined, four stated only, one open. The main
-statements are not: the lemma that produces bridges from an instance is stated without
-proof, and part (1) of the main induction is an outline whose measure is not yet well
-founded across expanded coverings.
+The algebraic core of the strong-subuniverse theory is in the best shape: of its sixty
+statements, thirty-eight are proved here (one of them, `lem:maximal-mult`, only under an
+explicitly stated hypothesis), twelve are imported, six are outlined, four are stated only.
+The main statements are not: the lemma that produces bridges from an instance is stated
+without proof, and part (1) of the main induction is an outline whose measure is not yet
+well founded across expanded coverings.
 
 Five items block the rest:
 
@@ -48,15 +49,17 @@ Five items block the rest:
    stronger than what the other hypotheses give, and unproved. Three routes to
    it have failed; the audit records all three.
 2. The **rectangularity normalisation** in the no-cross-bridge proof — "compose
-   it with itself many times". (The *reflexivisation*, listed here earlier and
-   flagged by the review, turned out to need no argument: the hypothesis
-   `δ̃ ⊋ σ` already forces it.)
-3. The expansion of **`lem:intersection-good`**, on which much of the bridge theory
-   rests, and the rewrite of `lem:multiply-all-linear`.
-4. **`lem:no-cross-bridge`** and **`lem:bridge-to-pc`**, consumed by stable intersection.
-5. The **induction measure** across expanded coverings, and the **termination of
+   it with itself many times" — on which **`lem:no-cross-bridge`** and
+   **`lem:bridge-to-pc`** rest, and through them the `PC` case of stable
+   intersection. (The *reflexivisation*, listed here earlier and flagged by the
+   review, turned out to need no argument: the hypothesis `δ̃ ⊋ σ` already
+   forces it.)
+3. **`lem:self-intersection-pc`**, now the only outline standing under
+   `lem:intersection-good` — which is otherwise written out in full, both parts —
+   and the rewrite of `lem:multiply-all-linear`.
+4. The **induction measure** across expanded coverings, and the **termination of
    weakening** — whose obvious measure points the wrong way.
-6. The **linear algebra** of the codimension-one theorem, and the **common binary
+5. The **linear algebra** of the codimension-one theorem, and the **common binary
    absorption witness** at the call site of `lem:ba-center-implies`.
 
 The dependency order among the three large statements is

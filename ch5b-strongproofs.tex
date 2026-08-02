@@ -456,6 +456,29 @@ If $B\subt{T_{1}}\mathbf A$, $C\subt{T_{2}}\mathbf A$, $B\cap C=\varnothing$
 and $T_{1},T_{2}\in\{\TBA,\TC,\TS\}$, then $T_{1}=T_{2}\in\{\TBA,\TC\}$.
 \end{lemma}
 
+\begin{lemma}[A BA-and-central subuniverse meets every strong one]\label{lem:ba-central-meets}
+If $D\subt{\TBA,\TC}\mathbf A$ and $E\subt{T}\mathbf A$ with
+$T\in\{\TBA,\TC,\TS\}$, then $D\cap E\neq\varnothing$.
+\end{lemma}
+
+\begin{proof}
+Suppose $D\cap E=\varnothing$. Lemma~\ref{lem:possible-intersections} applied
+to the pair $(D,E)$ with $T_{1}=\TBA$ gives $T=\TBA$; applied to the same pair
+with $T_{1}=\TC$ it gives $T=\TC$. The two conclusions are incompatible.
+\end{proof}
+
+\begin{hazard}[Where the conjunction reading of $\subt{\TBA,\TC}$ pays]\label{haz:ba-central-meets}
+Lemma~\ref{lem:ba-central-meets} is false with $\subt{\TBA,\TC}$ read as a
+disjunction: two disjoint binary absorbing subuniverses are exactly what
+Lemma~\ref{lem:possible-intersections} permits. What makes the argument run is
+that $D$ carries \emph{both} types at once, so whichever of $\TBA$ and $\TC$
+the subuniverse $E$ has, the other is available for $D$ and the two types
+differ. This is the reading fixed in Caveat~\ref{haz:S-type}; it is the
+mechanism already used inside the proof of Lemma~\ref{lem:strong-nonempty},
+and the two appeals in Lemma~\ref{lem:intersection-good}(s) are what make it
+worth naming.
+\end{hazard}
+
 \subsection{The intersection property}\label{sec:intersection-property}
 
 The goal is Lemma~\ref{lem:intersection-good}: if $B\lll A$, $C\lll A$ meet and
@@ -609,62 +632,373 @@ Let $B\lll A$, $C\lll A$ with $B\cap C\neq\varnothing$. Then
 \end{enumerate}
 \end{longlemma}
 
-\begin{proof}[Proof outline, with the delicate steps in full]
-Fix chains $B=B_{k}<\dots<B_{0}=A$ and $C=C_{\ell}<\dots<C_{0}=A$, put
-$\sigma=\bigcap_{i}\sigma_{i}$ and $\omega=\bigcap_{j}\omega_{j}$, and induct on
-$k+\ell$. Every appeal to the inductive hypothesis lands at strictly smaller
-$k+\ell$: (s) uses (s) and (d) at $k+(\ell-1)$, subcase 2B2 uses (s) at
-$(n-1)+k$, and subcase 2B3 uses (d) at $(n-1)+k$, with $n\le\ell$ throughout.
+\begin{proof}
+Fix chains
+\[
+  B=B_{k}\subt[A]{T_{k}(\sigma_{k})}\dots\subt[A]{T_{1}(\sigma_{1})}B_{0}=A,
+  \qquad
+  C=C_{\ell}\subt[A]{\mathcal T_{\ell}(\omega_{\ell})}\dots
+  \subt[A]{\mathcal T_{1}(\omega_{1})}C_{0}=A
+\]
+witnessing $B\lll A$ and $C\lll A$, with all $T_{i},\mathcal T_{j}\in
+\{\TBA,\TC,\TS,\TD\}$ and, by Definition~\ref{def:types}, $\sigma_{i}=A^{2}$
+whenever $T_{i}\neq\TD$ and $\omega_{j}=A^{2}$ whenever
+$\mathcal T_{j}\neq\TD$. Put $\sigma=\bigcap_{i=1}^{k}\sigma_{i}$ and
+$\omega=\bigcap_{j=1}^{\ell}\omega_{j}$, so that
+$\sigma\cap\omega=\delta_{1}\cap\dots\cap\delta_{s}$ is exactly the
+intersection named in the ``moreover'' clause. The induction is on $k+\ell$
+over \emph{pairs of chains} --- every appeal below names the shorter pair it is
+made to --- and proves (s) and (d) together.
 
-\smallskip\noindent\textbf{(s).} Split on the type $\mathcal T_{\ell}$ of the
-last step of $C$'s chain. In the case $\mathcal T_{\ell}=\TD$ the natural move
-is to derive $(G\cap C_{\ell-1})/\omega_{\ell}\subt{\TBA,\TC}C_{\ell-1}/
-\omega_{\ell}$ and contradict Definition~\ref{def:types}(iii). But
-Lemmas~\ref{lem:ba-center-intersect} and \ref{lem:factor-type} supply only
-$\subte{}$, so the case must be split: if the containment is an equality then
-every $\omega_{\ell}$-block meeting $C_{\ell-1}$ meets $G\cap C_{\ell-1}$, in
-particular the block $E$ with $C_{\ell}=C_{\ell-1}\cap E$, so
-$G\cap C_{\ell}\neq\varnothing$, which is the conclusion; and if it is proper
-the contradiction stands.
+Three facts are used throughout and are recorded once.
 
-\smallskip\noindent\textbf{(d).} Put
-$S=\{(a_{1}/\delta,\dots,a_{|A|}/\delta): \forall i,j\;(a_{i},a_{j})\in
-\sigma\cap\omega\}$, a reflexive, totally symmetric, shift-closed subuniverse of
-$(\mathbf A/\delta)^{|A|}$, and apply Lemma~\ref{lem:tot-sym-irred}.
+\emph{(F1) $B^{2}\subseteq\sigma$ and $C^{2}\subseteq\omega$.} If $T_{i}=\TD$
+then $B_{i}=B_{i-1}\cap E_{i}$ for a block $E_{i}$ of $\sigma_{i}$, so
+$B_{i}^{2}\subseteq\sigma_{i}$ and a fortiori $B^{2}\subseteq\sigma_{i}$;
+otherwise $\sigma_{i}=A^{2}$. Likewise for $C$. In particular
+$(a,b)\in\sigma\cap\omega$ for all $a,b\in B\cap C$.
 
-\emph{Case 1: $S$ is the diagonal.} Then $\sigma\cap\omega\subseteq\delta$,
-which is the ``moreover'' clause; and any $a,b\in B\cap C$ satisfy
-$(a,b)\in\sigma\cap\omega$, so $|(B\cap C)/\delta|=1$.
+\emph{(F2) $\sigma\subseteq\sigma_{i}$ and $\omega\subseteq\omega_{j}$} for
+every $i$ and $j$, by construction.
 
-\emph{Case 2: $(B/\delta)^{|A|}\subseteq S$.} Refine $S$ to $S_{m,n}$ by
-requiring $a_{i}\in B_{m}\cap C_{n}$, and take the least $m$ (subcase 2A) or
-least $n$ (subcase 2B) at which containment fails, splitting on the type of the
-corresponding step. Three steps in that split deserve to be written out.
-\emph{Properness}: in 2A1 and 2B1 the containments
-$S_{m,0}\cap(B/\delta)^{|A|}\subt{T_{m}}(B/\delta)^{|A|}$ are proper by the
-minimal choice of $m$, and nonempty because the constant tuples
-$(b/\delta,\dots,b/\delta)$ for $b\in B$ lie in $S_{m,0}$, since $B\subseteq
-B_{m}$ and $(b,b)\in\sigma\cap\omega$. \emph{Which block}: in 2B3 the inductive
-hypothesis offers ``size $1$ or all of $C_{\ell-1}/\omega_{n}$'', and the
-stronger reading ``$=C_{n}/\omega_{n}$'' used there is correct because
-$B\cap C\neq\varnothing$ and $C\subseteq C_{n}$ force $B_{k}\cap C_{n}\neq
-\varnothing$, so the single block is the one defining $C_{n}$. \emph{Full
-fibres}: the appeals in 2A3 and 2B3 to a $d$ with
-$(B/\delta)^{|A|}\times\{d\}\subseteq R'$ are Lemma~\ref{lem:full-fibre}.
-Subcase 2C survives and gives $(B\cap C)/\delta=B/\delta$.
+\emph{(F3) $|A|\ge2$.} That $\delta$ is a dividing congruence for $B\le A$
+means, by Definition~\ref{def:types}, that $B'\subt[A]{\TD(\delta)}B$ for some
+$B'$; such a $B'$ is a nonempty proper subset $B\cap E$ of $B$ cut out by a
+$\delta$-block, so $|B/\delta|\ge2$, and hence $|A|\ge|B|\ge2$. The same
+appeal supplies the two properties of $\delta$ used below: $\mathbf B/\delta$
+is BA and centre free, and $B^{2}\subseteq\cover{\delta}$.
+
+\medskip\noindent\textbf{Part (s).} Let $G\subt{\TBA,\TC}B$. If $\ell=0$ then
+$C=A\supseteq G\neq\varnothing$. So let $\ell\ge1$. The chain for $C$
+truncated at $C_{\ell-1}$ witnesses $C_{\ell-1}\lll A$ with $\ell-1$ steps, and
+$B\cap C_{\ell-1}\supseteq B\cap C\neq\varnothing$; so the inductive hypothesis
+(s), at $k+(\ell-1)$, gives
+\begin{equation}\label{eq:ig-s-start}
+  G\cap C_{\ell-1}\neq\varnothing .
+\end{equation}
+Write $A'=B\cap C_{\ell-1}$, a nonempty subuniverse of $\mathbf A$. Since
+$G\subseteq B$ we have $G\cap X=G\cap A'\cap X$ for every $X\subseteq
+C_{\ell-1}$, and $B\cap C_{\ell}\supseteq B\cap C\neq\varnothing$. By
+Lemma~\ref{lem:ba-center-intersect} applied twice, once for $\TBA$ and once for
+$\TC$,
+\begin{equation}\label{eq:ig-s-cut}
+  G\cap C_{\ell-1}=G\cap A'\dsubte{\TBA,\TC}A',
+\end{equation}
+and by \eqref{eq:ig-s-start} the dot may be dropped. Split on
+$\mathcal T_{\ell}$.
+
+\emph{Case $\mathcal T_{\ell}=\TD$,} with $C_{\ell}=C_{\ell-1}\cap E$ for a
+block $E$ of $\omega_{\ell}$. Apply the inductive hypothesis (d) to the pair
+$(C_{\ell-1},B)$ --- that is, with $C_{\ell-1}$ in the role of the first
+subuniverse and $B$ in the role of the second --- and to the dividing
+congruence $\omega_{\ell}$ for $C_{\ell-1}\le A$, at $(\ell-1)+k$. Either
+$|A'/\omega_{\ell}|=1$ or $A'/\omega_{\ell}=C_{\ell-1}/\omega_{\ell}$.
+
+In the first case the sole $\omega_{\ell}$-class meeting $A'$ is $E$, because
+$\varnothing\neq B\cap C\subseteq A'\cap E$; hence $A'\subseteq E$ and
+$A'=A'\cap E=B\cap C_{\ell}$, so
+$G\cap C_{\ell}=G\cap A'\cap C_{\ell}=G\cap A'=G\cap C_{\ell-1}\neq\varnothing$.
+
+In the second case Lemma~\ref{lem:factor-type} applied to
+\eqref{eq:ig-s-cut} gives
+$(G\cap C_{\ell-1})/\omega_{\ell}\subte{\TBA,\TC}A'/\omega_{\ell}=
+C_{\ell-1}/\omega_{\ell}$. If that containment is proper it exhibits a proper
+nonempty binary absorbing subuniverse of $C_{\ell-1}/\omega_{\ell}$,
+contradicting the requirement of Definition~\ref{def:types}(iii) for the step
+$C_{\ell}\subt[A]{\TD(\omega_{\ell})}C_{\ell-1}$ that
+$\mathbf C_{\ell-1}/\omega_{\ell}$ be BA and centre free. If it is an equality
+then every $\omega_{\ell}$-class meeting $C_{\ell-1}$ already meets
+$G\cap C_{\ell-1}$; the class $E$ does meet $C_{\ell-1}$, since
+$C_{\ell}\neq\varnothing$, so there is
+$g\in G\cap C_{\ell-1}\cap E=G\cap C_{\ell}$.
+
+\emph{Case $\mathcal T_{\ell}\in\{\TBA,\TC\}$.} By
+Lemma~\ref{lem:ba-center-intersect}, $B\cap C_{\ell}=A'\cap C_{\ell}
+\dsubte{\mathcal T_{\ell}}A'$, and it is nonempty. If
+$G\cap C_{\ell-1}=A'$ then $A'\subseteq G$, and $\varnothing\neq B\cap
+C_{\ell}\subseteq A'$ gives $G\cap C_{\ell}\neq\varnothing$. If
+$B\cap C_{\ell}=A'$ then $G\cap C_{\ell}=G\cap A'\cap C_{\ell}=G\cap A'\neq
+\varnothing$. Otherwise both containments are proper, so
+$G\cap C_{\ell-1}\subt{\TBA,\TC}A'$ and $B\cap C_{\ell}
+\subt{\mathcal T_{\ell}}A'$, and Lemma~\ref{lem:ba-central-meets} inside
+$\mathbf A'$ makes their intersection nonempty; that intersection is contained
+in $G\cap C_{\ell}$.
+
+\emph{Case $\mathcal T_{\ell}=\TS$.} By Definition~\ref{def:ba-center-free}
+there is a nonempty $G'\subseteq C_{\ell}$ with $G'\subt{\TBA,\TC}C_{\ell-1}$
+--- proper, since $G'\subseteq C_{\ell}\lneq C_{\ell-1}$. The inductive
+hypothesis (s) applied to the pair $(C_{\ell-1},B)$ with the subuniverse $G'$,
+at $(\ell-1)+k$, gives $B\cap G'\neq\varnothing$; so
+$B\cap G'=A'\cap G'\subte{\TBA,\TC}A'$ by
+Lemma~\ref{lem:ba-center-intersect}. If $G\cap C_{\ell-1}=A'$ then
+$\varnothing\neq B\cap G'\subseteq A'\subseteq G$ and $B\cap G'\subseteq
+C_{\ell}$, so $G\cap C_{\ell}\neq\varnothing$. If $B\cap G'=A'$ then
+$A'\subseteq G'\subseteq C_{\ell}$, so $G\cap C_{\ell}\supseteq G\cap A'\neq
+\varnothing$. Otherwise both are proper and
+Lemma~\ref{lem:ba-central-meets} gives
+$\varnothing\neq(G\cap C_{\ell-1})\cap(B\cap G')\subseteq G\cap C_{\ell}$.
+
+\medskip\noindent\textbf{Part (d).} For $0\le m\le k$ and $0\le n\le\ell$ put
+\[
+  P_{m,n}=\bigl\{(a_{1},\dots,a_{|A|})\in(B_{m}\cap C_{n})^{|A|}:
+    (a_{i},a_{j})\in\sigma\cap\omega\ \text{for all }i,j\bigr\},
+  \qquad S_{m,n}=P_{m,n}/\delta ,
+\]
+the quotient being coordinatewise and, as always, an \emph{image}
+(\S\ref{sec:legislation}, item~\ref{leg:quotient}): a tuple
+$x\in(A/\delta)^{|A|}$ lies in $S_{m,n}$ exactly when \emph{one} tuple of
+representatives of its entries lies in $P_{m,n}$. Each $P_{m,n}$ is a
+subuniverse of $\mathbf A^{|A|}$, being cut out by unary and binary
+conditions, so each $S_{m,n}$ is a subuniverse of $(\mathbf A/\delta)^{|A|}$;
+each is closed under substitution $x\mapsto x\circ g$ along any
+$g:[|A|]\to[|A|]$, because every defining condition is unary in $a_{i}$ or
+binary in $(a_{i},a_{j})$, and in particular each is totally symmetric and
+shift-closed; and $S_{m,n}\supseteq S_{m',n'}$ whenever $m\le m'$ and
+$n\le n'$. Write $S=S_{0,0}$; since $B_{0}\cap C_{0}=A$ and
+$(a,a)\in\sigma\cap\omega$ for every $a$, this one --- and only this one --- is
+also reflexive.
+
+By (F3) the arity $|A|$ is at least $2$, so Lemma~\ref{lem:tot-sym-irred}
+applies to $S$ and the dividing congruence $\delta$ for $B\le A$, leaving two
+cases.
+
+\emph{Case 1: $S=\{(a/\delta,\dots,a/\delta):a\in A\}$.} Let
+$(a,b)\in\sigma\cap\omega$. Since $|A|\ge2$ the tuple $(a,b,b,\dots,b)$ lies
+in $P_{0,0}$, its entries being pairwise $\sigma\cap\omega$-related; so its
+image lies in $S$ and is therefore constant, giving $a/\delta=b/\delta$. Hence
+$\sigma\cap\omega\subseteq\delta$, which is the ``moreover'' clause. By (F1)
+any $a,b\in B\cap C$ satisfy $(a,b)\in\sigma\cap\omega\subseteq\delta$, and
+$B\cap C\neq\varnothing$, so $|(B\cap C)/\delta|=1$.
+
+\emph{Case 2: $(B/\delta)^{|A|}\subseteq S$.} We show that the only surviving
+subcase is 2C, in which $(B\cap C)/\delta=B/\delta$; by (F3) that alternative
+has $|(B\cap C)/\delta|=|B/\delta|\ge2$, so the ``moreover'' clause is not
+triggered in Case 2 and nothing further is owed.
+
+\emph{Subcase 2A: $(B/\delta)^{|A|}\not\subseteq S_{k,0}$.} Choose $m$ minimal
+with $(B/\delta)^{|A|}\not\subseteq S_{m,0}$; since $S_{0,0}=S$ we have
+$m\ge1$ and $(B/\delta)^{|A|}\subseteq S_{m-1,0}$, so $(B/\delta)^{|A|}$ is a
+subalgebra of $\mathbf S_{m-1,0}$. Note that for every $b\in B$ the constant
+tuple $(b,\dots,b)$ lies in $P_{m,0}$, because $B\subseteq B_{m}$ and
+$(b,b)\in\sigma\cap\omega$; so
+\begin{equation}\label{eq:ig-2A-nonempty}
+  \varnothing\neq S_{m,0}\cap(B/\delta)^{|A|}\subsetneq(B/\delta)^{|A|},
+\end{equation}
+the properness being the choice of $m$. Split on $T_{m}$.
+
+\emph{Subsubcase 2A1: $T_{m}\in\{\TBA,\TC\}$.} The formula
+\[
+  \Phi_{X}(x_{1},\dots,x_{|A|})=
+  \bigwedge_{i,j}(\sigma\cap\omega)(x_{i},x_{j})\wedge\bigwedge_{i}X(x_{i})
+\]
+is positive primitive in the unary relation $X$, and defines $P_{m-1,0}$ at
+$X=B_{m-1}$ and $P_{m,0}$ at $X=B_{m}$. Since $B_{m}\subt{T_{m}}B_{m-1}$,
+Lemma~\ref{lem:pp-propagation} gives $P_{m,0}\dsubte{T_{m}}P_{m-1,0}$, and
+$P_{m,0}\neq\varnothing$ by the constant tuples, so
+$P_{m,0}\subte{T_{m}}P_{m-1,0}$. Lemma~\ref{lem:factor-type}, applied to that
+containment inside $\mathbf P_{m-1,0}$ with the congruence induced by
+$\delta^{|A|}$, gives $S_{m,0}\subte{T_{m}}S_{m-1,0}$, and then
+Lemma~\ref{lem:ba-center-intersect} restricts along the subalgebra
+$(B/\delta)^{|A|}\le\mathbf S_{m-1,0}$:
+\[
+  S_{m,0}\cap(B/\delta)^{|A|}\dsubte{T_{m}}(B/\delta)^{|A|} .
+\]
+By \eqref{eq:ig-2A-nonempty} the left side is nonempty and proper, so this is
+$\subt{T_{m}}$, and Lemma~\ref{lem:power-to-base} produces a proper nonempty
+subuniverse of $\mathbf B/\delta$ of type $T_{m}\in\{\TBA,\TC\}$. That
+contradicts (F3).
+
+\emph{Subsubcase 2A2: $T_{m}=\TS$.} By Definition~\ref{def:ba-center-free}
+choose a nonempty $G\subseteq B_{m}$ with $G\subt{\TBA,\TC}B_{m-1}$. Since
+$B\lll^{A}B_{m-1}\lll A$ along the two halves of the chain,
+Lemma~\ref{lem:strong-nonempty} gives $G\cap B\neq\varnothing$. Run 2A1 with
+$G$ in place of $B_{m}$: writing $P^{G}=\Phi_{G}$ and $S^{G}=P^{G}/\delta$,
+the same three lemmas give $S^{G}\cap(B/\delta)^{|A|}\dsubte{\TBA}
+(B/\delta)^{|A|}$; it is nonempty, since $b\in G\cap B$ contributes its
+constant tuple, and proper, since $G\subseteq B_{m}$ makes it a subset of the
+proper set in \eqref{eq:ig-2A-nonempty}. Lemma~\ref{lem:power-to-base} again
+contradicts (F3). (Only the $\TBA$ half of $G\subt{\TBA,\TC}B_{m-1}$ is spent
+here.)
+
+\emph{Subsubcase 2A3: $T_{m}=\TD$,} with $B_{m}=B_{m-1}\cap E$ for a block $E$
+of $\sigma_{m}$. Let $B\circ\delta$ denote the $\delta$-saturation of $B$,
+a subuniverse of $\mathbf A$, and note $a/\delta\in B/\delta\iff a\in
+B\circ\delta$. Put
+\[
+  P'=\bigl\{(a_{1},\dots,a_{|A|},b): b\in B_{m-1},\ \forall i\;
+    a_{i}\in B_{m-1}\cap(B\circ\delta),\ \forall i,j\;(a_{i},a_{j})\in
+    \sigma\cap\omega,\ \forall i\;(a_{i},b)\in\sigma_{m}\bigr\}
+\]
+and let $R'\le(\mathbf A/\delta)^{|A|}\times\mathbf A/\sigma_{m}$ be its image
+under $(a_{1},\dots,a_{|A|},b)\mapsto(a_{1}/\delta,\dots,a_{|A|}/\delta,
+b/\sigma_{m})$, so that $R'\subseteq(B/\delta)^{|A|}\times B_{m-1}/\sigma_{m}$.
+Four facts about $R'$.
+
+\emph{(i) $\proj_{1,\dots,|A|}(R')=(B/\delta)^{|A|}$.} Let
+$x\in(B/\delta)^{|A|}$. By minimality of $m$, $x\in S_{m-1,0}$, so there are
+$a_{i}\in B_{m-1}$, pairwise $\sigma\cap\omega$-related, with
+$a_{i}/\delta=x_{i}$; each $a_{i}$ then lies in $B\circ\delta$. By (F2),
+$(a_{i},a_{j})\in\sigma\subseteq\sigma_{m}$, so $b=a_{1}\in B_{m-1}$ satisfies
+$(a_{i},b)\in\sigma_{m}$ for every $i$, and $(a_{1},\dots,a_{|A|},b)\in P'$.
+
+\emph{(ii) $\proj_{|A|+1}(R')=((B\circ\delta)\cap B_{m-1})/\sigma_{m}$.} For
+$\subseteq$: a witnessing tuple has $a_{1}\in B_{m-1}\cap(B\circ\delta)$ and
+$(a_{1},b)\in\sigma_{m}$, so $b/\sigma_{m}=a_{1}/\sigma_{m}$. For
+$\supseteq$: given $c$ in that set, the tuple $(c,\dots,c,c)$ lies in $P'$.
+
+\emph{(iii) $(B/\delta)^{|A|}\times B_{m}/\sigma_{m}\not\subseteq R'$.} Suppose
+otherwise and fix $b_{0}\in B\subseteq B_{m}$. For any
+$x\in(B/\delta)^{|A|}$ the pair $(x,b_{0}/\sigma_{m})$ lies in $R'$, so it has
+a witness $(a_{1},\dots,a_{|A|},b)\in P'$ with $b/\sigma_{m}=b_{0}/\sigma_{m}$;
+then $(a_{i},b_{0})\in\sigma_{m}$, and $b_{0}\in B_{m}\subseteq E$ forces
+$a_{i}\in E$, whence $a_{i}\in B_{m-1}\cap E=B_{m}$. So the witness lies in
+$P_{m,0}$ and $x\in S_{m,0}$ --- for every $x$, contradicting the choice of
+$m$.
+
+\emph{(iv) $\proj_{|A|+1}(R')=B_{m-1}/\sigma_{m}$.} Apply
+Lemma~\ref{lem:self-intersection-pc} to the chain for $B$, the congruence
+$\delta$ and the index $m$: by (ii) the projection is either
+$B_{m-1}/\sigma_{m}$ or $B_{m}/\sigma_{m}$. In the second case
+$B_{m}\subseteq E$ makes $B_{m}/\sigma_{m}$ a single point, so by (i) every
+$x\in(B/\delta)^{|A|}$ is paired in $R'$ with that point, i.e.\
+$(B/\delta)^{|A|}\times B_{m}/\sigma_{m}\subseteq R'$, contradicting (iii).
+
+By (i) and (iv), $R'$ is subdirect in $(\mathbf B/\delta)^{|A|}\times
+\mathbf B_{m-1}/\sigma_{m}$; both factors are finite algebras with the single
+basic operation $w$, so Convention~\ref{conv:standing} holds for them. $R'$ is
+closed under substitution in its first $|A|$ coordinates, since every defining
+condition of $P'$ is unary in $a_{i}$ or binary in $(a_{i},a_{j})$ or
+$(a_{i},b)$; and $|B/\delta|\le|A|$. So Lemma~\ref{lem:full-fibre}, with
+$F=B/\delta$ and $N=|A|$, supplies $d\in B_{m-1}/\sigma_{m}$ with
+$(B/\delta)^{|A|}\times\{d\}\subseteq R'$.
+
+Now apply Lemma~\ref{lem:central-relation} to the transpose
+$R'^{-1}=\{(y,x):(x,y)\in R'\}\sdle\mathbf B_{m-1}/\sigma_{m}\times
+(\mathbf B/\delta)^{|A|}$, whose associated set is
+$C^{\star}=\{c\in B_{m-1}/\sigma_{m}:\{c\}\times(B/\delta)^{|A|}\subseteq
+R'^{-1}\}$. Alternative (a) fails, since $d\in C^{\star}$. And $C^{\star}$ is
+\emph{proper}: were it all of $B_{m-1}/\sigma_{m}$ we should have
+$R'=(B/\delta)^{|A|}\times B_{m-1}/\sigma_{m}$, which contains
+$(B/\delta)^{|A|}\times B_{m}/\sigma_{m}$ and contradicts (iii). So
+alternative (b) makes $C^{\star}$ a proper nonempty central subuniverse of
+$B_{m-1}/\sigma_{m}$, contradicting Definition~\ref{def:types}(iii) for the
+step $B_{m}\subt[A]{\TD(\sigma_{m})}B_{m-1}$; and alternative (c) gives a
+proper nonempty binary absorbing subuniverse of the \emph{power}
+$(B/\delta)^{|A|}$, which Lemma~\ref{lem:power-to-base} moves down to
+$\mathbf B/\delta$, contradicting (F3). Both obligations of
+Caveat~\ref{haz:central-relation} are thereby discharged.
+
+\emph{Subcase 2B: $(B/\delta)^{|A|}\subseteq S_{k,0}$ but
+$(B/\delta)^{|A|}\not\subseteq S_{k,\ell}$.} Choose $n$ minimal with
+$(B/\delta)^{|A|}\not\subseteq S_{k,n}$; then $n\ge1$ and
+$(B/\delta)^{|A|}\subseteq S_{k,n-1}$. Fixing once and for all $b_{1}\in
+B\cap C\subseteq B_{k}\cap C_{n}$ --- this is the one place where the
+hypothesis $B\cap C\neq\varnothing$ is spent inside Case 2 --- its constant
+tuple lies in $P_{k,n}$, so
+\begin{equation}\label{eq:ig-2B-nonempty}
+  \varnothing\neq S_{k,n}\cap(B/\delta)^{|A|}\subsetneq(B/\delta)^{|A|} .
+\end{equation}
+Split on $\mathcal T_{n}$.
+
+\emph{Subsubcase 2B1: $\mathcal T_{n}\in\{\TBA,\TC\}$.} Verbatim 2A1, with the
+pp-formula
+$\bigwedge_{i,j}(\sigma\cap\omega)(x_{i},x_{j})\wedge\bigwedge_{i}B_{k}(x_{i})
+\wedge\bigwedge_{i}X(x_{i})$, with $X$ instantiated at $C_{n-1}$ and at
+$C_{n}$, and with \eqref{eq:ig-2B-nonempty} in place of
+\eqref{eq:ig-2A-nonempty}. It contradicts (F3).
+
+\emph{Subsubcase 2B2: $\mathcal T_{n}=\TS$.} Choose a nonempty $G\subseteq
+C_{n}$ with $G\subt{\TBA,\TC}C_{n-1}$. Here $B$ and $C_{n-1}$ lie on different
+chains, so Lemma~\ref{lem:strong-nonempty} does not apply and the induction is
+used instead: the inductive hypothesis (s) for the pair $(C_{n-1},B)$, at
+$(n-1)+k$, with $C_{n-1}\cap B\supseteq C\cap B\neq\varnothing$, gives
+$G\cap B\neq\varnothing$. Now run 2A2 with $G$ in place of $C_{n}$: the
+witness $b\in G\cap B$ lies in $B_{k}\cap C_{n-1}$ and makes the intersection
+nonempty, $G\subseteq C_{n}$ makes it proper by
+\eqref{eq:ig-2B-nonempty}, and Lemma~\ref{lem:power-to-base} contradicts (F3).
+
+\emph{Subsubcase 2B3: $\mathcal T_{n}=\TD$,} with $C_{n}=C_{n-1}\cap E$ for a
+block $E$ of $\omega_{n}$. Put
+\[
+  P'=\bigl\{(a_{1},\dots,a_{|A|},b): b\in C_{n-1},\ \forall i\;
+    a_{i}\in B_{k}\cap C_{n-1},\ \forall i,j\;(a_{i},a_{j})\in\sigma\cap\omega,
+    \ \forall i\;(a_{i},b)\in\omega_{n}\bigr\}
+\]
+and let $R'$ be its image in $(\mathbf A/\delta)^{|A|}\times\mathbf A/
+\omega_{n}$. No saturation appears in the first $|A|$ coordinates this time,
+because $a_{i}\in B_{k}=B$ already gives $a_{i}/\delta\in B/\delta$.
+
+\emph{(i)} $\proj_{1,\dots,|A|}(R')=(B/\delta)^{|A|}$: for
+$x\in(B/\delta)^{|A|}\subseteq S_{k,n-1}$ take witnesses $a_{i}\in B_{k}\cap
+C_{n-1}$; by (F2) $(a_{i},a_{j})\in\omega\subseteq\omega_{n}$, so
+$b=a_{1}\in C_{n-1}$ serves.
+\emph{(ii)} $\proj_{|A|+1}(R')=(B_{k}\cap C_{n-1})/\omega_{n}$, by the
+argument of 2A3(ii).
+\emph{(iii)} $(B/\delta)^{|A|}\times C_{n}/\omega_{n}\not\subseteq R'$: with
+$b_{1}\in B\cap C\subseteq B_{k}\cap C_{n}$ in place of $b_{0}$, the argument
+of 2A3(iii) puts every witness in $C_{n-1}\cap E=C_{n}$ and so every
+$x\in(B/\delta)^{|A|}$ in $S_{k,n}$, contradicting the choice of $n$.
+\emph{(iv)} $\proj_{|A|+1}(R')=C_{n-1}/\omega_{n}$: the inductive hypothesis
+(d) for the pair $(C_{n-1},B_{k})$ with the dividing congruence $\omega_{n}$
+for $C_{n-1}\le A$, at $(n-1)+k$, leaves $|(B_{k}\cap C_{n-1})/\omega_{n}|=1$
+or $(B_{k}\cap C_{n-1})/\omega_{n}=C_{n-1}/\omega_{n}$. In the first case the
+sole class is $E$, since $b_{1}\in B_{k}\cap C_{n}\subseteq E$; so
+$B_{k}\cap C_{n-1}\subseteq E$ and $B_{k}\cap C_{n-1}=B_{k}\cap C_{n-1}\cap
+E=B_{k}\cap C_{n}$, whence $P_{k,n-1}=P_{k,n}$ and $S_{k,n-1}=S_{k,n}$,
+contradicting the choice of $n$.
+
+From here 2A3 runs word for word with $\omega_{n}$ for $\sigma_{m}$,
+$C_{n-1}$ for $B_{m-1}$ and $C_{n}$ for $B_{m}$: a full fibre by
+Lemma~\ref{lem:full-fibre}, a proper
+nonempty $C^{\star}$, and Lemma~\ref{lem:central-relation} contradicting either
+Definition~\ref{def:types}(iii) for $C_{n}\subt[A]{\TD(\omega_{n})}C_{n-1}$ or
+(F3).
+
+\emph{Subcase 2C: $(B/\delta)^{|A|}\subseteq S_{k,\ell}$.} For $b\in B$ the
+constant tuple $(b/\delta,\dots,b/\delta)$ lies in $S_{k,\ell}$, so it has a
+witness in $(B_{k}\cap C_{\ell})^{|A|}=(B\cap C)^{|A|}$, whose first entry $a$
+satisfies $a/\delta=b/\delta$ with $a\in B\cap C$. Hence $B/\delta\subseteq
+(B\cap C)/\delta$, and the reverse containment is trivial, so
+$(B\cap C)/\delta=B/\delta$.
 \end{proof}
 
-\begin{hazard}[What remains to be expanded]\label{haz:intersection-draft}
-The argument above is written at the level of its case structure, and is
-therefore \emph{not yet a proof}: the twelve subcases of (d) remain to be
-expanded to the level of the rest of this section. This is the largest single
-piece of writing outstanding, and much of \S\ref{sec:bridge-proofs} onwards
-depends on it. See \S\ref{sec:status}.
+\begin{hazard}[The four places this proof can be misread]\label{haz:intersection-draft}
+\begin{enumerate}\alphlabels\tightlist
+\item \emph{$S_{m,n}$ is an image, not an intersection.} A tuple lies in it
+  when \emph{one} tuple of representatives satisfies all the conditions at
+  once, and those conditions couple the representatives to each other. So
+  $S_{m,n}$ is not a power of $(B_{m}\cap C_{n})/\delta$ cut down by $S$, and
+  the membership tests in 2A3(iii), 2B3(iii) and 2C all work by producing or
+  constraining a single witnessing tuple.
+\item \emph{Lemmas~\ref{lem:ba-center-intersect} and \ref{lem:factor-type}
+  deliver $\subte{}$, never $\subt{}$.} Part (s) therefore splits five times on
+  whether a containment is proper, and in each case the equality branch
+  \emph{proves the lemma} rather than contradicting anything: an absorbing
+  subuniverse that is everything is no obstruction, but it does make the set on
+  the left swallow the set one is trying to meet. Reading these lemmas as
+  producing proper subuniverses collapses all five splits, and it is the most
+  tempting error available here.
+\item \emph{The second alternative of Lemma~\ref{lem:self-intersection-pc} has
+  to be excluded by hand}, in 2A3(iv), and likewise its analogue in 2B3(iv).
+  What kills it is that $B_{m}$ lies inside a single $\sigma_{m}$-block: the
+  alternative would make the last coordinate of $R'$ constant and hence, with
+  surjectivity of the first $|A|$, force exactly the containment that the
+  minimal choice of $m$ forbids. In 2B3(iv) the same manoeuvre also identifies
+  \emph{which} class the single one is --- the one defining $C_{n}$, witnessed
+  by a point of $B\cap C$.
+\item \emph{Every appeal to Lemma~\ref{lem:central-relation} owes two
+  discharges}, per Caveat~\ref{haz:central-relation}: the centre must be shown
+  proper --- here by the same non-containment that the choice of $m$ or $n$
+  provides --- and the binary absorbing subuniverse of alternative (c) lives on
+  a power and must be moved down by Lemma~\ref{lem:power-to-base}.
+\end{enumerate}
 
-One loose end in the statement rather than the proof: minimality of the chains
-for $B$ and $C$ is hypothesised and no step appears to consume it --- a shorter
-chain only makes the induction measure smaller. Either the use should be
-identified or the hypothesis dropped.
+Two dependencies remain outside the proof: it rests on
+Lemma~\ref{lem:self-intersection-pc}, which is still an outline, and on the
+imported Lemma~\ref{lem:power-to-base}. Minimality of the chains for $B$ and
+$C$ is \emph{not} among them, and could not be: the inductive appeals in part
+(s), 2B2 and 2B3 are to truncations of the chain for $C$, which need not be
+minimal even when the original is.
 \end{hazard}
 
 \begin{corollary}\label{cor:intersection-good}

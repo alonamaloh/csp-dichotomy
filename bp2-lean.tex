@@ -239,10 +239,15 @@ What remains open, and gates the formalization of \S5 of
 \item \inproof{lem:maximal-mult} --- the maximal multi-type extension. Its
   Case~1 is unproved and the published repair is invalid; see the audit
   document. Nothing downstream of it should be attempted first.
-\item The reflexivisation of a bridge, used twice without a lemma behind it.
-\item The expansion of \inproof{lem:intersection-good} from case structure to a
-  full proof, and of \inproof{lem:multiply-all-linear}, which is not yet a
-  proof.
+\item The rectangularity normalisation ``compose the bridge with itself enough
+  times'', on which \inproof{lem:no-cross-bridge} and
+  \inproof{lem:bridge-to-pc} rest. The reflexivisation that used to stand
+  beside it on this list is \emph{not} open: it is an observation about a
+  hypothesis every consumer already carries, and it is now
+  \inproof{lem:bridge-reflexive}.
+\item \inproof{lem:self-intersection-pc}, now the sole outline under
+  \inproof{lem:intersection-good}, which is otherwise written out in full; and
+  \inproof{lem:multiply-all-linear}, which is not yet a proof.
 \end{itemize}
 
 Those are not throughput-limited. Schedule around them, not around the line

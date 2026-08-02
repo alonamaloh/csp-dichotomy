@@ -95,16 +95,32 @@ commented-out block shows an earlier draft inducted lexicographically on
 $(|A/(\sigma\cap\omega)|,\,k+\ell)$ and the live proof dropped the first
 component.
 
-Six items for the rendering.
+Seven items for the rendering. The proof paper now carries the expansion in
+full; \pkey{haz:intersection-draft} keeps the four of these that a reader of
+the finished proof still needs.
 
 \begin{enumerate}\tightlist
-\item \emph{Part (s), branch $\mathcal T_{\ell}=\TD$.} The text asserts a
-  \emph{proper} containment where the cited lemmas give only $\subseteq$. It is
-  not a defect in the lemma, because the equality case gives the conclusion
-  outright: if $(G\cap C_{\ell-1})/\omega_{\ell}=C_{\ell-1}/\omega_{\ell}$ then
-  every $\omega_{\ell}$-block meeting $C_{\ell-1}$ meets $G\cap C_{\ell-1}$, in
+\item \emph{Part (s): five properness splits, not one.} Throughout part (s) the
+  text asserts \emph{proper} containments where
+  \texttt{LEMBACenterImplyIntersection} and \texttt{LEMBACenterSImplyFactor}
+  give only $\subseteq$. None is a defect in the lemma, because every equality
+  branch gives the conclusion outright, but each needs writing. Branch
+  $\mathcal T_{\ell}=\TD$: if
+  $(G\cap C_{\ell-1})/\omega_{\ell}=C_{\ell-1}/\omega_{\ell}$ then every
+  $\omega_{\ell}$-block meeting $C_{\ell-1}$ meets $G\cap C_{\ell-1}$, in
   particular the block $E$ with $C_{\ell}=C_{\ell-1}\cap E$, so
-  $G\cap C_{\ell}\neq\varnothing$. Split the case rather than assert $<$.
+  $G\cap C_{\ell}\neq\varnothing$. Branches
+  $\mathcal T_{\ell}\in\{\TBA,\TC\}$ and $\mathcal T_{\ell}=\TS$ each carry two
+  more, one per containment into $B\cap C_{\ell-1}$; there the equality branch
+  makes one of the two sets contain the other and the conclusion is immediate.
+\item \emph{What Lemma 6.25 is doing in part (s).} Part (s) appeals to
+  \texttt{LEMBACenterS\brk Possible\brk Intersections} to conclude
+  nonemptiness, from a lemma whose conclusion is ``$T_{1}=T_{2}\in\{\TBA,\TC\}$'', which by itself
+  permits two disjoint binary absorbing subuniverses. The step is valid only
+  because $\subt{\TBA,\TC}$ is a \emph{conjunction} (\texttt{main.tex:1567}):
+  one of the two sets carries both types, so the type opposite to the other
+  set's is available and equality of types fails. Proof paper:
+  \pkey{lem:ba-central-meets}, \pkey{haz:ba-central-meets}.
 \item \emph{Properness in 2A1 and 2B1} comes from the minimal choice of $m$
   (resp.\ $n$); nonemptiness from the constant tuples
   $(b/\delta,\dots,b/\delta)$ for $b\in B$, which lie in $S_{m,0}$ since
@@ -116,14 +132,24 @@ Six items for the rendering.
   block is the one defining $C_{n}$; then $B_{k}\cap C_{n-1}\subseteq C_{n}$
   and $S_{k,n-1}$, $S_{k,n}$ cut $(B/\delta)^{|A|}$ identically, contradicting
   minimality of $n$.
+\item \emph{Subsubcase 2A3 reads one alternative off a two-alternative lemma.}
+  ``\texttt{LEMSelf\brk IntersectionPC} implies that
+  $((B\circ\delta)\cap B_{m-1})/\sigma_{m}=B_{m-1}/\sigma_{m}$'' (\texttt{SS:828})
+  is not an implication: that lemma offers $B_{m-1}/\sigma_{m}$ \emph{or}
+  $B_{m}/\sigma_{m}$. The second is excluded, but by an argument the text does
+  not give: $B_{m}=B_{m-1}\cap E$ lies inside one $\sigma_{m}$-class, so the
+  second alternative makes the last coordinate of $R'$ constant, and with
+  $\proj_{1,\dots,|A|}(R')=(B/\delta)^{|A|}$ that yields
+  $(B/\delta)^{|A|}\times B_{m}/\sigma_{m}\subseteq R'$ --- which the minimal
+  choice of $m$ forbids. Sound, but a real step.
 \item \emph{The full-fibre step} at \texttt{SS:545, 837, 921} is register entry
   $\mathrm F$ (\S\ref{sec:F}).
-\item \emph{Is minimality of the chains $k,\ell$ used?} The proof fixes minimal
-  chains and no step consuming minimality could be found; a shorter chain only
-  makes the induction measure smaller. Either identify the use or drop the
-  hypothesis. Nothing depends on the answer for correctness --- a redundant
-  hypothesis costs only bookkeeping --- but a formalization has to decide.
-  \textbf{Open, minor.}
+\item \emph{Is minimality of the chains $k,\ell$ used? No.} \textbf{Settled,
+  and the hypothesis is dropped.} Writing the proof out decides it in the
+  negative and shows it could not have gone the other way: the inductive
+  appeals in part (s), 2B2 and 2B3 are to \emph{truncations} of the chain for
+  $C$, and a truncation of a minimal chain need not be minimal, so a step
+  consuming minimality would break the induction rather than use it.
 \item \emph{The corollary} writes $\delta=f^{-1}(\sigma)$ with $f$ undefined;
   read $f_{1}$. Its conclusion admits ``empty'' where the lemma requires
   $B\cap C\neq\varnothing$, so the empty case needs its own line at every call

@@ -59,18 +59,34 @@ are decided by internal evidence rather than taste; only C6 and C7 are free choi
 Not defects. These are the places where the rendering must write out an argument the source
 performs silently. Grouped by where they sit.
 
-**§5.3, `LEMIntersectionPCLinearIsGood` and its corollary.**
-1. Part (s), branch `𝒯_ℓ = D`: the text asserts a *proper* containment where the cited lemmas
-   give `≤`. Split the case — equality gives the conclusion outright.
+**§5.3, `LEMIntersectionPCLinearIsGood` and its corollary.** *Written out in full in
+`ch5b-strongproofs.tex`; items 1–6 are the steps that expansion had to supply.*
+1. Part (s) asserts *proper* containments where `LEMBACenterImplyIntersection` and
+   `LEMBACenterSImplyFactor` give only `≤` — five times, not once: branch `𝒯_ℓ = D` once, and
+   branches `𝒯_ℓ ∈ {BA,C}` and `𝒯_ℓ = S` twice each. Every equality branch gives the
+   conclusion outright, so none is a defect, but each needs writing.
+1b. Part (s)'s appeals to `LEMBACenterSPossibleIntersections` conclude *nonemptiness* from a
+   lemma that says only `T₁ = T₂ ∈ {BA,C}`, which by itself permits two disjoint BA
+   subuniverses. Valid only because `<_{BA,C}` is a **conjunction** (`main.tex:1567`): one
+   side carries both types, so the type opposite the other side's is available. Extracted as
+   `lem:ba-central-meets`.
 2. Subsubcases 2A1, 2B1: properness comes from the minimal choice of `m` (resp. `n`);
-   nonemptiness from the constant tuples `(b/δ,…,b/δ)`.
+   nonemptiness from the constant tuples `(b/δ,…,b/δ)`, taken over `b ∈ B` in 2A1 and over
+   `b ∈ B ∩ C` in 2B1 — which is where `B ∩ C ≠ ∅` is spent inside Case 2.
 3. Subsubcase 2B3: "the single block is `C_n/ω_n`" needs `B ∩ C ≠ ∅`.
+3b. Subsubcase 2A3 reads `((B∘δ) ∩ B_{m-1})/σ_m = B_{m-1}/σ_m` off `LEMSelfIntersectionPC`
+   (line 828), which in fact offers two alternatives. The second is excluded, but by an
+   argument the text does not give: `B_m` lies inside one `σ_m`-class, so that alternative
+   makes the last coordinate of `R'` constant, and with the first `|A|` surjective it forces
+   `(B/δ)^{|A|} × B_m/σ_m ⊆ R'` — which the minimal choice of `m` forbids.
 4. **The full-fibre step**, at lines 545, 837, 921: *"since `proj_{1..|A|}(R') = (B/δ)^{|A|}`
    there exists `d` with `(B/δ)^{|A|} × {d} ⊆ R'`"* is a non sequitur as stated. It holds
    because `R'` is closed under coordinate substitution and `|B/δ| ≤ |A|`. **The arity `|A|`
    is load-bearing; a rendering that normalises it away breaks three proofs.**
-5. Is minimality of the chains `k, ℓ` used? I found no use. Identify one or drop the
-   hypothesis.
+5. Is minimality of the chains `k, ℓ` used? **No — settled, and the hypothesis is dropped.**
+   Writing the proof out shows it could not have been used: the inductive appeals in part (s),
+   2B2 and 2B3 are to *truncations* of `C`'s chain, and a truncation of a minimal chain need
+   not be minimal, so a step consuming minimality would break the induction rather than use it.
 6. `CORIntersectionPCLinearIsGood` writes `δ = f^{-1}(σ)` with `f` undefined — read `f₁` — and
    admits "empty" where the lemma requires `B ∩ C ≠ ∅`.
 
@@ -131,15 +147,17 @@ lines) is out of scope by decision, with D10 declared moot.
 
 ### (b) Read, and unresolved
 
-**D17 is open** — see `NOTES-repairs.md`. Two further items are open in our own rendering
-rather than in the source: the reflexivisation of a bridge, used twice with no lemma behind
-it, and the induction measure across expanded coverings, which is not well founded as
-displayed. A smaller one: **does `LEMIntersectionPCLinearIsGood` use the minimality of its
-chains `k, ℓ`?** The proof fixes minimal chains for `B ⋘ A` and `C ⋘ A` and I could not find a
-step that consumes minimality; a shorter chain would only make the induction measure smaller.
-Either identify the use or drop the hypothesis. Nothing depends on the answer for
-correctness — a redundant hypothesis costs only bookkeeping — but a formalization has to
-decide.
+**D17 is open** — see `NOTES-repairs.md`; it is now one stated hypothesis rather than a
+diffuse gap. Two further items were listed here as open in our own rendering rather than in
+the source. Of those, the induction measure across expanded coverings is still not well
+founded as displayed; **the reflexivisation of a bridge is closed and was never open** — every
+consumer hypothesises `δ̃ ⊋ σ`, which contains `σ ⊆ δ̃`, and `(a,a) ∈ σ ⊆ δ̃` *is*
+`(a,a,a,a) ∈ δ`, so the bridge is reflexive already (`lem:bridge-reflexive`). The genuine
+normalisation of that shape is elsewhere: "assume `δ̃` rectangular, as otherwise compose it
+with itself many times", in `LEMNoBridgeBetweenDifferentTypes`.
+
+The smaller question — **does `LEMIntersectionPCLinearIsGood` use the minimality of its chains
+`k, ℓ`?** — is now **settled: no**, see item 5 of the §5.3 list above.
 
 The hedge *"the inclusion `⊆` is obvious"* (line 2428) sits inside §5.7 and belongs to (a).
 
