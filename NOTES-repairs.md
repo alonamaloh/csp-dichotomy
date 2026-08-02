@@ -519,44 +519,99 @@ The source writes `σ` for `δ` at both lines 2220 and 2222 while stating the co
 `B/δ`; with `σ` the properness step has no support and the conclusion does not match the
 relation's domain.
 
-## D16 — `LEMLInearOnTheTopIsEasy`: the bijection
+## D16 — `LEMLInearOnTheTopIsEasy`: **solved**, by a different route
 
-**Setting.** `σ` linear on `A ∈ 𝒱ₙ`, `σ* = A²`; `ζ ≤ A × A × ℤ_p` with `proj_{1,2}(ζ) = A²`
-and `(a₁,a₂,b) ∈ ζ ⟹ ((a₁,a₂) ∈ σ ⟺ b = 0)`. Fix `a ∈ A` and put `ξ(x,z) = ζ(x,a,z)`.
+The source's route (fix `a`, show `ξ(x,z) = ζ(x,a,z)` is bijective) can be pushed further than
+the source pushes it, but it stalls at excluding a proper BA or central subuniverse of `A`.
+Abandon it. The lemma follows from a statement we have already repaired.
 
-**Step 1.** `ξ^{-1}(0) = [a]_σ`, immediately from the displayed implication in both directions.
+**Proposition.** Let `σ` be a linear congruence on `A ∈ 𝒱ₙ` with `σ* = A²`. Then
+`A/σ ≅ ℤ_p` for some prime `p`.
 
-**Step 2.** `ξ ≤_sd A × ℤ_p`. `proj_1(ξ) = A` because `proj_{1,2}(ζ) = A²`. `proj_2(ξ)` is a
-subuniverse of `ℤ_p` containing `0`; the subuniverses of `(ℤ_p; x₁+⋯+xₙ)` are the affine
-subspaces, i.e. points and the whole group, so `proj_2(ξ)` is `{0}` or `ℤ_p`. If `{0}` then
-`ξ^{-1}(0) = A`, so `σ = A²` by Step 1 — impossible, since an irreducible congruence is proper
-(convention C4).
+*Proof.* `σ` is linear, so by `LEMLinearEquivalentConditions`(1 ⇒ 2) there is a bridge `δ` from
+`σ` to `σ` with `δ̃ ⊋ σ`. Replace `δ` by `δ° = δ ∘ δ^{-1}`, which is a symmetric pair-reflexive
+bridge with `δ̃° ⊇ δ̃ ⊋ σ` (the lemma of D11–D13). `LEMNontrivialReflexiveBridgeImplies` then
+applies: (1) `σ*` is a congruence, and (3) there is a prime `p` such that for every block `B`
+of `σ*`,
 
-**Step 3.** `ξ` is not linked. `ℤ_p` has no nontrivial BA or central subuniverse
-(`main.tex:3484`), and neither does `A`… — rather than assume that, argue: if `ξ` were linked
-then `LeftLinked(ξ)` would be `A²`, so `RightLinked(ξ) = ℤ_p²`; being a congruence of the
-simple algebra `ℤ_p` that is all of `ℤ_p²` it merges everything, and since `ξ` is subdirect and
-linked, `LEMLinkedImpliesBACenter` forces `ξ = A × ℤ_p` unless `A` or `ℤ_p` has a proper
-nonempty BA or central subuniverse. `ξ = A × ℤ_p` gives `ξ^{-1}(0) = A` and again `σ = A²`.
-`ℤ_p` has none. So a proper nonempty BA or central subuniverse of `A` would remain as the only
-escape — and that is excluded by `σ* = A²`: a proper nonempty `D <_{BA,C} A` would make
-`0_A ∪ D²` … **this last exclusion is the one step I have not written; see the risk register.**
+  `(B/σ; (δ° ∩ B⁴)/σ) ≅ (ℤ_p^{n_B}; x₁ − x₂ = x₃ − x₄)`.
 
-**Step 4.** With `ξ` not linked, its right linkedness congruence on `ℤ_p` is proper, hence
-trivial by simplicity, so distinct `z` have disjoint `ξ`-fibres; with `proj_1(ξ) = A` and
-`proj_2(ξ) = ℤ_p` the fibres partition `A` into `p` blocks, one of which is `[a]_σ`. So `ξ` is
-the graph of a surjection `A ↠ ℤ_p` with `[a]_σ` over `0`.
+By hypothesis `σ* = A²`, which as a congruence has the single block `A`. So
+`A/σ ≅ ℤ_p^m` for some `m ≥ 0`, with the group structure carried by the difference relation.
 
-**Step 5.** The bijection is an isomorphism **of algebras** only once the basic operation of
-`A/σ` is known to act as `x₁ + ⋯ + xₙ`. That is the proposition of convention item C1
-(`NOTES-conventions.md`), which the source never states.
+`m = 0` is impossible: it gives `|A/σ| = 1`, i.e. `σ = A²`, and an irreducible congruence is
+proper (convention C4).
 
-## D17 — open
+`m ≥ 2` is impossible, **by irreducibility**. `A/σ` is Abelian, hence affine over `ℤ_p`
+(`LEMAbelianEqualAffineForWNU`), so `w` acts on it as `Σᵢcᵢxᵢ` with `Σcᵢ = 1` — the constant
+term vanishes by idempotence. For `i ∈ [m]` put `θᵢ = {(x,y) ∈ (ℤ_p^m)² : xᵢ = yᵢ}`. Each `θᵢ`
+is a linear subspace of `(ℤ_p^m)²`, hence closed under any coordinatewise affine map, hence a
+subalgebra of `(A/σ)²`; it is stable under `0_{A/σ}` vacuously; and `θᵢ ⊋ 0_{A/σ}` because
+`m ≥ 2`. But `⋂ᵢ θᵢ = 0_{A/σ}`, so `0_{A/σ}` is reducible — and `σ` is irreducible iff
+`0_{A/σ}` is (convention C9, item 2). Contradiction.
 
-Case 1 of `LEMMaximalMultExtention` concludes `C₁/σ ∩ B₂/σ ≠ ∅` from the fact that a
-BA-and-central `E <_S B₁/σ` meets each of them. Two sets meeting a third need not meet. I have
-no repair and no counterexample. **Do not write `LEMMaximalMultExtention` until it is
-settled.**
+So `m = 1` and `A/σ ≅ ℤ_p` as groups. It is an isomorphism **of algebras** because `w` acts as
+`x₁ + ⋯ + xₙ`: that is the proposition of convention item C1, whose proof runs exactly here —
+the WNU identities force all `cᵢ` equal, specialness forces `c² = c`, and `nc = 1` rules out
+`c = 0`. ∎
+
+This route uses only in-paper material plus C1, where the source's route imports
+`LEMBuildingPerfectCongruence` (Zhuk 2020, Cor. 8.17.1) — so it is also **one fewer external
+dependency**.
+
+### Salvage: the source's `ζ` really is a function
+
+Worth keeping, because it repairs half of the original argument and is needed if the
+perfect-linear machinery is used elsewhere.
+
+**Lemma.** If `ζ ≤ A × A × ℤ_p` witnesses that `σ` is a perfect linear congruence, then `ζ` is
+the graph of a homomorphism `G : A² → ℤ_p` with `G^{-1}(0) = σ`.
+
+*Proof.* Put `t(x,y,z) = w(x,y,…,y,z)` with `n − 2` copies of `y`. On `ℤ_p` this is
+`x + (n−2)y + z = x − y + z`, because `p | n − 1` (C1). Let `b, b', b''` lie in the fibre of
+`ζ` over `(a₁,a₂)`. Applying `t` to the three tuples `(a₁,a₂,b)`, `(a₁,a₂,b')`, `(a₁,a₂,b'')`
+gives `(t(a₁,a₁,a₁), t(a₂,a₂,a₂), b − b' + b'') = (a₁, a₂, b − b' + b'')` by idempotence. So
+the fibre is closed under `x − y + z`, hence is a coset of a subgroup of `ℤ_p`: empty, a
+singleton, or all of `ℤ_p`. It is not all of `ℤ_p`, since that fibre would contain `0` and a
+nonzero element, making `(a₁,a₂)` both `σ`-related and not. It is not empty on `σ*`, since
+`proj_{1,2}(ζ) = σ*`. ∎
+
+## D17 — still open, but localised
+
+Case 1 of `LEMMaximalMultExtention`. Four things are now established about it.
+
+**1. The two facts are true, but from a different lemma.** `E <_S B₁/σ` contains some
+`D <_{BA,C} B₁/σ`, and `LEMStrongNonemptyIntersection` — *`C ⋘^A B ⋘ A` and `D <_{BA,C} B`
+imply `C ∩ D ≠ ∅`* — gives `D ∩ C̄₁ ≠ ∅` and `D ∩ B̄₂ ≠ ∅`, writing `X̄` for `X/σ`. The cited
+`THMMainStableIntersection` is not what does this.
+
+**2. The "hence" cannot be repaired by iterating those facts.** The configuration reproduces
+itself one level down. Writing `D` for the BA-and-central subuniverse: `D ⋘ Ā`;
+`C̄₁ ∩ D ⋘ D` and `B̄₂ ∩ D ⋘ D` by `LEMIntersectALL`; they are disjoint because `C̄₁ ∩ B̄₂` is;
+and `D ∩ B̄₂ ≠ ∅`. So *every* consequence of "two `⋘`-subalgebras of `B̄₁` both meet `D`"
+survives the descent, and none of them can produce `C̄₁ ∩ B̄₂ ≠ ∅`. Any repair must use
+something Case 1 currently ignores.
+
+**3. The only thing it ignores is the maximality of `σ`** — which is a hypothesis of the lemma
+and is used nowhere in Case 1. So the target is: *if `B₁/σ` is not S-free then some congruence
+`τ ⊋ σ` still has `(C₁ ∘ τ) ∩ B₂ = ∅`,* contradicting maximality.
+
+**4. A descent that works, and exactly why it does not finish.** Let `D <_{BA,C} B₁` be the
+preimage of `D`. Then `C₁ ∩ D ≤_{ℳT}^A D` by `LEMIntersectALL`(t), and *properly*: `C₁ ∩ D = D`
+would give `D ∩ B₂ ⊆ C₁ ∩ B₂ = ∅`. Also `D ⋘ A`, `(C₁ ∩ D) ∩ B₂ = ∅` and `D ∩ B₂ ≠ ∅`. So the
+**entire hypothesis set of the lemma is inherited by `D`**, with `|D| < |B₁|` — an induction on
+`|B₁|` is available, and it lands in Case 2 as soon as the S-free case is reached.
+
+What blocks it is the *conclusion*, not the hypotheses. The lemma delivers congruences with
+`ω* ⊇ B₁²`, and the inductive call delivers only `ω* ⊇ D²`, which is weaker because `D ⊆ B₁`;
+the call site (`main.tex:2685`) consumes precisely `σ* ⊇ B²`. So the missing step is either
+
+- an argument that a type-`T` congruence `ω` with `ω* ⊇ D²` and `D <_{BA,C} B₁` also has
+  `ω* ⊇ B₁²`, which would make the induction go through verbatim; or
+- the direct contradiction of item 3.
+
+**Open.** Do not write `LEMMaximalMultExtention` until one of these is settled. Note the lemma
+has exactly one call site, so a hypothesis added to it need only be checked there.
 
 ---
 
@@ -576,5 +631,5 @@ settled.**
 | D13 | yes | no — same hypothesis as D12 |
 | D14 | yes | no — the citation needed the subrelation form of absorption-preserves-linkedness |
 | D15 | yes | no — read `δ` for `σ`, and restore the stability clause |
-| D16 | yes | no — but four steps must be written, and one of them (Step 3) is not finished |
+| D16 | yes | no — via `LEMNontrivialReflexiveBridgeImplies`(3) and irreducibility; one fewer external import than the source |
 | D17 | **unknown** | **open** |
